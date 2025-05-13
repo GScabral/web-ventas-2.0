@@ -64,7 +64,7 @@ export const getProductos = () => {
 export const getAllClientes = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/cliente/allClientes`)
+      const response = await axios.get(`https://web-ventas.onrender.com/cliente/allClientes`)
 
       dispatch({
         type: GET_CLIENTES,
@@ -79,7 +79,7 @@ export const getAllClientes = () => {
 export const getPedidos = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/pedido/Lpedidos`)
+      const response = await axios.get(`https://web-ventas.onrender.com/pedido/Lpedidos`)
       dispatch({
         type: GET_PEDIDOS,
         payload: response.data,
