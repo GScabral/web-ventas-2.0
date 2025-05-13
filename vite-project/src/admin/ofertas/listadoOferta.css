@@ -1,0 +1,38 @@
+.oferta-list-container {
+  padding: 2rem;
+  overflow-x: auto;
+}
+
+.oferta-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.oferta-table th,
+.oferta-table td {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.action-button {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .oferta-table th,
+  .oferta-table td {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .oferta-table th,
+  .oferta-table td {
+    font-size: 0.75rem;
+    padding: 0.4rem;
+  }
+}

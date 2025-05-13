@@ -1,0 +1,80 @@
+.cambio-titulo {
+  color: #d4773a; /* Color del texto */
+  text-align: center; /* Centrar el texto */
+  font-weight: bold; /* Texto en negrita */
+  animation: fadeInUp 1s ease; /* Animación de entrada */
+}
+
+/* Estilos para los párrafos de texto */
+.cambio-texto {
+  color: #555; /* Color del texto */
+  animation: fadeIn 1s ease; /* Animación de entrada */
+  font-family: "Cedarville Cursive", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Estilos para el enlace de WhatsApp */
+.cambio-whatsapp {
+  display: block; /* Convertir en bloque para mejor formato */
+  color: #d4773a; /* Color azul para enlace */
+  text-decoration: none; /* Quitar subrayado del enlace */
+  font-weight: bold; /* Texto en negrita */
+  margin-top: 20px; /* Espacio superior */
+  text-align: center; /* Centrar el enlace */
+  animation: fadeIn 1s ease; /* Animación de entrada */
+}
+
+.cambio-whatsapp:hover {
+  color: #0056b3; /* Color azul más oscuro al hacer hover */
+  animation: pulse 1s infinite; /* Animación de pulsación al hacer hover */
+}
+
+/* Estilo de sombra para resaltar el contenedor */
+.cambio-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  animation: fadeIn 1s ease; /* Animación de entrada */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de entrada desde abajo */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de pulsación */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

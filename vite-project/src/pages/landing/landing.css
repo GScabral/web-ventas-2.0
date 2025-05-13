@@ -1,0 +1,68 @@
+.landing-back {
+  background-image: url(https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?auto=compress&cs=tinysrgb&w=400);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.landing-titulo {
+  margin-top: 20px; /* Ajusta este valor según lo que necesites para dar espacio desde el borde superior */
+  /* El resto de tus estilos para centrar verticalmente el texto */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ 
+}
+
+.landing-titulo {
+  margin: 0;
+  padding: 0;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.landing-button {
+  margin: 0 5px; /* Espacio entre los botones */
+  border: none; /* Elimina el borde predeterminado del botón */
+  background: none; /* Elimina el fondo predeterminado del botón */
+  cursor: pointer;
+}
+
+.vertical-line {
+  border-left: 2px solid black; /* Línea vertical entre botones */
+  height: 200px; /* Altura de la línea, ajusta según sea necesario */
+  margin: 0 10px; /* Espacio entre la línea y los botones */
+}
+
+.info-landing {
+  text-align: center;
+}
+
+.button-info-container {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Esto es para asegurarse de que los elementos estén centrados verticalmente */
+}
+
+.button-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}

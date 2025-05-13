@@ -1,0 +1,99 @@
+.panel-admin-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar-container-admin {
+  width: 250px;
+  background-color: #2e2e2e;
+  transition: transform 0.3s ease;
+  padding: 1rem;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .sidebar-container-admin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    z-index: 1100;
+    width: 220px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-container-admin.show {
+    transform: translateX(0);
+  }
+}
+
+/* Botón hamburguesa */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1200;
+  background: #333;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: block;
+  }
+}
+
+/* Contenido principal */
+.pages-container {
+  flex: 1;
+  padding: 1rem;
+  margin-left: 250px;
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .pages-container {
+    margin-left: 0;
+  }
+}
+
+/* Modal de login */
+.modal-ini-adm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content-ini-adm {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content-ini-adm input,
+.modal-content-ini-adm button {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}

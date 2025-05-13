@@ -1,0 +1,27 @@
+{
+    "name": "venta",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon index.js"
+    },
+    "dependencies": {
+        "@mercadopago/sdk-react": "^0.0.19",
+        "axios": "^1.6.2",
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.2",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.2",
+        "mercadopago": "^2.0.8",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.5-lts.1",
+        "nodemailer": "^6.9.13",
+        "nodemon": "^3.0.1",
+        "pg": "^8.14.1",
+        "sequelize": "^6.37.6"
+    }
+}

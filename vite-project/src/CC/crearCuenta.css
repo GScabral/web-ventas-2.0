@@ -1,0 +1,91 @@
+/* Body Styling */
+.body-cc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7f9fc;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Container Styling */
+.CC-container {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  padding: 20px;
+  text-align: center;
+}
+
+.titulo-cc {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333333;
+}
+
+/* Form Styling */
+.form-label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  text-align: left;
+  color: #555555;
+}
+
+.input-is {
+  width: calc(100% - 10px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.button-is {
+  cursor: pointer;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.button-is :hover {
+  background-color: #0056b3;
+}
+
+/* Error Messages */
+.error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: -5px;
+  text-align: left;
+}
+
+/* Button States */
+.valid-button {
+  background-color: #28a745;
+}
+
+.invalid-button {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Links */
+.home-form {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.home-form:hover {
+  text-decoration: underline;
+}

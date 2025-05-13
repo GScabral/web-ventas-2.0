@@ -1,0 +1,302 @@
+/* General container styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Aplicar la fuente a todo el documento */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.card-container {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  box-shadow: 10px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.card-container:hover {
+  transform: scale(1.03);
+}
+
+/* Image styles */
+.card-imagen {
+  width: 100%;
+  height: auto;
+  object-fit: block;
+}
+
+/* Category and description */
+.card-categoria {
+  font-size: 12px;
+  color: #888;
+  margin: 10px 0 5px 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.card-inf {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 10px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+
+/* Price styles */
+.card-precio {
+  margin: 10px 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.card-precio span:first-child {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+  margin-right: 10px;
+}
+
+.card-precio span:last-child {
+  color: #d32f2f;
+}
+
+/* Discount label */
+.card-content p {
+  font-size: 14px;
+  color: #388e3c;
+  font-weight: bold;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+/* Buttons container */
+.card-buttons {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-detail {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-detail:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-detail:active {
+  background-color: #1e7e34;
+  transform: scale(1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal */
+.modal-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 400px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.modal-card.hidden {
+  transform: translate(-50%, -60%);
+  opacity: 0;
+}
+
+.modal-content-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-card .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.modal-card .close:hover {
+  color: #ff4c4c;
+}
+
+.select-card {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.select-card:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}
+
+.input-card,
+.button-card {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-card:focus {
+  border-color: #007bff;
+}
+
+.button-card {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-card:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
+
+.confirmation-message {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  z-index: 1100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.card-link:hover {
+  color: #007bff;
+}
+
+.animacion-text {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cards container - desktop */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+
+  .card-container {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .card-categoria,
+  .card-inf,
+  .card-precio,
+  .card-content p {
+    font-size: 12px;
+  }
+
+  .card-detail {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .cards-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .modal-card {
+    width: 95%;
+    max-width: none;
+    height: auto;
+    padding: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .modal-content-card {
+    gap: 10px;
+  }
+
+  .select-card,
+  .input-card,
+  .button-card {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .modal-card .close {
+    font-size: 20px;
+  }
+}

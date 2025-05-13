@@ -1,0 +1,143 @@
+/* Estilo general para la barra lateral */
+.sidebar {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1000;
+  width: 250px;
+  padding: 10px;
+  max-height: none; /* Modificado para evitar corte en mobile */
+  overflow-y: visible; /* Modificado para evitar scroll forzado */
+}
+
+/* Botón principal para activar filtros */
+.button-filtros {
+  background-color: #333;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.button-filtros:hover {
+  background-color: #555;
+}
+
+/* Botones de categorías principales */
+.button-talles {
+  background: none;
+  border: none;
+  color: #333;
+  padding: 8px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem; /* Agregado para responsividad */
+}
+
+.button-talles:hover {
+  background-color: #f4f4f4;
+}
+
+/* Botones seleccionados */
+.button-selected {
+  background-color: #d5d5d5;
+  font-weight: bold;
+}
+
+/* Subcategorías */
+.button-sub-categoria {
+  background: none;
+  border: none;
+  color: #666;
+  padding: 6px 10px;
+  width: 90%;
+  margin-left: 10%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1rem; /* Agregado para responsividad */
+}
+
+.button-sub-categoria:hover {
+  background-color: #eaeaea;
+}
+
+/* Divider */
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 1rem 0; /* Ajustado para mejor espaciado */
+}
+
+/* Links secundarios (para móviles) */
+.links-container {
+  margin-top: 20px;
+}
+
+.superior-barra {
+  background-color: #333;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  margin: 5px 0;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.superior-barra:hover {
+  background-color: #555;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 800px) {
+  .sidebar {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .button-filtros {
+    font-size: 1rem;
+  }
+
+  .superior-barra {
+    font-size: 1rem;
+  }
+}
+
+/* Estilo específico para mobile sidebar */
+.mobile-sidebar {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  width: 90%;
+  max-width: 320px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  padding: 1rem;
+  transition: transform 0.3s ease-in-out;
+}

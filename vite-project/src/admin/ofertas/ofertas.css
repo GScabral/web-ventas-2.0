@@ -1,0 +1,46 @@
+.modal-oferta-container {
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.modal-oferta-container input,
+.modal-oferta-container select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.modal-oferta-container button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .modal-oferta-container {
+    font-size: 0.9rem;
+  }
+
+  .modal-oferta-container input,
+  .modal-oferta-container select {
+    font-size: 0.9rem;
+  }
+
+  .modal-oferta-container button {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-oferta-container {
+    font-size: 0.8rem;
+  }
+
+  .modal-oferta-container button {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+}

@@ -1,0 +1,66 @@
+.pedido-list-container {
+  padding: 2rem;
+  overflow-x: auto;
+}
+
+.pedido-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pedido-table th,
+.pedido-table td {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.pedido-table ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.listo {
+  background-color: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.listo-clicked {
+  background-color: gray;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .pedido-table th,
+  .pedido-table td {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .listo,
+  .listo-clicked {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pedido-table th,
+  .pedido-table td {
+    font-size: 0.75rem;
+    padding: 0.4rem;
+  }
+
+  .listo,
+  .listo-clicked {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

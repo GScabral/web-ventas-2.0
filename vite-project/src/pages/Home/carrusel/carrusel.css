@@ -1,0 +1,92 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image-container-carrusel {
+  border: solid 0.1875rem #f6c1c1;
+  position: relative;
+  width: 100%;
+  max-width: 43.75rem;
+  aspect-ratio: 16 / 9;
+  margin: 0.625rem auto 1.25rem auto;
+}
+
+.image-container-carrusel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.buton-carousel-left,
+.buton-carousel-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  font-size: 2rem;
+  border: none;
+  transition: transform 0.2s;
+  color: #f6c1c1;
+  z-index: 1;
+  min-width: 44px; /* ✅ accesibilidad táctil */
+  min-height: 44px;
+}
+
+.buton-carousel-left:hover,
+.buton-carousel-right:hover {
+  transform: scale(1.1);
+}
+
+.buton-carousel-left {
+  left: 1rem;
+}
+
+.buton-carousel-right {
+  right: 1rem;
+}
+
+.dots-container {
+  position: absolute;
+  bottom: 0.5rem; /* ✅ espacio para evitar borde inferior */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 0.5rem; /* ✅ padding adicional para móviles */
+}
+
+.dot {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  margin: 0 0.3125rem;
+  cursor: pointer;
+  border: solid 1px #f6c1c1;
+}
+
+.dot.active {
+  background-color: #f6c1c1;
+}
+
+@media (max-width: 600px) {
+  .image-container-carrusel {
+    max-width: 100%;
+  }
+
+  .buton-carousel-left,
+  .buton-carousel-right {
+    font-size: 1.5rem;
+  }
+
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: 0 0.1875rem;
+  }
+}

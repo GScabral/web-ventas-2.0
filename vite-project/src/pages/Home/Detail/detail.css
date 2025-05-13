@@ -1,0 +1,229 @@
+/* General container */
+.detail-background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffebf0;
+}
+
+.detail-container {
+  display: flex;
+  flex-wrap: wrap;
+  background: #fff5e1;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+  margin-bottom: 20px;
+}
+
+/* Image gallery */
+.detail-imagen-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #ffe6e6;
+}
+
+.detail-imagen {
+  max-width: 100%;
+  width: 400px;
+  border-radius: 8px;
+  border: 1px solid #ff99cc;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail-imagen:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 0, 102, 0.3);
+}
+
+.imagen-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.imagen-button {
+  width: 40px;
+  height: 40px;
+  background: #ffcccc;
+  border: 1px solid #ff99cc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ff3366;
+}
+
+.imagen-button.active,
+.imagen-button:hover {
+  background: #ff3366;
+  color: white;
+  border-color: #cc0052;
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(255, 0, 102, 0.3);
+}
+
+/* Product details */
+.detail-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.detail-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff3366;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+.detail-description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #cc0052;
+  line-height: 1.5;
+}
+
+.detail-details {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ff3366;
+}
+
+.selecion-detail {
+  margin-top: 20px;
+}
+
+.selecion-content-detail label {
+  font-weight: bold;
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.selecion-content-detail select,
+.selecion-content-detail input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ff99cc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.selecion-content-detail select:focus,
+.selecion-content-detail input:focus {
+  outline: none;
+  border-color: #ff3366;
+  box-shadow: 0 0 4px rgba(255, 0, 102, 0.4);
+}
+
+button {
+  background-color: #ff3366;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #cc0052;
+  transform: scale(1.05);
+}
+
+.volver {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #ff3366;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.volver:hover {
+  color: #cc0052;
+}
+.recomendaciones {
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
+
+.recomendaciones-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  text-decoration: none;
+
+}
+
+.recomendacion-item {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 200px;
+  text-align: center;
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recomendacion-item img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.recomendacion-item p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+  text-decoration: none; /* Eliminar subrayado */
+}
+
+.recomendacion-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateX(-100%);
+  }
+  to {
+      transform: translateX(0);
+  }
+}

@@ -1,0 +1,60 @@
+.div-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Campo de entrada */
+input[type="search"] {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #dc7430;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 250px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="search"]:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+}
+
+/* Botón lupa */
+button.lupa {
+  padding: 0.6rem;
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button.lupa:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+button.lupa svg {
+  color: #333;
+  font-size: 1.1rem;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .div-search {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  input[type="search"],
+  button.lupa {
+    width: 100%;
+    max-width: none;
+  }
+}

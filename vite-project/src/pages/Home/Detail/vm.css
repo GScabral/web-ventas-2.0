@@ -1,0 +1,50 @@
+.container-vm {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px; /* Reducido el padding para hacerlo más compacto */
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    background-color: #fff; /* Fondo blanco */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    font-family: "Cedarville Cursive", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .vm-h1 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.vm-p {
+    margin-bottom: 20px;
+}
+
+.social-links {
+    margin-bottom: 20px;
+}
+
+.social-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.vm-button {
+    padding: 10px 20px;
+    background-color: #d4773a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-info {
+    margin-top: 20px;
+}
+
+.map-logo {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+}
