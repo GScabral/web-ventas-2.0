@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './card.css';
+import './Card.css';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
