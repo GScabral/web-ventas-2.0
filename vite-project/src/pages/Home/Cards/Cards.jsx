@@ -1,5 +1,5 @@
 import Card from "../Card/Card";
-import './cards.css';
+import './Cards.css';
 
 const Cards = ({ productos, agregarAlCarrito, agregarFav }) => {
     if (!Array.isArray(productos)) {
