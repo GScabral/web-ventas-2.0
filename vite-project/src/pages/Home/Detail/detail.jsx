@@ -162,7 +162,7 @@ const Detail = () => {
               <div className="detail-imagen-container">
                 <img
                   className="card-imagen"
-                  src={variantes?.[0]?.imagenes?.[0]}
+                  src={info.variantes?.[0]?.imagenes?.[0]}
                   alt="Imagen del producto"
                 />
 
