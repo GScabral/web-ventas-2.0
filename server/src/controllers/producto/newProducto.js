@@ -2,23 +2,34 @@ const { Productos } = require('../../db');
 const { variantesproductos } = require('../../db');
 
 const createNewProducto = async (bodyData, files) => {
-  const { nombre_producto, descripcion, precio, categoria, subcategoria, variantesData } = bodyData;
-
-
-
-
-  if (!Array.isArray(variantesData)) {
-    return { error: 'variantesData debe ser un array' };
-  }
+  const {
+    nombre_producto,
+    descripcion,
+    precio,
+    categoria,
+    subcategoria,
+    variantesData
+  } = bodyData;
 
   try {
-    // Verificar si faltan campos obligatorios
+    // Validación de campos obligatorios
     const requiredFields = ['nombre_producto', 'descripcion', 'precio', 'categoria'];
     const missingFields = requiredFields.filter(field => !bodyData[field]);
     if (missingFields.length > 0) {
       return { error: `Faltan campos obligatorios: ${missingFields.join(', ')}` };
     }
 
+    // Parsear variantesData si viene como string
+    let variantes = variantesData;
+    if (typeof variantesData === 'string') {
+      variantes = JSON.parse(variantesData);
+    }
+
+    if (!Array.isArray(variantes)) {
+      return { error: 'variantesData debe ser un array' };
+    }
+
+    // Crear el producto
     const newProducto = await Productos.create({
       nombre_producto,
       descripcion,
@@ -27,32 +38,29 @@ const createNewProducto = async (bodyData, files) => {
       subcategoria,
     });
 
+    // Asociar variantes
+    for (let i = 0; i < variantes.length; i++) {
+      const { tallas, color } = variantes[i];
 
+      const imagen = files[i]; // Se espera que las imágenes estén en el mismo orden
+      if (!imagen || !imagen.path) {
+        return { error: `Falta la imagen para la variante ${i + 1}` };
+      }
 
-    for (let i = 0; i < variantesData.length; i++) {
-      const { tallas, color } = variantesData[i];
-      const imagenFilesKey = `variantesData[${i}][imagenFiles][0]`;
+      const imagenUrl = imagen.path;
 
-      const imagenFiles = files[imagenFilesKey];
+      for (let j = 0; j < tallas.length; j++) {
+        const { talla, cantidad } = tallas[j];
 
-      if (Array.isArray(imagenFiles) && imagenFiles.length > 0) {
-        const imagenes = imagenFiles.map(file => file.path);
-
-        for (let j = 0; j < tallas.length; j++) {
-          const { talla, cantidad } = tallas[j];
-          const nuevaVariante = await variantesproductos.create({
-            talla,
-            color,
-            cantidad_disponible: cantidad,
-            ProductoIdProducto: newProducto.id_producto,
-            imagenes
-          });
-        }
-      } else {
-        console.error("Es necesario una imagen para el procuto")
+        await variantesproductos.create({
+          talla,
+          color,
+          cantidad_disponible: cantidad,
+          ProductoIdProducto: newProducto.id_producto,
+          imagenes: [imagenUrl]
+        });
       }
     }
-
 
     return { newProducto };
   } catch (error) {
