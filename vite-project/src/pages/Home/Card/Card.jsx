@@ -250,7 +250,7 @@ const Card = ({ id, nombre, descripcion, categoria, precio, imagenes, variantes 
 
         <Link to={`/detail/${id}`} className="card-link">
           <div className="card-content">
-            <img className="card-imagen" src={`http://localhost:3004/${variantes && variantes[0] && variantes[0].imagenes && variantes[0].imagenes[0]}`} />
+            <img className="card-imagen" src={variantes?.[0]?.imagenes?.[0]} alt="Imagen del producto"/>
             <span className="card-categoria">{categoria}</span>
             <p className="card-inf">{descripcion}</p>
             {oferta > 0 ? ( // Mostrar el porcentaje de oferta y el precio final solo si hay oferta
