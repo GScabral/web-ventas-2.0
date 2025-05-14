@@ -195,7 +195,7 @@ const Carrito = () => {
                 <tr key={index}>
                   <td className="carrito-td">
                     {producto.variantes.length > 0 && producto.variantes[0].imagenes.length > 0 && (
-                      <img className="card-imagen" src={variantes?.[0]?.imagenes?.[0]} alt="Imagen del producto"/>
+                      <img className="card-imagen" src={producto.variantes?.[0]?.imagenes?.[0]} alt="Imagen del producto"/>
 
                     )}
                     <div>
