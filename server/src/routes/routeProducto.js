@@ -2,7 +2,6 @@ const  upload = require("../upload")
 const { Router } = require("express");
 const getProductos = require("../controllers/producto/getProducto");
 const createNewProducto = require("../controllers/producto/newProducto");
-const upload = require('../../multerConfig');
 const productoId = require("../controllers/producto/getById")
 const getCat = require("../controllers/producto/getCategoria")
 const actualizarCantidadDisponibleVariante = require("../controllers/producto/patchProducto")
