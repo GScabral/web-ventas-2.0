@@ -19,7 +19,7 @@ router.get("/producto", async (req, res) => {
     }
 })
 
-router.post("/nuevoProducto", upload.single('imagen'), async (req, res) => {
+router.post("/nuevoProducto", upload.array('imagenes', 10), async (req, res) => {
     try {
 
         const files = req.files;
