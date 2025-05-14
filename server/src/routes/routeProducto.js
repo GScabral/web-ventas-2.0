@@ -1,3 +1,4 @@
+const  upload = require("../upload")
 const { Router } = require("express");
 const getProductos = require("../controllers/producto/getProducto");
 const createNewProducto = require("../controllers/producto/newProducto");
@@ -19,7 +20,7 @@ router.get("/producto", async (req, res) => {
     }
 })
 
-router.post("/nuevoProducto", upload, async (req, res) => {
+router.post("/nuevoProducto", upload.single('imagen'), async (req, res) => {
     try {
 
         const files = req.files;

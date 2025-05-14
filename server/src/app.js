@@ -7,13 +7,14 @@ const path = require('path');
 const routes = require('./routes/index.js');
 const upload = require("../multerConfig.js");
 
+
 require('./db.js');
 
 const server = express();
 server.name = 'Server';
 
 // Middleware
-server.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+server.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
