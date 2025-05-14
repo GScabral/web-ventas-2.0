@@ -161,10 +161,11 @@ const Detail = () => {
             {info && info.variantes && info.variantes.length > 0 && (
               <div className="detail-imagen-container">
                 <img
-                  className="detail-imagen"
-                  src={`http://localhost:3004/${info.variantes[imagenActual].imagenes[0]}`}
-                  alt=""
+                  className="card-imagen"
+                  src={variantes?.[0]?.imagenes?.[0]}
+                  alt="Imagen del producto"
                 />
+
                 <div className="imagen-buttons">
                   {info.variantes
                     .reduce((acc, variante) => {
