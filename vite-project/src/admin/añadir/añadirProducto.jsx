@@ -15,84 +15,32 @@ const NewProduct = ({ addProduct }) => {
   const [newTalla, setNewTalla] = useState('');
   const [newCantidad, setNewCantidad] = useState(0);
 
-  // ... todo el código inicial igual
-
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  if (!productName || !productPrice || !productDescrip || !productCategoria || !productSubCategoria || variantesData.length === 0) return;
-
-  try {
-    const formData = new FormData();
-    formData.append('nombre_producto', productName);
-    formData.append('descripcion', productDescrip);
-    formData.append('precio', productPrice);
-    formData.append('categoria', productCategoria);
-    formData.append('subcategoria', productSubCategoria);
-
-    variantesData.forEach((variante, index) => {
-      formData.append(`variantesData[${index}][color]`, variante.color);
-
-      // CAMBIO: ahora usamos un nombre plano para las imágenes
-      variante.imagenFiles.forEach((file, fileIndex) => {
-        formData.append(`imagenFiles_${index}_${fileIndex}`, file);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!productName || !productPrice || !productDescrip || !productCategoria || !productSubCategoria || variantesData.length === 0) return;
+    try {
+      const formData = new FormData();
+      formData.append('nombre_producto', productName);
+      formData.append('descripcion', productDescrip);
+      formData.append('precio', productPrice);
+      formData.append('categoria', productCategoria);
+      formData.append('subcategoria', productSubCategoria);
+      variantesData.forEach((variante, index) => {
+        formData.append(`variantesData[${index}][color]`, variante.color);
+        variante.imagenFiles.forEach((file, fileIndex) => {
+          formData.append(`variantesData[${index}][imagenFiles][${fileIndex}]`, file);
+        });
+        variante.tallas.forEach((talla, tallaIndex) => {
+          formData.append(`variantesData[${index}][tallas][${tallaIndex}][talla]`, talla.talla);
+          formData.append(`variantesData[${index}][tallas][${tallaIndex}][cantidad]`, talla.cantidad);
+        });
       });
-
-      variante.tallas.forEach((talla, tallaIndex) => {
-        formData.append(`variantesData[${index}][tallas][${tallaIndex}][talla]`, talla.talla);
-        formData.append(`variantesData[${index}][tallas][${tallaIndex}][cantidad]`, talla.cantidad);
-      });
-    });
-
-    await addProduct(formData);
-    setProductName('');
-    setProductPrice('');
-    setProductDescrip('');
-    setProductCategoria('');
-    setProductSubCategoria('');
-    setVariantesData([]);
-  } catch (error) {
-    console.error('Error al agregar el producto', error);
-  }
-};
-
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  if (!productName || !productPrice || !productDescrip || !productCategoria || !productSubCategoria || variantesData.length === 0) return;
-
-  try {
-    const formData = new FormData();
-    formData.append('nombre_producto', productName);
-    formData.append('descripcion', productDescrip);
-    formData.append('precio', productPrice);
-    formData.append('categoria', productCategoria);
-    formData.append('subcategoria', productSubCategoria);
-
-    variantesData.forEach((variante, index) => {
-      formData.append(`variantesData[${index}][color]`, variante.color);
-
-      // CAMBIO: ahora usamos un nombre plano para las imágenes
-      variante.imagenFiles.forEach((file, fileIndex) => {
-        formData.append(`imagenFiles_${index}_${fileIndex}`, file);
-      });
-
-      variante.tallas.forEach((talla, tallaIndex) => {
-        formData.append(`variantesData[${index}][tallas][${tallaIndex}][talla]`, talla.talla);
-        formData.append(`variantesData[${index}][tallas][${tallaIndex}][cantidad]`, talla.cantidad);
-      });
-    });
-
-    await addProduct(formData);
-    setProductName('');
-    setProductPrice('');
-    setProductDescrip('');
-    setProductCategoria('');
-    setProductSubCategoria('');
-    setVariantesData([]);
-  } catch (error) {
-    console.error('Error al agregar el producto', error);
-  }
-};
-
+      await addProduct(formData);
+      setProductName(''); setProductPrice(''); setProductDescrip(''); setProductCategoria(''); setProductSubCategoria(''); setVariantesData([]);
+    } catch (error) {
+      console.error('Error al agregar el producto', error);
+    }
+  };
 
   return (
     <div className="admin-panel">
