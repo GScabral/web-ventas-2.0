@@ -86,18 +86,22 @@ const FiltrosSidebar = () => {
                                 >
                                     {categoriaPrincipal}
                                 </button>
-                                {showSubcategories && selectedCategory === categoriaPrincipal && subcategorias.length > 0 && (
+                                {showSubcategories && selectedCategory === categoriaPrincipal && (
                                     <ul>
-                                        {subcategorias.map((subcategoria) => (
-                                            <li key={subcategoria}>
-                                                <button
-                                                    className={selectedSubcategory === subcategoria ? "button-selected" : "button-sub-categoria"}
-                                                    onClick={() => handleFilter(categoriaPrincipal, subcategoria)}
-                                                >
-                                                    {subcategoria}
-                                                </button>
-                                            </li>
-                                        ))}
+                                        {subcategorias.length > 0 ? (
+                                            subcategorias.map((subcategoria) => (
+                                                <li key={subcategoria}>
+                                                    <button
+                                                        className={selectedSubcategory === subcategoria ? "button-selected" : "button-sub-categoria"}
+                                                        onClick={() => handleFilter(categoriaPrincipal, subcategoria)}
+                                                    >
+                                                        {subcategoria}
+                                                    </button>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li className="no-subcategoria">Sin subcategorías</li>
+                                        )}
                                     </ul>
                                 )}
                             </div>
@@ -140,7 +144,7 @@ const FiltrosSidebar = () => {
                         <button className="superior-barra">Inicio</button>
                     </Link>
                     <Link to="/DevolucionCambio">
-                        <button className="superior-barra">Cambio/Devolucion</button>
+                        <button className="superior-barra">Cambio/Devolución</button>
                     </Link> 
                     <Link to="/comoPagar">
                         <button className="superior-barra">Venta por mayor</button>
@@ -152,3 +156,4 @@ const FiltrosSidebar = () => {
 };
 
 export default FiltrosSidebar;
+
