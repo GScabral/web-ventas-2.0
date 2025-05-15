@@ -22,7 +22,6 @@ const Home = () => {
   const [productosEnFav, setProductosEnFav] = useState([]);
   const [isResponsive, setIsResponsive] = useState(false);
 
-  console.log(allProductos)
 
   useEffect(() => {
     dispatch(getProductos());
