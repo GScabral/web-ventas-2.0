@@ -250,7 +250,7 @@ const Detail = () => {
           return (
             <Link key={producto.id} to={`/detail/${producto.id}`}>
               <div className="recomendacion-item">
-                <img src={`http://localhost:3004/${producto.variantes[0].imagenes[0]}`} alt={producto.nombre} />
+                <img src={`{producto.variantes[0].imagenes[0]}`} alt={producto.nombre} />
                 <p className="recomendados-p">{producto.nombre}</p>
                 {descuento ? ( // Mostrar el porcentaje de oferta y el precio final solo si hay oferta
                   <div>
