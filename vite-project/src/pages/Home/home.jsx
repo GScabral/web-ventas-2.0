@@ -139,8 +139,6 @@ const Home = () => {
           <div className="footer-section">
             <h3>Formas de pago</h3>
             <div className="payment-methods">
-              <img src="/icons8-visa-48.png" alt="Visa" />
-              <img src="/icons8-mastercard-48.png" alt="Mastercard" />
               <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
             </div>
           </div>
