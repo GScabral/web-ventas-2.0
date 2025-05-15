@@ -159,35 +159,43 @@ const Detail = () => {
         <div className="detail-container">
           <div className="detail-imagen-container">
             {info && info.variantes && info.variantes.length > 0 && (
-              <div className="detail-imagen-container">
-                <img
-                  className="card-imagen"
-                  src={info.variantes?.[0]?.imagenes?.[0]}
-                  alt="Imagen del producto"
-                />
+  <div className="detail-imagen-container">
+    {/* Recolectar todas las imágenes únicas */}
+    {(() => {
+      const imagenesUnicas = info.variantes.reduce((acc, variante) => {
+        variante.imagenes.forEach((img) => {
+          if (!acc.includes(img)) acc.push(img);
+        });
+        return acc;
+      }, []);
 
-                <div className="imagen-buttons">
-                  {info.variantes
-                    .reduce((acc, variante) => {
-                      variante.imagenes.forEach((imagen) => {
-                        if (!acc.includes(imagen)) {
-                          acc.push(imagen);
-                        }
-                      });
-                      return acc;
-                    }, [])
-                    .map((imagen, index) => (
-                      <button
-                        key={index}
-                        className={`imagen-button ${index === imagenActual ? 'active' : ''}`}
-                        onClick={() => handleImageChange(index)}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-                </div>
-              </div>
-            )}
+      return (
+        <>
+          {/* Mostrar imagen actual */}
+          <img
+            className="card-imagen"
+            src={imagenesUnicas[imagenActual]}
+            alt={`Imagen ${imagenActual + 1}`}
+          />
+
+          {/* Botones de cambio de imagen */}
+          <div className="imagen-buttons">
+            {imagenesUnicas.map((imagen, index) => (
+              <button
+                key={index}
+                className={`imagen-button ${index === imagenActual ? 'active' : ''}`}
+                onClick={() => handleImageChange(index)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        </>
+      );
+    })()}
+  </div>
+)}
+
           </div>
           <div className="detail-content">
             <p className="detail-title">{info.nombre}</p>
