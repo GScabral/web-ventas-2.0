@@ -4,18 +4,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
-  overflow-x: hidden;
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
+  font-family: 'Georgia', serif;
+  background-color: #FDF8F3;
+  color: #7B5C42;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 /* Fondo general */
 .home-fondo {
-  padding: 0;
-  margin: 0;
   min-height: 100vh;
 }
 
@@ -42,7 +41,7 @@ body {
 }
 
 .arrow-paginado {
-  background-color: #007bff;
+  background-color: #A67C52;
   border: none;
   color: white;
   padding: 0.7rem;
@@ -54,12 +53,12 @@ body {
 }
 
 .arrow-paginado:disabled {
-  background-color: #ccc;
+  background-color: #D3C2B4;
   cursor: not-allowed;
 }
 
 .arrow-paginado:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: #5C3D2E;
 }
 
 .paginado {
@@ -72,9 +71,9 @@ body {
 
 .paginado li a {
   text-decoration: none;
-  color: #007bff;
+  color: #A67C52;
   padding: 0.6rem 1rem;
-  border: 1px solid #007bff;
+  border: 1px solid #A67C52;
   border-radius: 50%;
   transition: all 0.3s;
   display: inline-block;
@@ -82,14 +81,14 @@ body {
 
 .paginado li a:hover,
 .paginado li a.active {
-  background-color: #007bff;
+  background-color: #A67C52;
   color: white;
 }
 
 /* Footer */
 .footer {
-  background-color: #343a40;
-  color: white;
+  background-color: #7B5C42;
+  color: #FDF8F3;
   padding: 2rem 1rem;
   margin-top: 4rem;
 }
@@ -103,7 +102,7 @@ body {
 .footer-section h3 {
   font-size: 1.1rem;
   margin-bottom: 0.7rem;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #A67C52;
   display: inline-block;
   padding-bottom: 0.4rem;
 }
@@ -118,13 +117,13 @@ body {
 }
 
 .footer-section ul li a {
-  color: white;
+  color: #FDF8F3;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .footer-section ul li a:hover {
-  color: #007bff;
+  color: #DAB89C;
 }
 
 .social-icons a img {
@@ -141,7 +140,7 @@ body {
   text-align: center;
   margin-top: 2rem;
   font-size: 0.9rem;
-  color: #ccc;
+  color: #E5D7CC;
 }
 
 /* Imágenes fluidas */
@@ -173,3 +172,4 @@ img {
     justify-content: center;
   }
 }
+
