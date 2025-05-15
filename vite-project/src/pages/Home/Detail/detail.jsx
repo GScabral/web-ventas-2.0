@@ -25,7 +25,6 @@ const Detail = () => {
   const [oferta, setOferta] = useState(null)
   const ofertas = useSelector(state => state.ofertasActivas)
 
-  console.log(info)
 
 
 
