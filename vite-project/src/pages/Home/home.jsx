@@ -129,7 +129,7 @@ const Home = () => {
 
           <div className="footer-section">
             <h3>Estamos en</h3>
-            <p>Ontiveros 2010, W3402 Corrientes</p>
+            <p>Ortiveros 2010, W3402 Corrientes</p>
             <div className="payment-methods">
               <img src="/icons8-location-48.png" alt="Visa" />
              
