@@ -104,7 +104,7 @@ const Home = () => {
     <img src="/instagram.png" alt="Instagram" />
   </a>
              <a
-  href="https://wa.me/5493791234567?text=Hola%20quiero%20hacer%20una%20consulta"
+  href="https://wa.me/5493794155821?text=Hola%20quiero%20hacer%20una%20consulta"
   target="_blank"
   rel="noopener noreferrer"
 >
