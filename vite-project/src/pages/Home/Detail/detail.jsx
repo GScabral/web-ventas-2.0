@@ -26,7 +26,8 @@ const Detail = () => {
   const ofertas = useSelector(state => state.ofertasActivas)
 
 
-
+console.log(info)
+  
 
   useEffect(() => {
     const obtenerOfertaParaProducto = () => {
