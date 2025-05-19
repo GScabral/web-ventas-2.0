@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterProduc, orderProducto } from "../../../redux/action";
 import { categoria } from "./categorias";
 import { Link } from "react-router-dom";
+// import './barra.css';
+// import './barraresponsive.css';
 
 const FiltrosSidebar = () => {
     const [mostrarF, setMostrarF] = useState(false);
@@ -12,19 +14,14 @@ const FiltrosSidebar = () => {
     const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
     const [selectedSubcategory, setSelectedSubcategory] = useState("");
     const [showSubcategories, setShowSubcategories] = useState(true); 
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
-
     const allProductos = useSelector((state) => state.allProductos);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 800);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+
 
     const toggleFiltros = () => {
         setMostrarF(!mostrarF);
+     
         setShowSubcategories(true); 
     };
 
@@ -34,28 +31,34 @@ const FiltrosSidebar = () => {
 
     const handleFilter = (category, subcategory) => {
         let filteredProducts = allProductos;
-
+    
         if (!subcategory && selectedCategory !== category) {
+            // Filtrar por categoría principal
             setSelectedCategory(category);
             setSelectedSubcategory("");
             dispatch(filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts }));
         } else if (!subcategory && selectedCategory === category) {
+            // Deseleccionar categoría principal
             setSelectedCategory("");
             setSelectedSubcategory("");
             dispatch(filterProduc({ categoria: "", subcategoria: "", allProductos }));
         } else if (subcategory) {
+            // Filtrar por categoría principal
             filteredProducts = filteredProducts.filter(producto =>
                 producto.categoria && producto.categoria.toLowerCase() === category.toLowerCase()
             );
+    
+            // Filtrar por subcategoría dentro de la categoría principal
             filteredProducts = filteredProducts.filter(producto =>
                 producto.subcategoria && producto.subcategoria.toLowerCase() === subcategory.toLowerCase()
             );
+    
             setSelectedCategory(category);
             setSelectedSubcategory(subcategory);
             dispatch(filterProduc({ categoria: category, subcategoria: subcategory, allProductos: filteredProducts }));
         }
     };
-
+    
     const handleOrder = (orderType) => {
         if (orderType === selectedPriceOrder) {
             unselectOrder();
@@ -71,7 +74,7 @@ const FiltrosSidebar = () => {
     };
 
     return (
-        <div className={`sidebar ${isMobile ? "mobile-sidebar" : ""}`}>
+        <div className="sidebar">
             <button className="button-filtros" onClick={toggleFiltros}>
                 FILTRAR POR:
             </button>
@@ -86,22 +89,18 @@ const FiltrosSidebar = () => {
                                 >
                                     {categoriaPrincipal}
                                 </button>
-                                {showSubcategories && selectedCategory === categoriaPrincipal && (
+                                {showSubcategories && selectedCategory === categoriaPrincipal && subcategorias.length > 0 && (
                                     <ul>
-                                        {subcategorias.length > 0 ? (
-                                            subcategorias.map((subcategoria) => (
-                                                <li key={subcategoria}>
-                                                    <button
-                                                        className={selectedSubcategory === subcategoria ? "button-selected" : "button-sub-categoria"}
-                                                        onClick={() => handleFilter(categoriaPrincipal, subcategoria)}
-                                                    >
-                                                        {subcategoria}
-                                                    </button>
-                                                </li>
-                                            ))
-                                        ) : (
-                                            <li className="no-subcategoria">Sin subcategorías</li>
-                                        )}
+                                        {subcategorias.map((subcategoria) => (
+                                            <li key={subcategoria}>
+                                                <button
+                                                    className={selectedSubcategory === subcategoria ? "button-selected" : "button-sub-categoria"}
+                                                    onClick={() => handleFilter(categoriaPrincipal, subcategoria)}
+                                                >
+                                                    {subcategoria}
+                                                </button>
+                                            </li>
+                                        ))}
                                     </ul>
                                 )}
                             </div>
@@ -138,13 +137,13 @@ const FiltrosSidebar = () => {
                     </ul>
                 </div>
             )}
-            {isMobile && (
+            {window.innerWidth < 800 && (
                 <div className="links-container">
                     <Link to="/">
                         <button className="superior-barra">Inicio</button>
                     </Link>
                     <Link to="/DevolucionCambio">
-                        <button className="superior-barra">Cambio/Devolución</button>
+                        <button className="superior-barra">Cambio/Devolucion</button>
                     </Link> 
                     <Link to="/comoPagar">
                         <button className="superior-barra">Venta por mayor</button>
@@ -156,4 +155,3 @@ const FiltrosSidebar = () => {
 };
 
 export default FiltrosSidebar;
-

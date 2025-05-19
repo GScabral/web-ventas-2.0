@@ -3,20 +3,21 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;              /* ❗ Evita que el botón salte abajo */
+  justify-content: flex-start;    /* ❗ Alinea el contenido hacia la izquierda */
 }
+
 
 /* Campo de entrada */
 input[type="search"] {
+  flex-grow: 1;                   /* ❗ Hace que el input se expanda */
   padding: 0.6rem 0.8rem;
   border: 1px solid #dc7430;
   border-radius: 0.5rem;
   font-size: 1rem;
-  width: 100%;
-  max-width: 250px;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
+
 
 input[type="search"]:focus {
   outline: none;
@@ -40,9 +41,13 @@ button.lupa:hover {
 }
 
 button.lupa svg {
-  color: #333;
+  color: white;
   font-size: 1.1rem;
 }
+button.lupa:hover svg {
+  color: black;
+}
+
 
 /* Responsivo */
 @media (max-width: 600px) {
@@ -58,3 +63,4 @@ button.lupa svg {
     max-width: none;
   }
 }
+

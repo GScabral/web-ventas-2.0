@@ -19,6 +19,7 @@ const Nav = ({ onSearch }) => {
     const isLoggedIn = useSelector((state) => state.isLoggedIn)
     const cliente = useSelector((state) => state.cliente)
     const [searchText, setSearchText] = useState("");
+     const [showCategories, setShowCategories] = useState(false);
 
 
 
@@ -35,6 +36,13 @@ const Nav = ({ onSearch }) => {
         setSearchText("");
         dispatch(getProductos());
     };
+
+        const toggleCategories = () => {
+        setShowCategories(!showCategories);
+    };
+
+    
+
 
 
     return (
