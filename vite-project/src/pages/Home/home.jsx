@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { getProductos, paginado } from "../../redux/action";
-import './home.css'
-// import './homeresponsive.css'
+import './home.css';
 import Nav from "./Nav/Nav";
 import Cards from "./Cards/Cards";
 import FiltrosSidebar from "./barralado/filtros";
@@ -17,11 +16,11 @@ const Home = () => {
   const allProductos = useSelector((state) => state.allProductos);
   const currentPage = useSelector((state) => state.currentPage);
   const totalPages = useSelector((state) => state.totalPages);
+
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [productosEnCarrito, setProductosEnCarrito] = useState([]); // Estado para almacenar los productos del carrito
+  const [productosEnCarrito, setProductosEnCarrito] = useState([]);
   const [productosEnFav, setProductosEnFav] = useState([]);
   const [isResponsive, setIsResponsive] = useState(false);
-
 
   useEffect(() => {
     dispatch(getProductos());
@@ -29,46 +28,28 @@ const Home = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsResponsive(window.innerWidth <= 1000); // Ajusta el valor según el ancho de tu breakpoint
+      setIsResponsive(window.innerWidth <= 1000);
     };
-
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const toggleSidebar = () => {
-    if (!isResponsive) {
-      setSidebarVisible(!sidebarVisible);
-    }
+    if (!isResponsive) setSidebarVisible(!sidebarVisible);
   };
 
   const agregarAlCarrito = (producto, precio) => {
-    // Lógica para agregar producto al carrito
-    const nuevoProducto = {
-      producto: producto,
-      precio: precio
-    };
+    const nuevoProducto = { producto, precio };
     setProductosEnCarrito([...productosEnCarrito, nuevoProducto]);
   };
 
   const agregarFav = (producto, precio) => {
-    // Lógica para agregar producto al carrito
-    const nuevoProducto = {
-      producto: producto,
-      precio: precio
-    };
+    const nuevoProducto = { producto, precio };
     setProductosEnFav([...productosEnFav, nuevoProducto]);
   };
 
   return (
     <div className="home-fondo">
-      {/* <button className={`toggle-sidebar ${isResponsive ? 'responsive' : ''}`} onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={sidebarVisible ? faBars : faBars} />
-      </button> */}
-
       <div className={`main-content ${sidebarVisible ? 'sidebar-open' : ''}`}>
         <div className="Home-container">
           <Cards productos={allProductos} agregarAlCarrito={agregarAlCarrito} agregarFav={agregarFav} />
@@ -77,22 +58,18 @@ const Home = () => {
         <div className="botones-paginado">
           <button
             className="arrow-paginado"
-            name="prev"
             onClick={() => currentPage > 1 && dispatch(paginado("prev"))}
             disabled={currentPage === 1}
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
-          <div>
-            <ul className="paginado">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <li key={index}><a href="#">{index + 1}</a></li>
-              ))}
-            </ul>
-          </div>
+          <ul className="paginado">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <li key={index}><a href="#">{index + 1}</a></li>
+            ))}
+          </ul>
           <button
             className="arrow-paginado"
-            name="next"
             onClick={() => currentPage < totalPages && dispatch(paginado("next"))}
             disabled={currentPage === totalPages}
           >
@@ -100,6 +77,7 @@ const Home = () => {
           </button>
         </div>
       </div>
+
       <footer className="footer">
         <div className="footer-container">
           <div className="footer-section">
@@ -122,30 +100,33 @@ const Home = () => {
             <h3>Síguenos</h3>
             <div className="social-icons">
               <a href="#"><img src="/icons8-facebook-nuevo-48.png" alt="Facebook" /></a>
-              <a href="#"><img src="/instagram.png" alt="Instagram" /></a>
-              <a href="#"><img src="/icons8-x-50.png" alt="Twitter" /></a>
+              <a href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg==" target="_blank" rel="noopener noreferrer">
+    <img src="/instagram.png" alt="Instagram" />
+  </a>
+             <a
+  href="https://wa.me/5493794155821?text=Hola%20quiero%20hacer%20una%20consulta"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img src="/whatsapp-icon.png" alt="WhatsApp" />
+</a>
             </div>
           </div>
 
           <div className="footer-section">
             <h3>Estamos en</h3>
             <p>Ontiveros 2010, W3402 Corrientes</p>
-            <div className="payment-methods">
-              <img src="/icons8-location-48.png" alt="Visa" />
-             
-            </div>
+            <img src="/icons8-location-48.png" alt="Ubicación" />
           </div>
 
           <div className="footer-section">
             <h3>Formas de pago</h3>
-            <div className="payment-methods">
-              <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
-            </div>
+            <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2024 Tienda de Ropa. Todos los derechos reservados.</p>
+          <p>&copy; 2025 Amore Mio. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>

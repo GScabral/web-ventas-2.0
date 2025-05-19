@@ -88,17 +88,17 @@ const ProductList = () => {
                   <td data-label="Categoría">{producto.categoria}</td>
                   <td data-label="Precio">{producto.precio}</td>
                   <td data-label="Talles">
-                    {producto.variantes.map((variante, index) => (
+                    {producto.variantes?.map((variante, index) => (
                       <div key={`${producto.id}-${index}-talla`}>{variante.talla}</div>
                     ))}
                   </td>
                   <td data-label="Colores">
-                    {producto.variantes.map((variante, index) => (
+                    {producto.variantes?.map((variante, index) => (
                       <div key={`${producto.id}-${index}-color`}>{variante.color}</div>
                     ))}
                   </td>
                   <td data-label="Cantidad Disponible">
-                    {producto.variantes.map((variante, index) => (
+                    {producto.variantes?.map((variante, index) => (
                       <div key={`${producto.id}-${index}-cantidad`}>{variante.cantidad_disponible}</div>
                     ))}
                   </td>
