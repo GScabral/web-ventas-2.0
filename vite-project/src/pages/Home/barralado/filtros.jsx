@@ -88,8 +88,7 @@ const FiltrosSidebar = () => {
                                 </button>
                                 {showSubcategories && selectedCategory === categoriaPrincipal && (
                                     <ul>
-                                        {subcategorias.length > 0 ? (
-                                            subcategorias.map((subcategoria) => (
+                                        {subcategorias && subcategorias.map((subcategoria) => (
                                                 <li key={subcategoria}>
                                                     <button
                                                         className={selectedSubcategory === subcategoria ? "button-selected" : "button-sub-categoria"}
