@@ -11,6 +11,7 @@ import Carrito from "./carrito/carrito";
 import Carousel from "./carrusel/carrusel";
 import { Link } from "react-router-dom";
 
+
 const Home = () => {
   const dispatch = useDispatch();
   const allProductos = useSelector((state) => state.allProductos);
@@ -100,28 +101,40 @@ const Home = () => {
             <h3>Síguenos</h3>
             <div className="social-icons">
               <a href="#"><img src="/icons8-facebook-nuevo-48.png" alt="Facebook" /></a>
-              <a href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg==" target="_blank" rel="noopener noreferrer">
-    <img src="/instagram.png" alt="Instagram" />
-  </a>
-             <a
-  href="https://wa.me/5493794155821?text=Hola%20quiero%20hacer%20una%20consulta"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  <img src="/whatsapp-icon.png" alt="WhatsApp" />
-</a>
+              <a 
+                href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg==" 
+                target="_blank" 
+                rel="noopener noreferrer">
+                <img src="/instagram.png" alt="Instagram" />
+              </a>
+              <a
+                href="https://wa.me/5493794155821?text=Hola%20quiero%20hacer%20una%20consulta"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="public/whatssap.png" alt="WhatsApp" />
+              </a>
             </div>
           </div>
 
           <div className="footer-section">
             <h3>Estamos en</h3>
+            <a
+              href="https://maps.app.goo.gl/qD8RgwyPKD6n3Ph86"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="location-link"
+              >
             <p>Ontiveros 2010, W3402 Corrientes</p>
             <img src="/icons8-location-48.png" alt="Ubicación" />
+            </a>
           </div>
 
           <div className="footer-section">
             <h3>Formas de pago</h3>
+            <div className="payment-icons">
             <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
+            </div>
           </div>
         </div>
 

@@ -136,6 +136,17 @@ body {
   transform: scale(1.1);
 }
 
+.location-link {
+  color: white;
+  text-decoration: none;
+  
+}
+.location-link:hover {
+  color: #DAB89C;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 .footer-bottom {
   text-align: center;
   margin-top: 2rem;
@@ -147,6 +158,7 @@ body {
 img {
   max-width: 100%;
   height: auto;
+  
 }
 
 /* Responsivo */
