@@ -100,8 +100,16 @@ const Home = () => {
             <h3>Síguenos</h3>
             <div className="social-icons">
               <a href="#"><img src="/icons8-facebook-nuevo-48.png" alt="Facebook" /></a>
-              <a href="#"><img src="/instagram.png" alt="Instagram" /></a>
-              <a href="#"><img src="/whatssap.png" alt="Whatsaap" /></a>
+              <a href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg==" target="_blank" rel="noopener noreferrer">
+    <img src="/instagram.png" alt="Instagram" />
+  </a>
+             <a
+  href="https://wa.me/5493791234567?text=Hola%20quiero%20hacer%20una%20consulta"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img src="/whatsapp-icon.png" alt="WhatsApp" />
+</a>
             </div>
           </div>
 
