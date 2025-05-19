@@ -101,7 +101,7 @@ const Home = () => {
             <div className="social-icons">
               <a href="#"><img src="/icons8-facebook-nuevo-48.png" alt="Facebook" /></a>
               <a href="#"><img src="/instagram.png" alt="Instagram" /></a>
-              <a href="#"><img src="/icons8-x-50.png" alt="Twitter" /></a>
+              <a href="#"><img src="/whatssap.png" alt="Whatsaap" /></a>
             </div>
           </div>
 
