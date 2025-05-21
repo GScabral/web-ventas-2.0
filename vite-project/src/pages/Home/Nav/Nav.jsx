@@ -57,7 +57,8 @@ const Nav = ({ onSearch }) => {
             {/* Navbar */}
             <div className="back-nav">
                 <Link to="/">
-                    <button className="superior">Inicio</button>                    
+                    <button className="superior">Inicio</button>    
+                    </Link>
                 </div>
 
                 <button className="menu-button">Categorías</button>
