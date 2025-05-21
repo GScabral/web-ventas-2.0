@@ -60,7 +60,7 @@ const Nav = ({ onSearch }) => {
                     <button className="superior">Inicio</button>
                 </Link>
                 <div className="nav-menu">
-                    <Link to="https://amore-mio.onrender.com/">
+                    <Link to="">
                     <button className="menu-button">Categorías</button>
                     </Link>
                 </div>
