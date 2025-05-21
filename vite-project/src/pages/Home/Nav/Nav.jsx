@@ -56,15 +56,14 @@ const Nav = ({ onSearch }) => {
 
             {/* Navbar */}
             <div className="back-nav">
-                <div className="nav-menu">
-                    <button className="menu-button">Categorías</button>
-                    <div className="dropdown-menu">
-                        <FiltrosSidebar />
-                    </div>
-                </div>
                 <Link to="/">
                     <button className="superior">Inicio</button>
                 </Link>
+                <div className="nav-menu">
+                    <Link to="https://amore-mio.onrender.com/">
+                    <button className="menu-button">Categorías</button>
+                    </Link>
+                </div>
                 <Link to="/Ofertas">
                     <button className="superior">%OFERTAS%</button>
                 </Link>

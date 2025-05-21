@@ -93,7 +93,8 @@ body {
 
 /* Buttons container */
 .card-buttons {
-  margin-top: auto; /* empuja el botón al fondo */
+  margin-top: auto;
+  /* empuja el botón al fondo */
   padding: 10px;
   display: flex;
   justify-content: center;
@@ -110,7 +111,12 @@ body {
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /* 🔥 hace que ocupe todo el ancho del contenedor */
+  max-width: 250px;
+  /* opcional: limita el ancho en desktop */
 }
+
 
 .card-detail:hover {
   background-color: #5D4636;
@@ -240,9 +246,17 @@ body {
 }
 
 @keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /* Cards container - desktop */
@@ -257,6 +271,8 @@ body {
 @media (max-width: 600px) {
   body {
     font-size: 14px;
+    padding: 10px;
+    width: 100%;
   }
 
   .card-container {
