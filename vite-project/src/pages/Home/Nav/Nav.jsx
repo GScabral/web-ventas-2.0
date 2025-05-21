@@ -61,7 +61,11 @@ const Nav = ({ onSearch }) => {
                     </Link>
                 </div>
 
-                <button className="menu-button">Categorías</button>
+               <div className="nav-menu">
+                    <button className="menu-button">Categorías</button>
+                    <div className="dropdown-menu">
+                        <FiltrosSidebar />
+                    </div>
                 
                 <Link to="/Ofertas">
                     <button className="superior">%OFERTAS%</button>
