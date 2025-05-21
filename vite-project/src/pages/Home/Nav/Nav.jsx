@@ -58,7 +58,6 @@ const Nav = ({ onSearch }) => {
             <div className="back-nav">
                 <Link to="/">
                     <button className="superior">Inicio</button>                    
-                    <button className="superior">Inicio</button>    
                     </Link>
                 </div>
 
