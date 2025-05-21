@@ -146,17 +146,37 @@ const Carrito = () => {
     }
   };
 
-  const enviarCorreoConPedido = async (correo) => {
-    try {
-      const infoPedido = infoPedidoCorreo;
-      await dispatch(enviarCorreo(numeroPedido, infoPedido, correo));
-      setCorreoEnviado(true);
-      setMostrarFormularioCorreo(false);
-      setMostrarNotificacion(true)
-    } catch (error) {
-      console.error("Error al enviar el correo", error);
-    }
-  };
+ const enviarCorreoConPedido = async (correo) => {
+  try {
+    const infoPedido = infoPedidoCorreo;
+    await dispatch(enviarCorreo(numeroPedido, infoPedido, correo));
+    setCorreoEnviado(true);
+    setMostrarFormularioCorreo(false);
+    setMostrarNotificacion(true);
+
+    // Crear mensaje personalizado para WhatsApp
+    let mensajeWpp = `¡Hola! Te paso los detalles de mi pedido:\n\n🧾 *Pedido #${numeroPedido}*\n\n`;
+
+    infoPedido.forEach((producto, index) => {
+      mensajeWpp += `🔹 *${producto.nombre}*\n`;
+      mensajeWpp += `   • Cantidad: ${producto.cantidad}\n`;
+      mensajeWpp += `   • Color: ${producto.color}\n`;
+      mensajeWpp += `   • Talle: ${producto.talla}\n\n`;
+    });
+
+    mensajeWpp += `💰 *Total:* $${calcularTotal()}\n`;
+    mensajeWpp += `📧 *Correo:* ${correo}\n\n`;
+    mensajeWpp += `Gracias. Quedo atento/a a la confirmación.`;
+
+    // Reemplaza este número con el WhatsApp de tu negocio (con código de país, sin + ni espacios)
+    const telefonoNegocio = "5493794562823";
+    const urlWpp = `https://wa.me/${telefonoNegocio}?text=${encodeURIComponent(mensajeWpp)}`;
+
+    window.open(urlWpp, "_blank");
+  } catch (error) {
+    console.error("Error al enviar el correo", error);
+  }
+};
 
   const handleSubmitCorreo = async (event) => {
     event.preventDefault();
