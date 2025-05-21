@@ -1,157 +1,91 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { filterProduc, orderProducto } from "../../../redux/action";
-import { categoria } from "./categorias";
+import React, { useState, useEffect } from "react";
+import SearchBar from "../SearchBar/SearchBar";
 import { Link } from "react-router-dom";
-// import './barra.css';
-// import './barraresponsive.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { buscar, getProductos } from "../../../redux/action";
+import Carousel from "../carrusel/carrusel";
+import { useDispatch, useSelector } from "react-redux";
+import FiltrosSidebar from "../barralado/filtros";
+// import './Navresponsive.css'
+import './Nav.css';
 
-const FiltrosSidebar = () => {
-    const [mostrarF, setMostrarF] = useState(false);
-    const [mostrarO, setMostrarO] = useState(false);
-    const [precio, setPrecio] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState("");
-    const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
-    const [selectedSubcategory, setSelectedSubcategory] = useState("");
-    const [showSubcategories, setShowSubcategories] = useState(true); 
-    const allProductos = useSelector((state) => state.allProductos);
+
+
+
+const Nav = ({ onSearch }) => {
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector((state) => state.isLoggedIn)
+    const cliente = useSelector((state) => state.cliente)
+    const [searchText, setSearchText] = useState("");
+     const [showCategories, setShowCategories] = useState(false);
 
 
 
-    const toggleFiltros = () => {
-        setMostrarF(!mostrarF);
-     
-        setShowSubcategories(true); 
+
+
+    const handleSearch = (nombre) => {
+        dispatch(buscar(nombre));
+
     };
 
-    const toggleOrden = () => {
-        setMostrarO(!mostrarO);
+
+    const handleClearSearch = () => {
+        // Limpiar el texto del buscador y cargar todos los productos nuevamente
+        setSearchText("");
+        dispatch(getProductos());
     };
 
-    const handleFilter = (category, subcategory) => {
-        let filteredProducts = allProductos;
-    
-        if (!subcategory && selectedCategory !== category) {
-            // Filtrar por categoría principal
-            setSelectedCategory(category);
-            setSelectedSubcategory("");
-            dispatch(filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts }));
-        } else if (!subcategory && selectedCategory === category) {
-            // Deseleccionar categoría principal
-            setSelectedCategory("");
-            setSelectedSubcategory("");
-            dispatch(filterProduc({ categoria: "", subcategoria: "", allProductos }));
-        } else if (subcategory) {
-            // Filtrar por categoría principal
-            filteredProducts = filteredProducts.filter(producto =>
-                producto.categoria && producto.categoria.toLowerCase() === category.toLowerCase()
-            );
-    
-            // Filtrar por subcategoría dentro de la categoría principal
-            filteredProducts = filteredProducts.filter(producto =>
-                producto.subcategoria && producto.subcategoria.toLowerCase() === subcategory.toLowerCase()
-            );
-    
-            setSelectedCategory(category);
-            setSelectedSubcategory(subcategory);
-            dispatch(filterProduc({ categoria: category, subcategoria: subcategory, allProductos: filteredProducts }));
-        }
-    };
-    
-    const handleOrder = (orderType) => {
-        if (orderType === selectedPriceOrder) {
-            unselectOrder();
-        } else {
-            setSelectedPriceOrder(orderType);
-            dispatch(orderProducto(orderType));
-        }
+        const toggleCategories = () => {
+        setShowCategories(!showCategories);
     };
 
-    const unselectOrder = () => {
-        setSelectedPriceOrder("");
-        dispatch(orderProducto(""));
-    };
+
+
+
 
     return (
-        <div className="sidebar">
-            <button className="button-filtros" onClick={toggleFiltros}>
-                FILTRAR POR:
-            </button>
-            {mostrarF && (
-                <div>
-                    <ul className="ul-filtros">
-                        {Object.entries(categoria).map(([categoriaPrincipal, subcategorias]) => (
-                            <div key={categoriaPrincipal}>
-                                <button
-                                    className={selectedCategory === categoriaPrincipal ? "button-selected" : "button-talles"}
-                                    onClick={() => handleFilter(categoriaPrincipal, "")}
-                                >
-                                    {categoriaPrincipal}
-                                </button>
-                                {showSubcategories && selectedCategory === categoriaPrincipal && subcategorias.length > 0 && (
-                                    <ul>
-                                        {subcategorias.map((subcategoria) => (
-                                            <li key={subcategoria}>
-                                                <button
-                                                    className={selectedSubcategory === subcategoria ? "button-selected" : "button-sub-categoria"}
-                                                    onClick={() => handleFilter(categoriaPrincipal, subcategoria)}
-                                                >
-                                                    {subcategoria}
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
-                        ))}
-                    </ul>
+        <div className="nav-container"> {/* <--- clase agregada para estilos globales de nav */}
+            {/* Marquee */}
+            <div className="marquee-container">
+                <div className="marquee">
+                    🚨 ¡30% OFF en toda la tienda! 🚨 ¡6 cuotas sin interés o 10% extra por transferencia bancaria! 🚨
                 </div>
-            )}
-            <hr className="divider" />
-            <button className="button-filtros" onClick={toggleOrden}>
-                ORDENAR POR:
-            </button>
-            {mostrarO && (
-                <div>
-                    <ul className="ul-filtros">
-                        <button className="button-filtros" onClick={() => setPrecio(!precio)}>
-                            Precio
+            </div>
+
+            {/* Navbar */}
+            <div className="back-nav">
+                <Link to="/">
+                    <button className="superior">Inicio</button>                    
+                    <button className="superior">Inicio</button>    
+                    </Link>
+                </div>
+
+                <button className="menu-button">Categorías</button>
+
+                <Link to="/Ofertas">
+                    <button className="superior">%OFERTAS%</button>
+                </Link>
+                {window.location.pathname !== '/carrito' && (
+                    <SearchBar
+                        className="barra-buscar"
+                        onSearch={handleSearch}
+                        onClearSearch={handleClearSearch}
+                        value={searchText}
+                    />
+                )}
+                {window.location.pathname !== '/carrito' && (
+                    <Link to="/carrito">
+                        <button className="carrito-nav">
+                            <FontAwesomeIcon icon={faShoppingCart} />
+                            <span className="cart-counter"></span> {/* Contador del carrito */}
                         </button>
-                        {precio && (
-                            <div>
-                                <button
-                                    className={selectedPriceOrder === "precioAsc" ? "button-selected" : "button-talles"}
-                                    onClick={() => handleOrder("precioAsc")}
-                                >
-                                    Menor a Mayor
-                                </button>
-                                <button
-                                    className={selectedPriceOrder === "precioDesc" ? "button-selected" : "button-talles"}
-                                    onClick={() => handleOrder("precioDesc")}
-                                >
-                                    Mayor a Menor
-                                </button>
-                            </div>
-                        )}
-                    </ul>
-                </div>
-            )}
-            {window.innerWidth < 800 && (
-                <div className="links-container">
-                    <Link to="/">
-                        <button className="superior-barra">Inicio</button>
                     </Link>
-                    <Link to="/DevolucionCambio">
-                        <button className="superior-barra">Cambio/Devolucion</button>
-                    </Link> 
-                    <Link to="/comoPagar">
-                        <button className="superior-barra">Venta por mayor</button>
-                    </Link>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
-};
+}
 
-export default FiltrosSidebar;
+export default Nav;
