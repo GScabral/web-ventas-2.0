@@ -8,10 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import FiltrosSidebar from "../barralado/filtros";
 import './Nav.css';
 
-const Nav = ({ onSearch }) => {
+const Nav = () => {
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
-    const cliente = useSelector((state) => state.cliente);
     const [searchText, setSearchText] = useState("");
     const [showCategories, setShowCategories] = useState(false);
 
@@ -27,6 +25,8 @@ const Nav = ({ onSearch }) => {
     const toggleCategories = () => {
         setShowCategories(!showCategories);
     };
+
+    const isCarritoPage = window.location.pathname === '/carrito';
 
     return (
         <div className="nav-container">
@@ -56,7 +56,7 @@ const Nav = ({ onSearch }) => {
                     <button className="superior">%OFERTAS%</button>
                 </Link>
 
-                {window.location.pathname !== '/carrito' && (
+                {!isCarritoPage && (
                     <SearchBar
                         className="barra-buscar"
                         onSearch={handleSearch}
@@ -65,7 +65,7 @@ const Nav = ({ onSearch }) => {
                     />
                 )}
 
-                {window.location.pathname !== '/carrito' && (
+                {!isCarritoPage && (
                     <Link to="/carrito">
                         <button className="carrito-nav">
                             <FontAwesomeIcon icon={faShoppingCart} />
