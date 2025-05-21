@@ -62,18 +62,19 @@
 }
 
 .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    min-width: 250px;
-    border-radius: 4px;
-    padding: 10px;
+  display: none; /* Oculto por defecto */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 250px;
+  border-radius: 4px;
+  padding: 10px;
 }
 
-.nav-menu:hover .dropdown-menu {
+.dropdown-menu.show {
   display: block;
 }
 
