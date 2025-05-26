@@ -26,6 +26,9 @@ const Home = () => {
   useEffect(() => {
     dispatch(getProductos());
   }, [dispatch]);
+    useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [paginaActual]);
 
   useEffect(() => {
     const handleResize = () => {
