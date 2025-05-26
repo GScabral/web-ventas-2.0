@@ -52,10 +52,6 @@ const Nav = () => {
                     </div>
                 </div>
 
-                <Link to="/Ofertas">
-                    <button className="superior">%OFERTAS%</button>
-                </Link>
-
                 {!isCarritoPage && (
                     <SearchBar
                         className="barra-buscar"
