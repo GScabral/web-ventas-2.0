@@ -28,7 +28,7 @@ const Home = () => {
   }, [dispatch]);
     useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [paginaActual]);
+  }, [currentPage]);
 
   useEffect(() => {
     const handleResize = () => {
