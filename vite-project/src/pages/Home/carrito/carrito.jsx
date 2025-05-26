@@ -150,35 +150,35 @@ const Carrito = () => {
                 <th>Eliminar</th>
               </tr>
             </thead>
-            <tbody>
-              {carrito.map((producto, index) => (
-                <tr key={index}>
-                  <td>
-                    {producto.variantes[0]?.imagenes[0] && (
-                      <img className="card-imagen" src={producto.variantes[0].imagenes[0]} alt="Producto" />
-                    )}
-                    <div>
-                      <span>Color: {producto.variantes[0]?.color}</span><br />
-                      <span>Talle: {producto.variantes[0]?.talla}</span>
-                    </div>
-                  </td>
-                  <td>{producto.descripcion}</td>
-                  <td>${producto.precio}</td>
-                  <td>
-                    <div className="cantidad-acciones">
-                      <button className="boton-cantidad" onClick={() => decrementarCantidad(index)}>-</button>
-                      <span>{producto.cantidad_elegida}</span>
-                      <button className="boton-cantidad" onClick={() => incrementarCantidad(index)}>+</button>
-                    </div>
-                  </td>
-                  <td>
-                    <button className="boton-eliminar" onClick={() => eliminarDeCarrito(index)}>
-                      <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+           <tbody>
+  {carrito.map((producto, index) => (
+    <tr key={index}>
+      <td data-label="Producto">
+        {producto.variantes[0]?.imagenes[0] && (
+          <img className="card-imagen" src={producto.variantes[0].imagenes[0]} alt="Producto" />
+        )}
+        <div>
+          <span>Color: {producto.variantes[0]?.color}</span><br />
+          <span>Talle: {producto.variantes[0]?.talla}</span>
+        </div>
+      </td>
+      <td data-label="Descripción">{producto.descripcion}</td>
+      <td data-label="Precio">${producto.precio}</td>
+      <td data-label="Cantidad">
+        <div className="cantidad-acciones">
+          <button className="boton-cantidad" onClick={() => decrementarCantidad(index)}>-</button>
+          <span>{producto.cantidad_elegida}</span>
+          <button className="boton-cantidad" onClick={() => incrementarCantidad(index)}>+</button>
+        </div>
+      </td>
+      <td data-label="Eliminar">
+        <button className="boton-eliminar" onClick={() => eliminarDeCarrito(index)}>
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
           </Table>
         ) : (
           <p className="mensaje-vacio">No hay productos en el carrito</p>
