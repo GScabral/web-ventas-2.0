@@ -33,7 +33,7 @@ const Nav = () => {
             {/* Marquee */}
             <div className="marquee-container">
                 <div className="marquee">
-                    🚨 ¡30% OFF en toda la tienda! 🚨 ¡6 cuotas sin interés o 10% extra por transferencia bancaria! 🚨
+                   AMORE MIO
                 </div>
             </div>
 
