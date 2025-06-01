@@ -201,7 +201,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allProductos: paginatedFilteredProducts,
-        filtered: paginatedFilteredProducts, // Usa los productos paginados como productos filtrados
+        filtered: filteredProducts, // Usa los productos paginados como productos filtrados
         filter: true,
         totalPages: totalPages,
         filters: { ...state.filters, categoria: categoria, subcategoria: subcategoria, talles: talles },
