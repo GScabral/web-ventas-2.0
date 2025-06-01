@@ -63,7 +63,7 @@ const initialState = {
   ofertasActivas: [],
 }
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 10;
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
