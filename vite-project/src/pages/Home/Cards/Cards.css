@@ -6,6 +6,19 @@
   justify-content: center;
   align-items: stretch;
   background-color: #fdf8f2;
+  max-width: 900px; /* Límite de ancho total */
+  margin: 0 auto;   /* Centrado horizontal */
+}
+
+/* Si solo hay una tarjeta, limitamos su tamaño */
+.cards-container:has(.card:only-child) {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.cards-container:has(.card:only-child) .card {
+  max-width: 350px;
+  width: 100%;
 }
 
 @media (max-width: 600px) {
