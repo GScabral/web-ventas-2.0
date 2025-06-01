@@ -12,6 +12,7 @@ const BarraAdmin = () => {
       <button className="boton-sidebar" onClick={() => navigate('/admin/lista')}>inventario</button>
       <button className="boton-sidebar" onClick={() => navigate('/admin/PedidosLista')}>pedidos</button>
       <button className="boton-sidebar" onClick={() => navigate('/admin/ofertas')}>ofertas</button>
+      <button className="boton-sidebar" onClick={() => navigate('/')}>Volver a la tienda</button>
     </div>
   );
 };
