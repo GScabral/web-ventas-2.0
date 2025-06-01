@@ -207,11 +207,12 @@ console.log(info)
                 <select id="talle" value={talleSeleccionado} onChange={handleTalleChange}>
                   <option value="">Selecciona un talle</option>
                   {info.variantes &&
-                    info.variantes.map((variante, index) => (
-                      <option key={index} value={variante.talla}>
-                        {variante.talla}
+                    [...new Set(info.variantes.map((variante) => variante.talla))].map((talle, index) => (
+                      <option key={index} value={talle}>
+                        {talle}
                       </option>
-                    ))}
+                  ))}
+
                 </select>
                 <label htmlFor="color">Color:</label>
                 <select id="color" value={colorSeleccionado} onChange={handleColorChange}>
