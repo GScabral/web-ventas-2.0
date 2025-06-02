@@ -47,7 +47,7 @@ const Nav = () => {
 
                 <div className="nav-menu">
                     <button className="menu-button" onClick={toggleCategories}>Categorías</button>
-                    <div className={`dropdown-menu ${showCategories ? 'show' : ''}`}>
+                  <div className={`dropdown-menu ${showCategories ? 'show' : ''}`} style={{ display: showCategories ? 'block' : 'none' }}>
                       <FiltrosSidebar />
                     </div>
                 </div>
