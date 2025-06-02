@@ -67,11 +67,22 @@ const Home = () => {
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
-          <ul className="paginado">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li key={index}><a href="#">{index + 1}</a></li>
-            ))}
-          </ul>
+         <ul className="paginado">
+  {Array.from({ length: totalPages }, (_, index) => (
+    <li key={index}>
+      <a
+        href="#"
+        className={currentPage === index + 1 ? 'active' : ''}
+        onClick={(e) => {
+          e.preventDefault();
+          dispatch(paginado(index + 1));
+        }}
+      >
+        {index + 1}
+      </a>
+    </li>
+  ))}
+</ul>
           <button
             className="arrow-paginado"
             onClick={() => currentPage < totalPages && dispatch(paginado("next"))}
