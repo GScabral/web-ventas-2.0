@@ -26,7 +26,6 @@ const Nav = () => {
         <button
           className="menu-button"
           onClick={() => setShowCategories(!showCategories)}
-@@ -39,28 +40,29 @@
           {searchTerm && <button onClick={handleClearSearch}>X</button>}
         </div>
 
