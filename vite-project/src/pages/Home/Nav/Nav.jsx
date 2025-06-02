@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { getProductos } from "../../../redux/action";
 import { Link } from "react-router-dom";
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiltrosSidebar from "../barralado/filtros";
 import "./Nav.css";
 
