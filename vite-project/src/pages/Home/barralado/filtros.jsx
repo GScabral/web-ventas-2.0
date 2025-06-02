@@ -137,13 +137,7 @@ const FiltrosSidebar = () => {
                     </ul>
                 </div>
             )}
-            {window.innerWidth < 800 && (
-                <div className="links-container">
-                    <Link to="/">
-                        <button className="superior-barra">Inicio</button>
-                    </Link>
-                </div>
-            )}
+           
         </div>
     );
 };
