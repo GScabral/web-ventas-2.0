@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProductos } from "../../../redux/action";
 import FiltrosSidebar from "../barralado/filtros";
-import "./nav.css"; // Asegurate de tener tus estilos acá
+import "./Nav.css"; // Asegurate de tener tus estilos acá
 
 const Nav = () => {
   const dispatch = useDispatch();
