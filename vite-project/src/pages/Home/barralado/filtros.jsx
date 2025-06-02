@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterProduc, orderProducto } from "../../../redux/action";
 import { categoria } from "./categorias";
@@ -7,19 +7,14 @@ import { Link } from "react-router-dom";
 const FiltrosSidebar = () => {
   const dispatch = useDispatch();
   const allProductos = useSelector(state => state.allProductos);
-  const filters = useSelector(state => state.filters); // Obtenemos filtros globales
   
+  // Estados locales (como en el primer código)
   const [mostrarF, setMostrarF] = useState(false);
   const [mostrarO, setMostrarO] = useState(false);
   const [precio, setPrecio] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
-
-  useEffect(() => {
-    setSelectedCategory(filters.categoria || "");
-    setSelectedSubcategory(filters.subcategoria || "");
-  }, [filters]);
 
   const toggleFiltros = () => {
     setMostrarF(!mostrarF);
@@ -33,14 +28,17 @@ const FiltrosSidebar = () => {
     let filteredProducts = allProductos;
 
     if (!subcategory && selectedCategory !== category) {
+      // Nueva categoría principal seleccionada
       setSelectedCategory(category);
       setSelectedSubcategory("");
       dispatch(filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts }));
     } else if (!subcategory && selectedCategory === category) {
+      // Deseleccionar categoría principal
       setSelectedCategory("");
       setSelectedSubcategory("");
       dispatch(filterProduc({ categoria: "", subcategoria: "", allProductos }));
     } else if (subcategory) {
+      // Filtrar por subcategoría
       filteredProducts = filteredProducts.filter(producto =>
         producto.categoria && producto.categoria.toLowerCase() === category.toLowerCase()
       );
@@ -126,13 +124,7 @@ const FiltrosSidebar = () => {
           </ul>
         </div>
       )}
-      {window.innerWidth < 800 && (
-        <div className="links-container">
-          <Link to="/">
-            <button className="superior-barra">Inicio</button>
-          </Link>
-        </div>
-      )}
+    
     </div>
   );
 };
