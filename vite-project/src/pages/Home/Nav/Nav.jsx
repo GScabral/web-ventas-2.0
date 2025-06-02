@@ -1,77 +1,48 @@
 import React, { useState } from "react";
-import SearchBar from "../SearchBar/SearchBar";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import { buscar, getProductos } from "../../../redux/action";
-import { useDispatch, useSelector } from "react-redux";
-import FiltrosSidebar from "../barralado/filtros";
-import './Nav.css';
+import { useDispatch } from "react-redux";
+import { getProductos } from "../../redux/actions";
+import FiltrosSidebar from "../Filtros/FiltrosSidebar";
+import "./nav.css"; // Asegurate de tener tus estilos acá
 
 const Nav = () => {
-    const dispatch = useDispatch();
-    const [searchText, setSearchText] = useState("");
-    const [showCategories, setShowCategories] = useState(false);
+  const dispatch = useDispatch();
+  const [showCategories, setShowCategories] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const handleSearch = (nombre) => {
-        dispatch(buscar(nombre));
-    };
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    dispatch(getProductos()); // Esto podría mejorarse si querés evitar recargar todo
+  };
 
-    const handleClearSearch = () => {
-        setSearchText("");
-        dispatch(getProductos());
-    };
+  return (
+    <nav className="nav-container">
+      <div className="nav-content">
+        <button onClick={() => setShowCategories(!showCategories)}>
+          Categorías
+        </button>
 
-    const toggleCategories = () => {
-        setShowCategories(!showCategories);
-    };
-
-    const isCarritoPage = window.location.pathname === '/carrito';
-
-    return (
-        <div className="nav-container">
-            {/* Marquee */}
-            <div className="marquee-container">
-                <div className="marquee">
-                   AMORE MIO
-                </div>
-            </div>
-
-            {/* Navbar */}
-            <div className="back-nav">
-                <div className="nav-menu">
-                    <Link to="/">
-                        <button className="superior">Inicio</button>
-                    </Link>
-                </div>
-
-                <div className="nav-menu">
-                    <button className="menu-button" onClick={toggleCategories}>Categorías</button>
-                  <div className={`dropdown-menu ${showCategories ? 'show' : ''}`} style={{ display: showCategories ? 'block' : 'none' }}>
-                      <FiltrosSidebar />
-                    </div>
-                </div>
-
-                {!isCarritoPage && (
-                    <SearchBar
-                        className="barra-buscar"
-                        onSearch={handleSearch}
-                        onClearSearch={handleClearSearch}
-                        value={searchText}
-                    />
-                )}
-
-                {!isCarritoPage && (
-                    <Link to="/carrito">
-                        <button className="carrito-nav">
-                            <FontAwesomeIcon icon={faShoppingCart} />
-                            <span className="cart-counter"></span>
-                        </button>
-                    </Link>
-                )}
-            </div>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchTerm && (
+            <button onClick={handleClearSearch}>X</button>
+          )}
         </div>
-    );
+      </div>
+
+      {/* ✅ El componente FiltrosSidebar siempre montado */}
+      <div
+        className="sidebar-wrapper"
+        style={{ display: showCategories ? "block" : "none" }}
+      >
+        <FiltrosSidebar />
+      </div>
+    </nav>
+  );
 };
 
 export default Nav;
