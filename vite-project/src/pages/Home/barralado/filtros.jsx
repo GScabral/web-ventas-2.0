@@ -8,74 +8,56 @@ const FiltrosSidebar = () => {
   const dispatch = useDispatch();
   const allProductos = useSelector((state) => state.allProductos);
   const filters = useSelector((state) => state.filters); // filtros globales de Redux
-  
+
   // Estados para mostrar/ocultar menús
   const [mostrarF, setMostrarF] = useState(false);
   const [mostrarO, setMostrarO] = useState(false);
   const [precio, setPrecio] = useState(false);
 
-  // Estados locales para UI, sincronizados con filtros globales
+  // Estados locales para UI sincronizados con Redux
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
 
+  // Sincronizar estados locales con Redux
+  useEffect(() => {
+    setSelectedCategory(filters.categoria || "");
+    setSelectedSubcategory(filters.subcategoria || "");
+    setSelectedPriceOrder(filters.order || "");
+  }, [filters]);
 
-
-  // Toggle menú filtro sin tocar filtros
+  // Toggle menú de filtros
   const toggleFiltros = () => {
     setMostrarF((prev) => !prev);
   };
 
-  // Toggle menú orden sin tocar filtros
+  // Toggle menú de orden
   const toggleOrden = () => {
     setMostrarO((prev) => !prev);
   };
 
-  // Maneja la selección de categoría y subcategoría
+  // Manejar filtros (solo despacha, Redux hace la lógica)
   const handleFilter = (category, subcategory) => {
-    let filteredProducts = allProductos;
-
     if (!subcategory && selectedCategory !== category) {
-      // Filtrar solo por categoría
-      setSelectedCategory(category);
-      setSelectedSubcategory("");
-      dispatch(
-        filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts })
-      );
+      dispatch(filterProduc({ categoria: category, subcategoria: "" }));
     } else if (!subcategory && selectedCategory === category) {
-      // Deseleccionar categoría
-      setSelectedCategory("");
-      setSelectedSubcategory("");
-      dispatch(filterProduc({ categoria: "", subcategoria: "", allProductos }));
+      dispatch(filterProduc({ categoria: "", subcategoria: "" }));
     } else if (subcategory) {
-      // Filtrar por categoría y subcategoría
-      filteredProducts = filteredProducts.filter(
-        (p) => p.categoria?.toLowerCase() === category.toLowerCase()
-      );
-      filteredProducts = filteredProducts.filter(
-        (p) => p.subcategoria?.toLowerCase() === subcategory.toLowerCase()
-      );
-      setSelectedCategory(category);
-      setSelectedSubcategory(subcategory);
-      dispatch(
-        filterProduc({ categoria: category, subcategoria: subcategory, allProductos: filteredProducts })
-      );
+      dispatch(filterProduc({ categoria: category, subcategoria: subcategory }));
     }
   };
 
-  // Maneja la ordenación por precio
+  // Manejar ordenamiento por precio
   const handleOrder = (orderType) => {
     if (orderType === selectedPriceOrder) {
       unselectOrder();
     } else {
-      setSelectedPriceOrder(orderType);
       dispatch(orderProducto(orderType));
     }
   };
 
-  // Deseleccionar orden
+  // Quitar ordenamiento
   const unselectOrder = () => {
-    setSelectedPriceOrder("");
     dispatch(orderProducto(""));
   };
 
@@ -143,7 +125,19 @@ const FiltrosSidebar = () => {
           </ul>
         </div>
       )}
-     
+      {window.innerWidth < 800 && (
+        <div className="links-container">
+          <Link to="/">
+            <button className="superior-barra">Inicio</button>
+          </Link>
+          <Link to="/DevolucionCambio">
+            <button className="superior-barra">Cambio/Devolucion</button>
+          </Link>
+          <Link to="/comoPagar">
+            <button className="superior-barra">Venta por mayor</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
