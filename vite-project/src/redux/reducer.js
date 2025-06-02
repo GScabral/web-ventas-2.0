@@ -114,10 +114,12 @@ const reducer = (state = initialState, action) => {
           if (startIndex >= state.allProductosBackUp.length || startIndex < 0) return state;
         }
 
+        const productosParaPaginar = state.filter ? state.filtered : state.allProductosBackUp;
+
         return {
-          ...state,
-          allProductos: state.allProductosBackUp.slice(startIndex, endIndex),
-          currentPage: nextPage,
+        ...state,
+        allProductos: productosParaPaginar.slice(startIndex, endIndex),
+        currentPage: nextPage,
         }
       }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
