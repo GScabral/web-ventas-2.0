@@ -13,12 +13,12 @@
 }
 
 .nav-content {
+  position: relative; /* para que el menú se posicione relativo a este contenedor */
   display: flex;
   align-items: center;
-  gap: 1rem;
-  width: 100%;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
 }
-
 /* ----------- Botones ----------- */
 .menu-button {
   color: #FFF8F0;
@@ -71,16 +71,18 @@
 
 /* ----------- Dropdown para FiltrosSidebar ----------- */
 .dropdown-menu {
-  display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 60px; /* ajustá según la altura del nav */
+  left: 10px;
   background-color: white;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  border: 1px solid #ccc;
+  z-index: 999;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-width: 250px;
-  border-radius: 5px;
-  padding: 10px 0;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 8px;
 }
 
 .dropdown-menu.show {
