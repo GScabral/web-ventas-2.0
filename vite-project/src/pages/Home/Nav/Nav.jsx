@@ -47,7 +47,7 @@ const Nav = () => {
 
                 <div className="nav-menu">
                     <button className="menu-button" >Categorías</button>
-                    <div className={`dropdown-menu`} >
+                    <div className="dropdown-menu" >
                       <FiltrosSidebar />
                     </div>
                 </div>
