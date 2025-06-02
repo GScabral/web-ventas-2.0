@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProductos } from "../../../redux/action";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // <-- Esto faltaba
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiltrosSidebar from "../barralado/filtros";
 import "./Nav.css";
 
@@ -12,7 +12,6 @@ const Nav = () => {
   const [showCategories, setShowCategories] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Estado de los filtros
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
@@ -42,15 +41,17 @@ const Nav = () => {
           {searchTerm && <button onClick={handleClearSearch}>X</button>}
         </div>
 
-       {window.location.pathname !== '/carrito' && (
-                    <Link to="/carrito">
-                        <button className="carrito-nav">
-                            <FontAwesomeIcon icon={faShoppingCart} />
-                            <span className="cart-counter"></span> {/* Contador del carrito */}
-                        </button>
-                    </Link>
-                )}
-      {/* Menú de filtros (dropdown-style) */}
+        {window.location.pathname !== "/carrito" && (
+          <Link to="/carrito">
+            <button className="carrito-nav">
+              <FontAwesomeIcon icon={faShoppingCart} />
+              <span className="cart-counter"></span>
+            </button>
+          </Link>
+        )}
+      </div>
+
+      {/* Este bloque va *fuera* de nav-content pero *dentro* de nav */}
       {showCategories && (
         <div className="dropdown-menu show">
           <FiltrosSidebar
