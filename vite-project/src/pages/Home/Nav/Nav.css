@@ -70,9 +70,7 @@
   padding: 10px 0;
 }
 
-.dropdown-menu.show {
-  display: block;
-}
+
 
 .dropdown-menu a,
 .dropdown-menu button {
