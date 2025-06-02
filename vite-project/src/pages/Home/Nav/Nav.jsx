@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProductos } from "../../../redux/action";
 import FiltrosSidebar from "../barralado/filtros";
-import "./Nav.css"; // Asegurate de tener tus estilos acá
+import "./Nav.css";
 
 const Nav = () => {
   const dispatch = useDispatch();
   const [showCategories, setShowCategories] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // ✅ Estado de los filtros (movido acá)
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
+
   const handleClearSearch = () => {
     setSearchTerm("");
-    dispatch(getProductos()); // Esto podría mejorarse si querés evitar recargar todo
+    dispatch(getProductos());
   };
 
   return (
@@ -28,19 +33,21 @@ const Nav = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {searchTerm && (
-            <button onClick={handleClearSearch}>X</button>
-          )}
+          {searchTerm && <button onClick={handleClearSearch}>X</button>}
         </div>
       </div>
 
-      {/* ✅ El componente FiltrosSidebar siempre montado */}
-      <div
-        className="sidebar-wrapper"
-        style={{ display: showCategories ? "block" : "none" }}
-      >
-        <FiltrosSidebar />
-      </div>
+      {/* ✅ Monta/desmonta FiltrosSidebar pero mantiene estado arriba */}
+      {showCategories && (
+        <FiltrosSidebar
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          selectedSubcategory={selectedSubcategory}
+          setSelectedSubcategory={setSelectedSubcategory}
+          selectedPriceOrder={selectedPriceOrder}
+          setSelectedPriceOrder={setSelectedPriceOrder}
+        />
+      )}
     </nav>
   );
 };
