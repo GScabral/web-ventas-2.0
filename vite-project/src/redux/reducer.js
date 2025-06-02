@@ -114,12 +114,10 @@ const reducer = (state = initialState, action) => {
           if (startIndex >= state.allProductosBackUp.length || startIndex < 0) return state;
         }
 
-        const productosParaPaginar = state.filter ? state.filtered : state.allProductosBackUp;
-
         return {
-        ...state,
-        allProductos: productosParaPaginar.slice(startIndex, endIndex),
-        currentPage: nextPage,
+          ...state,
+          allProductos: state.allProductosBackUp.slice(startIndex, endIndex),
+          currentPage: nextPage,
         }
       }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
@@ -203,7 +201,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allProductos: paginatedFilteredProducts,
-        filtered: filteredProducts, // Usa los productos paginados como productos filtrados
+        filtered: paginatedFilteredProducts, // Usa los productos paginados como productos filtrados
         filter: true,
         totalPages: totalPages,
         filters: { ...state.filters, categoria: categoria, subcategoria: subcategoria, talles: talles },
