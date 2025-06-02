@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProductos } from "../../../redux/action";
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import FiltrosSidebar from "../barralado/filtros";
 import "./Nav.css";
 
@@ -39,13 +40,14 @@ const Nav = () => {
           {searchTerm && <button onClick={handleClearSearch}>X</button>}
         </div>
 
-        {/* ✅ Botón del carrito */}
-        <button className="carrito-nav">
-          🛒
-          {/* <span className="cart-counter">2</span> // Descomentar si querés contador */}
-        </button>
-      </div>
-
+       {window.location.pathname !== '/carrito' && (
+                    <Link to="/carrito">
+                        <button className="carrito-nav">
+                            <FontAwesomeIcon icon={faShoppingCart} />
+                            <span className="cart-counter"></span> {/* Contador del carrito */}
+                        </button>
+                    </Link>
+                )}
       {/* Menú de filtros (dropdown-style) */}
       {showCategories && (
         <div className="dropdown-menu show">
