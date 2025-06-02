@@ -19,11 +19,7 @@ const FiltrosSidebar = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
 
-  // Sincronizar estado local con filtros globales cada vez que cambien
-  useEffect(() => {
-    setSelectedCategory(filters.categoria || "");
-    setSelectedSubcategory(filters.subcategoria || "");
-  }, [filters]);
+
 
   // Toggle menú filtro sin tocar filtros
   const toggleFiltros = () => {
