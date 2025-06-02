@@ -12,27 +12,14 @@
   z-index: 1000;
 }
 
-.marquee-container {
-  background-color: #F3E6DD;
-  color: #5D4636;
-  font-weight: bold;
-  padding: 8px 0;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-.marquee {
-  white-space: nowrap;
-  animation: scroll 15s linear infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+.nav-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 /* ----------- Botones ----------- */
-.superior,
 .menu-button {
   color: #FFF8F0;
   background-color: transparent;
@@ -44,19 +31,45 @@
   transition: all 0.3s ease;
 }
 
-.superior:hover,
 .menu-button:hover {
   background-color: #A67C52;
   color: white;
   border-radius: 5px;
 }
 
-/* ----------- Dropdown ----------- */
-.nav-menu {
-  position: relative;
-  display: inline-block;
+/* ----------- Buscador ----------- */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 2px;
+  flex-grow: 1;
+  max-width: 500px;
 }
 
+.search-bar input {
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  width: 100%;
+}
+
+.search-bar button {
+  background-color: #A67C52;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-bar button:hover {
+  background-color: #8b623f;
+}
+
+/* ----------- Dropdown para FiltrosSidebar ----------- */
 .dropdown-menu {
   display: none;
   position: absolute;
@@ -65,61 +78,13 @@
   background-color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  min-width: 200px;
+  min-width: 250px;
   border-radius: 5px;
   padding: 10px 0;
 }
 
-/* Mostrar cuando showCategories es true */
 .dropdown-menu.show {
   display: block;
-}
-
-.dropdown-menu a,
-.dropdown-menu button {
-  color: #333;
-  padding: 10px 20px;
-  text-decoration: none;
-  display: block;
-  font-size: 14px;
-  border: none;
-  background: none;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.dropdown-menu a:hover,
-.dropdown-menu button:hover {
-  background-color: #f4f4f4;
-}
-
-/* ----------- Carrito ----------- */
-.carrito-nav {
-  background-color: transparent;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  margin-left: 1rem;
-  cursor: pointer;
-  position: relative;
-}
-
-.carrito-nav:hover {
-  background-color: #A67C52;
-  color: white;
-  border-radius: 5px;
-}
-
-.cart-counter {
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  background-color: red;
-  color: white;
-  font-size: 0.7rem;
-  border-radius: 50%;
-  padding: 2px 6px;
 }
 
 /* ----------- Responsive ----------- */
@@ -130,18 +95,20 @@
     padding: 1rem;
   }
 
-  .superior,
   .menu-button,
-  .carrito-nav {
+  .search-bar {
     width: 100%;
-    text-align: center;
-    margin: 0.25rem 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-bar {
+    max-width: 100%;
   }
 
   .dropdown-menu {
     position: static;
     width: 100%;
-    border: none;
-    padding: 0.5rem 0;
+    box-shadow: none;
+    border-radius: 0;
   }
 }
