@@ -161,32 +161,51 @@ const reducer = (state = initialState, action) => {
         sortOrder: newSortOrder,
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-   case FILTER:
-  const { categoria, subcategoria, talles } = action.payload;
-  let filteredProducts = state.allProductosBackUp;
+    case FILTER:
+      const { categoria, subcategoria, talles } = action.payload;
+      let filteredProducts = state.allProductosBackUp;
 
-  if (categoria) {
-    filteredProducts = filteredProducts.filter(p => p.categoria?.toLowerCase() === categoria.toLowerCase());
-  }
-  if (subcategoria) {
-    filteredProducts = filteredProducts.filter(p => p.subcategoria?.toLowerCase() === subcategoria.toLowerCase());
-  }
-  if (talles) {
-    filteredProducts = filteredProducts.filter(p => p.talles?.some(t => t.toLowerCase() === talles.toLowerCase()));
-  }
+      if (categoria) {
+        const categoriaFiltrada = categoria.toLowerCase();
+        filteredProducts = filteredProducts.filter(
+          (producto) => producto.categoria && producto.categoria.toLowerCase() === categoriaFiltrada
+        );
+      }
 
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-  const paginated = filteredProducts.slice(0, ITEMS_PER_PAGE);
+      if (subcategoria) {
+        const subcategoriaFiltrada = subcategoria.toLowerCase();
+        filteredProducts = filteredProducts.filter(
+          (producto) => producto.subcategoria && producto.subcategoria.toLowerCase() === subcategoriaFiltrada
+        );
+      }
 
-  return {
-    ...state,
-    filtered: filteredProducts, // guarda TODOS los filtrados
-    allProductos: paginated, // muestra la página 1 filtrada
-    filter: filteredProducts.length > 0,
-    totalPages,
-    currentPage: 1,
-    filters: { categoria, subcategoria, talles },
-  };
+      if (talles) {
+        const tallesFiltrados = talles.toLowerCase();
+        filteredProducts = filteredProducts.filter((producto) =>
+          Array.isArray(producto.talles) &&
+          producto.talles.some(
+            (talle) => talle && talle.toLowerCase() === tallesFiltrados
+          )
+        );
+      }
+
+      // Calcula el total de productos filtrados y las páginas
+      const totalFilteredItems = filteredProducts.length;
+      const totalPages = Math.ceil(totalFilteredItems / ITEMS_PER_PAGE);
+
+      // Aplica la paginación a los productos filtrados
+      const startIndex = (state.currentPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const paginatedFilteredProducts = filteredProducts.slice(startIndex, endIndex);
+
+      return {
+        ...state,
+        allProductos: paginatedFilteredProducts,
+        filtered: paginatedFilteredProducts, // Usa los productos paginados como productos filtrados
+        filter: true,
+        totalPages: totalPages,
+        filters: { ...state.filters, categoria: categoria, subcategoria: subcategoria, talles: talles },
+      };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
