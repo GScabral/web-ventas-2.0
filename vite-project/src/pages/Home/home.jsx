@@ -108,9 +108,7 @@ const Home = () => {
             <ul>
               <li><a href="#">Inicio</a></li>
               <li><a href="#">Tienda</a></li>
-              <li><a href="#">Ofertas</a></li>
               <li><a href="#">Contacto</a></li>
-              <li><a href="#">Política de Privacidad</a></li>
             </ul>
           </div>
 
