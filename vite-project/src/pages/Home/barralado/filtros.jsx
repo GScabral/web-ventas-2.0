@@ -142,13 +142,6 @@ const FiltrosSidebar = () => {
                     <Link to="/">
                         <button className="superior-barra">Inicio</button>
                     </Link>
-                    <Link to="/DevolucionCambio">
-                        <button className="superior-barra">Cambio/Devolucion</button>
-                    </Link> 
-                    //
-                    <Link to="/comoPagar">
-                        <button className="superior-barra">Venta por mayor</button>
-                    </Link>
                 </div>
             )}
         </div>
