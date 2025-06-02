@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const FiltrosSidebar = () => {
   const dispatch = useDispatch();
   const allProductos = useSelector((state) => state.allProductos);
-  const filters = useSelector((state) => state.filters); // filtros globales de Redux
+  const filters = useSelector((state) => state.filters) || {}; // Asegurar valor inicial
 
   // Estados para mostrar/ocultar menús
   const [mostrarF, setMostrarF] = useState(false);
@@ -26,17 +26,9 @@ const FiltrosSidebar = () => {
     setSelectedPriceOrder(filters.order || "");
   }, [filters]);
 
-  // Toggle menú de filtros
-  const toggleFiltros = () => {
-    setMostrarF((prev) => !prev);
-  };
+  const toggleFiltros = () => setMostrarF((prev) => !prev);
+  const toggleOrden = () => setMostrarO((prev) => !prev);
 
-  // Toggle menú de orden
-  const toggleOrden = () => {
-    setMostrarO((prev) => !prev);
-  };
-
-  // Manejar filtros (solo despacha, Redux hace la lógica)
   const handleFilter = (category, subcategory) => {
     if (!subcategory && selectedCategory !== category) {
       dispatch(filterProduc({ categoria: category, subcategoria: "" }));
@@ -47,18 +39,12 @@ const FiltrosSidebar = () => {
     }
   };
 
-  // Manejar ordenamiento por precio
   const handleOrder = (orderType) => {
     if (orderType === selectedPriceOrder) {
-      unselectOrder();
+      dispatch(orderProducto(""));
     } else {
       dispatch(orderProducto(orderType));
     }
-  };
-
-  // Quitar ordenamiento
-  const unselectOrder = () => {
-    dispatch(orderProducto(""));
   };
 
   return (
@@ -125,7 +111,19 @@ const FiltrosSidebar = () => {
           </ul>
         </div>
       )}
-     
+      {window.innerWidth < 800 && (
+        <div className="links-container">
+          <Link to="/">
+            <button className="superior-barra">Inicio</button>
+          </Link>
+          <Link to="/DevolucionCambio">
+            <button className="superior-barra">Cambio/Devolucion</button>
+          </Link>
+          <Link to="/comoPagar">
+            <button className="superior-barra">Venta por mayor</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
