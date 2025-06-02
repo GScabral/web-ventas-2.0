@@ -69,7 +69,7 @@ const FiltrosSidebar = ({
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${mostrarF ? "show" : ""}`}>
       <button className="button-filtros" onClick={toggleFiltros}>
         FILTRAR POR:
       </button>
