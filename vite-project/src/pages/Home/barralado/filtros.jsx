@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterProduc, orderProducto } from "../../../redux/action";
 import { categoria } from "./categorias";
 import { Link } from "react-router-dom";
-import "./barra.css";
 
 const FiltrosSidebar = ({
   selectedCategory,
