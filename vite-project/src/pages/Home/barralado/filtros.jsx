@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterProduc, orderProducto } from "../../../redux/action";
 import { categoria } from "./categorias";
@@ -6,52 +6,68 @@ import { Link } from "react-router-dom";
 
 const FiltrosSidebar = () => {
   const dispatch = useDispatch();
-  const allProductos = useSelector(state => state.allProductos);
+  const allProductos = useSelector((state) => state.allProductos);
+  const filters = useSelector((state) => state.filters); // filtros globales de Redux
   
-  // Estados locales (como en el primer código)
+  // Estados para mostrar/ocultar menús
   const [mostrarF, setMostrarF] = useState(false);
   const [mostrarO, setMostrarO] = useState(false);
   const [precio, setPrecio] = useState(false);
+
+  // Estados locales para UI, sincronizados con filtros globales
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
 
+  // Sincronizar estado local con filtros globales cada vez que cambien
+  useEffect(() => {
+    setSelectedCategory(filters.categoria || "");
+    setSelectedSubcategory(filters.subcategoria || "");
+  }, [filters]);
+
+  // Toggle menú filtro sin tocar filtros
   const toggleFiltros = () => {
-    setMostrarF(!mostrarF);
+    setMostrarF((prev) => !prev);
   };
 
+  // Toggle menú orden sin tocar filtros
   const toggleOrden = () => {
-    setMostrarO(!mostrarO);
+    setMostrarO((prev) => !prev);
   };
 
+  // Maneja la selección de categoría y subcategoría
   const handleFilter = (category, subcategory) => {
     let filteredProducts = allProductos;
 
     if (!subcategory && selectedCategory !== category) {
-      // Nueva categoría principal seleccionada
+      // Filtrar solo por categoría
       setSelectedCategory(category);
       setSelectedSubcategory("");
-      dispatch(filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts }));
+      dispatch(
+        filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts })
+      );
     } else if (!subcategory && selectedCategory === category) {
-      // Deseleccionar categoría principal
+      // Deseleccionar categoría
       setSelectedCategory("");
       setSelectedSubcategory("");
       dispatch(filterProduc({ categoria: "", subcategoria: "", allProductos }));
     } else if (subcategory) {
-      // Filtrar por subcategoría
-      filteredProducts = filteredProducts.filter(producto =>
-        producto.categoria && producto.categoria.toLowerCase() === category.toLowerCase()
+      // Filtrar por categoría y subcategoría
+      filteredProducts = filteredProducts.filter(
+        (p) => p.categoria?.toLowerCase() === category.toLowerCase()
       );
-      filteredProducts = filteredProducts.filter(producto =>
-        producto.subcategoria && producto.subcategoria.toLowerCase() === subcategory.toLowerCase()
+      filteredProducts = filteredProducts.filter(
+        (p) => p.subcategoria?.toLowerCase() === subcategory.toLowerCase()
       );
-
       setSelectedCategory(category);
       setSelectedSubcategory(subcategory);
-      dispatch(filterProduc({ categoria: category, subcategoria: subcategory, allProductos: filteredProducts }));
+      dispatch(
+        filterProduc({ categoria: category, subcategoria: subcategory, allProductos: filteredProducts })
+      );
     }
   };
 
+  // Maneja la ordenación por precio
   const handleOrder = (orderType) => {
     if (orderType === selectedPriceOrder) {
       unselectOrder();
@@ -61,6 +77,7 @@ const FiltrosSidebar = () => {
     }
   };
 
+  // Deseleccionar orden
   const unselectOrder = () => {
     setSelectedPriceOrder("");
     dispatch(orderProducto(""));
@@ -68,7 +85,9 @@ const FiltrosSidebar = () => {
 
   return (
     <div className="sidebar">
-      <button className="button-filtros" onClick={toggleFiltros}>FILTRAR POR:</button>
+      <button className="button-filtros" onClick={toggleFiltros}>
+        FILTRAR POR:
+      </button>
       {mostrarF && (
         <div>
           <ul className="ul-filtros">
@@ -100,11 +119,15 @@ const FiltrosSidebar = () => {
         </div>
       )}
       <hr className="divider" />
-      <button className="button-filtros" onClick={toggleOrden}>ORDENAR POR:</button>
+      <button className="button-filtros" onClick={toggleOrden}>
+        ORDENAR POR:
+      </button>
       {mostrarO && (
         <div>
           <ul className="ul-filtros">
-            <button className="button-filtros" onClick={() => setPrecio(!precio)}>Precio</button>
+            <button className="button-filtros" onClick={() => setPrecio((prev) => !prev)}>
+              Precio
+            </button>
             {precio && (
               <div>
                 <button
@@ -124,9 +147,22 @@ const FiltrosSidebar = () => {
           </ul>
         </div>
       )}
-    
+      {window.innerWidth < 800 && (
+        <div className="links-container">
+          <Link to="/">
+            <button className="superior-barra">Inicio</button>
+          </Link>
+          <Link to="/DevolucionCambio">
+            <button className="superior-barra">Cambio/Devolucion</button>
+          </Link>
+          <Link to="/comoPagar">
+            <button className="superior-barra">Venta por mayor</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
 
 export default FiltrosSidebar;
+
