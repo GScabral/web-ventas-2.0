@@ -1,61 +1,58 @@
-/* Estilo general para la barra lateral */
+/* Contenedor principal del sidebar */
 .sidebar {
   position: absolute;
   top: 100%;
   left: 0;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
   z-index: 1000;
-  width: 250px;
-  padding: 10px;
-  display: none; /* Ocultar por defecto */
+  width: 260px;
+  padding: 12px;
+  display: none;
+  transition: all 0.3s ease;
 }
 
-/* Mostrar la barra lateral cuando se activa */
-.nav-menu:hover .sidebar {
+/* Mostrar sidebar con clase activa */
+.sidebar.show {
   display: block;
 }
 
-/* Botón principal para activar filtros */
+/* Títulos de secciones */
 .button-filtros {
-  background-color: #333;
+  background-color: #222;
   color: white;
-  padding: 10px;
-  font-size: 14px;
+  padding: 10px 14px;
+  font-size: 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  text-align: left;
   width: 100%;
   margin-bottom: 10px;
-  transition: background-color 0.3s ease;
+  text-align: left;
+  transition: background-color 0.25s ease;
 }
 
 .button-filtros:hover {
-  background-color: #555;
+  background-color: #444;
 }
 
-/* Botones de categorías principales */
+/* Botones de categoría */
 .button-talles {
   background: none;
   border: none;
-  color: #333;
-  padding: 8px;
+  color: #222;
+  padding: 8px 10px;
   width: 100%;
   text-align: left;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  font-size: 14px;
+  transition: background-color 0.2s;
 }
 
 .button-talles:hover {
-  background-color: #f4f4f4;
-}
-
-/* Botones seleccionados */
-.button-selected {
-  background-color: #d5d5d5;
-  font-weight: bold;
+  background-color: #f2f2f2;
 }
 
 /* Subcategorías */
@@ -63,64 +60,58 @@
   background: none;
   border: none;
   color: #666;
-  padding: 6px 10px;
-  width: 90%;
-  margin-left: 10%;
+  padding: 6px 18px;
+  width: 100%;
   text-align: left;
+  font-size: 13px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
 
 .button-sub-categoria:hover {
   background-color: #eaeaea;
 }
 
-/* Divider */
+/* Selección activa */
+.button-selected {
+  background-color: #d9d9d9;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Separador */
 .divider {
-  border: 0;
+  border: none;
   height: 1px;
   background-color: #ddd;
-  margin: 10px 0;
+  margin: 14px 0;
 }
 
-/* Links secundarios (para móviles) */
-.links-container {
-  margin-top: 20px;
+/* Listado de filtros */
+.ul-filtros {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.superior-barra {
-  background-color: #333;
-  color: white;
-  padding: 10px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  margin: 5px 0;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  transition: background-color 0.3s ease;
-}
-
-.superior-barra:hover {
-  background-color: #555;
-}
-
-
-/* Responsividad para pantallas pequeñas */
-@media (max-width: 800px) {
+/* Responsivo */
+@media (max-width: 768px) {
   .sidebar {
+    position: static;
     width: 100%;
-    margin: 0;
     border-radius: 0;
     box-shadow: none;
+    padding: 10px;
   }
 
   .button-filtros {
     font-size: 14px;
+    padding: 8px 10px;
   }
 
-  .superior-barra {
+  .button-sub-categoria {
     font-size: 12px;
+    padding-left: 16px;
   }
 }
