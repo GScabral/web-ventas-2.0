@@ -12,8 +12,8 @@ const FiltrosSidebar = () => {
   const [mostrarF, setMostrarF] = useState(false);
   const [mostrarO, setMostrarO] = useState(false);
   const [precio, setPrecio] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(filters.categoria || "");
-  const [selectedSubcategory, setSelectedSubcategory] = useState(filters.subcategoria || "");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
 
   useEffect(() => {
