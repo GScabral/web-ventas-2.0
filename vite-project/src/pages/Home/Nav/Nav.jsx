@@ -46,11 +46,8 @@ const Nav = () => {
                 </div>
 
                 <div className="nav-menu">
-                    <button className="menu-button" onClick={toggleCategories}>Categorías</button>
-                    <div
-                      className={`dropdown-menu`}
-                      style={{ display: showCategories ? 'block' : 'none' }}
-                    >
+                    <button className="menu-button" >Categorías</button>
+                    <div className={`dropdown-menu`} >
                       <FiltrosSidebar />
                     </div>
                 </div>
