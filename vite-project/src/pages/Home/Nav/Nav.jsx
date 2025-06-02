@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getProductos } from "../../../redux/action";
+import { Link } from "react-router-dom";
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import FiltrosSidebar from "../barralado/filtros";
 import "./Nav.css";
