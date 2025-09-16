@@ -5,18 +5,29 @@ const path = require('path');
 const oferta = require('./models/oferta');
 
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+// const sequelize = new Sequelize(process.env.DATABASE_URL, {
+//     logging: false,
+//     native: false,
+//     dialect: 'postgres',
+//     dialectOptions: {
+//         ssl: {
+//             require: true, // Render suele necesitar SSL para conexiones seguras
+//             rejectUnauthorized: false, // Ajusta esto según sea necesario
+//         },
+//     },
+// });
+//edite
+
+const {
+    DB_USER,
+    DB_PASSWORD,
+    DB_HOST
+} = process.env;
+
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/tienda`, {
     logging: false,
     native: false,
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true, // Render suele necesitar SSL para conexiones seguras
-            rejectUnauthorized: false, // Ajusta esto según sea necesario
-        },
-    },
 });
-//edite
 
 const basename = path.basename(__filename);
 const modelDefiners = [];
@@ -37,28 +48,28 @@ const models = sequelize.models;
 
 // Definir las relaciones
 if (models) {
-    const { Productos, Pedido,Cliente,DetallesPedido,variantesproductos,oferta} = models;
+    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta } = models;
 
-Pedido.belongsToMany(Productos, { through: 'pedidoproductos' });
-Productos.belongsToMany(Pedido, { through: 'pedidoproductos' });
+    Pedido.belongsToMany(Productos, { through: 'pedidoproductos' });
+    Productos.belongsToMany(Pedido, { through: 'pedidoproductos' });
 
-oferta.belongsTo(Productos, {
-    foreignKey: 'producto_id', // Nombre de la columna en la tabla 'Oferta' que hace referencia al 'producto_id' en la tabla 'Producto'
-    onDelete: 'CASCADE', // Acción a tomar cuando se elimine el producto asociado
-    onUpdate: 'CASCADE', // Acción a tomar cuando se actualice el producto asociado
-  });
+    oferta.belongsTo(Productos, {
+        foreignKey: 'producto_id', // Nombre de la columna en la tabla 'Oferta' que hace referencia al 'producto_id' en la tabla 'Producto'
+        onDelete: 'CASCADE', // Acción a tomar cuando se elimine el producto asociado
+        onUpdate: 'CASCADE', // Acción a tomar cuando se actualice el producto asociado
+    });
 
-Cliente.hasMany(Pedido); // Un cliente puede tener muchos pedidos
-Pedido.belongsTo(Cliente); // Un pedido pertenece a un cliente
+    Cliente.hasMany(Pedido); // Un cliente puede tener muchos pedidos
+    Pedido.belongsTo(Cliente); // Un pedido pertenece a un cliente
 
-// En el modelo Pedido
-Pedido.hasMany(DetallesPedido, { foreignKey: 'PedidoIdPedido' });
- 
-DetallesPedido.belongsTo(Pedido, { foreignKey: 'PedidoIdPedido' }); 
+    // En el modelo Pedido
+    Pedido.hasMany(DetallesPedido, { foreignKey: 'PedidoIdPedido' });
 
-Productos.hasMany(variantesproductos, { foreignKey: 'ProductoIdProducto' });
+    DetallesPedido.belongsTo(Pedido, { foreignKey: 'PedidoIdPedido' });
 
-variantesproductos.belongsTo(Productos, { foreignKey: 'ProductoIdProducto' });
+    Productos.hasMany(variantesproductos, { foreignKey: 'ProductoIdProducto' });
+
+    variantesproductos.belongsTo(Productos, { foreignKey: 'ProductoIdProducto' });
 
 }
 
