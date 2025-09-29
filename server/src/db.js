@@ -5,29 +5,19 @@ const path = require('path');
 const oferta = require('./models/oferta');
 
 
-// const sequelize = new Sequelize(process.env.DATABASE_URL, {
-//     logging: false,
-//     native: false,
-//     dialect: 'postgres',
-//     dialectOptions: {
-//         ssl: {
-//             require: true, // Render suele necesitar SSL para conexiones seguras
-//             rejectUnauthorized: false, // Ajusta esto según sea necesario
-//         },
-//     },
-// });
-//edite
-
-const {
-    DB_USER,
-    DB_PASSWORD,
-    DB_HOST
-} = process.env;
-
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/tienda`, {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
     logging: false,
     native: false,
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false, // necesario en Render
+        },
+    },
 });
+
+
 
 const basename = path.basename(__filename);
 const modelDefiners = [];
