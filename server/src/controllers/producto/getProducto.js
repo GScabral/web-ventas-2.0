@@ -37,6 +37,7 @@ const getProductos = async () => {
         id: producto.id_producto,
         descripcion: producto.descripcion,
         categoria: producto.categoria,
+        rama:producto.rama,
         subcategoria:producto. subcategoria,
         precio: producto.precio,
         variantes: variantesProducto

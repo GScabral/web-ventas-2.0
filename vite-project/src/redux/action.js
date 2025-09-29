@@ -49,7 +49,6 @@ export const getProductos = () => {
       const response = await axios.get(`http://localhost:3004/producto/producto`);
 
 
-
       dispatch({
         type: GET_PRODUCTOS,
         payload: response.data,

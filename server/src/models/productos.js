@@ -18,14 +18,18 @@ module.exports = (sequelize) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
+    rama: {
+      type: DataTypes.STRING(50),   // 🔹 Nueva columna
+      allowNull: false
+    },
     categoria: {
       type: DataTypes.STRING(50)
     },
-    subcategoria:{
-      type:DataTypes.STRING(100),
+    subcategoria: {
+      type: DataTypes.STRING(100),
     }
- 
-    
+
+
   });
 
   return Productos;

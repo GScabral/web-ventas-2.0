@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { filterProduc, orderProducto } from "../../../redux/action";
-import { categoria } from "./categorias";
-import { Link } from "react-router-dom";
-
+import { categoriasGlobal } from "./categorias";
 
 const FiltrosSidebar = ({
-  selectedCategory,
-  setSelectedCategory,
+  selectedMainCategory,   // 👈 ahora recibes la categoría principal (Ropa, Accesorios, Maquillaje)
   selectedSubcategory,
   setSelectedSubcategory,
   selectedPriceOrder,
@@ -16,42 +13,30 @@ const FiltrosSidebar = ({
   const [mostrarF, setMostrarF] = useState(true);
   const [mostrarO, setMostrarO] = useState(false);
   const [precio, setPrecio] = useState(false);
-  const [showSubcategories, setShowSubcategories] = useState(true);
 
-  const allProductos = useSelector((state) => state.allProductos);
   const dispatch = useDispatch();
+
+  // 👉 Solo usamos la rama de categoriasGlobal que corresponde a la página
+  const categorias = categoriasGlobal[selectedMainCategory] || {};
+
+  const handleFilter = (subcategory, variante) => {
+    setSelectedSubcategory(subcategory || "");
+
+    dispatch(
+      filterProduc({
+        rama: selectedMainCategory || "",   // 👈 viene de Nav (Ropa, Accesorios, Maquillaje)
+        categoria: subcategory || "",       // 👈 ej: Vestido, Zapatos
+        subcategoria: variante || "",       // 👈 ej: de noche, casual
+      })
+    );
+  };
 
   const toggleFiltros = () => {
     setMostrarF(!mostrarF);
-    setShowSubcategories(true);
   };
 
   const toggleOrden = () => {
     setMostrarO(!mostrarO);
-  };
-
-  const handleFilter = (category, subcategory) => {
-    let filteredProducts = allProductos;
-
-    if (!subcategory && selectedCategory !== category) {
-      setSelectedCategory(category);
-      setSelectedSubcategory("");
-      dispatch(filterProduc({ categoria: category, subcategoria: "", allProductos: filteredProducts }));
-    } else if (!subcategory && selectedCategory === category) {
-      setSelectedCategory("");
-      setSelectedSubcategory("");
-      dispatch(filterProduc({ categoria: "", subcategoria: "", allProductos }));
-    } else if (subcategory) {
-      filteredProducts = filteredProducts.filter(
-        (producto) =>
-          producto.categoria?.toLowerCase() === category.toLowerCase() &&
-          producto.subcategoria?.toLowerCase() === subcategory.toLowerCase()
-      );
-
-      setSelectedCategory(category);
-      setSelectedSubcategory(subcategory);
-      dispatch(filterProduc({ categoria: category, subcategoria: subcategory, allProductos: filteredProducts }));
-    }
   };
 
   const handleOrder = (orderType) => {
@@ -73,54 +58,82 @@ const FiltrosSidebar = ({
       <button className="button-filtros" onClick={toggleFiltros}>
         FILTRAR POR:
       </button>
+
       {mostrarF && (
         <ul className="ul-filtros">
-          {Object.entries(categoria).map(([cat, subcats]) => (
-            <div key={cat}>
+          {Object.entries(categorias).map(([subcat, variantes]) => (
+            <li key={subcat}>
+              {/* Subcategorías */}
               <button
-                className={selectedCategory === cat ? "button-selected" : "button-talles"}
-                onClick={() => handleFilter(cat, "")}
+                className={
+                  selectedSubcategory === subcat
+                    ? "button-selected"
+                    : "button-sub-categoria"
+                }
+                onClick={() =>
+                  handleFilter(
+                    selectedSubcategory === subcat ? "" : subcat,
+                    ""
+                  )
+                }
               >
-                {cat}
+                {subcat}
               </button>
-              {showSubcategories && selectedCategory === cat && subcats.length > 0 && (
+
+              {/* Variantes dentro de la subcategoría */}
+              {variantes.length > 0 && selectedSubcategory === subcat && (
                 <ul>
-                  {subcats.map((sub) => (
-                    <li key={sub}>
+                  {variantes.map((variante) => (
+                    <li key={variante}>
                       <button
-                        className={selectedSubcategory === sub ? "button-selected" : "button-sub-categoria"}
-                        onClick={() => handleFilter(cat, sub)}
+                        className="button-sub-categoria"
+                        onClick={() => handleFilter(subcat, variante)}
                       >
-                        {sub}
+                        {variante}
                       </button>
                     </li>
                   ))}
                 </ul>
               )}
-            </div>
+            </li>
           ))}
         </ul>
       )}
 
       <hr className="divider" />
+
       <button className="button-filtros" onClick={toggleOrden}>
         ORDENAR POR:
       </button>
+
       {mostrarO && (
         <ul className="ul-filtros">
-          <button className="button-filtros" onClick={() => setPrecio(!precio)}>
+          <button
+            className="button-filtros"
+            onClick={() => setPrecio(!precio)}
+          >
             Precio
           </button>
+
           {precio && (
             <div>
               <button
-                className={selectedPriceOrder === "precioAsc" ? "button-selected" : "button-talles"}
+                className={
+                  selectedPriceOrder === "precioAsc"
+                    ? "button-selected"
+                    : "button-talles"
+                }
                 onClick={() => handleOrder("precioAsc")}
               >
                 Menor a Mayor
               </button>
+
               <button
-                className={selectedPriceOrder === "precioDesc" ? "button-selected" : "button-talles"}
+                className={
+                  selectedPriceOrder === "precioDesc"
+                    ? "button-selected"
+                    : "button-talles"
+                }
                 onClick={() => handleOrder("precioDesc")}
               >
                 Mayor a Menor

@@ -11,6 +11,8 @@ body {
   color: #7B5C42;
   line-height: 1.6;
   overflow-x: hidden;
+  min-height: 100vh;
+  /* ocupa al menos toda la pantalla */
 }
 
 /* Fondo general */
@@ -21,6 +23,7 @@ body {
 /* Contenido principal */
 .main-content {
   padding: 2rem 1rem;
+  flex: 1;
 }
 
 /* Grid de tarjetas */
@@ -143,8 +146,9 @@ body {
 .location-link {
   color: white;
   text-decoration: none;
-  
+
 }
+
 .location-link:hover {
   color: #DAB89C;
   text-decoration: underline;
@@ -162,7 +166,7 @@ body {
 img {
   max-width: 100%;
   height: auto;
-  
+
 }
 
 /* Responsivo */
@@ -227,4 +231,3 @@ img {
     display: block;
   }
 }
-

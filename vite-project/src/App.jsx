@@ -15,6 +15,9 @@ import NewProduct from './admin/añadir/añadirProducto'
 import ProductList from './admin/productos/listadoProductos'
 import DevolucionCambio from './pages/Home/devolucion/devolucion'
 import Ofertas from './pages/Home/ofertas/ofertas'
+import PagAccesorios from './pages/Home/accesorios/pagAccesorios'
+import VentaPorMayor from './pages/Home/VentaPorMayor/VentaPorMayor'
+import PagMaquillaje from './pages/Home/maquillaje/PagMaquillaje'
 
 function App() {
   const location = useLocation();
@@ -39,6 +42,9 @@ function App() {
         <Route path='/carrito' element={<Carrito />} />
         <Route path='/Favorito' element={<Fav />} />
         <Route path='/Ofertas' element={<Ofertas />} />
+        <Route path='/Accesorios' element={<PagAccesorios />} />
+        <Route path='/VentaPorMayor' element={<VentaPorMayor />} />
+        <Route path='/Maquillaje' element={<PagMaquillaje />} />
       </Routes>
 
     </div>

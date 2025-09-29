@@ -1,0 +1,2 @@
+ALTER TABLE "Productos"
+ADD COLUMN rama VARCHAR(50) NOT NULL;

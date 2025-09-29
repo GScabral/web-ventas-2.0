@@ -24,14 +24,15 @@ const Home = () => {
   const [isResponsive, setIsResponsive] = useState(false);
 
 
-  console.log(allProductos)
 
   useEffect(() => {
     dispatch(getProductos());
   }, [dispatch]);
-    useEffect(() => {
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
+
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,7 +60,11 @@ const Home = () => {
     <div className="home-fondo">
       <div className={`main-content ${sidebarVisible ? 'sidebar-open' : ''}`}>
         <div className="Home-container">
-          <Cards productos={allProductos} agregarAlCarrito={agregarAlCarrito} agregarFav={agregarFav} />
+          <Cards
+            productos={allProductos.filter(p => p.rama?.toLowerCase() === "ropa")}
+            agregarAlCarrito={agregarAlCarrito}
+            agregarFav={agregarFav}
+          />
         </div>
 
         <div className="botones-paginado">
@@ -70,22 +75,22 @@ const Home = () => {
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
-         <ul className="paginado">
-  {Array.from({ length: totalPages }, (_, index) => (
-    <li key={index}>
-      <a
-        href="#"
-        className={currentPage === index + 1 ? 'active' : ''}
-        onClick={(e) => {
-          e.preventDefault();
-          dispatch(paginado(index + 1));
-        }}
-      >
-        {index + 1}
-      </a>
-    </li>
-  ))}
-</ul>
+          <ul className="paginado">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <li key={index}>
+                <a
+                  href="#"
+                  className={currentPage === index + 1 ? 'active' : ''}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(paginado(index + 1));
+                  }}
+                >
+                  {index + 1}
+                </a>
+              </li>
+            ))}
+          </ul>
           <button
             className="arrow-paginado"
             onClick={() => currentPage < totalPages && dispatch(paginado("next"))}
@@ -116,9 +121,9 @@ const Home = () => {
             <h3>Síguenos</h3>
             <div className="social-icons">
               <a href="#"><img src="/icons8-facebook-nuevo-48.png" alt="Facebook" /></a>
-              <a 
-                href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg==" 
-                target="_blank" 
+              <a
+                href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg=="
+                target="_blank"
                 rel="noopener noreferrer">
                 <img src="/instagram.png" alt="Instagram" />
               </a>
@@ -139,16 +144,16 @@ const Home = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="location-link"
-              >
-            <p>Ontiveros 2010, W3402 Corrientes</p>
-            <img src="/icons8-location-48.png" alt="Ubicación" />
+            >
+              <p>Ontiveros 2010, W3402 Corrientes</p>
+              <img src="/icons8-location-48.png" alt="Ubicación" />
             </a>
           </div>
 
           <div className="footer-section">
             <h3>Formas de pago</h3>
             <div className="payment-icons">
-            <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
+              <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
             </div>
           </div>
         </div>

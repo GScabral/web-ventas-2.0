@@ -6,6 +6,7 @@ const createNewProducto = async (bodyData, files) => {
     nombre_producto,
     descripcion,
     precio,
+    rama,         // 🔹 lo agregamos aquí
     categoria,
     subcategoria,
     variantesData
@@ -13,7 +14,7 @@ const createNewProducto = async (bodyData, files) => {
 
   try {
     // Validación de campos obligatorios
-    const requiredFields = ['nombre_producto', 'descripcion', 'precio', 'categoria'];
+    const requiredFields = ['nombre_producto', 'descripcion', 'precio', 'rama', 'categoria'];
     const missingFields = requiredFields.filter(field => !bodyData[field]);
     if (missingFields.length > 0) {
       return { error: `Faltan campos obligatorios: ${missingFields.join(', ')}` };
@@ -34,6 +35,7 @@ const createNewProducto = async (bodyData, files) => {
       nombre_producto,
       descripcion,
       precio,
+      rama,         // 🔹 guardamos también
       categoria,
       subcategoria,
     });
