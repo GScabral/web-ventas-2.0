@@ -50,24 +50,36 @@ const Carrito = () => {
 
   const calcularTotal = () => {
     let total = 0;
+
     if (carrito.length >= 3) {
       carrito.forEach((item) => {
-        const precio = parseFloat(item.precio);
+        const precioNumerico = parseFloat(item.precio);
         const cantidad = item.cantidad_elegida || 1;
-        let descuento = 0;
-        if (precio * cantidad >= 5000 && precio * cantidad < 10000) descuento = 1000;
-        else if (precio * cantidad >= 10000) descuento = 3000;
-        total += (precio * cantidad) - descuento;
+
+        // Calcular el descuento por prenda
+        let descuentoPorPrenda = 0;
+        if (precioNumerico * cantidad >= 5000 && precioNumerico * cantidad < 10000) {
+          descuentoPorPrenda = 1000;
+        } else if (precioNumerico * cantidad >= 10000 && precioNumerico * cantidad < 15000) {
+          descuentoPorPrenda = 3000;
+        }
+
+        // Restar el descuento por prenda del total
+        total += (precioNumerico * cantidad) - descuentoPorPrenda;
       });
     } else {
       carrito.forEach((item) => {
-        const precio = parseFloat(item.precio);
-        const cantidad = item.cantidad_elegida || 1;
-        total += precio * cantidad;
-      });
+        const precioNumerico = parseFloat(item.precio);
+        const cantida = item.cantidad_elegida || 1;
+
+        total += precioNumerico * cantida;
+      })
     }
+
     return total.toFixed(2);
-  };
+  }
+
+
 
   const handleRealizarPedido = async () => {
     try {
@@ -150,35 +162,35 @@ const Carrito = () => {
                 <th>Eliminar</th>
               </tr>
             </thead>
-           <tbody>
-  {carrito.map((producto, index) => (
-    <tr key={index}>
-      <td data-label="Producto">
-        {producto.variantes[0]?.imagenes[0] && (
-          <img className="card-imagen" src={producto.variantes[0].imagenes[0]} alt="Producto" />
-        )}
-        <div>
-          <span>Color: {producto.variantes[0]?.color}</span><br />
-          <span>Talle: {producto.variantes[0]?.talla}</span>
-        </div>
-      </td>
-      <td data-label="Descripción">{producto.descripcion}</td>
-      <td data-label="Precio">${producto.precio}</td>
-      <td data-label="Cantidad">
-        <div className="cantidad-acciones">
-          <button className="boton-cantidad" onClick={() => decrementarCantidad(index)}>-</button>
-          <span>{producto.cantidad_elegida}</span>
-          <button className="boton-cantidad" onClick={() => incrementarCantidad(index)}>+</button>
-        </div>
-      </td>
-      <td data-label="Eliminar">
-        <button className="boton-eliminar" onClick={() => eliminarDeCarrito(index)}>
-          <FontAwesomeIcon icon={faTrashAlt} />
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+            <tbody>
+              {carrito.map((producto, index) => (
+                <tr key={index}>
+                  <td data-label="Producto">
+                    {producto.variantes[0]?.imagenes[0] && (
+                      <img className="card-imagen" src={producto.variantes[0].imagenes[0]} alt="Producto" />
+                    )}
+                    <div>
+                      <span>Color: {producto.variantes[0]?.color}</span><br />
+                      <span>Talle: {producto.variantes[0]?.talla}</span>
+                    </div>
+                  </td>
+                  <td data-label="Descripción">{producto.descripcion}</td>
+                  <td data-label="Precio">${producto.precio}</td>
+                  <td data-label="Cantidad">
+                    <div className="cantidad-acciones">
+                      <button className="boton-cantidad" onClick={() => decrementarCantidad(index)}>-</button>
+                      <span>{producto.cantidad_elegida}</span>
+                      <button className="boton-cantidad" onClick={() => incrementarCantidad(index)}>+</button>
+                    </div>
+                  </td>
+                  <td data-label="Eliminar">
+                    <button className="boton-eliminar" onClick={() => eliminarDeCarrito(index)}>
+                      <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </Table>
         ) : (
           <p className="mensaje-vacio">No hay productos en el carrito</p>
