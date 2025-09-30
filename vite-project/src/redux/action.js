@@ -476,15 +476,32 @@ export const despacharProducto = (pedidoId, detalleId) => {
 export const enviarCorreo = (idPedido, infoPedido, correo) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('https://web-ventas-2-0.onrender.com/Nadmin/confirmacionPedido', {
-        idPedido: idPedido,
-        infoPedido: infoPedido,
-        correo: correo
+      const response = await axios.post(
+        "https://web-ventas-2-0.onrender.com/Nadmin/confirmacionPedido",
+        {
+          idPedido,
+          infoPedido,
+          correo,
+        }
+      );
+
+      // opcional: despachar acción si quieres guardar algo en Redux
+      dispatch({
+        type: "ENVIAR_CORREO_EXITO",
+        payload: response.data,
       });
+
+      return response; // 👈 MUY IMPORTANTE devolver la respuesta
     } catch (error) {
-      // Manejo de errores
-      console.error('Error al enviar el correo:', error);
-      // Aquí puedes enviar una acción de error si lo deseas
+      console.error("Error al enviar el correo:", error);
+
+      // opcional: despachar acción de error
+      dispatch({
+        type: "ENVIAR_CORREO_ERROR",
+        payload: error,
+      });
+
+      throw error; // 👈 para que el componente pueda capturarlo en el try/catch
     }
   };
 };
