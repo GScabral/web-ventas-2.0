@@ -134,7 +134,7 @@ const Carrito = () => {
       mensajeWpp += `📧 *Correo de contacto:* ${correo}\n\n`;
       mensajeWpp += `Gracias por tu compra ✨\nNos comunicaremos a la brevedad para coordinar entrega o retiro.\n\n🌷 _Amore Mio Showroom_ 🌷`;
 
-      const telefonoNegocio = "5493794562823";
+      const telefonoNegocio = "5493794155821";
       const urlWpp = `https://wa.me/${telefonoNegocio}?text=${encodeURIComponent(mensajeWpp)}`;
       window.open(urlWpp, "_blank");
     } catch (error) {
