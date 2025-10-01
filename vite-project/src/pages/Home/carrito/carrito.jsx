@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  eliminarProductoCarrito,
-  vaciarCarrito,
-  actualizarCarrito,
-  actualizarVariante,
-  addPedido,
-  enviarCorreo
+import { 
+  eliminarProductoCarrito, 
+  vaciarCarrito, 
+  actualizarCarrito, 
+  actualizarVariante, 
+  addPedido, 
+  enviarCorreo 
 } from "../../../redux/action";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -50,36 +50,27 @@ const Carrito = () => {
 
   const calcularTotal = () => {
     let total = 0;
-
     if (carrito.length >= 3) {
       carrito.forEach((item) => {
         const precioNumerico = parseFloat(item.precio);
         const cantidad = item.cantidad_elegida || 1;
-
-        // Calcular el descuento por prenda
         let descuentoPorPrenda = 0;
         if (precioNumerico * cantidad >= 5000 && precioNumerico * cantidad < 10000) {
           descuentoPorPrenda = 1000;
         } else if (precioNumerico * cantidad >= 10000 && precioNumerico * cantidad < 15000) {
           descuentoPorPrenda = 3000;
         }
-
-        // Restar el descuento por prenda del total
         total += (precioNumerico * cantidad) - descuentoPorPrenda;
       });
     } else {
       carrito.forEach((item) => {
         const precioNumerico = parseFloat(item.precio);
-        const cantida = item.cantidad_elegida || 1;
-
-        total += precioNumerico * cantida;
-      })
+        const cantidad = item.cantidad_elegida || 1;
+        total += precioNumerico * cantidad;
+      });
     }
-
     return total.toFixed(2);
-  }
-
-
+  };
 
   const handleRealizarPedido = async () => {
     try {
@@ -97,7 +88,7 @@ const Carrito = () => {
       if (response) {
         const numeroPedido = response.data.id_pedido;
         setNumeroPedido(numeroPedido);
-        setInfoPedidoCorreo({ pedido, total }); // ← aquí guardás el total correctamente
+        setInfoPedidoCorreo({ pedido, total });
         pedido.forEach(producto => {
           dispatch(actualizarVariante(producto.id, producto.cantidad));
         });
@@ -122,7 +113,7 @@ const Carrito = () => {
       setMostrarFormularioCorreo(false);
       setMostrarNotificacion(true);
 
-      // 🟢 MENSAJE ESTILADO PARA WHATSAPP
+      // 🟢 MENSAJE DE WHATSAPP
       let mensajeWpp = `🌸 *Amore Mio Showroom* 🌸\n\n🧾 *Pedido Nº ${numeroPedido}*\n\n`;
       pedido.forEach(producto => {
         mensajeWpp += `🔹 *${producto.nombre}*\n`;
@@ -135,8 +126,13 @@ const Carrito = () => {
       mensajeWpp += `Gracias por tu compra ✨\nNos comunicaremos a la brevedad para coordinar entrega o retiro.\n\n🌷 _Amore Mio Showroom_ 🌷`;
 
       const telefonoNegocio = "5493794155821";
-      const urlWpp = `https://wa.me/${telefonoNegocio}?text=${encodeURIComponent(mensajeWpp)}`;
-      window.open(urlWpp, "_blank");
+
+      // Generamos los links de WhatsApp
+      const urlDesktop = `whatsapp://send?phone=${telefonoNegocio}&text=${encodeURIComponent(mensajeWpp)}`;
+      const urlWeb = `https://wa.me/${telefonoNegocio}?text=${encodeURIComponent(mensajeWpp)}`;
+
+      setInfoPedidoCorreo({ pedido, total, urlDesktop, urlWeb });
+
     } catch (error) {
       console.error("Error al enviar el correo o mensaje", error);
     }
@@ -210,6 +206,7 @@ const Carrito = () => {
                 <input type="email" name="correo" id="correo" required />
                 <button type="submit" className="boton-carrito">Enviar</button>
               </form>
+
               {mostrarNotificacion && (
                 <div className="notificacion">
                   <p>Correo enviado correctamente.</p>
@@ -219,8 +216,39 @@ const Carrito = () => {
                   }}>Cerrar</button>
                 </div>
               )}
+
               <h2>Pedido Nº {numeroPedido}</h2>
               <p>Gracias por elegir Amore Mio Showroom 💖</p>
+
+              {/* OPCIONES DE WHATSAPP */}
+              {infoPedidoCorreo?.urlDesktop && (
+                <div className="botones-wpp">
+                  <p>¿Cómo quieres continuar con tu pedido en WhatsApp?</p>
+
+                  <button 
+                    className="boton-carrito" 
+                    onClick={() => window.open(infoPedidoCorreo.urlDesktop, "_blank")}
+                  >
+                    📲 Abrir en WhatsApp Desktop
+                  </button>
+
+                  <button 
+                    className="boton-carrito" 
+                    onClick={() => window.open(infoPedidoCorreo.urlWeb, "_blank")}
+                  >
+                    🌐 Abrir en WhatsApp Web
+                  </button>
+
+                  {/Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && (
+                    <button 
+                      className="boton-carrito"
+                      onClick={() => window.open(infoPedidoCorreo.urlWeb, "_blank")}
+                    >
+                      📱 Abrir en WhatsApp App
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -230,4 +258,3 @@ const Carrito = () => {
 };
 
 export default Carrito;
-
