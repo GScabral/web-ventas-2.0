@@ -473,40 +473,22 @@ export const despacharProducto = (pedidoId, detalleId) => {
   };
 };
 
-export const enviarCorreo = (idPedido, infoPedido, correo) => {
-  return async (dispatch) => {
-    console.log("info:",infoPedido)
-    console.log("correo:",correo)
-    try {
-      const response = await axios.post(
-        "https://web-ventas-2-0.onrender.com/Nadmin/confirmacionPedido",
-        {
-          idPedido,
-          infoPedido,
-          correo,
-        }
-      );
-
-      // opcional: despachar acción si quieres guardar algo en Redux
-      dispatch({
-        type: "ENVIAR_CORREO_EXITO",
-        payload: response.data,
-      });
-
-      return response; // 👈 MUY IMPORTANTE devolver la respuesta
-    } catch (error) {
-      console.error("Error al enviar el correo:", error);
-
-      // opcional: despachar acción de error
-      dispatch({
-        type: "ENVIAR_CORREO_ERROR",
-        payload: error,
-      });
-
-      throw error; // 👈 para que el componente pueda capturarlo en el try/catch
-    }
-  };
+export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispatch => {
+  try {
+    const response = await axios.post("https://web-ventas-2-0.onrender.com//confirmacionPedido", {
+      idPedido,
+      infoPedido,
+      correo,
+      total
+    });
+    dispatch({ type: "ENVIAR_CORREO_EXITO", payload: response.data });
+  } catch (error) {
+    console.error("Error al enviar el correo:", error);
+    dispatch({ type: "ENVIAR_CORREO_ERROR", error });
+  }
 };
+
+
 
 
 export const LoginAdmin = (password) => {

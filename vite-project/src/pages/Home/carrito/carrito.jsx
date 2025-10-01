@@ -117,7 +117,7 @@ const Carrito = () => {
     try {
       const { pedido, total } = infoPedidoCorreo;
 
-      await dispatch(enviarCorreo(numeroPedido, pedido, correo));
+      await dispatch(enviarCorreo(numeroPedido, pedido, correo, total));
       setCorreoEnviado(true);
       setMostrarFormularioCorreo(false);
       setMostrarNotificacion(true);
