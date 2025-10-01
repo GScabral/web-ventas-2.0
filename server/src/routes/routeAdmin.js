@@ -37,18 +37,27 @@ router.post("/NewAdmin", async (req, res) => {
     }
 });
 
-router.post('/confirmacionPedido',async (req,res)=>{
-  try{
-    const {idPedido, infoPedido, correo } = req.body;
-    await enviarCorreo (idPedido,infoPedido,correo)
-    res.status(200).send('Correo electrónico enviado con éxito');
-  }catch (error) {
-    // Manejar errores
-    console.error('Error al enviar el correo electrónico:', error); // Agregar este console.error para obtener más información sobre el error
-    res.status(500).send('Error al enviar el correo electrónico');
-  }
+router.post('/confirmacionPedido', async (req, res) => {
+  try {
+    const { idPedido, infoPedido, correo } = req.body;
 
-})
+    console.log("📩 Datos recibidos en backend:", { idPedido, infoPedido, correo });
+
+    await enviarCorreo(idPedido, infoPedido, correo);
+
+    res.status(200).send('Correo electrónico enviado con éxito');
+  } catch (error) {
+    console.error('❌ Error al enviar el correo electrónico:', error);
+
+    res.status(500).json({
+      message: 'Error al enviar el correo electrónico',
+      error: error.message,   // mensaje claro
+      code: error.code || null,  // ej: ETIMEDOUT, EAUTENTICACION, etc
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
+
 
 
 router.post('/loginc', (req, res) => {
