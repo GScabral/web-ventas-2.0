@@ -475,6 +475,8 @@ export const despacharProducto = (pedidoId, detalleId) => {
 
 export const enviarCorreo = (idPedido, infoPedido, correo) => {
   return async (dispatch) => {
+    console.log("info:",infoPedido)
+    console.log("correo:",correo)
     try {
       const response = await axios.post(
         "https://web-ventas-2-0.onrender.com/Nadmin/confirmacionPedido",
