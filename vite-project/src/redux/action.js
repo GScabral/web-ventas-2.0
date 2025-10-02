@@ -466,16 +466,22 @@ export const enviarEstado = (nuevoEstado) => ({
   payload: nuevoEstado,
 });
 
-export const despacharProducto = (pedidoId, detalleId) => {
-  return {
-    type: DESPACHAR_PRODUCTO,
-    payload: { pedidoId, detalleId }
-  };
+export const despacharProducto = (pedidoId, detalleId) => async (dispatch) => {
+  try {
+    const response = await axios.put(`https://web-ventas-2-0.onrender.com/pedidos/despachar/${detalleId}`);
+
+    dispatch({
+      type: 'DESPACHAR_PRODUCTO',
+      payload: { pedidoId, detalleId, data: response.data.detalle },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispatch => {
   try {
-    const response = await axios.post("https://web-ventas-2-0.onrender.com//confirmacionPedido", {
+    const response = await axios.post("https://web-ventas-2-0.onrender.com/confirmacionPedido", {
       idPedido,
       infoPedido,
       correo,

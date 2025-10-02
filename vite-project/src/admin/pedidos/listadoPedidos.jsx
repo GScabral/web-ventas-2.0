@@ -26,7 +26,7 @@ const PedidoList = () => {
         </thead>
         <tbody>
           {allPedidos.map((pedido) => (
-            <PedidoItem key={pedido.id} pedido={pedido} />
+            <PedidoItem key={pedido.id_pedido} pedido={pedido} />
           ))}
         </tbody>
       </table>
@@ -35,22 +35,20 @@ const PedidoList = () => {
 };
 
 const PedidoItem = ({ pedido }) => {
-  const [listoClicked, setListoClicked] = useState(false);
   const dispatch = useDispatch();
 
-  const handlerDespacharProducto = (pedidoId, detalleId) => {
-    dispatch(despacharProducto(pedidoId, detalleId));
-    setListoClicked(true);
+  const handlerDespacharProducto = (detalleId) => {
+    dispatch(despacharProducto(pedido.id_pedido, detalleId));
   };
 
   return (
     <tr>
-      <td data-label="ID">{pedido.id}</td>
+      <td data-label="ID">{pedido.id_pedido}</td>
       <td data-label="Fecha">{pedido.fecha}</td>
       <td data-label="Detalles">
         <ul>
           {pedido.detalles.map((detalle) => (
-            <li key={`${pedido.id}-${detalle.idDetalle}`}>
+            <li key={`${pedido.id_pedido}-${detalle.id_detalle_pedido}`}>
               Cantidad: {detalle.cantidad}, color: {detalle.color}, talle: {detalle.talle}, nombre: {detalle.nombre}
             </li>
           ))}
@@ -59,22 +57,29 @@ const PedidoItem = ({ pedido }) => {
       <td data-label="Total">
         <ul>
           {pedido.detalles.map((detalle) => (
-            <li key={`${pedido.id}-${detalle.idDetalle}`}>
+            <li key={`${pedido.id_pedido}-${detalle.id_detalle_pedido}`}>
               ${detalle.total}
             </li>
           ))}
         </ul>
       </td>
       <td data-label="Despachar">
-        {!pedido.despachado && (
-          <button
-            onClick={() => handlerDespacharProducto(pedido.id, pedido.detalles[0].idDetalle)}
-            className={listoClicked ? 'listo-clicked' : 'listo'}
-            disabled={listoClicked}
-          >
-            listo
-          </button>
-        )}
+        <ul>
+          {pedido.detalles.map((detalle) => (
+            <li key={`btn-${detalle.id_detalle_pedido}`}>
+              {detalle.estado_pedido !== 'DESPACHADO' ? (
+                <button
+                  onClick={() => handlerDespacharProducto(detalle.id_detalle_pedido)}
+                  className="listo"
+                >
+                  listo
+                </button>
+              ) : (
+                <span className="despachado">✔ Despachado</span>
+              )}
+            </li>
+          ))}
+        </ul>
       </td>
     </tr>
   );

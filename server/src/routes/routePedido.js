@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const crearPedido = require("../controllers/pedido/newPedido");
 const getPedidos = require("../controllers/pedido/getPedidos")
-const createPreference= require("../controllers/mp/mp");
+const createPreference = require("../controllers/mp/mp");
+const despacharDetalle = require("../controllers/pedido/despacharPedido")
 const router = Router();
 
 router.post("/nuevoPedido", async (req, res) => {
     try {
-       
+
         const nuevoPedido = await crearPedido(req.body);
         if (nuevoPedido.success === false) {
             res.status(400).json({ error: nuevoPedido.error });
@@ -18,12 +19,12 @@ router.post("/nuevoPedido", async (req, res) => {
     }
 });
 
-router.get("/Lpedidos",async(req,res)=>{
-    try{
-        const pedido=await getPedidos();
+router.get("/Lpedidos", async (req, res) => {
+    try {
+        const pedido = await getPedidos();
         res.status(200).json(pedido);
-    }catch(error){
-        res.status(500).json({error:"error al obtener el pedido"})
+    } catch (error) {
+        res.status(500).json({ error: "error al obtener el pedido" })
     }
 })
 
@@ -42,5 +43,9 @@ router.post("/mp", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+router.put('/despachar/:idDetalle', despacharDetalle);
+
 
 module.exports = router;
