@@ -5,18 +5,35 @@ const path = require('path');
 const oferta = require('./models/oferta');
 
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    logging: false,
-    native: false,
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false, // necesario en Render
-        },
-    },
-});
+// const sequelize = new Sequelize(process.env.DATABASE_URL, {
+//     logging: false,
+//     native: false,
+//     dialect: 'postgres',
+//     dialectOptions: {
+//         ssl: {
+//             require: true,
+//             rejectUnauthorized: false, // necesario en Render
+//         },
+//     },
+// });
 
+const sequelize = new Sequelize(
+    process.env.DB_NAME || 'tienda',
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 5432,
+        dialect: 'postgres',
+        logging: false,
+        dialectOptions: {
+            ssl: process.env.NODE_ENV === 'production' ? {
+                require: true,
+                rejectUnauthorized: false,
+            } : false,
+        },
+    }
+)
 
 
 const basename = path.basename(__filename);

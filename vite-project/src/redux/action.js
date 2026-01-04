@@ -43,7 +43,7 @@ export const PEDIDO = "PEDIDO";
 export const getProductos = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`https://web-ventas-2-0.onrender.com/producto/producto`);
+      const response = await axios.get(`http://localhost:3004/producto/producto`);
 
 
       dispatch({
@@ -59,7 +59,7 @@ export const getProductos = () => {
 export const getAllClientes = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`https://web-ventas-2-0.onrender.com/cliente/allClientes`)
+      const response = await axios.get(`http://localhost:3004/cliente/allClientes`)
 
       dispatch({
         type: GET_CLIENTES,
@@ -74,7 +74,7 @@ export const getAllClientes = () => {
 export const getPedidos = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`https://web-ventas-2-0.onrender.com/pedido/Lpedidos`)
+      const response = await axios.get(`http://localhost:3004/pedido/Lpedidos`)
       dispatch({
         type: GET_PEDIDOS,
         payload: response.data,
@@ -93,7 +93,7 @@ export const addProduct = (formData) => {
     try {
 
 
-      const response = await axios.post(`https://web-ventas-2-0.onrender.com/producto/nuevoProducto`, formData);
+      const response = await axios.post(`http://localhost:3004/producto/nuevoProducto`, formData);
 
       dispatch({
         type: ADD_PRODUCT,
@@ -119,7 +119,7 @@ export const addProduct = (formData) => {
 export const getById = (id) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`https://web-ventas-2-0.onrender.com/producto/ProductoId/${id}`);
+      const response = await axios.get(`http://localhost:3004/producto/ProductoId/${id}`);
 
       if (response.data) {
         dispatch({
@@ -184,7 +184,7 @@ export const createUsuario = (userData) => {
 
   return async function (dispatch) {
     try {
-      const response = await axios.post(`https://web-ventas-2-0.onrender.com/cliente/nuevoCliente`, userData);
+      const response = await axios.post(`http://localhost:3004/cliente/nuevoCliente`, userData);
       dispatch({
         type: ADD_USUARIO, // Ajusta este tipo de acción según tu configuración de Redux
         payload: response.data, // Puedes ajustar esto dependiendo de la estructura de datos devuelta por el servidor
@@ -200,7 +200,7 @@ export const ingresarUsuario = (userData) => {
     try {
 
 
-      const response = await axios.post(`https://web-ventas-2-0.onrender.com/cliente/login`, userData);
+      const response = await axios.post(`http://localhost:3004/cliente/login`, userData);
 
 
 
@@ -231,7 +231,7 @@ export const ingresarUsuario = (userData) => {
 export const obtenerInformacionUsuario = (correo, contraseña) => {
   return async function (dispatch) {
     try {
-      const response = await axios.post(`https://web-ventas-2-0.onrender.com/cliente/InfoUsuario`, { correo, contraseña });
+      const response = await axios.post(`http://localhost:3004/cliente/InfoUsuario`, { correo, contraseña });
 
       console.log("Respuesta del servidor al obtener información del usuario:", response);
 
@@ -265,7 +265,7 @@ export const obtenerInformacionUsuario = (correo, contraseña) => {
 export const obtenerClientePorId = (id) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`https://web-ventas-2-0.onrender.com/cliente/cliente/${id}`);
+      const response = await axios.get(`http://localhost:3004/cliente/cliente/${id}`);
 
       if (response.status !== 200) {
         throw new Error('Error al obtener el cliente por ID');
@@ -331,7 +331,7 @@ export const eliminarFav = (index) => {
 export const cambios = (id, datosProducto) => {
   return async function (dispatch) {
     try {
-      const response = await axios.patch(`https://web-ventas-2-0.onrender.com/Nadmin/cambioAdmin/${id}`, datosProducto);
+      const response = await axios.patch(`http://localhost:3004/Nadmin/cambioAdmin/${id}`, datosProducto);
       dispatch({
         type: CAMBIO,
         payload: response.data,
@@ -359,7 +359,7 @@ export const cambios = (id, datosProducto) => {
 export const borrar = async (id) => {
   try {
 
-    const borrar = await axios.delete(`https://web-ventas-2-0.onrender.com/producto/eliminar/${id}`)
+    const borrar = await axios.delete(`http://localhost:3004/producto/eliminar/${id}`)
 
     if (borrar.status !== 200) {
       throw new Error('Error al obtener el cliente por ID');
@@ -374,27 +374,32 @@ export const borrar = async (id) => {
   }
 };
 
-export const addPedido = (productos) => {
+export const addPedido = (pedidoData) => {
+  return async (dispatch) => {
 
-  return async function () {
+    console.log(pedidoData)
     try {
-      const response = await axios.post('https://web-ventas-2-0.onrender.com/pedido/nuevoPedido', {
-        productos: productos,
+      const response = await axios.post("http://localhost:3004/pedido/nuevoPedido", pedidoData);
+
+      dispatch({
+        type: "POST_PEDIDO",
+        payload: response.data,
       });
 
-      return response; // Devuelve la respuesta del servidor
+      return response; // <-- NECESARIO
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.log("ERROR ADDPEDIDO:", error);
+      return null;
     }
   };
 };
 
 export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate de pasar cantidad_disponible aquí
+  console.log(id,cantidad_disponible)
   return async function (dispatch) {
     try {
 
-      const response = await axios.patch(`https://web-ventas-2-0.onrender.com/producto/cambio/${id}`, {
+      const response = await axios.patch(`http://localhost:3004/producto/cambio/${id}`, {
         cantidad_disponible: cantidad_disponible // Aquí envía cantidad_disponible
       });
       // Despachar la acción después de que la solicitud sea exitosa
@@ -410,6 +415,27 @@ export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate d
   };
 }
 
+export const actualizarEstadoProducto = (pedidoId, detalleId, estado) => {
+  return async function () {
+    const response = await axios.put(`http://localhost:3004/pedido/pedidos/${pedidoId}/detalle/${detalleId}`, { estado });
+    return response.data;
+  };
+};
+
+
+export const actualizarEstadoPedidoGeneral = (id_pedido, nuevoEstado) => async (dispatch) => {
+  const res = await axios.put(`http://localhost:3004/pedido/pedidos/estado/${id_pedido}`, { estado: nuevoEstado });
+
+  dispatch({
+    type: "UPDATE_ESTADO_PEDIDO",
+    payload: res.data
+  });
+
+  return res;
+};
+
+
+
 export const actualizarCarrito = (nuevoCarrito) => ({
   type: ACTUALIZAR_CARRITO,
   payload: nuevoCarrito,
@@ -420,7 +446,7 @@ export const buscar = (name) => {
   return async function (dispatch) {
     try {
 
-      const response = await axios.get(`https://web-ventas-2-0.onrender.com/producto/name/${name}`);
+      const response = await axios.get(`http://localhost:3004/producto/name/${name}`);
 
       // Log the data to the console
       // console.log("Resultados de la búsqueda:",response);
@@ -468,7 +494,7 @@ export const enviarEstado = (nuevoEstado) => ({
 
 export const despacharProducto = (pedidoId, detalleId) => async (dispatch) => {
   try {
-    const response = await axios.put(`https://web-ventas-2-0.onrender.com/pedidos/despachar/${detalleId}`);
+    const response = await axios.put(`http://localhost:3004/pedidos/despachar/${detalleId}`);
 
     dispatch({
       type: 'DESPACHAR_PRODUCTO',
@@ -480,8 +506,10 @@ export const despacharProducto = (pedidoId, detalleId) => async (dispatch) => {
 };
 
 export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispatch => {
+
+
   try {
-    const response = await axios.post("https://web-ventas-2-0.onrender.com/confirmacionPedido", {
+    const response = await axios.post("http://localhost:3004/Nadmin/confirmacionPedido", {
       idPedido,
       infoPedido,
       correo,
@@ -500,7 +528,7 @@ export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispa
 export const LoginAdmin = (password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('https://web-ventas-2-0.onrender.com/Nadmin/loginc', {
+      const response = await axios.post('http://localhost:3004/Nadmin/loginc', {
         password: password,
       });
       dispatch({ type: 'ADMIN_LOGIN_SUCCESS' });
@@ -516,7 +544,7 @@ export const LoginAdmin = (password) => {
 export const ofertas = (oferta) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('https://web-ventas-2-0.onrender.com/oferta/nuevaOferta', {
+      const response = await axios.post('http://localhost:3004/oferta/nuevaOferta', {
         oferta: oferta
       });
       dispatch({ type: OFERTA, payload: response.data }); // Dispara una acción de éxito con los datos devueltos por el servidor si es necesario
@@ -532,7 +560,7 @@ export const ofertas = (oferta) => {
 export const getOfertas = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get('https://web-ventas-2-0.onrender.com/oferta/ofertas');
+      const response = await axios.get('http://localhost:3004/oferta/ofertas');
 
       dispatch({
         type: GET_OFERTAS,
@@ -549,7 +577,7 @@ export const getOfertas = () => {
 export const borrarOferta = async (id) => {
   try {
 
-    const borrar = await axios.delete(`https://web-ventas-2-0.onrender.com/oferta/eliminar/${id}`)
+    const borrar = await axios.delete(`http://localhost:3004/oferta/eliminar/${id}`)
 
     if (borrar.status !== 200) {
       throw new Error('Error al obtener el cliente por ID');

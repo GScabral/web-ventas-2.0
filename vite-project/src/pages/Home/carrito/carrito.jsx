@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { 
-  eliminarProductoCarrito, 
-  vaciarCarrito, 
-  actualizarCarrito, 
-  actualizarVariante, 
-  addPedido, 
-  enviarCorreo 
+import {
+  eliminarProductoCarrito,
+  vaciarCarrito,
+  actualizarCarrito,
+  actualizarVariante,
+  addPedido,
+  enviarCorreo
 } from "../../../redux/action";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -16,24 +16,27 @@ import Table from "react-bootstrap/Table";
 
 const Carrito = () => {
   const carrito = useSelector((state) => state.carrito);
-  const [mostrarFormularioCorreo, setMostrarFormularioCorreo] = useState(false);
+  const dispatch = useDispatch();
+
   const [mostrarModal, setMostrarModal] = useState(false);
   const [numeroPedido, setNumeroPedido] = useState(null);
   const [infoPedidoCorreo, setInfoPedidoCorreo] = useState(null);
-  const [correoEnviado, setCorreoEnviado] = useState(false);
-  const [pedidoEnviado, setPedidoEnviado] = useState(false);
+  const [correoCliente, setCorreoCliente] = useState("");
   const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
-  const dispatch = useDispatch();
 
   const eliminarDeCarrito = (index) => {
     dispatch(eliminarProductoCarrito(index));
   };
+  console.log(carrito)
 
   const incrementarCantidad = (index) => {
     const nuevoCarrito = [...carrito];
     const producto = nuevoCarrito[index];
+
     if (!producto || producto.variantes.length === 0) return;
+
     const cantidadDisponible = producto.variantes[0].cantidad_disponible;
+
     if (producto.cantidad_elegida < cantidadDisponible) {
       producto.cantidad_elegida++;
       dispatch(actualizarCarrito(nuevoCarrito));
@@ -43,110 +46,117 @@ const Carrito = () => {
   const decrementarCantidad = (index) => {
     const nuevoCarrito = [...carrito];
     const producto = nuevoCarrito[index];
+
     if (!producto || producto.cantidad_elegida === 1) return;
+
     producto.cantidad_elegida--;
     dispatch(actualizarCarrito(nuevoCarrito));
   };
 
   const calcularTotal = () => {
     let total = 0;
-    if (carrito.length >= 3) {
-      carrito.forEach((item) => {
-        const precioNumerico = parseFloat(item.precio);
-        const cantidad = item.cantidad_elegida || 1;
-        let descuentoPorPrenda = 0;
-        if (precioNumerico * cantidad >= 5000 && precioNumerico * cantidad < 10000) {
-          descuentoPorPrenda = 1000;
-        } else if (precioNumerico * cantidad >= 10000 && precioNumerico * cantidad < 15000) {
-          descuentoPorPrenda = 3000;
-        }
-        total += (precioNumerico * cantidad) - descuentoPorPrenda;
-      });
-    } else {
-      carrito.forEach((item) => {
-        const precioNumerico = parseFloat(item.precio);
-        const cantidad = item.cantidad_elegida || 1;
-        total += precioNumerico * cantidad;
-      });
-    }
-    return total.toFixed(2);
+
+    carrito.forEach(item => {
+      const precio = parseFloat(item.precio);
+      const cantidad = item.cantidad_elegida || 1;
+
+      total += precio * cantidad;
+    });
+
+    return Number(total.toFixed(2));
   };
 
-  const handleRealizarPedido = async () => {
-    try {
-      const total = calcularTotal();
-      const pedido = carrito.map(producto => ({
-        id: producto.id,
-        nombre: producto.nombre,
-        cantidad: producto.cantidad_elegida,
-        color: producto.variantes[0].color,
-        talla: producto.variantes[0].talla,
-      }));
-
-      const response = await dispatch(addPedido(pedido));
-
-      if (response) {
-        const numeroPedido = response.data.id_pedido;
-        setNumeroPedido(numeroPedido);
-        setInfoPedidoCorreo({ pedido, total });
-        pedido.forEach(producto => {
-          dispatch(actualizarVariante(producto.id, producto.cantidad));
-        });
-        setMostrarFormularioCorreo(true);
-        setMostrarModal(true);
-        setPedidoEnviado(true);
-        dispatch(vaciarCarrito());
-      } else {
-        throw new Error('Error al agregar el pedido');
-      }
-    } catch (error) {
-      console.error("Error al realizar el pedido:", error);
-    }
-  };
-
-  const enviarCorreoConPedido = async (correo) => {
-    try {
-      const { pedido, total } = infoPedidoCorreo;
-
-      await dispatch(enviarCorreo(numeroPedido, pedido, correo, total));
-      setCorreoEnviado(true);
-      setMostrarFormularioCorreo(false);
-      setMostrarNotificacion(true);
-
-      // 🟢 MENSAJE DE WHATSAPP
-      let mensajeWpp = `🌸 *Amore Mio Showroom* 🌸\n\n🧾 *Pedido Nº ${numeroPedido}*\n\n`;
-      pedido.forEach(producto => {
-        mensajeWpp += `🔹 *${producto.nombre}*\n`;
-        mensajeWpp += `   • Cantidad: ${producto.cantidad}\n`;
-        mensajeWpp += `   • Color: ${producto.color}\n`;
-        mensajeWpp += `   • Talle: ${producto.talla}\n\n`;
-      });
-      mensajeWpp += `💳 *Total a pagar:* $${total}\n`;
-      mensajeWpp += `📧 *Correo de contacto:* ${correo}\n\n`;
-      mensajeWpp += `Gracias por tu compra ✨\nNos comunicaremos a la brevedad para coordinar entrega o retiro.\n\n🌷 _Amore Mio Showroom_ 🌷`;
-
-      const telefonoNegocio = "5493794155821";
-
-      // Generamos los links de WhatsApp
-      const urlDesktop = `whatsapp://send?phone=${telefonoNegocio}&text=${encodeURIComponent(mensajeWpp)}`;
-      const urlWeb = `https://wa.me/${telefonoNegocio}?text=${encodeURIComponent(mensajeWpp)}`;
-
-      setInfoPedidoCorreo({ pedido, total, urlDesktop, urlWeb });
-
-    } catch (error) {
-      console.error("Error al enviar el correo o mensaje", error);
-    }
-  };
-
+  // 1️⃣ Se dispara cuando el usuario ingresa su correo
   const handleSubmitCorreo = async (event) => {
     event.preventDefault();
     const correo = event.target.correo.value;
-    if (numeroPedido) enviarCorreoConPedido(correo);
+    setCorreoCliente(correo);
+
+    try {
+      const total = calcularTotal();
+
+      // Armamos el pedido sin id_pedido aún
+      const pedidoBase = carrito.map(producto => ({
+        id_variante: producto.variantes[0].idVariante,  // ⭐ AÑADIR ESTO
+        id_pedido: producto.id,
+        nombre: producto.nombre,
+        cantidad: producto.cantidad_elegida || 1,
+        color: producto.variantes[0].color,
+        talla: producto.variantes[0].talla,
+        precio_unitario: parseFloat(producto.precio),
+        subtotal_producto: Number((producto.precio * producto.cantidad_elegida).toFixed(2)),
+        total
+      }));
+
+      console.log("Datos que se envían:", {
+        email_cliente: correo,
+        productos: pedidoBase
+      });
+
+      // 2️⃣ Crear pedido en backend
+      const response = await dispatch(
+        addPedido({
+          email_cliente: correo,
+          productos: pedidoBase
+        })
+      );
+
+      if (!response || !response.data || !response.data.id_pedido) {
+        throw new Error("No se obtuvo id_pedido del servidor");
+      }
+
+      const numeroPedido = response.data.id_pedido;
+      setNumeroPedido(numeroPedido);
+
+      const pedidoConID = pedidoBase.map(item => ({
+        ...item,
+        id_pedido: numeroPedido
+      }));
+
+      setInfoPedidoCorreo({ pedido: pedidoConID, total });
+
+      // 3️⃣ Enviar correo
+      await dispatch(enviarCorreo(numeroPedido, pedidoConID, correo, total));
+
+      // 4️⃣ Actualizar stock
+      pedidoConID.forEach(producto =>
+        dispatch(actualizarVariante(producto.id_variante, producto.cantidad))
+      );
+
+      // 5️⃣ Vaciar carrito
+      dispatch(vaciarCarrito());
+
+      // 6️⃣ Notificación
+      setMostrarNotificacion(true);
+
+      // 7️⃣ Crear mensaje de WhatsApp
+      // let mensajeWpp = `🌸 *Amore Mio Showroom* 🌸\n\n🧾 *Pedido Nº ${numeroPedido}*\n\n`;
+      // pedidoConID.forEach(producto => {
+      //   mensajeWpp += `🔹 *${producto.nombre}*\n`;
+      //   mensajeWpp += `   • Cantidad: ${producto.cantidad}\n`;
+      //   mensajeWpp += `   • Color: ${producto.color}\n`;
+      //   mensajeWpp += `   • Talle: ${producto.talla}\n\n`;
+      // });
+      // mensajeWpp += `💳 *Total a pagar:* $${total}\n`;
+      // mensajeWpp += `📧 *Correo:* ${correo}\n\nGracias por tu compra ✨`;
+
+      // const telefono = "5493794155821";
+
+      // setInfoPedidoCorreo(prev => ({
+      //   ...prev,
+      //   urlDesktop: `whatsapp://send?phone=${telefono}&text=${encodeURIComponent(mensajeWpp)}`,
+      //   urlWeb: `https://wa.me/${telefono}?text=${encodeURIComponent(mensajeWpp)}`
+      // }));
+
+    } catch (error) {
+      console.error("Error al enviar pedido o correo:", error);
+    }
   };
 
   return (
     <div className="carrito-fondo">
       <div className="carrito">
+
         {carrito && carrito.length > 0 ? (
           <Table className="carrito-table">
             <thead>
@@ -170,8 +180,10 @@ const Carrito = () => {
                       <span>Talle: {producto.variantes[0]?.talla}</span>
                     </div>
                   </td>
+
                   <td data-label="Descripción">{producto.descripcion}</td>
                   <td data-label="Precio">${producto.precio}</td>
+
                   <td data-label="Cantidad">
                     <div className="cantidad-acciones">
                       <button className="boton-cantidad" onClick={() => decrementarCantidad(index)}>-</button>
@@ -179,6 +191,7 @@ const Carrito = () => {
                       <button className="boton-cantidad" onClick={() => incrementarCantidad(index)}>+</button>
                     </div>
                   </td>
+
                   <td data-label="Eliminar">
                     <button className="boton-eliminar" onClick={() => eliminarDeCarrito(index)}>
                       <FontAwesomeIcon icon={faTrashAlt} />
@@ -193,65 +206,66 @@ const Carrito = () => {
         )}
 
         <p className="total">Total: <span>${calcularTotal()}</span></p>
-        <button className="boton-carrito" onClick={() => dispatch(vaciarCarrito())}>Vaciar Carrito</button>
+
+        <button className="boton-carrito" onClick={() => dispatch(vaciarCarrito())}>
+          Vaciar Carrito
+        </button>
+
         <Link to="/"><button className="boton-carrito">Volver a la tienda</button></Link>
-        <button className="boton-carrito" onClick={handleRealizarPedido}>Comprar</button>
+
+        <button className="boton-carrito" onClick={() => setMostrarModal(true)}>
+          Comprar
+        </button>
 
         {mostrarModal && (
           <div className="modal-compra">
             <div className="modal-content-compra">
+
               <span className="close-compra" onClick={() => setMostrarModal(false)}>&times;</span>
-              <form className="formulario-correo" onSubmit={handleSubmitCorreo}>
-                <label htmlFor="correo">Correo electrónico:</label>
-                <input type="email" name="correo" id="correo" required />
-                <button type="submit" className="boton-carrito">Enviar</button>
-              </form>
+
+              {!mostrarNotificacion && (
+                <form className="formulario-correo" onSubmit={handleSubmitCorreo}>
+                  <label htmlFor="correo">Correo electrónico:</label>
+                  <input
+                    type="email"
+                    name="correo"
+                    id="correo"
+                    required
+                    onChange={(e) => setCorreoCliente(e.target.value)}
+                  />
+
+                  <button type="submit" className="boton-carrito">Confirmar Pedido</button>
+                </form>
+              )}
 
               {mostrarNotificacion && (
-                <div className="notificacion">
-                  <p>Correo enviado correctamente.</p>
-                  <button className="boton-carrito-c" onClick={() => {
-                    setMostrarNotificacion(false);
-                    setMostrarModal(false);
-                  }}>Cerrar</button>
-                </div>
-              )}
+                <>
+                  <h2>Pedido Nº {numeroPedido}</h2>
+                  <p>Correo enviado correctamente 💖</p>
 
-              <h2>Pedido Nº {numeroPedido}</h2>
-              <p>Gracias por elegir Amore Mio Showroom 💖</p>
-
-              {/* OPCIONES DE WHATSAPP */}
-              {infoPedidoCorreo?.urlDesktop && (
-                <div className="botones-wpp">
-                  <p>¿Cómo quieres continuar con tu pedido en WhatsApp?</p>
-
-                  <button 
-                    className="boton-carrito" 
-                    onClick={() => window.open(infoPedidoCorreo.urlDesktop, "_blank")}
-                  >
-                    📲 Abrir en WhatsApp Desktop
-                  </button>
-
-                  <button 
-                    className="boton-carrito" 
-                    onClick={() => window.open(infoPedidoCorreo.urlWeb, "_blank")}
-                  >
-                    🌐 Abrir en WhatsApp Web
-                  </button>
-
-                  {/Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && (
-                    <button 
-                      className="boton-carrito"
-                      onClick={() => window.open(infoPedidoCorreo.urlWeb, "_blank")}
-                    >
-                      📱 Abrir en WhatsApp App
+                  <div className="botones-wpp">
+                    <button className="boton-carrito"
+                      onClick={() => window.open(infoPedidoCorreo.urlDesktop, "_blank")}>
+                      📲 WhatsApp Desktop
                     </button>
-                  )}
-                </div>
+
+                    <button className="boton-carrito"
+                      onClick={() => window.open(infoPedidoCorreo.urlWeb, "_blank")}>
+                      🌐 WhatsApp Web
+                    </button>
+                  </div>
+
+                  <button className="boton-carrito-c"
+                    onClick={() => setMostrarModal(false)}>
+                    Cerrar
+                  </button>
+                </>
               )}
+
             </div>
           </div>
         )}
+
       </div>
     </div>
   );

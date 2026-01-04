@@ -1,223 +1,226 @@
-/* Fondo del carrito */
-/* ======= Fondo general ======= */
+/* Fondo general */
 .carrito-fondo {
-  background-color: #F3E6DD;
+  background: #f8f1ea; /* beige suave elegante */
   min-height: 100vh;
+  padding: 40px 20px;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
 }
 
-/* ======= Contenedor del carrito ======= */
+/* Contenedor principal */
 .carrito {
-  background-color: #FDF7F2;
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
   width: 100%;
-  max-width: 1200px;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
+  max-width: 900px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
-/* ======= Tabla de productos ======= */
+/* Tabla elegante */
 .carrito-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 24px;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e8d9c8;
 }
 
 .carrito-table thead {
-  background-color: #A67C52;
-  color: white;
+  background: #f2e6d9;
 }
 
-.carrito-table th,
+.carrito-table th {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3a2f2f;
+}
+
+/* Celdas */
 .carrito-table td {
-  text-align: center;
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 16px;
   vertical-align: middle;
+  color: #4a3f3f;
+  border-bottom: 1px solid #eee2d6;
 }
 
-.carrito-table img {
-  width: 60px;
-  height: 60px;
+.carrito-table tr:hover {
+  background: #fbf6f1;
+}
+
+/* Imagen producto */
+.card-imagen {
+  width: 90px;
+  height: 110px;
+  border-radius: 12px;
   object-fit: cover;
-  border-radius: 8px;
   margin-bottom: 6px;
 }
 
+/* Botones cantidad */
 .cantidad-acciones {
   display: flex;
+  gap: 10px;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
 }
 
 .boton-cantidad {
-  padding: 6px 10px;
-  background-color: #A67C52;
-  color: white;
+  background: #e5d0bf;
   border: none;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 16px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: 0.25s ease;
 }
 
 .boton-cantidad:hover {
-  background-color: #5D4636;
+  background: #d4a373;
+  color: white;
 }
 
-/* ======= Botón eliminar ======= */
+/* Botón eliminar */
 .boton-eliminar {
-  background: transparent;
+  background: #ffebe8;
   border: none;
-  color: #dc3545;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  padding: 8px 12px;
+  color: #b33939;
+  border-radius: 10px;
+  transition: 0.25s ease;
 }
 
 .boton-eliminar:hover {
-  transform: scale(1.2);
-}
-
-/* ======= Total ======= */
-.total {
-  text-align: right;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 16px 0;
-}
-
-/* ======= Botones principales ======= */
-.boton-carrito {
-  background-color: #A67C52;
+  background: #e17055;
   color: white;
-  padding: 10px 20px;
-  margin: 6px 10px 6px 0;
+}
+
+/* Total */
+.total {
+  margin-top: 25px;
+  font-size: 22px;
+  font-weight: bold;
+  font-family: "Playfair Display", serif;
+  color: #1e1e1e;
+}
+
+.total span {
+  color: #d4a373;
+}
+
+/* Botones principales */
+.boton-carrito {
+  background: #1e1e1e;
+  color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 12px 18px;
+  margin: 10px 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  font-size: 14px;
+  transition: 0.25s ease;
 }
 
 .boton-carrito:hover {
-  background-color: #5D4636;
-  transform: scale(1.05);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  background: #d4a373;
 }
 
-/* ======= Modal ======= */
+/* Carrito vacío */
+.mensaje-vacio {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 40px;
+  color: #7a6c6c;
+}
+
+/* MODAL */
 .modal-compra {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.45);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 20px;
+  z-index: 2000;
 }
 
 .modal-content-compra {
-  background-color: white;
-  border-radius: 16px;
-  padding: 24px;
-  max-width: 500px;
-  width: 100%;
-  position: relative;
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 480px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
   text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .close-compra {
-  position: absolute;
-  top: 12px;
-  right: 20px;
+  float: right;
   font-size: 24px;
   cursor: pointer;
-  color: #555;
+  color: #333;
 }
 
-/* ======= Formulario correo ======= */
-.formulario-correo label {
-  font-size: 16px;
-  margin-bottom: 10px;
-  display: block;
+/* Formulario correo */
+.formulario-correo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .formulario-correo input {
-  width: 100%;
+  border: 1px solid #d8c3b4;
   padding: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 12px;
 }
 
-/* ======= Notificación ======= */
+/* Notificación */
 .notificacion {
-  background-color: #28a745;
-  color: white;
-  padding: 10px 16px;
-  margin-top: 20px;
-  border-radius: 6px;
+  margin-top: 10px;
+  padding: 12px;
+  background: #e8f5e9;
+  color: #388e3c;
+  border-radius: 10px;
 }
 
-/* ======= Responsive: Móvil ======= */
-@media (max-width: 768px) {
+/* Botones de WhatsApp */
+.botones-wpp {
+  margin-top: 20px;
+}
+
+.botones-wpp p {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
   .carrito-table thead {
     display: none;
   }
 
-  .carrito-table,
-  .carrito-table tbody,
-  .carrito-table tr,
-  .carrito-table td {
-    display: block;
-    width: 100%;
-  }
-
   .carrito-table tr {
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    background-color: #fff;
-    padding: 12px;
+    display: block;
+    margin-bottom: 18px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 10px;
   }
 
   .carrito-table td {
-    text-align: left;
-    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
     border: none;
-    position: relative;
+    padding: 8px;
   }
 
   .carrito-table td::before {
     content: attr(data-label);
     font-weight: bold;
-    color: #5D4636;
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .cantidad-acciones {
-    justify-content: flex-start;
-  }
-
-  .total {
-    text-align: left;
-  }
-
-  .boton-carrito {
-    width: 100%;
-    margin-bottom: 12px;
+    color: #8a6d5a;
   }
 }

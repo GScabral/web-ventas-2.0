@@ -1,26 +1,35 @@
 const { Pedido, DetallesPedido } = require('../../db');
 
+
 const crearPedido = async (pedidoData) => {
-  console.log('Datos del pedido recibidos:', pedidoData);
   let transaction;
+
   try {
-    // Iniciar una transacción
     transaction = await Pedido.sequelize.transaction();
 
-    // Crear un nuevo pedido con el estado proporcionado
-    const nuevoPedido = await Pedido.create({ estado_pedido: 'PENDIENTE' }, { transaction });
-    const { id_pedido } = nuevoPedido;
+    const { email_cliente, productos } = pedidoData;
 
-    // Crear los detalles del pedido
+    if (!email_cliente) throw new Error("No se recibió email_cliente");
+    if (!productos || !Array.isArray(productos)) throw new Error("productos debe ser un array");
+
+    const nuevoPedido = await Pedido.create(
+      {
+        email_cliente,
+        estado_pedido: "PENDIENTE"
+      },
+      { transaction }
+    );
+
+    const { id_pedido } = nuevoPedido;
     for (const producto of pedidoData.productos) {
       const detallePedido = {
         PedidoIdPedido: id_pedido,
-        nombre:producto.nombre,
+        nombre: producto.nombre,
         ProductoIdProducto: producto.id,
-        cantidad: producto.cantidad, 
+        cantidad: producto.cantidad,
         color: producto.color, // Suponiendo que la variante es un objeto con un color
         talle: producto.talla, // Suponiendo que la variante es un objeto con un talla
-        total:producto.total,
+        total: producto.total,
       };
 
       // Agregar un console.log para ver los detalles del pedido antes de crearlos
@@ -31,14 +40,20 @@ const crearPedido = async (pedidoData) => {
 
     // Commit de la transacción
     await transaction.commit();
+    
 
-    return { success: true, message: 'Pedido creado y productos asociados con éxito', id_pedido };
+    return {
+      success: true,
+      message: "Pedido creado correctamente",
+      id_pedido
+    };
+
   } catch (error) {
-    // Rollback de la transacción en caso de error
     if (transaction) await transaction.rollback();
-    console.error('Error al crear pedido:', error);
+    console.error("❌ Error al crear pedido:", error);
     return { success: false, error: error.message };
   }
 };
 
-module.exports = crearPedido;
+
+module.exports = crearPedido

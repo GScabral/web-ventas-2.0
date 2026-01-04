@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { filterProduc, orderProducto } from "../../../redux/action";
 import { categoriasGlobal } from "./categorias";
+import "./barra.css";
 
 const FiltrosSidebar = ({
-  selectedMainCategory,   // 👈 ahora recibes la categoría principal (Ropa, Accesorios, Maquillaje)
+  selectedMainCategory,
   selectedSubcategory,
   setSelectedSubcategory,
   selectedPriceOrder,
   setSelectedPriceOrder,
 }) => {
-  const [mostrarF, setMostrarF] = useState(true);
-  const [mostrarO, setMostrarO] = useState(false);
-  const [precio, setPrecio] = useState(false);
+  const [mostrarFiltros, setMostrarFiltros] = useState(true);
+  const [mostrarOrden, setMostrarOrden] = useState(false);
+  const [mostrarPrecio, setMostrarPrecio] = useState(false);
 
   const dispatch = useDispatch();
 
-  // 👉 Solo usamos la rama de categoriasGlobal que corresponde a la página
   const categorias = categoriasGlobal[selectedMainCategory] || {};
 
   const handleFilter = (subcategory, variante) => {
@@ -24,52 +24,47 @@ const FiltrosSidebar = ({
 
     dispatch(
       filterProduc({
-        rama: selectedMainCategory || "",   // 👈 viene de Nav (Ropa, Accesorios, Maquillaje)
-        categoria: subcategory || "",       // 👈 ej: Vestido, Zapatos
-        subcategoria: variante || "",       // 👈 ej: de noche, casual
+        rama: selectedMainCategory || "",
+        categoria: subcategory || "",
+        subcategoria: variante || "",
       })
     );
   };
 
-  const toggleFiltros = () => {
-    setMostrarF(!mostrarF);
-  };
-
-  const toggleOrden = () => {
-    setMostrarO(!mostrarO);
-  };
-
   const handleOrder = (orderType) => {
     if (orderType === selectedPriceOrder) {
-      unselectOrder();
+      setSelectedPriceOrder("");
+      dispatch(orderProducto(""));
     } else {
       setSelectedPriceOrder(orderType);
       dispatch(orderProducto(orderType));
     }
   };
 
-  const unselectOrder = () => {
-    setSelectedPriceOrder("");
-    dispatch(orderProducto(""));
-  };
-
   return (
-    <div className={`sidebar ${mostrarF ? "show" : ""}`}>
-      <button className="button-filtros" onClick={toggleFiltros}>
-        FILTRAR POR:
+    <div className="filtros-card">
+
+      <h2 className="titulo-panel">Filtros</h2>
+
+      {/* ---- FILTRAR POR ---- */}
+      <button
+        className="btn-section"
+        onClick={() => setMostrarFiltros(!mostrarFiltros)}
+      >
+        Filtrar por
       </button>
 
-      {mostrarF && (
-        <ul className="ul-filtros">
+      {mostrarFiltros && (
+        <ul className="lista-filtros">
+
           {Object.entries(categorias).map(([subcat, variantes]) => (
-            <li key={subcat}>
-              {/* Subcategorías */}
+            <li key={subcat} className="grupo-tarjeta">
+
+              {/* Botón del subcat */}
               <button
-                className={
-                  selectedSubcategory === subcat
-                    ? "button-selected"
-                    : "button-sub-categoria"
-                }
+                className={`btn-subcat-tarjeta ${
+                  selectedSubcategory === subcat ? "activo" : ""
+                }`}
                 onClick={() =>
                   handleFilter(
                     selectedSubcategory === subcat ? "" : subcat,
@@ -80,66 +75,71 @@ const FiltrosSidebar = ({
                 {subcat}
               </button>
 
-              {/* Variantes dentro de la subcategoría */}
-              {variantes.length > 0 && selectedSubcategory === subcat && (
-                <ul>
-                  {variantes.map((variante) => (
-                    <li key={variante}>
-                      <button
-                        className="button-sub-categoria"
-                        onClick={() => handleFilter(subcat, variante)}
-                      >
-                        {variante}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+              {/* TARJETA EXPANDIBLE */}
+              <div
+                className={`tarjeta-contenido ${
+                  selectedSubcategory === subcat ? "show" : ""
+                }`}
+              >
+                {variantes.map((v) => (
+                  <button
+                    key={v}
+                    className="btn-variante-tarjeta"
+                    onClick={() => handleFilter(subcat, v)}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+
             </li>
           ))}
+
         </ul>
       )}
 
       <hr className="divider" />
 
-      <button className="button-filtros" onClick={toggleOrden}>
-        ORDENAR POR:
+      {/* ---- ORDENAR POR ---- */}
+      <button
+        className="btn-section"
+        onClick={() => setMostrarOrden(!mostrarOrden)}
+      >
+        Ordenar por
       </button>
 
-      {mostrarO && (
-        <ul className="ul-filtros">
+      {mostrarOrden && (
+        <ul className="lista-filtros">
           <button
-            className="button-filtros"
-            onClick={() => setPrecio(!precio)}
+            className="btn-subcat-tarjeta"
+            onClick={() => setMostrarPrecio(!mostrarPrecio)}
           >
             Precio
           </button>
 
-          {precio && (
-            <div>
-              <button
-                className={
-                  selectedPriceOrder === "precioAsc"
-                    ? "button-selected"
-                    : "button-talles"
-                }
-                onClick={() => handleOrder("precioAsc")}
-              >
-                Menor a Mayor
-              </button>
+          <div
+            className={`tarjeta-contenido ${
+              mostrarPrecio ? "show" : ""
+            }`}
+          >
+            <button
+              className={`btn-variante-tarjeta ${
+                selectedPriceOrder === "precioAsc" ? "activo" : ""
+              }`}
+              onClick={() => handleOrder("precioAsc")}
+            >
+              Menor a Mayor
+            </button>
 
-              <button
-                className={
-                  selectedPriceOrder === "precioDesc"
-                    ? "button-selected"
-                    : "button-talles"
-                }
-                onClick={() => handleOrder("precioDesc")}
-              >
-                Mayor a Menor
-              </button>
-            </div>
-          )}
+            <button
+              className={`btn-variante-tarjeta ${
+                selectedPriceOrder === "precioDesc" ? "activo" : ""
+              }`}
+              onClick={() => handleOrder("precioDesc")}
+            >
+              Mayor a Menor
+            </button>
+          </div>
         </ul>
       )}
     </div>

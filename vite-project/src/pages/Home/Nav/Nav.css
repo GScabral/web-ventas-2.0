@@ -1,211 +1,191 @@
-/* ---------- Navbar Principal ---------- */
-.back-nav {
-  background-color: #5D4636;
-  padding: 0.75rem 1rem;
-  color: white;
+/* ============================
+   NAV GENERAL
+============================ */
+.nav-boutique {
+  width: 100%;
+  background: #ffffff;
+  padding: 10px 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 3px solid #F7DDE8;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  /* se coloca justo debajo del botón */
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ============================
+   LOGO
+============================ */
+.nav-logo {
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  color: #4C4370;
+  margin: 0;
+}
+
+/* ============================
+   BURGER
+============================ */
+.nav-burger {
+  border: none;
+  background: #F7DDE8;
+  padding: 10px 12px;
   border-radius: 10px;
-  margin-top: 8px;
-  padding: 12px;
-  min-width: 240px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  z-index: 1000;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 18px;
+  color: #4A4A4A;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: 0.2s ease;
 }
 
-.dropdown-menu.show {
+.nav-burger:hover {
+  background: #F4C9DD;
+  transform: scale(1.04);
+}
+
+/* ============================
+   CARRITO MEGA DISEÑADO
+============================ */
+.nav-cart {
+  border: none;
+  background: #E7E0FF;
+  padding: 10px 15px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #4C4370;
+  box-shadow: 0 3px 8px rgba(80, 60, 120, 0.15);
+  transition: 0.25s ease;
+}
+
+.nav-cart:hover {
+  background: #D3C7FF;
+  transform: translateY(-2px) scale(1.06);
+}
+
+.nav-cart:active {
+  transform: scale(0.95);
+}
+
+/* Mini badge si más adelante quieres agregar cantidades */
+.nav-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #FF8FB1;
+  color: white;
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 50%;
+}
+
+/* ============================
+   MENU MOBILE
+============================ */
+.nav-menu {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: 
+    max-height .3s ease,
+    opacity .3s ease;
+}
+
+.nav-menu.show {
+  max-height: 900px;
+  opacity: 1;
+  padding-top: 10px;
+}
+
+/* ============================
+   BOTÓN DE FILTROS
+============================ */
+.dropdown-btn {
+  background: #F8F8FA;
+  border: 1px solid #E7E0FF;
+  border-radius: 12px;
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  color: #4A4A4A;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+  transition: .25s ease;
+}
+
+.dropdown-btn:hover {
+  background: #E7E0FF;
+  transform: scale(1.01);
+}
+
+/* ============================
+   TARJETA DEL DROPDOWN ANIMADA
+============================ */
+.dropdown-card {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-12px);
+
+  border: 2px solid #F7DDE8;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.07);
+
+  transition:
+    max-height .5s ease,
+    opacity .3s ease,
+    transform .3s ease;
+}
+
+.dropdown-card.open {
+  max-height: 1000px;
+  padding: 14px;
   opacity: 1;
   transform: translateY(0);
 }
 
-.dropdown-menu::-webkit-scrollbar {
-  width: 6px;
-}
+/* ============================
+   MEDIA QUERIES
+============================ */
+@media (min-width: 768px) {
+  .nav-boutique {
+    padding: 15px 40px;
+  }
 
-.dropdown-menu::-webkit-scrollbar-thumb {
-  background: #bbb;
-  border-radius: 3px;
-}
+  .nav-inner {
+    gap: 40px;
+  }
 
-.dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: #999;
-}
+  .nav-menu {
+    display: block;
+    max-height: none;
+    opacity: 1;
+    padding-top: 0;
+  }
 
-
-
-.nav-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ---------- Botón Hamburguesa ---------- */
-.hamburger {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.hamburger:focus {
-  outline: none;
-}
-
-/* ---------- Contenido del Menú ---------- */
-.nav-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  transition: all 0.3s ease;
-}
-
-.menu-button {
-  color: #FFF8F0;
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
-  font-size: 1rem;
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.menu-button:hover {
-  background-color: #A67C52;
-  color: white;
-  border-radius: 5px;
-}
-
-/* ---------- Carrito ---------- */
-.carrito-nav {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.carrito-nav:hover {
-  color: #FFDAB9;
-}
-
-/* ---------- Búsqueda ---------- */
-.search-container {
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border-radius: 5px;
-  overflow: hidden;
-  padding: 2px;
-  flex-grow: 1;
-  max-width: 400px;
-}
-
-.barra-buscar {
-  border: none;
-  outline: none;
-  padding: 8px 12px;
-  width: 100%;
-}
-
-.clear-search-btn {
-  background-color: #A67C52;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.clear-search-btn:hover {
-  background-color: #8b623f;
-}
-
-/* ---------- Dropdown ---------- */
-.dropdown-menu {
-  background-color: white;
-  border: 1px solid #ccc;
-  z-index: 999;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 250px;
-  max-height: 80vh;
-  overflow-y: auto;
-  border-radius: 8px;
-}
-
-.dropdown-menu.show {
-  display: block;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 768px) {
-  .nav-content {
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: #5D4636;
-    width: 100%;
-    padding: 1rem;
+  .nav-burger {
     display: none;
   }
 
-  .nav-content.show {
-    display: flex;
+  .dropdown-btn {
+    width: auto;
+    display: inline-block;
+    padding: 10px 16px;
   }
 
-  .menu-button {
-    width: 100%;
-    text-align: left;
-    font-size: 1rem;
-    padding: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .search-container {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .dropdown-menu {
-    width: 100%;
-    position: static;
-    box-shadow: none;
-    border-radius: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .menu-button {
-    font-size: 0.9rem;
-    padding: 10px;
-  }
-
-  .barra-buscar {
-    font-size: 0.9rem;
-    padding: 6px 10px;
-  }
-
-  .clear-search-btn {
-    padding: 6px 10px;
-    font-size: 0.9rem;
-  }
-
-  .carrito-nav {
-    font-size: 18px;
+  .dropdown-card {
+    position: absolute;
+    top: 70px;
+    right: 25px;
+    width: 300px;
+    z-index: 1000;
+    border-radius: 18px;
   }
 }

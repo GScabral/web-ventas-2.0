@@ -11,6 +11,10 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    email_cliente: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
 
   });
 

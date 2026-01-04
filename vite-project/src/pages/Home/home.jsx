@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { getProductos, paginado } from "../../redux/action";
-import './home.css';
+import "./home.css";
 import Nav from "./Nav/Nav";
 import Cards from "./Cards/Cards";
 import FiltrosSidebar from "./barralado/filtros";
 import Carrito from "./carrito/carrito";
 import Carousel from "./carrusel/carrusel";
 import { Link } from "react-router-dom";
-
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,21 +22,16 @@ const Home = () => {
   const [productosEnFav, setProductosEnFav] = useState([]);
   const [isResponsive, setIsResponsive] = useState(false);
 
-
-
   useEffect(() => {
     dispatch(getProductos());
   }, [dispatch]);
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
-
-
   useEffect(() => {
-    const handleResize = () => {
-      setIsResponsive(window.innerWidth <= 1000);
-    };
+    const handleResize = () => setIsResponsive(window.innerWidth <= 1000);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -47,19 +41,20 @@ const Home = () => {
   };
 
   const agregarAlCarrito = (producto, precio) => {
-    const nuevoProducto = { producto, precio };
-    setProductosEnCarrito([...productosEnCarrito, nuevoProducto]);
+    setProductosEnCarrito([...productosEnCarrito, { producto, precio }]);
   };
 
   const agregarFav = (producto, precio) => {
-    const nuevoProducto = { producto, precio };
-    setProductosEnFav([...productosEnFav, nuevoProducto]);
+    setProductosEnFav([...productosEnFav, { producto, precio }]);
   };
 
   return (
     <div className="home-fondo">
-      <div className={`main-content ${sidebarVisible ? 'sidebar-open' : ''}`}>
-        <div className="Home-container">
+
+      {/* MAIN */}
+      <div className={`main-content modern-container ${sidebarVisible ? "sidebar-open" : ""}`}>
+        
+        <div className="Home-container fade-in">
           <Cards
             productos={allProductos.filter(p => p.rama?.toLowerCase() === "ropa")}
             agregarAlCarrito={agregarAlCarrito}
@@ -67,32 +62,31 @@ const Home = () => {
           />
         </div>
 
-        <div className="botones-paginado">
+        {/* PAGINADO */}
+        <div className="paginado-wrapper">
           <button
-            className="arrow-paginado"
+            className="arrow-btn"
             onClick={() => currentPage > 1 && dispatch(paginado("prev"))}
             disabled={currentPage === 1}
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
-          <ul className="paginado">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li key={index}>
-                <a
-                  href="#"
-                  className={currentPage === index + 1 ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(paginado(index + 1));
-                  }}
+
+          <ul className="paginado-modern">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <li key={i}>
+                <button
+                  className={`page-pill ${currentPage === i + 1 ? "active" : ""}`}
+                  onClick={() => dispatch(paginado(i + 1))}
                 >
-                  {index + 1}
-                </a>
+                  {i + 1}
+                </button>
               </li>
             ))}
           </ul>
+
           <button
-            className="arrow-paginado"
+            className="arrow-btn"
             onClick={() => currentPage < totalPages && dispatch(paginado("next"))}
             disabled={currentPage === totalPages}
           >
@@ -101,67 +95,63 @@ const Home = () => {
         </div>
       </div>
 
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-section">
+      {/* FOOTER */}
+      <footer className="footer-modern">
+
+        <div className="footer-box">
+          <div>
             <h3>Sobre Nosotros</h3>
-            <p>Somos una tienda dedicada a ofrecer ropa única y de alta calidad. Nuestro objetivo es combinar estilo y confort en cada producto.</p>
+            <p>
+              Somos una tienda dedicada a ofrecer ropa única y de alta calidad.
+              Buscamos combinar estilo y confort en cada producto.
+            </p>
           </div>
 
-          <div className="footer-section">
-            <h3>Enlaces Rápidos</h3>
+          <div>
+            <h3>Enlaces</h3>
             <ul>
-              <li><a href="#">Inicio</a></li>
-              <li><a href="#">Tienda</a></li>
-              <li><a href="#">Contacto</a></li>
+              <li><a>Inicio</a></li>
+              <li><a>Tienda</a></li>
+              <li><a>Contacto</a></li>
             </ul>
           </div>
 
-          <div className="footer-section">
+          <div>
             <h3>Síguenos</h3>
-            <div className="social-icons">
-              <a href="#"><img src="/icons8-facebook-nuevo-48.png" alt="Facebook" /></a>
-              <a
-                href="https://www.instagram.com/amore_mio.showroom?igsh=MW1lOHBoeTFleHRobg=="
-                target="_blank"
-                rel="noopener noreferrer">
-                <img src="/instagram.png" alt="Instagram" />
+            <div className="social-row">
+              <a><img src="/icons8-facebook-nuevo-48.png" /></a>
+              <a href="https://www.instagram.com/amore_mio.showroom" target="_blank">
+                <img src="/instagram.png" />
               </a>
-              <a
-                href="https://wa.me/5493794155821?text=Hola%20quiero%20hacer%20una%20consulta"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="public/whatssap.png" alt="WhatsApp" />
+              <a href="https://wa.me/5493794155821" target="_blank">
+                <img src="public/whatssap.png" />
               </a>
             </div>
           </div>
 
-          <div className="footer-section">
-            <h3>Estamos en</h3>
+          <div>
+            <h3>Ubicación</h3>
             <a
               href="https://maps.app.goo.gl/qD8RgwyPKD6n3Ph86"
               target="_blank"
-              rel="noopener noreferrer"
-              className="location-link"
+              className="location-row"
             >
-              <p>Ontiveros 2010, W3402 Corrientes</p>
-              <img src="/icons8-location-48.png" alt="Ubicación" />
+              <p>Ontiveros 2010, Corrientes</p>
+              <img src="/icons8-location-48.png" />
             </a>
           </div>
 
-          <div className="footer-section">
+          <div>
             <h3>Formas de pago</h3>
-            <div className="payment-icons">
-              <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
-            </div>
+            <img src="/icons8-mercado-pago-48.png" />
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2025 Amore Mio. Todos los derechos reservados.</p>
+          <p>© 2025 Amore Mio. Todos los derechos reservados.</p>
         </div>
       </footer>
+
     </div>
   );
 };

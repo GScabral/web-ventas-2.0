@@ -1,121 +1,124 @@
-/* Contenedor principal del sidebar */
-.sidebar {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  z-index: 1000;
-  width: 280px;
-  padding: 16px;
-  transition: all 0.3s ease;
+/* --- PALETA PASTEL ---
+   Rosa suave: #F7DDE8
+   Lavanda: #E7E0FF
+   Menta suave: #DFF7EC
+   Gris claro: #F8F8FA
+   Texto: #4A4A4A
+*/
+
+.filtros-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 16px;
+  border: 2px solid #F7DDE8;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* Mostrar sidebar */
-.sidebar.show {
-  display: block;
+.titulo-panel {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #4A4A4A;
 }
 
-/* Título de secciones */
-.button-filtros {
-  background-color: #1e1e1e;
-  color: #ffffff;
-  padding: 12px 16px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.btn-section {
   width: 100%;
-  margin-bottom: 12px;
-  text-align: left;
-  transition: background-color 0.25s ease;
+  padding: 12px;
+  background: #F8F8FA;
+  border-radius: 12px;
+  border: 1px solid #E7E0FF;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: .25s ease;
+  font-weight: bold;
 }
 
-.button-filtros:hover {
-  background-color: #333;
+.btn-section:hover {
+  background: #E7E0FF;
 }
 
-/* Lista de filtros */
-.ul-filtros {
+.lista-filtros {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-top: 8px;
 }
 
-/* Botones de categoría */
-.button-talles {
-  background-color: transparent;
-  border: none;
-  color: #333;
-  padding: 10px 14px;
+.grupo-tarjeta {
+  margin-bottom: 12px;
+}
+
+/* --- BOTÓN PRINCIPAL DE TARJETA --- */
+.btn-subcat-tarjeta {
   width: 100%;
-  text-align: left;
-  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #E7E0FF;
+  padding: 10px 12px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 15px;
-  transition: background-color 0.2s;
+  text-align: left;
+  font-size: 1rem;
+  transition: 0.2s ease;
+  color: #4A4A4A;
 }
 
-.button-talles:hover {
-  background-color: #f1f1f1;
+.btn-subcat-tarjeta:hover {
+  background: #F7DDE8;
 }
 
-/* Botones de subcategoría */
-.button-sub-categoria {
-  background-color: transparent;
-  border: none;
-  color: #666;
-  padding: 8px 24px;
+.btn-subcat-tarjeta.activo {
+  background: #E7E0FF;
+  border-color: #CBB9FF;
+}
+
+/* --- TARJETA EXPANDIBLE --- */
+.tarjeta-contenido {
+  background: #ffffff;
+  border: 1px solid #F7DDE8;
+  border-radius: 12px;
+  margin-top: 6px;
+  padding: 0 10px;
+
+  /* Animación */
+  max-height: 0;
+  overflow: hidden;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform .35s ease, max-height .35s ease;
+}
+
+.tarjeta-contenido.show {
+  max-height: 300px;
+  transform: scaleY(1);
+}
+
+/* --- VARIANTES DENTRO DE TARJETA --- */
+.btn-variante-tarjeta {
   width: 100%;
+  padding: 10px;
+  background: #FFFFFF;
+  border: none;
+  border-bottom: 1px solid #F2F2F4;
   text-align: left;
-  font-size: 14px;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.2s;
+  color: #4A4A4A;
+  transition: .2s ease;
 }
 
-.button-sub-categoria:hover {
-  background-color: #f4f4f4;
+.btn-variante-tarjeta:last-child {
+  border-bottom: none;
 }
 
-/* Botón seleccionado */
-.button-selected {
-  background-color: #e0e0e0;
+.btn-variante-tarjeta:hover {
+  background: #DFF7EC;
+}
+
+.btn-variante-tarjeta.activo {
+  background: #E7E0FF;
   font-weight: bold;
-  color: #000;
 }
 
-/* Línea divisora */
 .divider {
   border: none;
   height: 1px;
-  background-color: #ddd;
-  margin: 16px 0;
-}
-
-/* Responsive para móviles */
-@media (max-width: 768px) {
-  .sidebar {
-    position: static;
-    width: 100%;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 14px;
-  }
-
-  .button-filtros {
-    font-size: 15px;
-    padding: 10px 14px;
-  }
-
-  .button-talles {
-    font-size: 14px;
-  }
-
-  .button-sub-categoria {
-    font-size: 13px;
-    padding: 6px 20px;
-  }
+  background: #E7E0FF;
+  margin: 18px 0;
 }
