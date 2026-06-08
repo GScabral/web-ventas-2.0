@@ -16,7 +16,7 @@ import {
   ELIMINAR_PRODUCTO_FAV,
   CAMBIO,
   BORRAR_PRODUCTO,
-  PEDIDO,
+  POST_PEDIDO,
   ACTUALIZAR_VARIANTES,
   ACTUALIZAR_CARRITO,
   BUSCAR_NOMBRE,
@@ -27,12 +27,12 @@ import {
   OBTENER_INFO_USUARIO,
   GET_PEDIDOS,
   GET_CLIENTES,
-  ENVIAR_ESTADO,
-  DESPACHAR_PRODUCTO,
   OFERTA,
   GET_OFERTAS,
   BORRAR_OFERTA,
   ADMIN_LOGIN_SUCCESS,
+  UPDATE_ESTADO_PEDIDO,
+  ELIMINAR_PEDIDO
 } from "./action"
 
 const initialState = {
@@ -56,8 +56,6 @@ const initialState = {
   allPedidos: [],
   allPedidosBackup: [],
   isLoggedIn: false,
-  estado: null,
-  productosDespuesPedido: [],
   isLoggedInAd: false,
   cantidadOferta: {},
   ofertasActivas: [],
@@ -168,8 +166,6 @@ const reducer = (state = initialState, action) => {
       const { rama, categoria, subcategoria } = action.payload;
       let filteredProducts = state.allProductosBackUp;
 
-      console.log("🔎 Filtros recibidos:", { rama, categoria, subcategoria });
-      console.log("📦 Productos totales antes de filtrar:", state.allProductosBackUp.length);
 
       // 👉 Filtrar por Rama
       if (rama) {
@@ -179,7 +175,6 @@ const reducer = (state = initialState, action) => {
             producto.rama &&
             producto.rama.toLowerCase() === ramaFiltrada
         );
-        console.log(`✅ Después de filtrar por rama (${ramaFiltrada}):`, filteredProducts.length);
       }
 
       // 👉 Filtrar por Categoría
@@ -190,7 +185,6 @@ const reducer = (state = initialState, action) => {
             producto.categoria &&
             producto.categoria.toLowerCase() === categoriaFiltrada
         );
-        console.log(`✅ Después de filtrar por categoría (${categoriaFiltrada}):`, filteredProducts.length);
       }
 
       // 👉 Filtrar por Subcategoría
@@ -201,7 +195,6 @@ const reducer = (state = initialState, action) => {
             producto.subcategoria &&
             producto.subcategoria.toLowerCase() === subcategoriaFiltrada
         );
-        console.log(`✅ Después de filtrar por subcategoría (${subcategoriaFiltrada}):`, filteredProducts.length);
       }
 
       // 🔑 Paginado siempre sobre productos filtrados
@@ -215,8 +208,6 @@ const reducer = (state = initialState, action) => {
         endIndex
       );
 
-      console.log("📌 Total filtrados:", totalFilteredItems);
-      console.log("📌 Paginados que se muestran ahora:", paginatedFilteredProducts.length);
 
       return {
         ...state,
@@ -347,17 +338,37 @@ const reducer = (state = initialState, action) => {
         fav: favActualizado, // Actualizar los favoritos sin el producto borrado
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    case PEDIDO:
-      const productosEnCarrito = state.carrito;
+    case POST_PEDIDO:
 
-      // Actualizar la cantidad disponible de los productos en base a lo que se ha comprado en el carrito
-      const productosActualizadosCompra = state.allProductosBackUp.map(producto => {
-        const cantidadEnCarrito = productosEnCarrito.filter(item => item.id === producto.id).length;
-        return {
-          ...producto,
-          cantidad_disponible: producto.cantidad_disponible - cantidadEnCarrito,
-        };
-      });
+    case POST_PEDIDO:
+  return {
+    ...state,
+  };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case UPDATE_ESTADO_PEDIDO:
+
+      return {
+
+        ...state,
+
+        allPedidos:
+          state.allPedidos.map(
+            pedido =>
+              pedido.id_pedido ===
+                action.payload.id_pedido
+                ? action.payload
+                : pedido
+          ),
+
+        allPedidosBackUp:
+          state.allPedidosBackUp.map(
+            pedido =>
+              pedido.id_pedido ===
+                action.payload.id_pedido
+                ? action.payload
+                : pedido
+          )
+      };
 
 
       return {
@@ -426,6 +437,28 @@ const reducer = (state = initialState, action) => {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case ELIMINAR_PEDIDO:
+
+      return {
+
+        ...state,
+
+        allPedidos:
+          state.allPedidos.filter(
+            pedido =>
+              pedido.id_pedido !==
+              action.payload
+          ),
+
+        allPedidosBackUp:
+          state.allPedidosBackUp.filter(
+            pedido =>
+              pedido.id_pedido !==
+              action.payload
+          )
+      };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     case CHECK_EMAIL_EXISTENCE_REQUEST:
       return {
@@ -459,11 +492,16 @@ const reducer = (state = initialState, action) => {
         // También puedes hacer otros ajustes necesarios al estado aquí
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    case GET_PEDIDOS: // Nuevo caso para manejar la acción GET_PEDIDOS
+    case GET_PEDIDOS:
+
       return {
+
         ...state,
-        allPedidos: action.payload, // Almacena todos los pedidos recibidos del servidor
-        allPedidosBackUp: action.payload, // También establece la copia de seguridad de todos los pedidos
+
+        allPedidos: action.payload,
+
+        allPedidosBackUp:
+          action.payload
       };
 
 
@@ -475,34 +513,8 @@ const reducer = (state = initialState, action) => {
         allClientesBackUp: action.payload,
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    case ENVIAR_ESTADO:
-      return {
-        ...state,
-        estado: action.payload,
-      };
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-    case DESPACHAR_PRODUCTO:
-      const { pedidoId, detalleId } = action.payload;
-      return {
-        ...state,
-        allPedidos: state.allPedidos.map((pedido) => {
-          if (pedido.id === pedidoId) {
-            return {
-              ...pedido,
-              detalles: pedido.detalles.map((detalle) => {
-                if (detalle.idDetalle === detalleId) {
-                  return {
-                    ...detalle,
-                    despachado: true
-                  };
-                }
-                return detalle;
-              })
-            };
-          }
-          return pedido;
-        })
-      };
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 

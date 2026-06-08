@@ -1,0 +1,90 @@
+.buybox {
+  background: white;
+  padding: 25px;
+  border-radius: 24px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.05);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.qty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qty label {
+  font-weight: 600;
+}
+
+.qty input {
+  width: 120px;
+  height: 50px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.add-btn {
+  height: 58px;
+  border: none;
+  border-radius: 16px;
+  background: #111;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  background: #222;
+}
+
+.add-btn:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 768px) {
+  .buybox {
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .qty input {
+    width: 100px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .add-btn {
+    height: 50px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .buybox {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .qty label {
+    font-size: 0.95rem;
+  }
+
+  .qty input {
+    width: 100%;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .add-btn {
+    height: 44px;
+    font-size: 0.9rem;
+  }
+}

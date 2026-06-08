@@ -1,0 +1,363 @@
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+
+  background: #111827;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px;
+
+  border-right: 1px solid #1f2937;
+
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+
+  margin-bottom: 40px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  text-decoration: none;
+
+  color: #d1d5db;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  transition: all 0.2s ease;
+}
+
+.menuButton:hover {
+  background: #1f2937;
+  color: white;
+}
+
+.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* MAIN */
+
+.mainContent {
+  flex: 1;
+  margin-left: 280px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 80px;
+
+  background: white;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 32px;
+}
+
+.headerTitle {
+  margin: 0;
+
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+.headerSubtitle {
+  margin: 4px 0 0;
+
+  color: #6b7280;
+
+  font-size: 0.9rem;
+}
+
+.mobileMenu {
+  display: none;
+
+  border: none;
+  background: transparent;
+
+  font-size: 1.5rem;
+
+  cursor: pointer;
+}
+
+/* CONTENT */
+
+.contentCard {
+  margin: 24px;
+
+  padding: 24px;
+
+  background: white;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.04),
+    0 10px 15px rgba(0, 0, 0, 0.02);
+
+  min-height: calc(100vh - 130px);
+}
+
+/* LOGIN */
+
+.modalIniAdm {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2000;
+}
+
+.modalContentIniAdm {
+  width: 400px;
+
+  background: white;
+
+  border-radius: 20px;
+
+  padding: 30px;
+}
+
+.inputLabel {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-weight: 600;
+}
+
+.inputPassword {
+  width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  margin-bottom: 20px;
+}
+
+.loginButton {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #2563eb;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: 0.3s;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 75vw;
+    max-width: 250px;
+    padding: 20px 16px;
+
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+
+  }
+
+  .menuButton {
+    padding: 12px 14px;
+    gap: 10px;
+    font-size: 0.9rem;
+
+  }
+
+  .header {
+    height: 70px;
+    padding: 0 20px;
+
+  }
+
+  .headerTitle {
+    font-size: 1.2rem;
+
+  }
+
+  .headerSubtitle {
+    font-size: 0.8rem;
+
+  }
+
+  .contentCard {
+    margin: 16px;
+    padding: 16px;
+
+  }
+
+  .modalContentIniAdm {
+    width: min(90%, 350px);
+    padding: 24px;
+
+  }
+
+
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 100vw;
+    max-width: none;
+    padding: 16px 12px;
+
+  }
+
+  .logo {
+    font-size: 1rem;
+    margin-bottom: 20px;
+
+  }
+
+  .menu {
+    gap: 6px;
+
+  }
+
+  .menuButton {
+    padding: 10px 12px;
+    gap: 8px;
+    font-size: 0.85rem;
+
+  }
+
+  .header {
+    height: 60px;
+    padding: 0 16px;
+    flex-wrap: wrap;
+
+  }
+
+  .headerTitle {
+    font-size: 1rem;
+
+  }
+
+  .headerSubtitle {
+    display: none;
+
+  }
+
+  .mobileMenu {
+    font-size: 1.2rem;
+
+  }
+
+  .contentCard {
+    margin: 12px 8px;
+    padding: 12px;
+    border-radius: 12px;
+    min-height: calc(100vh - 100px);
+
+  }
+
+  .modalIniAdm {
+    z-index: 3000;
+
+  }
+
+  .modalContentIniAdm {
+    width: 90%;
+    max-width: 300px;
+    padding: 20px;
+    border-radius: 16px;
+
+  }
+
+  .inputLabel {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+
+  }
+
+  .inputPassword {
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 16px;
+
+  }
+
+  .loginButton {
+    padding: 10px;
+    font-size: 14px;
+
+  }
+
+
+}

@@ -1,0 +1,197 @@
+.trending-section {
+    padding: 120px 5%;
+    background: #deceee;
+}
+
+.trending-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.trending-header span {
+    font-size: .85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #8b7b68;
+}
+
+.trending-header h2 {
+    margin-top: 15px;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: #1f1f1f;
+}
+
+.trending-header p {
+    margin-top: 15px;
+    color: #666;
+    line-height: 1.8;
+}
+
+.featured-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.featured-main {
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    min-height: 700px;
+    text-decoration: none;
+}
+
+.featured-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .8s ease;
+}
+
+.featured-main:hover img {
+    transform: scale(1.08);
+}
+
+.featured-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    padding: 40px;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,.85),
+        transparent
+    );
+    color: white;
+}
+
+.featured-overlay span {
+    font-size: .9rem;
+    letter-spacing: 2px;
+}
+
+.featured-overlay h3 {
+    margin-top: 10px;
+    font-size: 3rem;
+}
+
+.featured-overlay p {
+    margin-top: 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.featured-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-card {
+    display: flex;
+    gap: 15px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: .3s ease;
+}
+
+.side-card:hover {
+    transform: translateX(8px);
+}
+
+.side-card img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+}
+
+.side-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.side-info span {
+    font-size: .75rem;
+    color: #8b7b68;
+    text-transform: uppercase;
+}
+
+.side-info h4 {
+    margin: 8px 0;
+    color: #222;
+}
+
+.side-info p {
+    font-weight: 600;
+    color: #111;
+}
+
+@media (max-width: 1024px) {
+    .trending-section {
+        padding: 100px 4%;
+    }
+
+    .featured-layout {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 20px;
+    }
+
+    .featured-main {
+        min-height: 500px;
+    }
+
+    .featured-overlay h3 {
+        font-size: 2.2rem;
+    }
+
+    .featured-overlay p {
+        font-size: 1.1rem;
+    }
+
+    .side-card img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .trending-section {
+        padding: 80px 3%;
+    }
+
+    .trending-header {
+        margin: 0 auto 40px;
+    }
+
+    .trending-header span {
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+    }
+
+    .trending-header h2 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin-top: 12px;
+    }
+
+    .trending-header p {
+        margin-top: 12px;
+        font-size: 0.9rem;
+    }
+
+    .featured-layout {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .featured-main {
+        min-height: 350px;
+    }
+
+    .featured-overlay {\n        padding: 30px;\n    }\n\n    .featured-overlay span {\n        font-size: 0.8rem;\n    }\n\n    .featured-overlay h3 {\n        margin-top: 8px;\n        font-size: 1.8rem;\n    }\n\n    .featured-overlay p {\n        margin-top: 8px;\n        font-size: 1rem;\n    }\n\n    .featured-side {\n        gap: 15px;\n    }\n\n    .side-card {\n        gap: 12px;\n    }\n\n    .side-card img {\n        width: 90px;\n        height: 90px;\n        min-width: 90px;\n    }\n\n    .side-info {\n        padding: 10px;\n    }\n\n    .side-info h4 {\n        font-size: 0.9rem;\n    }\n}\n\n@media (max-width: 600px) {\n    .trending-section {\n        padding: 60px 3%;\n    }\n\n    .trending-header {\n        margin: 0 auto 30px;\n    }\n\n    .trending-header span {\n        font-size: 0.7rem;\n        letter-spacing: 1.5px;\n    }\n\n    .trending-header h2 {\n        font-size: clamp(1.2rem, 3vw, 1.8rem);\n        margin-top: 10px;\n    }\n\n    .trending-header p {\n        margin-top: 10px;\n        font-size: 0.8rem;\n        line-height: 1.6;\n    }\n\n    .featured-main {\n        min-height: 250px;\n        border-radius: 20px;\n    }\n\n    .featured-overlay {\n        padding: 20px;\n    }\n\n    .featured-overlay span {\n        font-size: 0.7rem;\n        letter-spacing: 1px;\n    }\n\n    .featured-overlay h3 {\n        font-size: 1.3rem;\n        margin-top: 5px;\n    }\n\n    .featured-overlay p {\n        font-size: 0.85rem;\n        margin-top: 5px;\n    }\n\n    .side-card {\n        gap: 10px;\n        border-radius: 15px;\n    }\n\n    .side-card img {\n        width: 70px;\n        height: 70px;\n        min-width: 70px;\n    }\n\n    .side-info {\n        padding: 8px;\n    }\n\n    .side-info span {\n        font-size: 0.65rem;\n    }\n\n    .side-info h4 {\n        margin: 5px 0;\n        font-size: 0.8rem;\n    }\n\n    .side-info p {\n        font-size: 0.75rem;\n    }\n}"

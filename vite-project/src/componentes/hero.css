@@ -1,0 +1,559 @@
+.hero {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 75vh;
+
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+
+    gap: 40px;
+
+    align-items: center;
+
+    padding: 60px;
+
+    border-radius: 36px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(135deg,
+            #dfe8ff,
+            #eef4ff);
+
+    margin-bottom: 50px;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at top right,
+            rgba(93, 139, 232, 0.18),
+            transparent 40%);
+
+    pointer-events: none;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 24px;
+}
+
+.hero-badge {
+    width: fit-content;
+
+    padding: 10px 18px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(93, 139, 232, 0.15);
+
+    color: #002B81;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.hero-content h1 {
+    margin: 0;
+
+    font-size: 64px;
+    line-height: 1.05;
+
+    color: #002B81;
+}
+
+.hero-content p {
+    max-width: 520px;
+
+    font-size: 18px;
+    line-height: 1.7;
+
+    color: #40537a;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.hero-buttons {
+    display: flex;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    padding: 16px 28px;
+
+    border-radius: 18px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    transition: 0.3s ease;
+}
+
+.hero-btn.primary {
+    background:
+        linear-gradient(135deg,
+            #002B81,
+            #5D8BE8);
+
+    color: white;
+}
+
+.hero-btn.secondary {
+    background: white;
+
+    color: #002B81;
+
+    border: 1px solid #dbe4ff;
+}
+
+.hero-btn:hover {
+    transform:
+        translateY(-3px) scale(1.03);
+}
+
+/* =========================
+   BENEFITS
+========================= */
+
+.hero-benefits {
+    display: flex;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+}
+
+.benefit {
+    padding: 12px 18px;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255, 255, 255, 0.65);
+
+    backdrop-filter: blur(10px);
+
+    font-weight: 600;
+
+    color: #10254F;
+}
+
+.clickable {
+    cursor: pointer;
+
+    transition: .3s ease;
+}
+
+.clickable:hover {
+    transform: translateY(-3px);
+
+    background:
+        rgba(93, 139, 232, 0.12);
+
+    box-shadow:
+        0 8px 20px rgba(93, 139, 232, 0.15);
+}
+
+/* =========================
+   STATS
+========================= */
+
+.hero-stats {
+    display: flex;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+
+    margin-top: 10px;
+}
+
+.stat-card {
+    min-width: 120px;
+
+    padding: 18px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.5);
+
+    backdrop-filter: blur(12px);
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.stat-card strong {
+    font-size: 28px;
+
+    color: #002B81;
+}
+
+.stat-card span {
+    color: #5d6f96;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.hero-image {
+    position: relative;
+
+    z-index: 2;
+
+    height: 650px;
+
+    overflow: hidden;
+
+    border-radius: 32px;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 0;
+
+    transform: scale(1);
+
+    transition:
+        opacity 1.4s ease,
+        transform 7s ease;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.18);
+}
+
+.hero-slide.active {
+    opacity: 1;
+
+    transform: scale(1.08);
+}
+
+/* =========================
+   FLOATING CARD
+========================= */
+
+.floating-card {
+    position: absolute;
+
+    bottom: 20px;
+    left: -20px;
+
+    padding: 18px 22px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.85);
+
+    backdrop-filter: blur(16px);
+
+    font-weight: 700;
+
+    color: #002B81;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(0, 25, 80, 0.35);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 9999;
+
+    animation: fadeIn .25s ease;
+}
+
+.modal-content {
+    width: min(550px, 92%);
+
+    padding: 32px;
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.92);
+
+    backdrop-filter: blur(20px);
+
+    border:
+        1px solid rgba(93, 139, 232, 0.15);
+
+    box-shadow:
+        0 20px 50px rgba(0, 43, 129, 0.15);
+
+    color: #10254F;
+
+    position: relative;
+
+    animation: modalUp .3s ease;
+}
+
+.modal-content h2 {
+    margin: 0 0 18px;
+
+    color: #002B81;
+
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.modal-content p {
+    color: #40537a;
+
+    line-height: 1.7;
+
+    margin-bottom: 20px;
+}
+
+.modal-content ul {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.modal-content li {
+    padding: 14px 16px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(93, 139, 232, 0.08);
+
+    color: #10254F;
+
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        rgba(93, 139, 232, 0.12);
+
+    color: #002B81;
+
+    cursor: pointer;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    transition: .25s ease;
+}
+
+.modal-close:hover {
+    background:
+        rgba(93, 139, 232, 0.2);
+
+    transform: rotate(90deg);
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalUp {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1024px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+
+        padding: 40px;
+
+        gap: 30px;
+
+        min-height: auto;
+    }
+
+    .hero-content h1 {
+        font-size: 48px;
+    }
+
+    .hero-image {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .hero {
+        padding: 30px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 36px;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+    }
+
+    .hero-image {
+        height: 400px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .hero {
+        padding: 24px 16px;
+
+        margin-bottom: 30px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+
+        line-height: 1.2;
+    }
+
+    .hero-content p {
+        font-size: 14px;
+
+        max-width: 100%;
+    }
+
+    .hero-badge {
+        font-size: 11px;
+
+        padding: 8px 14px;
+    }
+
+    .hero-image {
+        height: 320px;
+    }
+
+    .floating-card {
+        left: 10px;
+        bottom: 10px;
+    }
+
+    .modal-content {
+        padding: 24px;
+
+        border-radius: 22px;
+    }
+
+    .modal-content h2 {
+        font-size: 22px;
+    }
+
+    .modal-content li {
+        padding: 12px 14px;
+
+        font-size: 14px;
+    }
+
+    .modal-close {
+        width: 36px;
+        height: 36px;
+    }
+}

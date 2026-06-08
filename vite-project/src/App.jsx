@@ -1,23 +1,22 @@
 import React from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home/home'
-// import Landing from './pages/landing/landing'
 import PanelAdmin from './admin/panelAdmin'
 import Detail from './pages/Home/Detail/detail'
-import NewUser from './CC/crearCuenta'
-import Ingresar from './IS/iniciarSesion'
-import MetodoPago from './pages/Home/Detail/mp'
 import Carrito from './pages/Home/carrito/carrito'
-import Fav from './pages/Home/fav/fav'
 import Nav from './pages/Home/Nav/Nav'
 import Principal from './admin/inicio/principalAdmin'
 import NewProduct from './admin/añadir/añadirProducto'
 import ProductList from './admin/productos/listadoProductos'
 import DevolucionCambio from './pages/Home/devolucion/devolucion'
-import Ofertas from './pages/Home/ofertas/ofertas'
-import PagAccesorios from './pages/Home/accesorios/pagAccesorios'
 import VentaPorMayor from './pages/Home/VentaPorMayor/VentaPorMayor'
-import PagMaquillaje from './pages/Home/maquillaje/PagMaquillaje'
+// import Landing from './pages/landing/landing'
+// import NewUser from './CC/crearCuenta'
+// import Ingresar from './IS/iniciarSesion'
+// import Fav from './pages/Home/fav/fav'
+// import Ofertas from './pages/Home/ofertas/ofertas'
+// import PagAccesorios from './pages/Home/accesorios/pagAccesorios'
+// import PagMaquillaje from './pages/Home/maquillaje/PagMaquillaje'
 
 function App() {
   const location = useLocation();
@@ -35,16 +34,15 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/admin/*' element={<AdminRoutes />} />
         <Route path="/detail/:id" element={<Detail />} />
-        <Route path='/newUser' element={<NewUser />} />
-        <Route path='/iniciar' element={<Ingresar />} />
         <Route path='/DevolucionCambio' element={<DevolucionCambio />} />
-        <Route path='/comoPagar' element={<MetodoPago />} />
         <Route path='/carrito' element={<Carrito />} />
-        <Route path='/Favorito' element={<Fav />} />
-        <Route path='/Ofertas' element={<Ofertas />} />
-        <Route path='/Accesorios' element={<PagAccesorios />} />
-        <Route path='/VentaPorMayor' element={<VentaPorMayor />} />
-        <Route path='/Maquillaje' element={<PagMaquillaje />} />
+        {/* <Route path='/newUser' element={<NewUser />} />
+        <Route path='/iniciar' element={<Ingresar />} /> */}
+        {/* <Route path='/Favorito' element={<Fav />} /> */}
+        {/* <Route path='/Ofertas' element={<Ofertas />} /> */}
+        {/* <Route path='/Accesorios' element={<PagAccesorios />} /> */}
+        {/* <Route path='/VentaPorMayor' element={<VentaPorMayor />} /> */}
+        {/* <Route path='/Maquillaje' element={<PagMaquillaje />} /> */}
       </Routes>
 
     </div>

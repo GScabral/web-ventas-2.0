@@ -53,9 +53,10 @@ modelDefiners.forEach(model => model(sequelize, DataTypes));
 // Obtener los modelos
 const models = sequelize.models;
 
+
 // Definir las relaciones
 if (models) {
-    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta } = models;
+    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta, sections } = models;
 
     Pedido.belongsToMany(Productos, { through: 'pedidoproductos' });
     Productos.belongsToMany(Pedido, { through: 'pedidoproductos' });
@@ -65,14 +66,29 @@ if (models) {
         onDelete: 'CASCADE', // Acción a tomar cuando se elimine el producto asociado
         onUpdate: 'CASCADE', // Acción a tomar cuando se actualice el producto asociado
     });
+    sections.belongsToMany(Productos, {
+        through: "HomeSectionProductos",
+        foreignKey: "section_id",
+        otherKey: "producto_id"
+    });
+
+    Productos.belongsToMany(sections, {
+        through: "HomeSectionProductos",
+        foreignKey: "producto_id",
+        otherKey: "section_id"
+    });
 
     Cliente.hasMany(Pedido); // Un cliente puede tener muchos pedidos
     Pedido.belongsTo(Cliente); // Un pedido pertenece a un cliente
 
     // En el modelo Pedido
-    Pedido.hasMany(DetallesPedido, { foreignKey: 'PedidoIdPedido' });
+    Pedido.hasMany(DetallesPedido, {
+        foreignKey: "PedidoIdPedido",
+    });
 
-    DetallesPedido.belongsTo(Pedido, { foreignKey: 'PedidoIdPedido' });
+    DetallesPedido.belongsTo(Pedido, {
+        foreignKey: "PedidoIdPedido",
+    });
 
     Productos.hasMany(variantesproductos, { foreignKey: 'ProductoIdProducto' });
 

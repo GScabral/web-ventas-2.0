@@ -27,9 +27,17 @@ server.use('/', routes);
 // Manejo de errores
 server.use((err, req, res, next) => {
   const status = err.status || 500;
-  const message = err.message || 'Something went wrong';
-  console.error(err);
-  res.status(status).send(message);
+  const message = err.message || 'Ocurrió un error inesperado';
+  const details = err.details || undefined;
+  if (process.env.NODE_ENV === 'development') {
+    console.error(err);
+  }
+  res.status(status).json({
+    error: true,
+    message,
+    details,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
 });
 
 module.exports = server;

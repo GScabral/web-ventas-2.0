@@ -1,0 +1,87 @@
+.product-badges {
+  margin-bottom: 20px;
+}
+
+.badge-group {
+  margin-bottom: 14px;
+}
+
+.badge-title {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #64748b;
+}
+
+.badges {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.badge {
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.badge-size {
+  background: #dbeafe;
+
+  color: #1d4ed8;
+}
+
+.badge-color {
+  background: #fef3c7;
+
+  color: #b45309;
+}
+
+@media (max-width: 768px) {
+  .badge-title {
+    font-size: 12px;
+  }
+
+  .badges {
+    gap: 6px;
+  }
+
+  .badge {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-badges {
+    margin-bottom: 16px;
+  }
+
+  .badge-group {
+    margin-bottom: 10px;
+  }
+
+  .badge-title {
+    font-size: 11px;
+  }
+
+  .badges {
+    gap: 4px;
+  }
+
+  .badge {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}

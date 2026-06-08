@@ -35,10 +35,8 @@ router.post("/nuevaOferta",async(req,res)=>{
 
 
 router.delete("/eliminar/:id", async (req, res) => {
-    console.log("id en route",req.params)
 
     const {id} = req.params;
-    console.log("id en route",id)
     try {
         const eliminar = await deleteOferta(id);
         if (eliminar.error) {

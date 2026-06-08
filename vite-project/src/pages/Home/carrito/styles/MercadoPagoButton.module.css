@@ -1,0 +1,62 @@
+.container {
+  margin-top: 25px;
+
+  border-top: 1px solid #eee;
+
+  padding-top: 20px;
+}
+
+.title {
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  color: #6b7280;
+
+  margin-bottom: 10px;
+}
+
+.wallet {
+  width: 100%;
+
+  min-height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .title {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .wallet {
+    min-height: 56px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+
+  .title {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .wallet {
+    min-height: 50px;
+  }
+}

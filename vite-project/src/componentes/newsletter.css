@@ -1,0 +1,180 @@
+.newsletter-section {
+
+    margin:
+        100px 0 60px;
+}
+
+.newsletter-card {
+
+    padding: 70px;
+
+    border-radius: 32px;
+
+    background:
+        linear-gradient(135deg,
+            #002B81,
+            #10254F);
+
+    color: white;
+
+    text-align: center;
+}
+
+.newsletter-card span {
+
+    color: #99BBFF;
+
+    letter-spacing: 3px;
+
+    font-weight: 700;
+}
+
+.newsletter-card h2 {
+
+    font-size: 48px;
+
+    margin: 20px 0;
+}
+
+.newsletter-card p {
+
+    font-size: 18px;
+
+    opacity: 0.9;
+}
+
+.newsletter-form {
+
+    margin-top: 35px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+}
+
+.newsletter-form input {
+
+    width: 340px;
+
+    padding: 18px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+.newsletter-form button {
+
+    padding: 18px 28px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: #5D8BE8;
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .newsletter-card {
+        padding: 50px;
+    }
+
+    .newsletter-card h2 {
+        font-size: 36px;
+    }
+
+    .newsletter-card p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-section {
+        margin: 80px 0 50px;
+    }
+
+    .newsletter-card {
+        padding: 40px 30px;
+    }
+
+    .newsletter-card h2 {
+        font-size: 28px;
+        margin: 15px 0;
+    }
+
+    .newsletter-card p {
+        font-size: 14px;
+    }
+
+    .newsletter-form {
+        margin-top: 25px;
+        gap: 10px;
+    }
+
+    .newsletter-form input {
+        width: 280px;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .newsletter-form button {
+        padding: 14px 24px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .newsletter-section {
+        margin: 60px 0 40px;
+    }
+
+    .newsletter-card {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .newsletter-card span {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .newsletter-card h2 {
+        font-size: 20px;
+        margin: 12px 0;
+    }
+
+    .newsletter-card p {
+        font-size: 13px;
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .newsletter-form input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .newsletter-form button {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+}

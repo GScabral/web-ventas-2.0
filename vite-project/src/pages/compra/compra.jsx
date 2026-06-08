@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPedido,actualizarVariante } from "../../redux/action";
-import "./compra.css";
 
 const Pedido = ({ onRealizarPedido, errorStock }) => {
   const dispatch = useDispatch();

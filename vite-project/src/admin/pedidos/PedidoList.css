@@ -1,0 +1,144 @@
+.pedidos-page {
+  padding: 20px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.pedidos-header {
+  margin-bottom: 25px;
+}
+
+.pedidos-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.pedidos-header p {
+  color: #666;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(180px, 1fr)
+  );
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.08);
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.stat-card span {
+  color: #666;
+}
+
+.warning {
+  border-left: 5px solid #ff9800;
+}
+
+.info {
+  border-left: 5px solid #2196f3;
+}
+
+.success {
+  border-left: 5px solid #4caf50;
+}
+
+.complete {
+  border-left: 5px solid #673ab7;
+}
+
+.feedback-success {
+  background: #4caf50;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.kanban-board {
+  display: grid;
+  grid-template-columns:
+    repeat(4, 1fr);
+  gap: 20px;
+}
+
+.kanban-column {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  min-height: 600px;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.08);
+}
+
+.kanban-column h2 {
+  margin-bottom: 15px;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.pendiente {
+  color: #ff9800;
+}
+
+.preparando {
+  color: #2196f3;
+}
+
+.enviado {
+  color: #4caf50;
+}
+
+.entregado {
+  color: #673ab7;
+}
+
+@media (max-width: 1400px) {
+  .kanban-board {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+
+  .pedidos-page {
+    padding: 16px;
+  }
+
+  .pedidos-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-card h3 {
+    font-size: 24px;
+  }
+
+  .kanban-column {\n    min-height: 400px;\n    padding: 12px;\n  }\n\n  .kanban-column h2 {\n    font-size: 1rem;\n    margin-bottom: 12px;\n  }\n}\n\n@media (max-width: 600px) {\n  .pedidos-page {\n    padding: 12px;\n  }\n\n  .pedidos-header h1 {\n    font-size: 1.2rem;\n  }\n\n  .pedidos-header p {\n    font-size: 0.85rem;\n  }\n\n  .stats-grid {\n    grid-template-columns: 1fr;\n  }\n\n  .stat-card {\n    padding: 12px;\n  }\n\n  .stat-card h3 {\n    font-size: 20px;\n  }\n\n  .kanban-board {\n    gap: 12px;\n  }\n\n  .kanban-column {\n    min-height: 300px;\n    padding: 10px;\n  }\n\n  .kanban-column h2 {\n    font-size: 0.9rem;\n    margin-bottom: 10px;\n  }\n}"

@@ -1,0 +1,107 @@
+import React from "react";
+
+import ProductBadges from "./ProductBadges";
+import ProductActions from "./ProductActions";
+
+import "../styles/ProductCard.css";
+
+const ProductCard = ({
+    producto,
+    onEdit,
+    onDelete,
+    onOferta,
+}) => {
+    const totalStock =
+        producto?.variantes?.reduce(
+            (acc, variante) =>
+                acc +
+                (variante.cantidad_disponible || 0),
+            0
+        ) || 0;
+
+    return (
+        <div className="product-card">
+
+            <div className="product-card-header">
+
+                <div>
+
+                    <span className="product-id">
+                        #{producto.id}
+                    </span>
+
+                    <h3 className="product-title">
+                        {producto.nombre}
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <p className="product-description">
+
+                {producto.descripcion ||
+                    "Sin descripción"}
+
+            </p>
+
+            <div className="product-info">
+
+                <div className="info-item">
+
+                    <span className="info-label">
+                        Categoría
+                    </span>
+
+                    <strong>
+                        {producto.categoria}
+                    </strong>
+
+                </div>
+
+                <div className="info-item">
+
+                    <span className="info-label">
+                        Precio
+                    </span>
+
+                    <strong className="price">
+
+                        ${producto.precio}
+
+                    </strong>
+
+                </div>
+
+                <div className="info-item">
+
+                    <span className="info-label">
+                        Stock Total
+                    </span>
+
+                    <strong>
+
+                        {totalStock}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <ProductBadges
+                variantes={producto.variantes}
+            />
+
+            <ProductActions
+                productId={producto.id}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onOferta={onOferta}
+            />
+
+        </div>
+    );
+};
+
+export default ProductCard;

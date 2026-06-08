@@ -1,14 +1,16 @@
 const { Router } = require("express");
 require('dotenv').config();
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
 const createAdmin = require("../controllers/admin/admin")
+const loginAdmin = require("../controllers/admin/login");
 const actualizarStock = require("../controllers/admin/patchAdminProduc");
 const enviarCorreo = require("../controllers/correo/correo");
+const { verificarTokenAdmin } = require("../middleware/auth");
 
 
 const router = Router();
 
-router.post("/NewAdmin", async (req, res) => {
+router.post("/NewAdmin", verificarTokenAdmin, async (req, res) => {
   try {
     const nuevoAdmin = await createAdmin(req.body);
 
@@ -27,7 +29,7 @@ router.post("/NewAdmin", async (req, res) => {
 
 
 
-router.patch("/cambioAdmin/:id", async (req, res) => {
+router.patch("/cambioAdmin/:id", verificarTokenAdmin, async (req, res) => {
   try {
     await actualizarStock(req.params.id, req.body); // Pasar todos los datos del producto
     res.status(200).json();
@@ -37,7 +39,7 @@ router.patch("/cambioAdmin/:id", async (req, res) => {
   }
 });
 
-router.post('/confirmacionPedido', async (req, res) => {
+router.post('/confirmacionPedido', verificarTokenAdmin, async (req, res) => {
   try {
     const { idPedido, infoPedido, correo, total } = req.body;
 
@@ -59,12 +61,35 @@ router.post('/confirmacionPedido', async (req, res) => {
 
 
 
-router.post('/loginc', (req, res) => {
-  const { password } = req.body;
-  if (password === ADMIN_PASSWORD) {
-    res.status(200).json({ message: 'Autenticación exitosa' });
-  } else {
-    res.status(401).json({ message: 'Autenticación fallida' });
+router.post('/login', async (req, res) => {
+  try {
+    const { correo, username, password } = req.body;
+    const authResult = await loginAdmin({ correo, username, password });
+
+    if (authResult.token) {
+      return res.status(200).json({ success: true, token: authResult.token });
+    }
+
+    return res.status(401).json({ success: false, error: authResult.error || 'Autenticación fallida' });
+  } catch (error) {
+    console.error('Error en la ruta /login:', error);
+    return res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+});
+
+router.post('/loginc', async (req, res) => {
+  try {
+    const { password } = req.body;
+    const authResult = await loginAdmin({ password });
+
+    if (authResult.token) {
+      return res.status(200).json({ success: true, token: authResult.token });
+    }
+
+    return res.status(401).json({ success: false, error: authResult.error || 'Autenticación fallida' });
+  } catch (error) {
+    console.error('Error en la ruta /loginc:', error);
+    return res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 });
 

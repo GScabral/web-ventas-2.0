@@ -1,225 +1,133 @@
-/* ------------------------------
-   ESTILO GENERAL
---------------------------------*/
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f7f7f8;
-}
-
 .home-fondo {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #f7f7f8;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: auto;
+
+    background:
+        radial-gradient(circle at top right,
+            rgba(58, 110, 255, 0.08),
+            transparent 35%),
+        radial-gradient(circle at bottom left,
+            rgba(255, 80, 120, 0.06),
+            transparent 30%),
+        #f7f8fc;
 }
 
-/* Animación genérica */
-.fade-in {
-  animation: fadeIn 0.5s ease;
+/* ocupa toda la pantalla */
+
+.home-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* HERO */
+
+.hero-section {
+    width: 100%;
 }
 
-/* ------------------------------
-   CONTENEDORES
---------------------------------*/
-.main-content {
-  padding: 20px 5%;
+/* BANNER */
+
+.promo-section {
+    width: 100%;
+    padding: 0 4rem;
+    box-sizing: border-box;
 }
 
-.modern-container {
-  max-width: 1300px;
-  margin: auto;
+/* TRENDING + EDITORIAL */
+
+.showcase-section {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+
+    padding: 0 4rem;
+    box-sizing: border-box;
 }
 
-/* ------------------------------
-   PAGINADO MODERNO
---------------------------------*/
-.paginado-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 40px 0;
-  gap: 15px;
+.showcase-trending,
+.showcase-editorial {
+    width: 100%;
+    min-width: 0;
 }
 
-.arrow-btn {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  padding: 10px 15px;
-  font-size: 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+/* CATALOGO */
+
+.catalog-layout {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+
+    padding: 0 4rem;
+    box-sizing: border-box;
 }
 
-.arrow-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+.catalog-sidebar {
+    width: 100%;
+    min-width: 0;
 }
 
-.arrow-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.catalog-products {
+    width: 100%;
+    min-width: 0;
 }
 
-.paginado-modern {
-  display: flex;
-  list-style: none;
-  gap: 10px;
-  padding: 0;
+/* NEWSLETTER */
+
+.newsletter-section {
+    width: 100%;
+    padding: 0 4rem;
+    box-sizing: border-box;
 }
 
-.page-pill {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  padding: 10px 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.2s ease;
-  box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+    .showcase-section {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
-.page-pill:hover {
-  background: #ececec;
-}
-
-.page-pill.active {
-  background: #1e1e1e;
-  color: white;
-  border-color: #1e1e1e;
-  box-shadow: 0px 3px 7px rgba(0,0,0,0.25);
-}
-
-/* ------------------------------
-   FOOTER MODERNO
---------------------------------*/
-.footer-modern {
-  background-color: #1e1e1e;
-  color: white;
-  padding: 60px 5% 20px 5%;
-  margin-top: 60px;
-}
-
-.footer-box {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 40px;
-  max-width: 1300px;
-  margin: auto;
-}
-
-.footer-modern h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
-  color: #ffffff;
-  font-weight: 600;
-  border-left: 3px solid #ff6f6f;
-  padding-left: 8px;
-}
-
-.footer-modern p {
-  color: #dcdcdc;
-  line-height: 1.6;
-}
-
-.footer-modern ul {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-modern ul li {
-  margin: 8px 0;
-}
-
-.footer-modern ul li a {
-  color: #cccccc;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-
-.footer-modern ul li a:hover {
-  color: white;
-}
-
-.social-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.social-row img {
-  width: 32px;
-  height: 32px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.social-row img:hover {
-  transform: scale(1.1);
-  opacity: 0.8;
-}
-
-.location-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #dcdcdc;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-
-.location-row:hover {
-  color: white;
-}
-
-.location-row img {
-  width: 28px;
-  filter: brightness(0) invert(1);
-}
-
-.payment-icons img {
-  width: 50px;
-}
-
-/* Footer inferior */
-.footer-bottom {
-  text-align: center;
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid #333;
-  color: #bbbbbb;
-  font-size: 14px;
-}
-
-/* ------------------------------
-   RESPONSIVE
---------------------------------*/
 @media (max-width: 768px) {
 
-  .paginado-wrapper {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+    .promo-section,
+    .showcase-section,
+    .catalog-layout,
+    .newsletter-section {
+        padding: 0 1rem;
+    }
 
-  .footer-modern {
-    padding: 40px 20px;
-  }
+    .home-wrapper {
+        gap: 80px;
+    }
+}
 
-  .footer-box {
-    gap: 20px;
-  }
+@media (max-width: 600px) {
+    .promo-section,
+    .showcase-section,
+    .catalog-layout,
+    .newsletter-section {
+        padding: 0 0.75rem;
+        box-sizing: border-box;
+    }
 
-  .page-pill {
-    padding: 8px 12px;
-  }
+    .home-wrapper {
+        gap: 60px;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-  .arrow-btn {
-    padding: 8px 12px;
-  }
+    .catalog-layout {
+        grid-template-columns: 1fr;
+    }
 }

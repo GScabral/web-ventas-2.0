@@ -1,13 +1,294 @@
-.ofertas-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
+/* =========================
+   CONTENEDOR GENERAL
+========================= */
+.ofertas-page {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(180deg,
+            #CCDDFF,
+            #edf4ff);
+
+    padding: 50px 20px;
 }
 
+/* =========================
+   TITULO
+========================= */
+.ofertas-page h1,
+.ofertas-title {
+    text-align: center;
+
+    font-size: 48px;
+    font-weight: 800;
+
+    color: #002B81;
+
+    margin-bottom: 50px;
+
+    letter-spacing: 2px;
+
+    position: relative;
+}
+
+/* LINEA DECORATIVA */
+.ofertas-page h1::after,
+.ofertas-title::after {
+    content: "";
+
+    width: 120px;
+    height: 5px;
+
+    border-radius: 50px;
+
+    background:
+        linear-gradient(90deg,
+            #002B81,
+            #5D8BE8);
+
+    display: block;
+
+    margin: 16px auto 0;
+}
+
+/* =========================
+   CONTENEDOR CARDS
+========================= */
+.ofertas-container {
+    width: 95%;
+    max-width: 1500px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 32px;
+}
+
+/* =========================
+   LOADING
+========================= */
 .ofertas-loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #666;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    color: #002B81;
+
+    background:
+        linear-gradient(180deg,
+            #CCDDFF,
+            #edf4ff);
+
+    animation: pulseText 1.5s infinite;
+}
+
+/* =========================
+   EFECTO OFERTA
+========================= */
+.oferta-badge {
+    position: absolute;
+
+    top: 18px;
+    left: 18px;
+
+    background:
+        linear-gradient(135deg,
+            #002B81,
+            #5D8BE8);
+
+    color: white;
+
+    padding: 10px 14px;
+
+    border-radius: 50px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    z-index: 5;
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.15);
+
+    animation: pulseOffer 2s infinite;
+}
+
+/* =========================
+   CARD WRAPPER OPCIONAL
+========================= */
+.oferta-card-wrapper {
+    position: relative;
+
+    transition: 0.35s ease;
+}
+
+.oferta-card-wrapper:hover {
+    transform: translateY(-8px);
+}
+
+/* =========================
+   TEXTO DESCUENTO
+========================= */
+.oferta-precio-original {
+    text-decoration: line-through;
+
+    color: rgba(16, 37, 79, 0.55);
+
+    font-size: 16px;
+
+    margin-right: 10px;
+}
+
+.oferta-precio-final {
+    color: #002B81;
+
+    font-size: 26px;
+    font-weight: 800;
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
+@keyframes pulseOffer {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.06);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseText {
+
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1000px) {
+
+    .ofertas-page h1,
+    .ofertas-title {
+        font-size: 38px;
+    }
+
+    .ofertas-container {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .ofertas-page {
+        padding: 35px 15px;
+    }
+
+    .ofertas-page h1,
+    .ofertas-title {
+        font-size: 30px;
+
+        margin-bottom: 35px;
+    }
+
+    .ofertas-loading {
+        font-size: 22px;
+    }
+
+    .ofertas-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .ofertas-page {
+        padding: 30px 12px;
+    }
+
+    .ofertas-page h1,
+    .ofertas-title {
+        font-size: 28px;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+
+    .ofertas-page h1::after,
+    .ofertas-title::after {
+        width: 100px;
+        height: 4px;
+    }
+
+    .ofertas-container {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .oferta-badge {
+        top: 12px;
+        left: 12px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 600px) {
+    .ofertas-page {
+        padding: 24px 10px;
+    }
+
+    .ofertas-page h1,
+    .ofertas-title {
+        font-size: 22px;
+        margin-bottom: 24px;
+    }
+
+    .ofertas-page h1::after,
+    .ofertas-title::after {
+        width: 80px;
+        height: 3px;
+        margin: 12px auto 0;
+    }
+
+    .ofertas-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .oferta-badge {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .oferta-precio-original {
+        font-size: 14px;
+    }
+
+    .oferta-precio-final {
+        font-size: 22px;
+    }
 }

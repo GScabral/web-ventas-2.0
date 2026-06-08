@@ -1,0 +1,115 @@
+/* Perfil Moderno */
+.perfil-container {
+	background: #23263a;
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(24, 28, 43, 0.2);
+	padding: 32px 28px 24px 28px;
+	color: #f7f9fc;
+	font-family: 'Montserrat', Arial, sans-serif;
+	max-width: 500px;
+	margin: 40px auto;
+}
+
+.perfil-titulo {
+	font-size: 28px;
+	color: #ffb347;
+	margin-bottom: 20px;
+	font-family: 'Montserrat', Arial, sans-serif;
+	letter-spacing: 1px;
+}
+
+.perfil-label {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	font-size: 15px;
+	color: #ffb347;
+	font-weight: 500;
+}
+
+.perfil-info {
+	background: #181c2b;
+	border-radius: 7px;
+	padding: 12px;
+	margin-bottom: 10px;
+	color: #f7f9fc;
+	font-size: 15px;
+}
+
+.perfil-btn {
+	cursor: pointer;
+	background: linear-gradient(90deg, #ffb347 0%, #ffcc80 100%);
+	border: none;
+	color: #181c2b;
+	padding: 10px 20px;
+	border-radius: 6px;
+	font-size: 16px;
+	margin-top: 10px;
+	font-weight: 600;
+	transition: background 0.2s, color 0.2s;
+}
+.perfil-btn:hover {
+	background: linear-gradient(90deg, #ffcc80 0%, #ffb347 100%);
+	color: #23263a;
+}
+
+@media (max-width: 768px) {
+	.perfil-container {
+		padding: 24px 20px;
+		margin: 30px 20px;
+		border-radius: 12px;
+	}
+
+	.perfil-titulo {
+		font-size: 22px;
+		margin-bottom: 16px;
+	}
+
+	.perfil-label {
+		font-size: 13px;
+		margin-top: 8px;
+	}
+
+	.perfil-info {
+		padding: 10px;
+		font-size: 13px;
+	}
+
+	.perfil-btn {
+		padding: 8px 16px;
+		font-size: 14px;
+		margin-top: 8px;
+	}
+}
+
+@media (max-width: 600px) {
+	.perfil-container {
+		padding: 20px 16px;
+		margin: 20px auto;
+		border-radius: 10px;
+		max-width: 100%;
+	}
+
+	.perfil-titulo {
+		font-size: 18px;
+		margin-bottom: 12px;
+	}
+
+	.perfil-label {
+		font-size: 12px;
+		margin-top: 6px;
+		margin-bottom: 4px;
+	}
+
+	.perfil-info {
+		padding: 8px;
+		font-size: 12px;
+		margin-bottom: 8px;
+	}
+
+	.perfil-btn {
+		width: 100%;
+		padding: 10px;
+		font-size: 13px;
+	}
+}

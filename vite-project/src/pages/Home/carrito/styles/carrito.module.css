@@ -1,0 +1,60 @@
+.page {
+  background: #f5f7fb;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 2fr 380px;
+  gap: 30px;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .layout {
+    gap: 20px;
+  }
+
+  .products {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 16px 12px;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .layout {
+    gap: 16px;
+  }
+
+  .products {
+    gap: 12px;
+  }
+}

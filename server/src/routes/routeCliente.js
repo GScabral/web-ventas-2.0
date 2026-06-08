@@ -1,6 +1,8 @@
 const {Router}=require("express")
 const getClientes = require("../controllers/cliente/getClientes")
 const createNewCliente = require("../controllers/cliente/newCliente")
+const { validarRegistroCliente } = require("../validacion");
+const { validationResult } = require('express-validator');
 const inicioSesion = require("../controllers/cliente/INS")
 const verificarCorreo=require("../controllers/cliente/checkEmail")
 const obtenerInfUsuario=require("../controllers/cliente/getInfoUsuario")
@@ -69,18 +71,23 @@ router.get("/InfoUsuario", async (req, res) => {
 
 
 
-router.post("/nuevoCliente",async(req,res)=>{
-    try{
-        const nuevoCliente=await createNewCliente(req.body);
-        if(nuevoCliente && nuevoCliente.error){
-            res.status(404).json({error:nuevoCliente.message});
-        }else{
-            res.status(200).json(nuevoCliente);
-        }
-    }catch(error){
-        res.status(500).json({error:"error en el servidor"})
+
+router.post("/nuevoCliente", validarRegistroCliente, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  try {
+    const nuevoCliente = await createNewCliente(req.body);
+    if (nuevoCliente && nuevoCliente.error) {
+      res.status(404).json({ error: nuevoCliente.message });
+    } else {
+      res.status(200).json(nuevoCliente);
     }
-})
+  } catch (error) {
+    res.status(500).json({ error: "error en el servidor" })
+  }
+});
 
 
 router.post("/login", async (req, res) => {

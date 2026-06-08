@@ -1,0 +1,73 @@
+.product-actions {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 15px;
+}
+
+.btn-action {
+  flex: 1;
+
+  border: none;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  font-weight: 600;
+
+  transition: 0.2s;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+}
+
+.btn-edit {
+  background: #2563eb;
+
+  color: white;
+}
+
+.btn-offer {
+  background: #f59e0b;
+
+  color: white;
+}
+
+.btn-delete {
+  background: #dc2626;
+
+  color: white;
+}
+
+@media (max-width: 768px) {
+
+  .product-actions {
+    flex-direction: column;
+  }
+
+}
+
+@media (max-width: 600px) {
+  .product-actions {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .btn-action {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

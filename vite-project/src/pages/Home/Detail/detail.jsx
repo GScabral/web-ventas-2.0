@@ -1,280 +1,102 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getById } from "../../../redux/action";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useMemo } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { agregarAlCarrito } from "../../../redux/action";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import { Link } from "react-router-dom";
-import './detail.css';
+
+import { useProductDetail } from "./hooks/useProductDetail";
+import { useProductOffer } from "./hooks/useProductOffer";
+import { useProductVariants } from "./hooks/useProductVariants";
+import { calcularPrecioFinal } from "./utils/price";
+
+import ProductGallery from "./components/DetailGallery";
+import ProductInfo from "./components/ProductInfo";
+import BuyBox from "./components/BuyBox";
+import RecommendedCarousel from "./components/RecommendedProducts";
+
+import "./detail.css";
 
 const Detail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const info = useSelector((state) => state.info);
-  const allProductos = useSelector((state) => state.allProductos);
-  const [talleSeleccionado, setTalleSeleccionado] = useState("");
-  const [colorSeleccionado, setColorSeleccionado] = useState("");
+
+  const { info, allProductos, ofertas } = useProductDetail(id);
+  const oferta = useProductOffer(ofertas, info?.id);
+  const { variantes, imagenesUnicas } = useProductVariants(info);
+
+  const [talle, setTalle] = useState("");
+  const [color, setColor] = useState("");
   const [cantidad, setCantidad] = useState(1);
-  const [cantidadDisponible, setCantidadDisponible] = useState(0);
-  const [coloresDisponibles, setColoresDisponibles] = useState([]);
-  const [imagenActual, setImagenActual] = useState(0);
-  const [showModal, setShowModal] = useState(false);
+  const [imgIndex, setImgIndex] = useState(0);
 
+  const stock = useMemo(() => {
+    const v = variantes.find(v => v.talla === talle && v.color === color);
+    return v?.cantidad_disponible || 0;
+  }, [talle, color, variantes]);
 
-  const [oferta, setOferta] = useState(null)
-  const ofertas = useSelector(state => state.ofertasActivas)
-  
+  const recomendados = useMemo(() => {
+    return allProductos.filter(
+      p => p.categoria === info?.categoria && p.id !== info?.id
+    );
+  }, [allProductos, info]);
 
-  useEffect(() => {
-    const obtenerOfertaParaProducto = () => {
-      // Buscar la oferta correspondiente al producto actual según su id
-      const ofertaProducto = ofertas.find(oferta => oferta.producto_id === info.id);
-
-      if (ofertaProducto) {
-        setOferta(ofertaProducto.descuento); // Establecer la oferta del producto
-      } else {
-        setOferta(null); // No hay oferta para este producto
-      }
-    };
-
-    obtenerOfertaParaProducto();
-  }, [ofertas, info.id]);
-
-  const calcularPrecioFinal = (precio, oferta) => {
-    if (oferta) {
-      const precioFinal = precio * (1 - oferta / 100);
-      return precioFinal.toFixed(2); // Redondear a 2 decimales
-    }
-    return precio;
-  };
-
-
-
-  const variantesDisponibles = info.variantes;
-
-  const handleTalleChange = (event) => {
-    const talleSeleccionado = event.target.value;
-    setTalleSeleccionado(talleSeleccionado);
-    setColorSeleccionado('');
-
-    // Filtrar las variantes por el talle seleccionado
-    const variantesPorTalle = info.variantes.filter((variante) => variante.talla.toLowerCase() === talleSeleccionado.toLowerCase());
-
-    // Obtener los colores disponibles para el talle seleccionado
-    const coloresParaTalle = variantesPorTalle.map((variante) => variante.color);
-    setColoresDisponibles(coloresParaTalle);
-
-    // Obtener la cantidad disponible para el talle seleccionado
-    const cantidadDisponible = variantesPorTalle.reduce((total, variante) => total + variante.cantidad_disponible, 0);
-    setCantidadDisponible(cantidadDisponible);
-
-    // Si el color seleccionado no está disponible para el talle seleccionado, reiniciar la cantidad
-    if (!coloresParaTalle.includes(colorSeleccionado)) {
-      setCantidad(1);
-    }
-  };
-
-  const handleColorChange = (event) => {
-    const colorSeleccionado = event.target.value;
-    setColorSeleccionado(colorSeleccionado);
-
-    // Obtener la variante correspondiente al talle y color seleccionados
-    const varianteSeleccionada = info.variantes.find((variante) =>
-      variante.talla.toLowerCase() === talleSeleccionado.toLowerCase() &&
-      variante.color === colorSeleccionado
+  const handleAdd = () => {
+    const variante = variantes.find(
+      v => v.talla === talle && v.color === color
     );
 
-    // Actualizar la cantidad disponible según la variante seleccionada
-    if (varianteSeleccionada) {
-      setCantidadDisponible(varianteSeleccionada.cantidad_disponible);
+    if (!variante) return;
 
-      // Si la cantidad seleccionada excede la cantidad disponible, ajustarla
-      if (cantidad > varianteSeleccionada.cantidad_disponible) {
-        setCantidad(varianteSeleccionada.cantidad_disponible);
-      }
-    }
-  };
-
-  const handleCantidadChange = (event) => {
-    let cantidad = parseInt(event.target.value);
-    if (cantidad <= 0) {
-      cantidad = 1; // Establecer la cantidad mínima como 1 si la cantidad ingresada es menor o igual a 0
-    } else if (cantidad > cantidadDisponible) {
-      cantidad = cantidadDisponible; // Establecer la cantidad máxima como la cantidad disponible
-    }
-    setCantidad(cantidad);
-  };
-
-  const handleImageChange = (index) => {
-    setImagenActual(index);
-  };
-
-  const handleAgregarAlCarrito = () => {
-
-
-    if (!talleSeleccionado || !colorSeleccionado) {
-      alert('Por favor, selecciona un talle y un color antes de agregar al carrito.');
-      return;
-    }
-    const varianteSeleccionada = variantesDisponibles.find(
-      (variante) => variante.talla.toLowerCase() === talleSeleccionado.toLowerCase() && variante.color === colorSeleccionado
-    );
-    if (cantidad <= 0 || cantidad > info.cantidad) {
-      alert('La cantidad seleccionada excede el stock disponible para este producto o es inválida.');
-      return;
-    }
-
-    const variantes = [];
-    const precioFinal = calcularPrecioFinal(info.precio, oferta);
-    // Agregar la variante seleccionada al array de variantes
-    variantes.push(varianteSeleccionada);
-    const producto = {
+    dispatch(agregarAlCarrito({
       id,
       nombre: info.nombre,
-      precio: precioFinal,
-      descripcion: info.descripcion,
-      cantidad_elegida: cantidad, // Incluye la cantidad seleccionada en el objeto del producto
-      variantes: variantes,
-    };
-    dispatch(agregarAlCarrito(producto));
-    setShowModal(false);
+      precio: calcularPrecioFinal(info.precio, oferta),
+      cantidad_elegida: cantidad,
+      variante
+    }));
   };
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getById(id));
-    }
-  }, [id, dispatch]);
-
-  const productosRecomendados = allProductos.filter(producto => producto.categoria === info.categoria && producto.id !== info.id);
-
-
   return (
-    <div className="detail-background">
-      {info && (
-        <div className="detail-container">
-          <div className="detail-imagen-container">
-            {info && info.variantes && info.variantes.length > 0 && (
-  <div className="detail-imagen-container">
-    {/* Recolectar todas las imágenes únicas */}
-    {(() => {
-      const imagenesUnicas = info.variantes.reduce((acc, variante) => {
-        variante.imagenes.forEach((img) => {
-          if (!acc.includes(img)) acc.push(img);
-        });
-        return acc;
-      }, []);
+    <div className="detail-page">
 
-      return (
-        <>
-          {/* Mostrar imagen actual */}
-          <img
-            className="card-imagen"
-            src={imagenesUnicas[imagenActual]}
-            alt={`Imagen ${imagenActual + 1}`}
+      <div className="detail-grid">
+
+        <ProductGallery
+          images={imagenesUnicas}
+          imgIndex={imgIndex}
+          setImgIndex={setImgIndex}
+        />
+
+        <div className="detail-side">
+
+          <ProductInfo
+            name={info?.nombre}
+            description={info?.descripcion}
+            price={calcularPrecioFinal(info?.precio, oferta)}
           />
 
-          {/* Botones de cambio de imagen */}
-          <div className="imagen-buttons">
-            {imagenesUnicas.map((imagen, index) => (
-              <button
-                key={index}
-                className={`imagen-button ${index === imagenActual ? 'active' : ''}`}
-                onClick={() => handleImageChange(index)}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        </>
-      );
-    })()}
-  </div>
-)}
+          <BuyBox
+            variantes={variantes}
+            talle={talle}
+            setTalle={setTalle}
+            color={color}
+            setColor={setColor}
+            cantidad={cantidad}
+            setCantidad={setCantidad}
+            stock={stock}
+            onAdd={handleAdd}
+          />
 
-          </div>
-          <div className="detail-content">
-            <p className="detail-title">{info.nombre}</p>
-            <p className="detail-description">{info.descripcion}</p>
-            <p className="detail-details">Precio: ${calcularPrecioFinal(info.precio, oferta)}</p>
-            <div className="selecion-detail">
-              <div className="selecion-content-detail">
-                <label htmlFor="talle">Talle:</label>
-                <select id="talle" value={talleSeleccionado} onChange={handleTalleChange}>
-                  <option value="">Selecciona un talle</option>
-                  {info.variantes &&
-                    [...new Set(info.variantes.map((variante) => variante.talla))].map((talle, index) => (
-                      <option key={index} value={talle}>
-                        {talle}
-                      </option>
-                  ))}
-
-                </select>
-                <label htmlFor="color">Color:</label>
-                <select id="color" value={colorSeleccionado} onChange={handleColorChange}>
-                  <option value="">Selecciona un color</option>
-                  {coloresDisponibles.map((color, index) => (
-                    <option key={index} value={color}>
-                      {color}
-                    </option>
-                  ))}
-                </select>
-                <label htmlFor="cantidad">Cantidad:</label>
-                <input
-                  type="number"
-                  id="cantidad"
-                  value={cantidad}
-                  min="1"
-                  max={cantidadDisponible}
-                  onChange={handleCantidadChange}
-                />
-                <button onClick={handleAgregarAlCarrito}>Agregar al Carrito</button>
-              </div>
-            </div>
-          </div>
-          <Link className="volver" to={"/"}>
-            Volver
+          <Link className="back-link" to="/">
+            ← Volver
           </Link>
+
         </div>
-      )}
-      <h1 className="recomendaciones">OTRAS OPCIONES QUE PODRIAN GUSTARTE</h1>
-      <div className="recomendaciones-container">
-        {productosRecomendados.map(producto => {
-          // Buscar la oferta correspondiente al producto recomendado
-          const ofertaProducto = ofertas.find(oferta => oferta.producto_id === producto.id);
-          const descuento = ofertaProducto ? ofertaProducto.descuento : null;
-
-          return (
-            <Link key={producto.id} to={`/detail/${producto.id}`}>
-              <div className="recomendacion-item">
-               <img src={producto.variantes[0]?.imagenes[0]} alt={producto.nombre} />
-                <p className="recomendados-p">{producto.nombre}</p>
-                {descuento ? ( // Mostrar el porcentaje de oferta y el precio final solo si hay oferta
-                  <div>
-                    <p>{descuento}% OFF</p>
-                    <h3 className="card-precio">
-                      <span style={{ textDecoration: 'line-through' }}>
-                        ${producto.precio}
-                      </span>
-                      <span style={{ marginLeft: '10px' }}>
-                        ${calcularPrecioFinal(producto.precio, descuento)}
-                      </span>
-                    </h3>
-                  </div>
-                ) : (
-                  <h3 className="card-precio">
-                    ${producto.precio}
-                  </h3>
-                )}
-              </div>
-            </Link>
-          );
-        })}
       </div>
-    </div >
-  );
 
+      <RecommendedCarousel productos={recomendados} ofertas={ofertas} />
+
+    </div>
+  );
 };
 
 export default Detail;

@@ -1,156 +1,159 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { getProductos, paginado } from "../../redux/action";
-import "./home.css";
-import Nav from "./Nav/Nav";
-import Cards from "./Cards/Cards";
+
+import { getProductos } from "../../redux/action";
+
+import Hero from "../../componentes/hero";
+import Footer from "../Home/footer/Footer";
+import Paginado from "../../componentes/paginacion";
+import TrendingSection from "../../componentes/TrendingSection";
+import EditorialGrid from "../../componentes/EditorialGrid";
+import PromoBanner from "../../componentes/PromoBanner";
+import Newsletter from "../../componentes/Newsletter";
 import FiltrosSidebar from "./barralado/filtros";
-import Carrito from "./carrito/carrito";
-import Carousel from "./carrusel/carrusel";
-import { Link } from "react-router-dom";
+import ProductGrid from "./Cards/productGrid";
+
+import "./home.css";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const allProductos = useSelector((state) => state.allProductos);
-  const currentPage = useSelector((state) => state.currentPage);
-  const totalPages = useSelector((state) => state.totalPages);
 
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [productosEnCarrito, setProductosEnCarrito] = useState([]);
-  const [productosEnFav, setProductosEnFav] = useState([]);
-  const [isResponsive, setIsResponsive] = useState(false);
+  const dispatch = useDispatch();
+
+  const allProductos = useSelector(
+    state => state.allProductos
+  );
+
+  const [loading, setLoading] = useState(true);
+
+  const [selectedSubcategory, setSelectedSubcategory] =
+    useState("");
+
+  const [selectedPriceOrder, setSelectedPriceOrder] =
+    useState("");
 
   useEffect(() => {
-    dispatch(getProductos());
+
+    setLoading(true);
+
+    dispatch(getProductos())
+      .finally(() => setLoading(false));
+
   }, [dispatch]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
+  const heroProductos = allProductos.filter(producto =>
+    producto.sections?.some(
+      section => section.section === "hero"
+    )
+  );
 
-  useEffect(() => {
-    const handleResize = () => setIsResponsive(window.innerWidth <= 1000);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const trendingProductos = allProductos.filter(producto =>
+    producto.sections?.some(
+      section => section.section === "trending"
+    )
+  );
 
-  const toggleSidebar = () => {
-    if (!isResponsive) setSidebarVisible(!sidebarVisible);
-  };
+  const principalProductos = allProductos.filter(producto =>
+    producto.sections?.some(
+      section => section.section === "principal"
+    )
+  );
 
-  const agregarAlCarrito = (producto, precio) => {
-    setProductosEnCarrito([...productosEnCarrito, { producto, precio }]);
-  };
+  const bannerProductos = allProductos.filter(producto =>
+    producto.sections?.some(
+      section => section.section === "banner"
+    )
+  );
 
-  const agregarFav = (producto, precio) => {
-    setProductosEnFav([...productosEnFav, { producto, precio }]);
-  };
+  const Spinner = () => (
+    <div className="spinner-home">
+      <div className="spinner-dot"></div>
+      <div className="spinner-dot"></div>
+      <div className="spinner-dot"></div>
+    </div>
+  );
 
   return (
+
     <div className="home-fondo">
 
-      {/* MAIN */}
-      <div className={`main-content modern-container ${sidebarVisible ? "sidebar-open" : ""}`}>
-        
-        <div className="Home-container fade-in">
-          <Cards
-            productos={allProductos.filter(p => p.rama?.toLowerCase() === "ropa")}
-            agregarAlCarrito={agregarAlCarrito}
-            agregarFav={agregarFav}
-          />
-        </div>
+      <main className="home-wrapper">
 
-        {/* PAGINADO */}
-        <div className="paginado-wrapper">
-          <button
-            className="arrow-btn"
-            onClick={() => currentPage > 1 && dispatch(paginado("prev"))}
-            disabled={currentPage === 1}
-          >
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </button>
+        {/* HERO */}
 
-          <ul className="paginado-modern">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i}>
-                <button
-                  className={`page-pill ${currentPage === i + 1 ? "active" : ""}`}
-                  onClick={() => dispatch(paginado(i + 1))}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
+        <section className="home-section hero-block">
+          <Hero productos={heroProductos} />
+        </section>
 
-          <button
-            className="arrow-btn"
-            onClick={() => currentPage < totalPages && dispatch(paginado("next"))}
-            disabled={currentPage === totalPages}
-          >
-            <FontAwesomeIcon icon={faArrowRight} />
-          </button>
-        </div>
-      </div>
+        {/* BANNER */}
 
-      {/* FOOTER */}
-      <footer className="footer-modern">
+        <section className="home-section banner-block">
+          <PromoBanner productos={bannerProductos} />
+        </section>
 
-        <div className="footer-box">
-          <div>
-            <h3>Sobre Nosotros</h3>
-            <p>
-              Somos una tienda dedicada a ofrecer ropa única y de alta calidad.
-              Buscamos combinar estilo y confort en cada producto.
-            </p>
+        {/* SHOWCASE */}
+
+        <section className="home-section showcase-section">
+
+          <div className="showcase-column">
+            <TrendingSection
+              productos={trendingProductos}
+            />
           </div>
 
-          <div>
-            <h3>Enlaces</h3>
-            <ul>
-              <li><a>Inicio</a></li>
-              <li><a>Tienda</a></li>
-              <li><a>Contacto</a></li>
-            </ul>
+          <div className="showcase-column">
+            <EditorialGrid
+              productos={principalProductos}
+            />
           </div>
 
-          <div>
-            <h3>Síguenos</h3>
-            <div className="social-row">
-              <a><img src="/icons8-facebook-nuevo-48.png" /></a>
-              <a href="https://www.instagram.com/amore_mio.showroom" target="_blank">
-                <img src="/instagram.png" />
-              </a>
-              <a href="https://wa.me/5493794155821" target="_blank">
-                <img src="public/whatssap.png" />
-              </a>
-            </div>
-          </div>
+        </section>
 
-          <div>
-            <h3>Ubicación</h3>
-            <a
-              href="https://maps.app.goo.gl/qD8RgwyPKD6n3Ph86"
-              target="_blank"
-              className="location-row"
-            >
-              <p>Ontiveros 2010, Corrientes</p>
-              <img src="/icons8-location-48.png" />
-            </a>
-          </div>
+        {/* CATALOGO */}
 
-          <div>
-            <h3>Formas de pago</h3>
-            <img src="/icons8-mercado-pago-48.png" />
-          </div>
-        </div>
+        <section className="home-section catalog-layout">
 
-        <div className="footer-bottom">
-          <p>© 2025 Amore Mio. Todos los derechos reservados.</p>
-        </div>
-      </footer>
+          <aside className="catalog-sidebar">
+
+            <FiltrosSidebar
+              selectedMainCategory="Ropa"
+              selectedSubcategory={selectedSubcategory}
+              setSelectedSubcategory={setSelectedSubcategory}
+              selectedPriceOrder={selectedPriceOrder}
+              setSelectedPriceOrder={setSelectedPriceOrder}
+            />
+
+          </aside>
+
+          <section className="catalog-products">
+
+            {loading ? (
+
+              <div className="loading-container">
+                <Spinner />
+              </div>
+
+            ) : (
+
+              <>
+                <ProductGrid productos={allProductos} />
+                <Paginado />
+              </>
+
+            )}
+
+          </section>
+
+        </section>
+
+        {/* NEWSLETTER */}
+
+        <section className="home-section newsletter-block">
+          <Newsletter />
+        </section>
+
+      </main>
+
+      <Footer />
 
     </div>
   );

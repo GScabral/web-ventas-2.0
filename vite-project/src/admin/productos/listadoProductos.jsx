@@ -1,166 +1,302 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { cambios, getProductos, borrar, ofertas, paginado } from '../../redux/action';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrash, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Modal } from 'react-bootstrap';
-import EditProductModal from './editar';
-import OfertasModal from '../ofertas/ofertas';
-import './listado.css';
+import {
+  cambios,
+  getProductos,
+  borrar,
+  ofertas,
+  paginado,
+} from "../../redux/action";
+
+import { Modal } from "react-bootstrap";
+
+import EditProductModal from "./editar";
+import OfertasModal from "../ofertas/ofertas";
+
+import ProductCard from "./components/ProductCard";
+import ProductPagination from "./components/ProductPagination";
+
+import "./listadoProductos.css";
 
 const ProductList = () => {
   const dispatch = useDispatch();
-  const allProductos = useSelector((state) => state.allProductos);
-  const currentPage = useSelector((state) => state.currentPage);
-  const totalPages = useSelector((state) => state.totalPages);
 
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showOfertaModal, setShowOfertaModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [productIdToEdit, setProductIdToEdit] = useState(null);
-  const [ofertaId, setOfertaId] = useState(false);
+  const allProductos = useSelector(
+    (state) => state.allProductos
+  );
+
+  const currentPage = useSelector(
+    (state) => state.currentPage
+  );
+
+  const totalPages = useSelector(
+    (state) => state.totalPages
+  );
+
+  const [showEditModal, setShowEditModal] =
+    useState(false);
+
+  const [showOfertaModal, setShowOfertaModal] =
+    useState(false);
+
+  const [selectedProduct, setSelectedProduct] =
+    useState(null);
+
+  const [productIdToEdit, setProductIdToEdit] =
+    useState(null);
+
+  const [ofertaId, setOfertaId] =
+    useState(null);
+
+  const [search, setSearch] =
+    useState("");
+
+  const [feedbackMsg, setFeedbackMsg] =
+    useState("");
+
+  const [feedbackType, setFeedbackType] =
+    useState("");
 
   useEffect(() => {
     dispatch(getProductos());
   }, [dispatch]);
 
   const handleEdit = (productId) => {
-    const productToEdit = allProductos.find((producto) => producto.id === productId);
+    const productToEdit =
+      allProductos.find(
+        (producto) =>
+          producto.id === productId
+      );
+
     setSelectedProduct(productToEdit);
-    setShowEditModal(true);
+
     setProductIdToEdit(productId);
+
+    setShowEditModal(true);
   };
 
   const handleDelete = (productId) => {
-    if (window.confirm('¿Estás seguro que deseas eliminar este producto?')) {
-      dispatch(borrar(productId));
-    }
+    const confirmDelete =
+      window.confirm(
+        "¿Deseas eliminar este producto?"
+      );
+
+    if (!confirmDelete) return;
+
+    dispatch(borrar(productId));
+
+    setFeedbackMsg(
+      "Producto eliminado correctamente"
+    );
+
+    setFeedbackType("success");
+
+    setTimeout(() => {
+      setFeedbackMsg("");
+    }, 2500);
   };
 
   const handleOferta = (productId) => {
-    const productToOferta = allProductos.find((producto) => producto.id === productId);
+    const productToOferta =
+      allProductos.find(
+        (producto) =>
+          producto.id === productId
+      );
+
     setSelectedProduct(productToOferta);
-    setShowOfertaModal(true);
+
     setOfertaId(productId);
+
+    setShowOfertaModal(true);
   };
 
-  const handleClose = () => {
+  const handleSaveChanges = (
+    editedProduct
+  ) => {
+    dispatch(
+      cambios(
+        productIdToEdit,
+        editedProduct
+      )
+    );
+
     setShowEditModal(false);
+
+    setFeedbackMsg(
+      "Producto actualizado correctamente"
+    );
+
+    setFeedbackType("success");
+
+    setTimeout(() => {
+      setFeedbackMsg("");
+    }, 2500);
   };
 
-  const handleCloseOfertaModal = () => {
-    setShowOfertaModal(false);
-  };
-
-  const handleSaveChanges = (editedProduct) => {
-    dispatch(cambios(productIdToEdit, editedProduct));
-    setShowEditModal(false);
-  };
-
-  const handleSaveChagensOferta = () => {
+  const handleSaveOferta = () => {
     dispatch(ofertas(ofertaId));
+
     setShowOfertaModal(false);
+
+    setFeedbackMsg(
+      "Oferta aplicada correctamente"
+    );
+
+    setFeedbackType("success");
+
+    setTimeout(() => {
+      setFeedbackMsg("");
+    }, 2500);
   };
+
+  const filteredProducts =
+    allProductos?.filter((producto) =>
+      producto.nombre
+        ?.toLowerCase()
+        .includes(search.toLowerCase())
+    );
 
   return (
-    <div className="product-list-container">
-      <h2>Listado de Productos</h2>
-      <table className="product-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th>Talles</th>
-            <th>Colores</th>
-            <th>Cantidad Disponible</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-          <tbody>
-            {Array.isArray(allProductos) ? (
-              allProductos.map((producto) => (
-                <tr key={producto.id}>
-                  <td data-label="ID">{producto.id}</td>
-                  <td data-label="Nombre">{producto.nombre}</td>
-                  <td data-label="Categoría">{producto.categoria}</td>
-                  <td data-label="Precio">{producto.precio}</td>
-                  <td data-label="Talles">
-                    {producto.variantes?.map((variante, index) => (
-                      <div key={`${producto.id}-${index}-talla`}>{variante.talla}</div>
-                    ))}
-                  </td>
-                  <td data-label="Colores">
-                    {producto.variantes?.map((variante, index) => (
-                      <div key={`${producto.id}-${index}-color`}>{variante.color}</div>
-                    ))}
-                  </td>
-                  <td data-label="Cantidad Disponible">
-                    {producto.variantes?.map((variante, index) => (
-                      <div key={`${producto.id}-${index}-cantidad`}>{variante.cantidad_disponible}</div>
-                    ))}
-                  </td>
-                  <td data-label="Acciones">
-                    <button className="action-button" onClick={() => handleEdit(producto.id)}>Editar</button>
-                    <button className="action-button" onClick={() => handleDelete(producto.id)}>Eliminar</button>
-                    <button className="action-button" onClick={() => handleOferta(producto.id)}>Oferta</button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8">Cargando productos...</td>
-              </tr>
-            )}
-          </tbody>
-      </table>
+    <div className="products-page">
 
-      <div className="botones-paginado-admin">
-        <button
-          className="arrow-paginado-admin"
-          name="prev"
-          onClick={() => currentPage > 1 && dispatch(paginado('prev'))}
-          disabled={currentPage === 1}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
+      {/* HEADER */}
+
+      <div className="products-header">
+
         <div>
-          <ul className="paginado-admin">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <li key={index}>
-                <a href="#">{index + 1}</a>
-              </li>
-            ))}
-          </ul>
+
+          <h1>
+            Gestión de Productos
+          </h1>
+
+          <p>
+            Administra todo tu catálogo
+          </p>
+
         </div>
-        <button
-          className="arrow-paginado-admin"
-          name="next"
-          onClick={() => currentPage < totalPages && dispatch(paginado('next'))}
-          disabled={currentPage === totalPages}
-        >
-          <FontAwesomeIcon icon={faArrowRight} />
-        </button>
+
+        <div className="products-stats">
+
+          <div className="stat-card">
+
+            <span>
+              Total Productos
+            </span>
+
+            <strong>
+              {allProductos?.length || 0}
+            </strong>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <Modal className="modal-dialog" show={showEditModal} onHide={handleClose}>
+      {/* ALERTAS */}
+
+      {feedbackMsg && (
+        <div
+          className={`feedback-alert ${feedbackType}`}
+        >
+          {feedbackMsg}
+        </div>
+      )}
+
+      {/* BUSCADOR */}
+
+      <div className="search-container">
+
+        <input
+          type="text"
+          placeholder="Buscar producto..."
+          value={search}
+          onChange={(e) =>
+            setSearch(
+              e.target.value
+            )
+          }
+        />
+
+      </div>
+
+      {/* GRID */}
+
+      <div className="products-grid">
+
+        {filteredProducts?.map(
+          (producto) => (
+            <ProductCard
+              key={producto.id}
+              producto={producto}
+              onEdit={
+                handleEdit
+              }
+              onDelete={
+                handleDelete
+              }
+              onOferta={
+                handleOferta
+              }
+            />
+          )
+        )}
+
+      </div>
+
+      {/* PAGINACIÓN */}
+
+      <ProductPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChangePage={(page) =>
+          dispatch(
+            paginado(page)
+          )
+        }
+      />
+
+      {/* MODAL EDITAR */}
+
+      <Modal
+        show={showEditModal}
+        onHide={() =>
+          setShowEditModal(false)
+        }
+      >
         <EditProductModal
           show={showEditModal}
-          handleClose={handleClose}
+          handleClose={() =>
+            setShowEditModal(false)
+          }
           product={selectedProduct}
-          handleSaveChanges={handleSaveChanges}
+          handleSaveChanges={
+            handleSaveChanges
+          }
         />
       </Modal>
-      <Modal className="modal-dialog" show={showOfertaModal} onHide={handleCloseOfertaModal}>
+
+      {/* MODAL OFERTA */}
+
+      <Modal
+        show={showOfertaModal}
+        onHide={() =>
+          setShowOfertaModal(false)
+        }
+      >
         <OfertasModal
           show={showOfertaModal}
-          handleClose={handleCloseOfertaModal}
+          handleClose={() =>
+            setShowOfertaModal(false)
+          }
           product={selectedProduct}
-          handleSaveChanges={handleSaveChagensOferta}
+          handleSaveChanges={
+            handleSaveOferta
+          }
         />
       </Modal>
+
     </div>
   );
 };

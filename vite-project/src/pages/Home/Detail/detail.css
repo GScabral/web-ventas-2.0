@@ -1,300 +1,72 @@
-/* ============================= */
-/*      ESTILO BOUTIQUE FASHION  */
-/*    (Zara – Bershka – H&M)     */
-/* ============================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap');
-
-:root {
-  --font-primary: 'Inter', sans-serif;
-  --font-title: 'Playfair Display', serif;
-
-  --color-dark: #111;
-  --color-light: #f8f8f8;
-  --color-border: #e5e5e5;
-  --color-accent: #000;
-}
-
-/* Fondo general */
-.detail-background {
-  background: var(--color-light);
+.detail-page {
+  width: 100%;
   min-height: 100vh;
-  padding: 40px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: #f8f9fb;
+  padding: 40px 5%;
 }
 
-/* ---------- CONTENEDOR GENERAL ---------- */
-.detail-container {
-  width: 85%;
-  max-width: 1300px;
-  display: flex;
-  gap: 50px;
-  padding: 40px 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-/* ---------- GALERÍA DE IMÁGENES ---------- */
-.detail-imagen-container {
-  flex: 1.2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* IMAGEN PRINCIPAL (AGRANDADA) */
-.detail-imagen-container img {
-  width: 250%;
-  max-width: 800px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-}
-
-/* miniaturas */
-.imagen-buttons {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.imagen-button {
-  width: 55px;
-  height: 55px;
-  border: 1px solid var(--color-border);
-  background: white;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all .25s ease;
-  object-fit: cover;
-}
-
-.imagen-button:hover,
-.imagen-button.active {
-  border-color: var(--color-dark);
-  transform: scale(1.05);
-}
-
-/* ---------- INFORMACIÓN DEL PRODUCTO ---------- */
-.detail-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* Nombre */
-.detail-title {
-  font-family: var(--font-title);
-  font-size: 40px;
-  font-weight: 500;
-  color: var(--color-dark);
-}
-
-/* Descripción */
-.detail-description {
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.6;
-  color: #444;
-  margin-bottom: 10px;
-}
-
-/* Precio */
-.detail-details {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--color-dark);
-  margin-bottom: 20px;
-}
-
-/* ---------- SELECCIONES ---------- */
-.selecion-detail {
-  margin-top: 10px;
-}
-
-.selecion-content-detail {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-dark);
-  margin-bottom: 5px;
-}
-
-/* Selects elegantes */
-select {
-  padding: 12px 15px;
-  border-radius: 4px;
-  border: 1px solid var(--color-border);
-  background: white;
-  font-family: var(--font-primary);
-  font-size: 14px;
-  outline: none;
-  transition: all .3s ease;
-}
-
-select:hover,
-select:focus {
-  border-color: var(--color-dark);
-}
-
-/* Cantidad */
-#cantidad {
-  width: 100px;
-  padding: 12px;
-  border-radius: 4px;
-  border: 1px solid var(--color-border);
-  font-size: 14px;
-}
-
-/* Botón agregar */
-.selecion-content-detail button {
-  margin-top: 10px;
-  padding: 14px 0;
-  width: 100%;
-  background: var(--color-dark);
-  color: white;
-  border: none;
-  font-size: 15px;
-  font-family: var(--font-primary);
-  cursor: pointer;
-  transition: all .3s ease;
-  border-radius: 4px;
-}
-
-.selecion-content-detail button:hover {
-  background: #222;
-}
-
-/* ---------- VOLVER ---------- */
-.volver {
-  margin-top: 20px;
-  display: inline-block;
-  color: var(--color-dark);
-  font-size: 14px;
-  border-bottom: 1px solid var(--color-dark);
-  text-decoration: none;
-  transition: all .2s ease;
-}
-
-.volver:hover {
-  opacity: 0.7;
-}
-
-/* ---------- RECOMENDACIONES ---------- */
-.recomendaciones {
-  width: 85%;
-  max-width: 1300px;
-  margin: 40px 0 10px 0;
-  font-family: var(--font-title);
-  font-size: 28px;
-  font-weight: 500;
-  color: var(--color-dark);
-}
-
-.recomendaciones-container {
-  width: 85%;
-  max-width: 1300px;
+.detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: 1.3fr 1fr;
+  gap: 60px;
+  max-width: 1400px;
+  margin: auto;
+  align-items: start;
+}
+
+.detail-side {
+  display: flex;
+  flex-direction: column;
   gap: 25px;
-  margin-bottom: 60px;
 }
 
-.recomendacion-item {
-  background: white;
-  padding-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  transition: all .25s ease;
+.back-link {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: .2s;
 }
 
-.recomendacion-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+.back-link:hover {
+  color: black;
 }
 
-.recomendacion-item img {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.recomendados-p {
-  margin: 10px 0 0 10px;
-  font-size: 15px;
-  color: var(--color-dark);
-}
-
-/* ---------- RESPONSIVE REAL ---------- */
-
-/* Tablets (1024px - 768px) */
-@media (max-width: 1024px) {
-  .detail-container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .detail-content {
-    width: 90%;
-  }
-
-  .detail-title {
-    font-size: 34px;
+@media (max-width: 1000px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Móviles (menos de 768px) */
 @media (max-width: 768px) {
-  .detail-container {
-    width: 95%;
-    gap: 30px;
+  .detail-page {
+    padding: 24px 4%;
   }
 
-  .detail-imagen-container img {
+  .detail-grid {
+    gap: 40px;
+  }
+
+  .detail-side {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-page {
+    padding: 16px 12px;
+    min-height: auto;
+  }
+
+  .detail-grid {
+    gap: 24px;
     max-width: 100%;
   }
 
-  .detail-title {
-    font-size: 28px;
+  .detail-side {
+    gap: 16px;
   }
 
-  .detail-description {
-    font-size: 14px;
-  }
-
-  .detail-details {
-    font-size: 20px;
-  }
-
-  .recomendacion-item img {
-    height: 230px;
-  }
-}
-
-/* Móviles pequeños (menos de 450px) */
-@media (max-width: 450px) {
-  .detail-container {
-    gap: 20px;
-  }
-
-  #cantidad {
-    width: 80px;
-  }
-
-  .imagen-button {
-    width: 45px;
-    height: 45px;
+  .back-link {
+    font-size: 0.9rem;
   }
 }

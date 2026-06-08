@@ -36,7 +36,9 @@ const inicioSesion = async (correo, contraseña) => {
     return { token,idU};
   } catch (error) {
     // Capturar errores específicos y devolver un mensaje genérico
-    console.error('Error en el inicio de sesión:', error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error en el inicio de sesión:', error);
+    }
     return { error: 'Error al iniciar sesión. Contacta al administrador.' };
   }
 };

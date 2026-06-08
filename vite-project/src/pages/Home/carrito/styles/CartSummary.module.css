@@ -1,0 +1,102 @@
+.card {
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 24px;
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.06);
+
+  position: sticky;
+  top: 20px;
+}
+
+.card h2 {
+  margin-bottom: 24px;
+
+  font-size: 22px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+
+  font-size: 18px;
+}
+
+.row strong {
+  color: #111827;
+}
+
+.card button {
+  width: 100%;
+
+  border: none;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #ec4899;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .2s;
+
+  margin-bottom: 20px;
+}
+
+.card button:hover {
+  background: #db2777;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
+  .card h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .row {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .card button {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 16px;
+    top: 16px;
+  }
+
+  .card h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .row {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .card button {
+    padding: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+}

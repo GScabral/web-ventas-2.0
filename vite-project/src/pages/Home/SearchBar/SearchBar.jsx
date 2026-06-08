@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import './searchBar.css'
 
 const SearchBar = ({ onSearch, onClearSearch, value }) => {
     const [name, setName] = useState(value || "");

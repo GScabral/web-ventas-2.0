@@ -20,24 +20,4 @@ export const categoriasGlobal = {
         "Vestido": ["de noche", "casual", "coctel", "playero"]
     },
 
-    "Accesorios": {
-        "Anillos": ["plata", "oro", "acero quirúrgico"],
-        "Collares": ["cadena fina", "con colgante", "choker"],
-        "Pulseras": ["rigidas", "con dijes", "de cuero"],
-        "Aros": ["argollas", "perlas", "colgantes"],
-        "Gafas": ["de sol", "graduadas"],
-        "Sombreros": ["panamá", "bucket hat", "fedora"]
-    },
-
-    "Maquillaje": {
-        "Labial": ["barra", "líquido", "gloss"],
-        "Base": ["líquida", "polvo", "stick"],
-        "Sombras": ["paletas", "mono color", "glitter"],
-        "Máscara de pestañas": ["volumen", "alargadora", "waterproof"],
-        "Delineador": ["líquido", "lápiz", "gel"],
-        "Rubor": ["en polvo", "líquido", "en crema"],
-        "Iluminador": ["polvo", "líquido", "stick"],
-        "Corrector": ["líquido", "cremoso", "barra"]
-    }
-
 }

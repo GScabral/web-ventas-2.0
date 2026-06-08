@@ -3,9 +3,7 @@ const { variantesproductos,Productos } = require('../../db');
 
 const actualizarStock = async (idProducto, datosProducto) => {
 
-    console.log("id",idProducto),
     
-    console.log("datos",datosProducto)
     try {
         // Busca el producto principal por su ID
         const producto = await Productos.findByPk(idProducto);

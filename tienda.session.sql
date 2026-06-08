@@ -1,2 +1,2 @@
-ALTER TABLE "Pedido"
-ADD COLUMN email_cliente VARCHAR(50) NOT NULL;
+ALTER TABLE detalles_pedido
+ADD COLUMN "pedidoId" INTEGER;

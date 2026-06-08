@@ -1,0 +1,183 @@
+.pagination-modern-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  margin: 4rem auto;
+  width: 100%;
+}
+
+/* CONTENEDOR CENTRAL */
+
+.pagination-glass {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+
+  padding: .8rem 1rem;
+
+  background: rgba(255,255,255,.7);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255,255,255,.5);
+
+  border-radius: 999px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.06);
+}
+
+/* NUMEROS */
+
+.pagination-pill {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+
+  font-size: .95rem;
+  font-weight: 600;
+
+  color: #5f6472;
+
+  cursor: pointer;
+
+  transition: all .25s ease;
+}
+
+.pagination-pill:hover {
+  background: rgba(41, 98, 255, .08);
+
+  color: #2962ff;
+
+  transform: translateY(-2px);
+}
+
+/* PAGINA ACTIVA */
+
+.pagination-pill.active {
+  background: linear-gradient(
+    135deg,
+    #2962ff,
+    #5c8dff
+  );
+
+  color: white;
+
+  box-shadow:
+    0 10px 25px rgba(41, 98, 255, .35);
+
+  transform: scale(1.08);
+}
+
+/* FLECHAS */
+
+.pagination-arrow {
+  width: 50px;
+  height: 50px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: white;
+
+  color: #2962ff;
+
+  cursor: pointer;
+
+  font-size: 1rem;
+
+  transition: all .25s ease;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.08);
+}
+
+.pagination-arrow:hover:not(:disabled) {
+  transform: translateY(-3px);
+
+  background: #2962ff;
+
+  color: white;
+
+  box-shadow:
+    0 12px 25px rgba(41,98,255,.25);
+}
+
+.pagination-arrow:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+/* ANIMACION */
+
+.fade-in {
+  animation: fadePagination .4s ease;
+}
+
+@keyframes fadePagination {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .pagination-modern-wrapper {
+    gap: .5rem;
+  }
+
+  .pagination-glass {
+    gap: .3rem;
+    padding: .6rem;
+  }
+
+  .pagination-pill {
+    width: 36px;
+    height: 36px;
+    font-size: .85rem;
+  }
+
+  .pagination-arrow {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagination-modern-wrapper {
+    gap: 0.3rem;
+    margin: 2rem auto;
+  }
+
+  .pagination-glass {
+    gap: 0.2rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .pagination-pill {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .pagination-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}

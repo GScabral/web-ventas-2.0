@@ -1,57 +1,111 @@
-const { Productos } = require('../../db');
-const { variantesproductos } = require('../../db');
+const { Op } = require("sequelize");
+const { Productos, sections, variantesproductos } = require("../../db");
 
 const createNewProducto = async (bodyData, files) => {
+
+
   const {
     nombre_producto,
     descripcion,
     precio,
-    rama,         // 🔹 lo agregamos aquí
+    rama,
     categoria,
     subcategoria,
-    variantesData
+    variantesData,
+    secciones = []
   } = bodyData;
 
   try {
+
     // Validación de campos obligatorios
-    const requiredFields = ['nombre_producto', 'descripcion', 'precio', 'rama', 'categoria'];
-    const missingFields = requiredFields.filter(field => !bodyData[field]);
+
+    const requiredFields = [
+      "nombre_producto",
+      "descripcion",
+      "precio",
+      "rama",
+      "categoria"
+    ];
+
+    const missingFields = requiredFields.filter(
+      field => !bodyData[field]
+    );
+
     if (missingFields.length > 0) {
-      return { error: `Faltan campos obligatorios: ${missingFields.join(', ')}` };
+      return {
+        error: `Faltan campos obligatorios: ${missingFields.join(", ")}`
+      };
     }
 
-    // Parsear variantesData si viene como string
+    // Parsear variantes
+
     let variantes = variantesData;
-    if (typeof variantesData === 'string') {
+
+    if (typeof variantesData === "string") {
       variantes = JSON.parse(variantesData);
     }
 
     if (!Array.isArray(variantes)) {
-      return { error: 'variantesData debe ser un array' };
+      return {
+        error: "variantesData debe ser un array"
+      };
     }
 
-    // Crear el producto
+    // Parsear secciones
+
+    let seccionesParsed = secciones;
+
+    if (typeof secciones === "string") {
+      seccionesParsed = JSON.parse(secciones);
+    }
+
+    // Crear producto
+
     const newProducto = await Productos.create({
       nombre_producto,
       descripcion,
       precio,
-      rama,         // 🔹 guardamos también
+      rama,
       categoria,
-      subcategoria,
+      subcategoria
     });
 
-    // Asociar variantes
+    // Asociar secciones
+
+    if (
+      Array.isArray(seccionesParsed) &&
+      seccionesParsed.length > 0
+    ) {
+
+      const section = await sections.findAll({
+        where: {
+          section: {
+            [Op.in]: seccionesParsed
+          }
+        }
+      });
+
+      await newProducto.addSections(section);
+    }
+
+    // Crear variantes
+
     for (let i = 0; i < variantes.length; i++) {
+
       const { tallas, color } = variantes[i];
 
-      const imagen = files[i]; // Se espera que las imágenes estén en el mismo orden
+      const imagen = files[i];
+
       if (!imagen || !imagen.path) {
-        return { error: `Falta la imagen para la variante ${i + 1}` };
+        return {
+          error: `Falta la imagen para la variante ${i + 1}`
+        };
       }
 
       const imagenUrl = imagen.path;
 
       for (let j = 0; j < tallas.length; j++) {
+
         const { talla, cantidad } = tallas[j];
 
         await variantesproductos.create({
@@ -61,13 +115,24 @@ const createNewProducto = async (bodyData, files) => {
           ProductoIdProducto: newProducto.id_producto,
           imagenes: [imagenUrl]
         });
+
       }
     }
 
-    return { newProducto };
+    return {
+      newProducto
+    };
+
   } catch (error) {
-    console.error("Error en la creación del producto:", error);
-    return { error: 'Error en la creación del producto' };
+
+    console.error(
+      "Error en la creación del producto:",
+      error
+    );
+
+    return {
+      error: "Error en la creación del producto"
+    };
   }
 };
 

@@ -1,59 +1,181 @@
-const { Pedido, DetallesPedido } = require('../../db');
+const { Pedido, DetallesPedido } = require("../../db");
 
-
-const crearPedido = async (pedidoData) => {
-  let transaction;
-
+const nuevoPedido = async (req, res) => {
   try {
-    transaction = await Pedido.sequelize.transaction();
 
-    const { email_cliente, productos } = pedidoData;
+  
 
-    if (!email_cliente) throw new Error("No se recibió email_cliente");
-    if (!productos || !Array.isArray(productos)) throw new Error("productos debe ser un array");
+    const {
+      email,
+      envio,
+      email_cliente,
+      productos,
 
-    const nuevoPedido = await Pedido.create(
-      {
-        email_cliente,
-        estado_pedido: "PENDIENTE"
-      },
-      { transaction }
-    );
+      tipo_entrega,
+      nombre,
+      telefono,
+      provincia,
+      ciudad,
+      direccion
+    } = req.body;
 
-    const { id_pedido } = nuevoPedido;
-    for (const producto of pedidoData.productos) {
-      const detallePedido = {
-        PedidoIdPedido: id_pedido,
-        nombre: producto.nombre,
-        ProductoIdProducto: producto.id,
-        cantidad: producto.cantidad,
-        color: producto.color, // Suponiendo que la variante es un objeto con un color
-        talle: producto.talla, // Suponiendo que la variante es un objeto con un talla
-        total: producto.total,
-      };
+    const emailCliente =
+      email_cliente || email || null;
 
-      // Agregar un console.log para ver los detalles del pedido antes de crearlos
-      console.log("Detalle del pedido a crear:", detallePedido);
+    const envioObj = envio || {};
 
-      await DetallesPedido.create(detallePedido, { transaction });
+    const tipoEntrega =
+      tipo_entrega ||
+      envioObj.tipoEntrega ||
+      envioObj.tipo_entrega ||
+      "RETIRO";
+
+    const nombreCliente =
+      nombre ||
+      envioObj.nombre ||
+      null;
+
+    const telefonoCliente =
+      telefono ||
+      envioObj.telefono ||
+      null;
+
+    const provinciaCliente =
+      provincia ||
+      envioObj.provincia ||
+      null;
+
+    const ciudadCliente =
+      ciudad ||
+      envioObj.ciudad ||
+      null;
+
+    const direccionCliente =
+      direccion ||
+      envioObj.direccion ||
+      null;
+
+    if (!emailCliente) {
+      return res.status(400).json({
+        error: "Falta email_cliente"
+      });
     }
 
-    // Commit de la transacción
-    await transaction.commit();
-    
+    if (!nombreCliente) {
+      return res.status(400).json({
+        error: "Falta nombre"
+      });
+    }
 
-    return {
-      success: true,
-      message: "Pedido creado correctamente",
-      id_pedido
-    };
+    if (!productos || productos.length === 0) {
+      return res.status(400).json({
+        error: "No hay productos"
+      });
+    }
+
+    const totalPedido = productos.reduce(
+      (acc, item) => {
+
+        const precio = Number(
+          item.precio_unitario ||
+          item.precio ||
+          0
+        );
+
+        const cantidad = Number(
+          item.cantidad ||
+          item.cantidad_elegida ||
+          1
+        );
+
+        return acc + precio * cantidad;
+
+      },
+      0
+    );
+
+    const pedido = await Pedido.create({
+
+      email_cliente: emailCliente,
+
+      nombre: nombreCliente,
+
+      telefono: telefonoCliente,
+
+      provincia: provinciaCliente,
+
+      ciudad: ciudadCliente,
+
+      direccion: direccionCliente,
+
+      tipo_entrega: tipoEntrega,
+
+      total_pedido: totalPedido,
+
+      estado: "pendiente"
+    });
+
+    await Promise.all(
+      productos.map((producto) => {
+
+        const precio =
+          Number(producto.precio_unitario);
+
+        const cantidad =
+          Number(producto.cantidad);
+
+        return DetallesPedido.create({
+
+          PedidoIdPedido:
+            pedido.id_pedido,
+
+          nombre:
+            producto.nombre,
+
+          cantidad,
+
+          precio_unitario:
+            precio,
+
+          color:
+            producto.color || null,
+
+          talle:
+            producto.talle || null,
+
+          total:
+            precio * cantidad
+        });
+
+      })
+    );
+
+    const pedidoCompleto =
+      await Pedido.findByPk(
+        pedido.id_pedido,
+        {
+          include: [
+            DetallesPedido
+          ]
+        }
+      );
+
+    return res.status(201).json(
+      pedidoCompleto
+    );
 
   } catch (error) {
-    if (transaction) await transaction.rollback();
-    console.error("❌ Error al crear pedido:", error);
-    return { success: false, error: error.message };
+
+    console.error(
+      "ERROR NUEVO PEDIDO:",
+      error
+    );
+
+    return res.status(500).json({
+      error: error.message
+    });
+
   }
 };
 
-
-module.exports = crearPedido
+module.exports = nuevoPedido;

@@ -1,5 +1,11 @@
 
 import axios from "axios";
+
+const storedAdminToken = localStorage.getItem("adminToken");
+if (storedAdminToken) {
+  axios.defaults.headers.common.Authorization = `Bearer ${storedAdminToken}`;
+}
+
 //PRODUCTOS
 export const GET_PRODUCTOS = "GET_PRODUCTOS";
 export const ADD_PRODUCT = "ADD_PRODUCT";
@@ -17,12 +23,15 @@ export const BORRAR_PRODUCTO = "BORRAR_PRODUCTO";
 export const ACTUALIZAR_VARIANTES = "ACTUALIZAR_VARIANTES";
 export const ACTUALIZAR_CARRITO = "ACTUALIZAR_CARRITO"; export const BUSCAR_NOMBRE = "BUSCAR_NOMBRE";
 export const GET_PEDIDOS = 'GET_PEDIDOS';
-export const DESPACHAR_PRODUCTO = 'DESPACHAR_PRODUCTO';
 export const OFERTA = "OFERTA";
 export const BORRAR_OFERTA = "BORRAR_OFERTA";
 export const ENVIAR_ESTADO = 'ENVIAR_ESTADO';
 export const GET_OFERTAS = "GET_OFERTAS";
+export const UPDATE_ESTADO_PEDIDO =
+  "UPDATE_ESTADO_PEDIDO";
 
+export const ELIMINAR_PEDIDO =
+  "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
 export const INI_USUARIO = "INI_USUARIO";
@@ -36,7 +45,7 @@ export const GET_CLIENTES = 'GET_CLIENTES';
 export const ADMIN_LOGIN_SUCCESS = "ADMIN_LOGIN_SUCCESS";
 
 //PEDidos
-export const PEDIDO = "PEDIDO";
+export const POST_PEDIDO = "POST_PEDIDO";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -71,51 +80,79 @@ export const getAllClientes = () => {
   }
 }
 
+export const getPedidoById = (id) => {
+  return async () => {
+
+    const response =
+      await axios.get(
+        `http://localhost:3004/pedido/${id}`
+      );
+
+    return response.data;
+  };
+};
 export const getPedidos = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/pedido/Lpedidos`)
+
+      const response = await axios.get(
+        "http://localhost:3004/pedido/Lpedidos"
+      );
+
       dispatch({
         type: GET_PEDIDOS,
         payload: response.data,
       });
+
     } catch (error) {
       console.error(error);
-    }
-  }
-}
-
-export const addProduct = (formData) => {
-  for (let pair of formData.entries()) {
-  }
-
-  return async function (dispatch) {
-    try {
-
-
-      const response = await axios.post(`http://localhost:3004/producto/nuevoProducto`, formData);
-
-      dispatch({
-        type: ADD_PRODUCT,
-        payload: response.data, // Puedes ajustar esto dependiendo de la estructura de datos devuelta por el servidor
-      });
-    } catch (error) {
-      if (error.response) {
-        // El servidor respondió con un código de estado fuera del rango 2xx
-        console.error('Respuesta del servidor:', error.response.data);
-        console.error('Código de estado HTTP:', error.response.status);
-      } else if (error.request) {
-        // La solicitud se hizo pero no se recibió respuesta
-        console.error('No se recibió respuesta del servidor:', error.request);
-      } else {
-        // Ocurrió un error al configurar la solicitud
-        console.error('Error al configurar la solicitud:', error.message);
-      }
-      console.error('Error completo:', error.config);
     }
   };
 };
 
+export const addPedido = (pedidoData) => {
+  return async (dispatch) => {
+    try {
+
+      const response = await axios.post(
+        "http://localhost:3004/pedido/nuevoPedido",
+        pedidoData
+      );
+
+      dispatch({
+        type: POST_PEDIDO,
+        payload: response.data,
+      });
+
+      return response.data;
+
+    } catch (error) {
+
+      console.error(error);
+
+      throw error;
+    }
+  };
+};
+export const addProduct = (formData) => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.post(
+        "http://localhost:3004/producto/nuevoProducto",
+        formData
+      );
+
+      dispatch({
+        type: ADD_PRODUCT,
+        payload: response.data,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 export const getById = (id) => {
   return async function (dispatch) {
     try {
@@ -374,28 +411,10 @@ export const borrar = async (id) => {
   }
 };
 
-export const addPedido = (pedidoData) => {
-  return async (dispatch) => {
 
-    console.log(pedidoData)
-    try {
-      const response = await axios.post("http://localhost:3004/pedido/nuevoPedido", pedidoData);
-
-      dispatch({
-        type: "POST_PEDIDO",
-        payload: response.data,
-      });
-
-      return response; // <-- NECESARIO
-    } catch (error) {
-      console.log("ERROR ADDPEDIDO:", error);
-      return null;
-    }
-  };
-};
 
 export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate de pasar cantidad_disponible aquí
-  console.log(id,cantidad_disponible)
+  console.log(id, cantidad_disponible)
   return async function (dispatch) {
     try {
 
@@ -415,26 +434,82 @@ export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate d
   };
 }
 
-export const actualizarEstadoProducto = (pedidoId, detalleId, estado) => {
-  return async function () {
-    const response = await axios.put(`http://localhost:3004/pedido/pedidos/${pedidoId}/detalle/${detalleId}`, { estado });
-    return response.data;
-  };
-};
+export const actualizarEstadoPedidoGeneral =
+  (id, estado) =>
+    async (dispatch) => {
+
+      try {
+
+        const response =
+          await axios.put(
+            `http://localhost:3004/pedido/${id}/estado`,
+            { estado }
+          );
+
+        dispatch({
+          type:
+            UPDATE_ESTADO_PEDIDO,
+
+          payload:
+            response.data.pedido,
+        });
+
+        return response.data;
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
 
-export const actualizarEstadoPedidoGeneral = (id_pedido, nuevoEstado) => async (dispatch) => {
-  const res = await axios.put(`http://localhost:3004/pedido/pedidos/estado/${id_pedido}`, { estado: nuevoEstado });
 
-  dispatch({
-    type: "UPDATE_ESTADO_PEDIDO",
-    payload: res.data
-  });
+export const cancelarPedido =
+  (id) =>
+    async (dispatch) => {
 
-  return res;
-};
+      try {
 
+        const response =
+          await axios.put(
+            `http://localhost:3004/pedido/${id}/cancelar`
+          );
 
+        dispatch({
+          type:
+            UPDATE_ESTADO_PEDIDO,
+
+          payload:
+            response.data.pedido,
+        });
+
+        return response.data;
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+export const eliminarPedido =
+  (id) =>
+    async (dispatch) => {
+
+      try {
+
+        await axios.delete(
+          `http://localhost:3004/pedido/${id}`
+        );
+
+        dispatch({
+          type:
+            ELIMINAR_PEDIDO,
+
+          payload: id,
+        });
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
 export const actualizarCarrito = (nuevoCarrito) => ({
   type: ACTUALIZAR_CARRITO,
@@ -492,18 +567,6 @@ export const enviarEstado = (nuevoEstado) => ({
   payload: nuevoEstado,
 });
 
-export const despacharProducto = (pedidoId, detalleId) => async (dispatch) => {
-  try {
-    const response = await axios.put(`http://localhost:3004/pedidos/despachar/${detalleId}`);
-
-    dispatch({
-      type: 'DESPACHAR_PRODUCTO',
-      payload: { pedidoId, detalleId, data: response.data.detalle },
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispatch => {
 
@@ -529,10 +592,19 @@ export const LoginAdmin = (password) => {
   return async (dispatch) => {
     try {
       const response = await axios.post('http://localhost:3004/Nadmin/loginc', {
-        password: password,
+        password,
       });
-      dispatch({ type: 'ADMIN_LOGIN_SUCCESS' });
-      return response;
+
+      if (response.data?.token) {
+        localStorage.setItem('adminToken', response.data.token);
+        axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+        dispatch({ type: ADMIN_LOGIN_SUCCESS });
+        return { success: true };
+      }
+
+      const errorMessage = response.data?.error || 'Autenticación fallida';
+      dispatch({ type: 'ADMIN_LOGIN_FAILURE', payload: { error: errorMessage } });
+      return { success: false, error: errorMessage };
     } catch (error) {
       console.error(error);
       dispatch({ type: 'ADMIN_LOGIN_FAILURE', payload: { error: error.message } });

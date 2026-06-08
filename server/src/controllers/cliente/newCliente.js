@@ -11,7 +11,9 @@ const createNewCliente = async (clienteData) => {
       throw new Error("Faltan campos obligatorios para crear el usuario");
     }
 
-    console.log("Datos correctamente recibidos ", clienteData);
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Datos correctamente recibidos ");
+    }
 
     const hashedPassword = await bcrypt.hash(contraseña, saltRounds);
 
@@ -24,9 +26,13 @@ const createNewCliente = async (clienteData) => {
       contraseña: hashedPassword, // Almacena la contraseña como un hash en la base de datos
     });
 
-    console.log("Nuevo cliente creado id ", newCliente.id_cliente);
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Nuevo cliente creado id ", newCliente.id_cliente);
+    }
   } catch (error) {
-    console.error("Error en la creación del cliente", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error en la creación del cliente", error);
+    }
     return { error: error.message };
   }
 };

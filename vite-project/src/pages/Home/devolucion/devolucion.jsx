@@ -1,5 +1,4 @@
 import React from "react";
-import "./devolucion.css";
 
 const DevolucionCambio = () => {
   return (
