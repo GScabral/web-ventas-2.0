@@ -1,127 +1,122 @@
 import React from "react";
-import { categoriasGlobal } from "../../../pages/Home/barralado/categorias";
 import "./CategoryCard.css";
 
 const CategoryCard = ({
   productGrupo,
   setProductGrupo,
-  productCategoria,
-  setProductCategoria,
-  productSubCategoria,
-  setProductSubCategoria,
+
+  categorias,
+
+  categoriaId,
+  setCategoriaId,
+
+  nuevaCategoria,
+  setNuevaCategoria
 }) => {
+
   return (
+
     <div className="category-card">
 
       <div className="card-header">
+
         <h2>Categorización</h2>
-        <p>Organiza correctamente el producto</p>
+
+        <p>
+          Organiza correctamente el producto
+        </p>
+
       </div>
+
+      {/* Rama */}
 
       <div className="form-group">
+
         <label>Rama</label>
 
-        <select
+        <input
+          type="text"
           value={productGrupo}
-          onChange={(e) => {
-            setProductGrupo(e.target.value);
-            setProductCategoria("");
-            setProductSubCategoria("");
-          }}
-          required
-        >
-          <option value="">
-            Selecciona una rama
-          </option>
-
-          {Object.keys(categoriasGlobal).map(
-            (rama) => (
-              <option
-                key={rama}
-                value={rama}
-              >
-                {rama}
-              </option>
+          onChange={(e) =>
+            setProductGrupo(
+              e.target.value
             )
-          )}
-        </select>
+          }
+          placeholder="Ej: Indumentaria"
+          required
+        />
+
       </div>
 
-      {productGrupo && (
-        <div className="form-group">
+      {/* Categoría existente */}
 
-          <label>Categoría</label>
+      <div className="form-group">
 
-          <select
-            value={productCategoria}
-            onChange={(e) => {
-              setProductCategoria(
-                e.target.value
-              );
+        <label>
+          Categoría existente
+        </label>
 
-              setProductSubCategoria("");
-            }}
-            required
-          >
-            <option value="">
-              Selecciona categoría
+        <select
+          value={categoriaId}
+          onChange={(e) => {
+
+            setCategoriaId(
+              e.target.value
+            );
+
+            setNuevaCategoria("");
+
+          }}
+        >
+
+          <option value="">
+            Seleccionar categoría
+          </option>
+
+          {categorias?.map(cat => (
+
+            <option
+              key={cat.id_categoria}
+              value={cat.id_categoria}
+            >
+
+              {cat.nombre}
+
             </option>
 
-            {Object.keys(
-              categoriasGlobal[productGrupo]
-            ).map((cat) => (
-              <option
-                key={cat}
-                value={cat}
-              >
-                {cat}
-              </option>
-            ))}
-          </select>
+          ))}
 
-        </div>
-      )}
+        </select>
 
-      {productCategoria &&
-        Array.isArray(
-          categoriasGlobal[productGrupo][
-            productCategoria
-          ]
-        ) && (
-          <div className="form-group">
+      </div>
 
-            <label>Subcategoría</label>
+      {/* Nueva categoría */}
 
-            <select
-              value={productSubCategoria}
-              onChange={(e) =>
-                setProductSubCategoria(
-                  e.target.value
-                )
-              }
-            >
-              <option value="">
-                Selecciona subcategoría
-              </option>
+      <div className="form-group">
 
-              {categoriasGlobal[
-                productGrupo
-              ][productCategoria].map(
-                (sub, i) => (
-                  <option
-                    key={i}
-                    value={sub}
-                  >
-                    {sub}
-                  </option>
-                )
-              )}
-            </select>
+        <label>
+          O crear nueva categoría
+        </label>
 
-          </div>
-        )}
+        <input
+          type="text"
+          placeholder="Ej: Remeras Deportivas"
+          value={nuevaCategoria}
+          onChange={(e) => {
+
+            setNuevaCategoria(
+              e.target.value
+            );
+
+            setCategoriaId("");
+
+          }}
+        />
+
+      </div>
 
     </div>
+
   );
 };
 

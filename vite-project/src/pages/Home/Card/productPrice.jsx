@@ -1,16 +1,35 @@
-const ProductPrice = ({ precio, oferta }) => {
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-    const precioFinal = oferta
-        ? (precio * (1 - oferta / 100)).toFixed(2)
+const ProductPrice = ({
+    precio,
+    productoId
+}) => {
+
+    const ofertas = useSelector(
+        state => state.ofertasActivas
+    );
+
+    const ofertaProducto = ofertas.find(
+        oferta =>
+            oferta.producto_id === productoId
+    );
+
+    const descuento = Number(
+        ofertaProducto?.descuento || 0
+    );
+
+    const precioFinal = descuento > 0
+        ? (precio * (1 - descuento / 100)).toFixed(2)
         : precio;
 
     return (
         <div className="product-price-container">
 
-            {oferta ? (
+            {descuento > 0 ? (
                 <>
                     <span className="product-offer">
-                        {oferta}% OFF
+                        {descuento}% OFF
                     </span>
 
                     <div className="product-price-row">

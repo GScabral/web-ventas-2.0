@@ -7,28 +7,25 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
+
     nombre_producto: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
+
     descripcion: {
       type: DataTypes.TEXT
     },
+
     precio: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
     },
-    rama: {
-      type: DataTypes.STRING(50),   // 🔹 Nueva columna
-      allowNull: false
-    },
-    categoria: {
-      type: DataTypes.STRING(50)
-    },
-    subcategoria: {
-      type: DataTypes.STRING(100),
-    }
 
+    rama: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    }
 
   });
 

@@ -1,90 +1,166 @@
-.oferta-list-container {
-  padding: 2rem;
-  overflow-x: auto;
-  background: #23263a;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(24, 28, 43, 0.2);
-  color: #f7f9fc;
-  font-family: 'Montserrat', Arial, sans-serif;
+.offers-page {
+  padding: 30px;
 }
 
-.oferta-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #181c2b;
-  border-radius: 10px;
+.offers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.offers-header h1 {
+  margin: 0;
+  color: #111827;
+}
+
+.offers-header p {
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+.offers-counter {
+  width: 70px;
+  height: 70px;
+
+  border-radius: 20px;
+
+  background: #2563eb;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.offers-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(320px, 1fr));
+
+  gap: 24px;
+}
+
+.offer-card {
+  background: white;
+
+  border-radius: 20px;
+
   overflow: hidden;
+
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, .06);
+
+  transition: .3s;
 }
 
-.oferta-table th,
-.oferta-table td {
-  padding: 0.8rem;
-  border: 1px solid #ffb347;
+.offer-card:hover {
+  transform: translateY(-5px);
+}
+
+.offer-badge {
+  background: linear-gradient(135deg,
+      #ef4444,
+      #dc2626);
+
+  color: white;
+
+  padding: 16px;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
   text-align: center;
-  color: #f7f9fc;
 }
 
-.action-button {
-  padding: 0.5rem 0.8rem;
-  font-size: 0.9rem;
-  background: linear-gradient(90deg, #ffb347 0%, #ffcc80 100%);
-  color: #23263a;
-  border: none;
-  border-radius: 6px;
+.offer-content {
+  padding: 20px;
+}
+
+.offer-content h3 {
+  margin-bottom: 20px;
+  color: #111827;
+}
+
+.offer-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.offer-info span {
+  color: #6b7280;
+}
+
+.offer-info strong {
+  color: #111827;
+}
+
+.status {
+  margin-top: 20px;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  display: inline-block;
+
+  font-size: 13px;
+
   font-weight: 600;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status.expired {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.delete-offer-btn {
+  width: 100%;
+
+  border: none;
+
+  background: #111827;
+
+  color: white;
+
+  padding: 14px;
+
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.action-button:hover {
-  background: #23263a;
-  color: #ffb347;
-  border: 1.5px solid #ffb347;
+
+  font-weight: 600;
+
+  transition: .3s;
 }
 
-/* Responsivo */
+.delete-offer-btn:hover {
+  background: #dc2626;
+}
+
 @media (max-width: 768px) {
-  .oferta-table th,
-  .oferta-table td {
-    font-size: 0.85rem;
-    padding: 0.6rem;
+
+  .offers-page {
+    padding: 20px;
   }
 
-  .oferta-list-container {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .oferta-list-container {
-    padding: 0.8rem;
-    border-radius: 12px;
+  .offers-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
   }
 
-  .oferta-table th,
-  .oferta-table td {
-    font-size: 0.75rem;
-    padding: 0.4rem;
-  }
-
-  .action-button {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .oferta-list-container {
-    padding: 1rem;
-    overflow-x: auto;
-  }
-
-  .oferta-table {
-    min-width: 400px;
-  }
-
-  .oferta-table th,
-  .oferta-table td {
-    font-size: 0.8rem;
-    padding: 0.5rem;
+  .offers-grid {
+    grid-template-columns: 1fr;
   }
 }

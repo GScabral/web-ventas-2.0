@@ -1,16 +1,19 @@
 const { Op } = require("sequelize");
-const { Productos, sections, variantesproductos } = require("../../db");
+const {
+  Productos,
+  sections,
+  variantesproductos,
+  Categorias
+} = require("../../db");
 
 const createNewProducto = async (bodyData, files) => {
-
 
   const {
     nombre_producto,
     descripcion,
     precio,
     rama,
-    categoria,
-    subcategoria,
+    categoriaId,
     variantesData,
     secciones = []
   } = bodyData;
@@ -18,13 +21,19 @@ const createNewProducto = async (bodyData, files) => {
   try {
 
     // Validación de campos obligatorios
-
+    const sectionTitles = {
+      hero: "Hero Principal",
+      trending: "Trending",
+      principal: "Principal",
+      featured: "Destacados",
+      banner: "Banner"
+    };
     const requiredFields = [
       "nombre_producto",
       "descripcion",
       "precio",
       "rama",
-      "categoria"
+      "categoriaId"
     ];
 
     const missingFields = requiredFields.filter(
@@ -34,6 +43,16 @@ const createNewProducto = async (bodyData, files) => {
     if (missingFields.length > 0) {
       return {
         error: `Faltan campos obligatorios: ${missingFields.join(", ")}`
+      };
+    }
+
+    // Verificar que la categoría exista
+
+    const categoria = await Categorias.findByPk(categoriaId);
+
+    if (!categoria) {
+      return {
+        error: "La categoría seleccionada no existe"
       };
     }
 
@@ -61,13 +80,13 @@ const createNewProducto = async (bodyData, files) => {
 
     // Crear producto
 
+
     const newProducto = await Productos.create({
       nombre_producto,
       descripcion,
       precio,
       rama,
-      categoria,
-      subcategoria
+      categoriaId
     });
 
     // Asociar secciones
@@ -77,17 +96,50 @@ const createNewProducto = async (bodyData, files) => {
       seccionesParsed.length > 0
     ) {
 
-      const section = await sections.findAll({
-        where: {
-          section: {
-            [Op.in]: seccionesParsed
-          }
-        }
-      });
+      const existingSections =
+        await sections.findAll({
+          where: {
+            section: {
+              [Op.in]: seccionesParsed,
+            },
+          },
+        });
 
-      await newProducto.addSections(section);
+      const existingNames =
+        existingSections.map(
+          section => section.section
+        );
+
+      const missingSections =
+        seccionesParsed.filter(
+          sectionName =>
+            !existingNames.includes(
+              sectionName
+            )
+        );
+
+      let newSections = [];
+
+      if (missingSections.length > 0) {
+
+        newSections =
+          await sections.bulkCreate(
+            missingSections.map(sectionName => ({
+              section: sectionName,
+              title: sectionTitles[sectionName] || sectionName
+            })),
+            {
+              returning: true,
+            }
+          );
+
+      }
+
+      await newProducto.addSections([
+        ...existingSections,
+        ...newSections,
+      ]);
     }
-
     // Crear variantes
 
     for (let i = 0; i < variantes.length; i++) {

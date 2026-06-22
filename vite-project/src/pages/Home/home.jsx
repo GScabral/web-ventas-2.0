@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getProductos } from "../../redux/action";
+import { getProductos, getOfertas } from "../../redux/action";
 
 import Hero from "../../componentes/hero";
 import Footer from "../Home/footer/Footer";
@@ -23,6 +23,9 @@ const Home = () => {
     state => state.allProductos
   );
 
+
+
+
   const [loading, setLoading] = useState(true);
 
   const [selectedSubcategory, setSelectedSubcategory] =
@@ -34,7 +37,7 @@ const Home = () => {
   useEffect(() => {
 
     setLoading(true);
-
+    dispatch(getOfertas())
     dispatch(getProductos())
       .finally(() => setLoading(false));
 

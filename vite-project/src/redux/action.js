@@ -27,11 +27,12 @@ export const OFERTA = "OFERTA";
 export const BORRAR_OFERTA = "BORRAR_OFERTA";
 export const ENVIAR_ESTADO = 'ENVIAR_ESTADO';
 export const GET_OFERTAS = "GET_OFERTAS";
-export const UPDATE_ESTADO_PEDIDO =
-  "UPDATE_ESTADO_PEDIDO";
-
-export const ELIMINAR_PEDIDO =
-  "ELIMINAR_PEDIDO";
+export const UPDATE_ESTADO_PEDIDO = "UPDATE_ESTADO_PEDIDO";
+export const GET_CATEGORIAS = "GET_CATEGORIAS";
+export const CREATE_CATEGORIA = "CREATE_CATEGORIA";
+export const UPDATE_CATEGORIA = "UPDATE_CATEGORIA";
+export const DELETE_CATEGORIA = "DELETE_CATEGORIA";
+export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
 export const INI_USUARIO = "INI_USUARIO";
@@ -149,7 +150,14 @@ export const addProduct = (formData) => {
 
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error("ERROR:", error);
+
+      if (error.response) {
+        console.log("STATUS:", error.response.status);
+        console.log("DATA:", error.response.data);
+      }
+
+      throw error;
     }
   };
 };
@@ -646,23 +654,118 @@ export const getOfertas = () => {
 };
 
 
-export const borrarOferta = async (id) => {
-  try {
+export const borrarOferta = (id) => {
+  return async (dispatch) => {
 
-    const borrar = await axios.delete(`http://localhost:3004/oferta/eliminar/${id}`)
+    try {
 
-    if (borrar.status !== 200) {
-      throw new Error('Error al obtener el cliente por ID');
+      const borrar = await axios.delete(
+        `http://localhost:3004/oferta/eliminar/${id}`
+      );
+
+      dispatch({
+        type: BORRAR_OFERTA,
+        payload: id,
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Error eliminando oferta:",
+        error
+      );
+
     }
 
-    dispatch({
-      type: BORRAR_OFERTA,
-      payload: borrar.data,
-    });
-  } catch (error) {
-    console.error('Error :', error);
-  }
+  };
 };
 
+export const createCategoria =
+  (nombre) =>
+    async (dispatch) => {
+
+      try {
+
+        const { data } =
+          await axios.post(
+            "http://localhost:3004/producto/categorias",
+            {
+              nombre
+            }
+          );
+
+        dispatch({
+          type: "CREATE_CATEGORIA",
+          payload: data
+        });
+
+        return data;
+
+      } catch (error) {
+
+        console.error(error);
+        throw error;
+
+      }
+    };
+export const updateCategoria =
+  (id, nombre) =>
+    async (dispatch) => {
+
+      try {
+
+        const { data } =
+          await axios.put(
+            `http://localhost:3004/producto/categorias/${id}`,
+            {
+              nombre
+            }
+          );
+
+        dispatch({
+          type: "UPDATE_CATEGORIA",
+          payload: data
+        });
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+export const deleteCategoria =
+  (id) =>
+    async (dispatch) => {
+
+      try {
+
+        await axios.delete(
+          `http://localhost:3004/producto/categorias/${id}`
+        );
+
+        dispatch({
+          type: "DELETE_CATEGORIA",
+          payload: id
+        });
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
 
+export const getCategorias =
+  () => async (dispatch) => {
+
+    try {
+
+      const response = await axios.get("http://localhost:3004/producto/traercategorias");
+
+      dispatch({
+        type: "GET_CATEGORIAS",
+        payload: response.data
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+  };

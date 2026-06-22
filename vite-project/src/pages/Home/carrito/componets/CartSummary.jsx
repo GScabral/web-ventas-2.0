@@ -12,9 +12,10 @@ const CartSummary = ({
     (acc, item) =>
       acc +
       item.precio *
-        item.cantidad_elegida,
+        item.cantidad,
     0
   );
+
 
   return (
     <div className={styles.card}>

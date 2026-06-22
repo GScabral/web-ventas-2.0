@@ -10,6 +10,7 @@ import NewProduct from './admin/añadir/añadirProducto'
 import ProductList from './admin/productos/listadoProductos'
 import DevolucionCambio from './pages/Home/devolucion/devolucion'
 import VentaPorMayor from './pages/Home/VentaPorMayor/VentaPorMayor'
+import Catalogo from './pages/Home/temporada/Catalogo'
 // import Landing from './pages/landing/landing'
 // import NewUser from './CC/crearCuenta'
 // import Ingresar from './IS/iniciarSesion'
@@ -20,11 +21,11 @@ import VentaPorMayor from './pages/Home/VentaPorMayor/VentaPorMayor'
 
 function App() {
   const location = useLocation();
-  const hideNav = location.pathname === '/newUser' || 
-                  location.pathname === '/iniciar' || 
-                  location.pathname === '/carrito' || 
-                  /^\/detail\/\d+$/.test(location.pathname) || 
-                  location.pathname.startsWith('/admin');
+  const hideNav = location.pathname === '/newUser' ||
+    location.pathname === '/iniciar' ||
+    location.pathname === '/carrito' ||
+    /^\/detail\/\d+$/.test(location.pathname) ||
+    location.pathname.startsWith('/admin');
 
 
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path='/DevolucionCambio' element={<DevolucionCambio />} />
         <Route path='/carrito' element={<Carrito />} />
+        <Route path='/catalogo' element={<Catalogo />} />
         {/* <Route path='/newUser' element={<NewUser />} />
         <Route path='/iniciar' element={<Ingresar />} /> */}
         {/* <Route path='/Favorito' element={<Fav />} /> */}

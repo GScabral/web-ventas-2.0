@@ -51,11 +51,10 @@ const ProductModal = ({
       cantidad,
       talla,
       color,
-      varianteId: varianteSeleccionada?.id,
+      idVariante: varianteSeleccionada?.idVariante,
       imagen: varianteSeleccionada?.imagenes?.[0]
     };
 
-    console.log(productoCarrito);
 
     dispatch(agregarAlCarrito (productoCarrito))
   };
@@ -97,7 +96,7 @@ const ProductModal = ({
         <div className="modal-right">
 
           <span className="modal-category">
-            {product.categoria}
+            {product.categoria.nombre}
           </span>
 
           <h2 className="modal-title">

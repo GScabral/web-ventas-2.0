@@ -25,21 +25,21 @@ const CartItem = ({
   const incrementar = () => {
 
     if (
-      producto.cantidad_elegida >=
+      producto.cantidad >=
       producto.variante.cantidad_disponible
     ) {
       return;
     }
 
-    console.log(producto)
+    console.log("cosas:",producto)
 
     dispatch(
       actualizarCarrito(
         index,
         {
           ...producto,
-          cantidad_elegida:
-            producto.cantidad_elegida + 1
+          cantidad:
+            producto.cantidad + 1
         }
       )
     );
@@ -49,7 +49,7 @@ const CartItem = ({
   const decrementar = () => {
 
     if (
-      producto.cantidad_elegida <= 1
+      producto.cantidad <= 1
     ) {
       return;
     }
@@ -59,8 +59,8 @@ const CartItem = ({
         index,
         {
           ...producto,
-          cantidad_elegida:
-            producto.cantidad_elegida - 1
+          cantidad:
+            producto.cantidad - 1
         }
       )
     );
@@ -103,21 +103,21 @@ const CartItem = ({
 
       <div className={styles.actions}>
 
-        <button onClick={decrementar}>
+        {/* <button onClick={decrementar}>
           <FontAwesomeIcon
             icon={faMinus}
           />
-        </button>
+        </button> */}
 
         <span>
-          {producto.cantidad_elegida}
+          {producto.cantidad}
         </span>
 
-        <button onClick={incrementar}>
+        {/* <button onClick={incrementar}>
           <FontAwesomeIcon
             icon={faPlus}
           />
-        </button>
+        </button> */}
 
         <button onClick={eliminar}>
           <FontAwesomeIcon

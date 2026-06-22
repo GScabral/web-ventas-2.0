@@ -10,7 +10,13 @@ const EditProductModal = ({
 }) => {
   const [editedProduct, setEditedProduct] =
     useState(null);
-
+  const availableSections = [
+    "hero",
+    "banner",
+    "destacados",
+    "nuevos",
+    "ofertas"
+  ];
   useEffect(() => {
     if (product) {
       setEditedProduct({
@@ -54,6 +60,51 @@ const EditProductModal = ({
   const handleSave = () => {
     handleSaveChanges(editedProduct);
     handleClose();
+  };
+
+  const handleSectionToggle = (
+    sectionName
+  ) => {
+
+    const currentSections =
+      editedProduct.sections || [];
+
+    const exists =
+      currentSections.some(
+        s =>
+          s.section === sectionName
+      );
+
+    let updatedSections;
+
+    if (exists) {
+
+      updatedSections =
+        currentSections.filter(
+          s =>
+            s.section !== sectionName
+        );
+
+    } else {
+
+      updatedSections = [
+        ...currentSections,
+        {
+          section: sectionName,
+          title:
+            sectionName.charAt(0)
+              .toUpperCase() +
+            sectionName.slice(1)
+        }
+      ];
+
+    }
+
+    setEditedProduct(prev => ({
+      ...prev,
+      sections: updatedSections
+    }));
+
   };
 
   return (
@@ -122,7 +173,7 @@ const EditProductModal = ({
                 <input
                   type="text"
                   value={
-                    editedProduct.categoria ||
+                    editedProduct.categoria.nombre ||
                     ""
                   }
                   onChange={(e) =>
@@ -132,6 +183,49 @@ const EditProductModal = ({
                     )
                   }
                 />
+              </div>
+              <div className="form-group">
+
+                <p className="current-sections">
+
+                  Actualmente en:
+
+                  {
+                    editedProduct.sections?.map(
+                      s => s.title
+                    ).join(", ")
+                  }
+
+                </p>
+                <label>
+                  Mostrar producto en
+                </label>
+
+                <div className="sections-selector">
+
+                  {availableSections.map(
+                    section => (
+
+                      <button
+                        type="button"
+                        className={`section-chip ${editedProduct.sections?.some(
+                          s => s.section === section
+                        )
+                          ? "active"
+                          : ""
+                          }`}
+                        onClick={() =>
+                          handleSectionToggle(section)
+                        }
+                      >
+                        {section}
+                      </button>
+
+                    )
+                  )}
+
+                </div>
+
               </div>
 
             </div>

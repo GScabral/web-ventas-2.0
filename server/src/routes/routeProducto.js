@@ -1,4 +1,4 @@
-const  upload = require("../upload")
+const upload = require("../upload")
 const { Router } = require("express");
 const getProductos = require("../controllers/producto/getProducto");
 const createNewProducto = require("../controllers/producto/newProducto");
@@ -7,6 +7,10 @@ const getCat = require("../controllers/producto/getCategoria")
 const actualizarCantidadDisponibleVariante = require("../controllers/producto/patchProducto")
 const deleteProduct = require("../controllers/producto/deleteProduct")
 const buscar = require("../controllers/producto/searchProducto")
+const getCategorias = require("../controllers/producto/getCategoria")
+const createCategoria = require("../controllers/producto/createCategoria")
+const updateCategoria = require("../controllers/producto/updateCategoria")
+const deleteCategoria = require("../controllers/producto/deleteCategoria")
 
 const router = Router();
 
@@ -25,24 +29,24 @@ router.post("/nuevoProducto", upload.any(), async (req, res) => {
         const files = req.files;
         // Acceder a los datos del formulario
         const formData = req.body;
-  
+
         // Continuar con el procesamiento de los datos del formulario...
         // Llamar a la función que crea un nuevo producto
         const resultado = await createNewProducto(formData, files);
-  
+
         // Si el resultado es un error, responder con un error
         if (resultado.error) {
-          return res.status(400).json({ error: resultado.error });
+            return res.status(400).json({ error: resultado.error });
         }
-  
+
         // Si el producto se creó exitosamente, responder con el nuevo producto creado
         return res.status(201).json({ newProducto: resultado.newProducto });
-      } catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error en el servidor al procesar la solicitud' });
-      }
-  });
-  
+    }
+});
+
 
 
 
@@ -68,7 +72,7 @@ router.get("/categoria", async (req, res) => {
 router.patch("/cambio/:id", async (req, res) => {
     try {
 
-      
+
 
         await actualizarCantidadDisponibleVariante(req.params.id, req.body.cantidad_disponible); // Pasar solo la nueva cantidad disponible
         res.status(200).json();
@@ -117,6 +121,48 @@ router.get("/name/:nombre", async (req, res) => {
         res.status(500).json({ error: "error al buscar el nombre" })
     }
 })
+
+
+
+router.post("/categorias", async (req, res) => {
+    const { nombre } = req.body;
+
+    const categoria = await createCategoria(nombre);
+
+    res.json(categoria);
+});
+
+router.get("/traercategorias", async (req, res) => {
+
+    try {
+
+
+        const categorias = await getCategorias();
+
+        console.log(categorias);
+
+        res.status(200).json(categorias);
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            error: "Error al obtener categorías"
+        });
+
+    }
+
+});
+router.put(
+    "/categorias/:id",
+    updateCategoria
+);
+
+router.delete(
+    "/categorias/:id",
+    deleteCategoria
+);
 
 
 module.exports = router;

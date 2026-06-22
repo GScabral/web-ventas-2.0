@@ -1,9 +1,6 @@
 import React from "react";
 
-const ShippingForm = ({
-  data,
-  onChange,
-}) => {
+const ShippingForm = ({ data, onChange }) => {
   return (
     <>
       <select

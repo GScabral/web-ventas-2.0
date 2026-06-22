@@ -32,7 +32,11 @@ import {
   BORRAR_OFERTA,
   ADMIN_LOGIN_SUCCESS,
   UPDATE_ESTADO_PEDIDO,
-  ELIMINAR_PEDIDO
+  ELIMINAR_PEDIDO,
+  GET_CATEGORIAS,
+  CREATE_CATEGORIA,
+  UPDATE_CATEGORIA,
+  DELETE_CATEGORIA
 } from "./action"
 
 const initialState = {
@@ -59,6 +63,7 @@ const initialState = {
   isLoggedInAd: false,
   cantidadOferta: {},
   ofertasActivas: [],
+  categorias: [],
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -341,9 +346,9 @@ const reducer = (state = initialState, action) => {
     case POST_PEDIDO:
 
     case POST_PEDIDO:
-  return {
-    ...state,
-  };
+      return {
+        ...state,
+      };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case UPDATE_ESTADO_PEDIDO:
 
@@ -535,8 +540,7 @@ const reducer = (state = initialState, action) => {
       }
 
       const { producto_id, descuento, inicio, fin } = action.payload;
-      console.log(`Se recibió una oferta para el producto con ID: ${producto_id}`);
-      console.log('Detalles de la oferta:', { descuento, inicio, fin });
+
 
       const newState = {
         ...state,
@@ -550,7 +554,6 @@ const reducer = (state = initialState, action) => {
         },
         error: null,
       };
-      console.log('Estado actualizado:', newState);
       return newState;
 
     ///////////////////////////////////////////////////////////////////////////  
@@ -579,6 +582,48 @@ const reducer = (state = initialState, action) => {
         cantidadOferta: nuevaCantidadOferta, // Actualizar `cantidadOferta` sin la oferta borrada
         ofertasActivas: nuevasOfertasActivas, // Actualizar `ofertasActivas` sin la oferta borrada
       };
+    ///////////////////////////////////////////////////////////////////////////  
+    case GET_CATEGORIAS:
+      return {
+        ...state,
+        categorias: action.payload
+      };
+    case CREATE_CATEGORIA:
+
+      return {
+        ...state,
+        categorias: [
+          ...state.categorias,
+          action.payload
+        ]
+      };
+
+    case UPDATE_CATEGORIA:
+
+      return {
+        ...state,
+        categorias:
+          state.categorias.map(
+            (categoria) =>
+              categoria.id_categoria ===
+                action.payload.id_categoria
+                ? action.payload
+                : categoria
+          )
+      };
+
+    case DELETE_CATEGORIA:
+
+      return {
+        ...state,
+        categorias:
+          state.categorias.filter(
+            (categoria) =>
+              categoria.id_categoria !==
+              action.payload
+          )
+      };
+
     ///////////////////////////////////////////////////////////////////////////  
 
     default:

@@ -13,9 +13,10 @@ const Carrito = () => {
   );
 
 
-  console.log(carrito)
   const [showCheckout, setShowCheckout] =
     useState(false);
+
+    console.log(carrito)
 
   return (
     <div className={styles.page}>

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 
-import { addProduct } from "../../redux/action";
+import { addProduct, createCategoria, getCategorias } from "../../redux/action";
 
 import ProductInfoCard from "./productInfoCard.jsx/ProductInfoCard";
 import CategoryCard from "./categoryCard.jsx/CategoryCard";
@@ -10,16 +10,19 @@ import PublishCard from "./PublishCard/PublishCard";
 
 import "./NewProduct.css";
 
-const NewProduct = ({ addProduct }) => {
+const NewProduct = ({ addProduct, createCategoria }) => {
+  const dispatch = useDispatch()
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productDescrip, setProductDescrip] = useState("");
   const [selectedSections, setSelectedSections] = useState([]);
 
   const [productGrupo, setProductGrupo] = useState("");
-  const [productCategoria, setProductCategoria] = useState("");
-  const [productSubCategoria, setProductSubCategoria] =
-    useState("");
+  const [categoriaId, setCategoriaId] = useState("");
+  const [nuevaCategoria, setNuevaCategoria] = useState("");
+
+
+  const categorias = useSelector(state => state.categorias || []);
 
   const [variantesData, setVariantesData] =
     useState([]);
@@ -32,17 +35,23 @@ const NewProduct = ({ addProduct }) => {
   const [errorMsg, setErrorMsg] =
     useState("");
 
+
+  useEffect(() => {
+    dispatch(getCategorias());
+  }, [dispatch]);
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     setSuccessMsg("");
     setErrorMsg("");
-
     if (
       !productName ||
       !productPrice ||
       !productDescrip ||
-      !productCategoria
+      (!categoriaId && !nuevaCategoria)
     ) {
       setErrorMsg(
         "Completa todos los campos obligatorios."
@@ -109,7 +118,20 @@ const NewProduct = ({ addProduct }) => {
     setLoading(true);
 
     try {
+
+      let categoriaFinal = categoriaId;
+
+      if (nuevaCategoria.trim()) {
+
+        const categoriaCreada =
+          await createCategoria(nuevaCategoria);
+        console.log("categoriaCreada:", categoriaCreada);
+        categoriaFinal =
+          categoriaCreada.id_categoria;
+      }
+
       const formData = new FormData();
+
 
       formData.append(
         "nombre_producto",
@@ -132,14 +154,11 @@ const NewProduct = ({ addProduct }) => {
       );
 
       formData.append(
-        "categoria",
-        productCategoria
+        "categoriaId",
+        categoriaFinal
       );
 
-      formData.append(
-        "subcategoria",
-        productSubCategoria
-      );
+
       formData.append(
         "secciones",
         JSON.stringify(selectedSections)
@@ -188,8 +207,7 @@ const NewProduct = ({ addProduct }) => {
       setProductDescrip("");
 
       setProductGrupo("");
-      setProductCategoria("");
-      setProductSubCategoria("");
+      setCategoriaId("");
       setSelectedSections([]);
 
       setVariantesData([]);
@@ -433,25 +451,16 @@ const NewProduct = ({ addProduct }) => {
 
           <div className="right-column">
             <CategoryCard
-              productGrupo={
-                productGrupo
-              }
-              setProductGrupo={
-                setProductGrupo
-              }
-              productCategoria={
-                productCategoria
-              }
-              setProductCategoria={
-                setProductCategoria
-              }
-              productSubCategoria={
-                productSubCategoria
-              }
-              setProductSubCategoria={
-                setProductSubCategoria
-              }
+              productGrupo={productGrupo}
+              setProductGrupo={setProductGrupo}
 
+              categorias={categorias}
+
+              categoriaId={categoriaId}
+              setCategoriaId={setCategoriaId}
+
+              nuevaCategoria={nuevaCategoria}
+              setNuevaCategoria={setNuevaCategoria}
             />
             <div className="sections-card">
 
@@ -544,4 +553,5 @@ const NewProduct = ({ addProduct }) => {
 
 export default connect(null, {
   addProduct,
+  createCategoria,
 })(NewProduct);

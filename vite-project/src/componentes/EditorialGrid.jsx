@@ -54,7 +54,7 @@ const EditorialGrid = ({ productos }) => {
                             </div>
 
                             <span>
-                                {p.categoria}
+                                {p.categoria.nombre}
                             </span>
 
                             <h3>

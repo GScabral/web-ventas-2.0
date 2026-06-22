@@ -10,10 +10,8 @@ import {
 } from "../../redux/action";
 
 import { Modal } from "react-bootstrap";
-
 import EditProductModal from "./editar";
 import OfertasModal from "../ofertas/ofertas";
-
 import ProductCard from "./components/ProductCard";
 import ProductPagination from "./components/ProductPagination";
 
@@ -26,6 +24,8 @@ const ProductList = () => {
     (state) => state.allProductos
   );
 
+
+  console.log(allProductos)
   const currentPage = useSelector(
     (state) => state.currentPage
   );
@@ -279,23 +279,16 @@ const ProductList = () => {
 
       {/* MODAL OFERTA */}
 
-      <Modal
+      <OfertasModal
         show={showOfertaModal}
-        onHide={() =>
+        handleClose={() =>
           setShowOfertaModal(false)
         }
-      >
-        <OfertasModal
-          show={showOfertaModal}
-          handleClose={() =>
-            setShowOfertaModal(false)
-          }
-          product={selectedProduct}
-          handleSaveChanges={
-            handleSaveOferta
-          }
-        />
-      </Modal>
+        product={selectedProduct}
+        handleSaveChanges={
+          handleSaveOferta
+        }
+      />
 
     </div>
   );

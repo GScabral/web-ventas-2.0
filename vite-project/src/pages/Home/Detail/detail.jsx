@@ -47,11 +47,14 @@ const Detail = () => {
     if (!variante) return;
 
     dispatch(agregarAlCarrito({
-      id,
-      nombre: info.nombre,
-      precio: calcularPrecioFinal(info.precio, oferta),
-      cantidad_elegida: cantidad,
-      variante
+      id: product.id,
+      nombre: product.nombre,
+      precio: product.precio,
+      cantidad,
+      talla,
+      color,
+      idVariante: varianteSeleccionada?.idVariante,
+      imagen: varianteSeleccionada?.imagenes?.[0]
     }));
   };
 

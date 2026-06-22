@@ -1,62 +1,28 @@
-
 import React, {
   useState,
   useEffect
 } from "react";
 
-import { useDispatch } from "react-redux";
+import {
+  useDispatch,
+  useSelector
+} from "react-redux";
 
 import {
   filterProduc,
-  orderProducto
+  orderProducto,
+  getCategorias
 } from "../../../redux/action";
-
-import {
-  categoriasGlobal
-} from "./categorias";
 
 import "./filtros.css";
 
-/* =========================
-   DATA
-========================= */
-
-const tallasDisponibles = [
-  "XS",
-  "S",
-  "M",
-  "L",
-  "XL"
-];
-
-const coloresDisponibles = [
-  "#000000",
-  "#ffffff",
-  "#ff0000",
-  "#002B81",
-  "#5D8BE8"
-];
-
-/* =========================
-   COMPONENT
-========================= */
-
-const FiltrosSidebar = ({
-  selectedMainCategory,
-  selectedSubcategory,
-  setSelectedSubcategory,
-  selectedPriceOrder,
-  setSelectedPriceOrder,
-}) => {
+const FiltrosSidebar = ({ selectedMainCategory, selectedSubcategory, setSelectedSubcategory, selectedPriceOrder, setSelectedPriceOrder, }) => {
 
   const dispatch = useDispatch();
 
-  const categorias =
-    categoriasGlobal[selectedMainCategory] || {};
+  const categorias = useSelector(state => state.categorias || []);
 
-  /* =========================
-     STATES
-  ========================= */
+  const categoriasFiltradas = categorias;
 
   const [precioMax, setPrecioMax] =
     useState(50000);
@@ -67,9 +33,11 @@ const FiltrosSidebar = ({
   const [colores, setColores] =
     useState([]);
 
-  /* =========================
-     EFFECT FILTROS
-  ========================= */
+  useEffect(() => {
+    dispatch(getCategorias());
+  }, [dispatch]);
+
+
 
   useEffect(() => {
 
@@ -93,10 +61,6 @@ const FiltrosSidebar = ({
     dispatch
   ]);
 
-  /* =========================
-     CATEGORY FILTER
-  ========================= */
-
   const handleFilter = (subcategory) => {
 
     const nuevaCategoria =
@@ -108,10 +72,6 @@ const FiltrosSidebar = ({
       nuevaCategoria
     );
   };
-
-  /* =========================
-     ORDER
-  ========================= */
 
   const handleOrder = (orderType) => {
 
@@ -129,75 +89,9 @@ const FiltrosSidebar = ({
     }
   };
 
-  /* =========================
-     TOGGLE TALLA
-  ========================= */
-
-  const toggleTalla = (t) => {
-
-    setTallas(prev =>
-
-      prev.includes(t)
-        ? prev.filter(x => x !== t)
-        : [...prev, t]
-
-    );
-  };
-
-  /* =========================
-     TOGGLE COLOR
-  ========================= */
-
-  const toggleColor = (c) => {
-
-    setColores(prev =>
-
-      prev.includes(c)
-        ? prev.filter(x => x !== c)
-        : [...prev, c]
-
-    );
-  };
-
-  /* =========================
-     RESET FILTERS
-  ========================= */
-
-  const limpiarFiltros = () => {
-
-    setSelectedSubcategory("");
-
-    setPrecioMax(50000);
-
-    setTallas([]);
-
-    setColores([]);
-
-    setSelectedPriceOrder("");
-
-    dispatch(orderProducto(""));
-
-    dispatch(
-      filterProduc({
-        rama: selectedMainCategory || "",
-        categoria: "",
-        subcategoria: "",
-        tallas: [],
-        colores: [],
-        precioMax: 50000
-      })
-    );
-  };
-
-  /* =========================
-     RENDER
-  ========================= */
-
   return (
 
     <div className="modern-filters">
-
-      {/* HEADER */}
 
       <div className="filters-top">
 
@@ -205,18 +99,7 @@ const FiltrosSidebar = ({
           Filtros
         </h2>
 
-        {/* <button
-          className="clear-filters-btn"
-          onClick={limpiarFiltros}
-        >
-          Limpiar
-        </button> */}
-
       </div>
-
-      {/* =========================
-          CATEGORIAS
-      ========================= */}
 
       <div className="filter-group">
 
@@ -226,19 +109,21 @@ const FiltrosSidebar = ({
 
         <div className="chips-row">
 
-          {Object.keys(categorias).map(subcat => (
+          {categoriasFiltradas.map(categoria => (
 
             <button
-              key={subcat}
-              className={`filter-chip ${selectedSubcategory === subcat
+              key={categoria.id_categoria}
+              className={`filter-chip ${selectedSubcategory === categoria.nombre
                 ? "active"
                 : ""
                 }`}
               onClick={() =>
-                handleFilter(subcat)
+                handleFilter(
+                  categoria.nombre
+                )
               }
             >
-              {subcat}
+              {categoria.nombre}
             </button>
 
           ))}
@@ -246,106 +131,6 @@ const FiltrosSidebar = ({
         </div>
 
       </div>
-
-      {/* =========================
-          PRECIO
-      ========================= 
-
-      <div className="filter-group">
-
-        <span className="filter-label">
-          Precio máximo
-        </span>
-
-        <div className="price-filter">
-
-          <input
-            type="range"
-            min="1000"
-            max="50000"
-            step="500"
-            value={precioMax}
-            onChange={(e) =>
-              setPrecioMax(
-                Number(e.target.value)
-              )
-            }
-          />
-
-          <span className="price-value">
-            ${precioMax}
-          </span>
-
-        </div>
-
-      </div>
-*/}
-      {/* =========================
-          TALLAS
-      ========================= 
-
-      <div className="filter-group">
-
-        <span className="filter-label">
-          Tallas
-        </span>
-
-        <div className="chips-row">
-
-          {tallasDisponibles.map(t => (
-
-            <button
-              key={t}
-              className={`size-chip ${tallas.includes(t)
-                ? "selected"
-                : ""
-                }`}
-              onClick={() => toggleTalla(t)}
-            >
-              {t}
-            </button>
-
-          ))}
-
-        </div>
-
-      </div>
-*/}
-      {/* =========================
-          COLORES
-      ========================= 
-
-      <div className="filter-group">
-
-        <span className="filter-label">
-          Colores
-        </span>
-
-        <div className="colors-row">
-
-          {coloresDisponibles.map(c => (
-
-            <button
-              key={c}
-              className={`color-circle ${colores.includes(c)
-                ? "selected"
-                : ""
-                }`}
-              style={{
-                background: c
-              }}
-              onClick={() => toggleColor(c)}
-            />
-
-          ))}
-
-        </div>
-
-      </div>
-*/}
-      {/* =========================
-          ORDEN
-      ========================= */}
 
       <div className="filter-group">
 

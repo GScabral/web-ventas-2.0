@@ -54,7 +54,7 @@ const ProductCard = ({
                     </span>
 
                     <strong>
-                        {producto.categoria}
+                        {producto.categoria.nombre}
                     </strong>
 
                 </div>

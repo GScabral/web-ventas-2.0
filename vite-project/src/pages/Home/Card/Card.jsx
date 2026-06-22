@@ -10,6 +10,8 @@ const ProductCard = ({ product }) => {
 
   const [openModal, setOpenModal] = useState(false);
 
+
+
   return (
     <>
       <div className="product-card">
@@ -35,7 +37,7 @@ const ProductCard = ({ product }) => {
         <div className="product-info">
 
           <span className="product-category">
-            {product.categoria}
+            <span>{product.categoria.nombre}</span>
           </span>
 
           <h3 className="product-title">
@@ -50,7 +52,7 @@ const ProductCard = ({ product }) => {
 
           <ProductPrice
             precio={product.precio}
-            oferta={product.oferta}
+            productoId={product.id}
           />
 
         </div>
