@@ -93,4 +93,11 @@ router.post('/loginc', async (req, res) => {
   }
 });
 
+// Ruta liviana para que el front confirme si el token guardado todavía es válido.
+// Si el token venció o es inválido, verificarTokenAdmin responde 403/401
+// antes de llegar a este handler.
+router.get('/verify', verificarTokenAdmin, (req, res) => {
+  return res.status(200).json({ success: true, isAdmin: true });
+});
+
 module.exports = router;

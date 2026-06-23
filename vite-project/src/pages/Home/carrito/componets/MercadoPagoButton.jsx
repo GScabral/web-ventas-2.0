@@ -37,17 +37,15 @@ const MercadoPagoButton = ({
                     const productos =
                         carrito.map(
                             (producto) => ({
+                                id:
+                                    producto.id,
+
                                 nombre:
                                     producto.nombre,
 
                                 cantidad:
                                     producto.cantidad_elegida ||
                                     1,
-
-                                precio_unitario:
-                                    Number(
-                                        producto.precio
-                                    ),
                             })
                         );
 

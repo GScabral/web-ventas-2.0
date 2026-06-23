@@ -1,4 +1,3 @@
-
 import {
   GET_PRODUCTOS,
   ADD_PRODUCT,
@@ -31,6 +30,7 @@ import {
   GET_OFERTAS,
   BORRAR_OFERTA,
   ADMIN_LOGIN_SUCCESS,
+  ADMIN_LOGOUT,
   UPDATE_ESTADO_PEDIDO,
   ELIMINAR_PEDIDO,
   GET_CATEGORIAS,
@@ -531,6 +531,13 @@ const reducer = (state = initialState, action) => {
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
+    case ADMIN_LOGOUT:
+      return {
+        ...state,
+        isLoggedInAd: false,
+      };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
     case OFERTA:
       if (action.payload.error) {
         return {
@@ -634,4 +641,3 @@ const reducer = (state = initialState, action) => {
 
 
 export default reducer;
-

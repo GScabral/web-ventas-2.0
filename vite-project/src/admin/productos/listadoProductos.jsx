@@ -25,7 +25,6 @@ const ProductList = () => {
   );
 
 
-  console.log(allProductos)
   const currentPage = useSelector(
     (state) => state.currentPage
   );

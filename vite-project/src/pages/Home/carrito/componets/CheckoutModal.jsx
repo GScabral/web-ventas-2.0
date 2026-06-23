@@ -27,19 +27,21 @@ const CheckoutModal = ({show,onClose,}) => {
       return;
     }
 
-    if (!shippingData.provincia) {
-      alert("Ingrese una provincia");
-      return;
-    }
+    if (shippingData.tipoEntrega === "ENVIO") {
+      if (!shippingData.provincia) {
+        alert("Ingrese una provincia");
+        return;
+      }
 
-    if (!shippingData.ciudad) {
-      alert("Ingrese una ciudad");
-      return;
-    }
+      if (!shippingData.ciudad) {
+        alert("Ingrese una ciudad");
+        return;
+      }
 
-    if (!shippingData.direccion) {
-      alert("Ingrese una dirección");
-      return;
+      if (!shippingData.direccion) {
+        alert("Ingrese una dirección");
+        return;
+      }
     }
 
     const ok = await confirmarPedido();

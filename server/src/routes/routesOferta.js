@@ -2,6 +2,7 @@ const {Router}=require("express")
 const crearOferta = require("../controllers/oferta/newOferta");
 const traerOferta=require("../controllers/oferta/getOferta")
 const deleteOferta=require("../controllers/oferta/deleteOferta")
+const { verificarTokenAdmin } = require("../middleware/auth");
 
 
 
@@ -16,7 +17,7 @@ router.get("/ofertas",async(req,res)=>{
     }
 })
 
-router.post("/nuevaOferta",async(req,res)=>{
+router.post("/nuevaOferta", verificarTokenAdmin, async(req,res)=>{
 
     try{
         const nuevaOferta=await crearOferta(req.body);
@@ -34,7 +35,7 @@ router.post("/nuevaOferta",async(req,res)=>{
 
 
 
-router.delete("/eliminar/:id", async (req, res) => {
+router.delete("/eliminar/:id", verificarTokenAdmin, async (req, res) => {
 
     const {id} = req.params;
     try {

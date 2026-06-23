@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Route,
   Routes,
@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { LoginAdmin } from "../redux/action";
+import { LoginAdmin, logoutAdmin, verifyAdminToken } from "../redux/action";
 
 import NewProduct from "./añadir/añadirProducto";
 import Principal from "./inicio/principalAdmin";
@@ -52,31 +52,63 @@ const menuItems = [
 ];
 
 const PanelAdmin = () => {
-  const [showModal, setShowModal] = useState(!Boolean(localStorage.getItem('adminToken')));
+  // null = todavía no sabemos (estamos verificando contra el backend)
+  // true / false = resultado confirmado de la verificación
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
-  const isLoggedIn = useSelector((state) => state.isLoggedInAd) || Boolean(localStorage.getItem('adminToken'));
+  const isLoggedIn = useSelector((state) => state.isLoggedInAd);
 
   const dispatch = useDispatch();
 
+  // Al montar el panel, no confiamos en que haya un adminToken en localStorage:
+  // lo confirmamos contra el backend. Si venció o es inválido, se limpia solo
+  // y se vuelve a pedir contraseña.
+  useEffect(() => {
+    const checkAuth = async () => {
+      await dispatch(verifyAdminToken());
+      setCheckingAuth(false);
+    };
+    checkAuth();
+  }, [dispatch]);
+
   const handleLogin = async (event) => {
     event.preventDefault();
+    setLoginError("");
 
     const password = event.target.elements.password.value;
 
     try {
       const result = await dispatch(LoginAdmin(password));
 
-      if (result?.success) {
-        setShowModal(false);
-      } else {
-        alert("Contraseña incorrecta");
+      if (!result?.success) {
+        setLoginError(result?.error || "Contraseña incorrecta");
       }
     } catch (error) {
       console.error(error);
-      alert("Error al iniciar sesión");
+      setLoginError("Error al iniciar sesión");
     }
   };
+
+  const handleLogout = () => {
+    dispatch(logoutAdmin());
+  };
+
+  // Mientras confirmamos contra el backend si el token guardado es válido,
+  // no mostramos ni el panel ni el modal de login para evitar parpadeos
+  // o dejar ver contenido admin antes de confirmar la sesión.
+  if (checkingAuth) {
+    return (
+      <div className={dashboardStyles.dashboardContainer}>
+        <main className={dashboardStyles.mainContent}>
+          <p style={{ padding: "2rem", textAlign: "center" }}>
+            Verificando sesión...
+          </p>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className={dashboardStyles.dashboardContainer}>
@@ -131,9 +163,20 @@ const PanelAdmin = () => {
           >
             ☰
           </button>
+
+          {isLoggedIn && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className={dashboardStyles.loginButton}
+              style={{ marginLeft: "1rem" }}
+            >
+              Cerrar sesión
+            </button>
+          )}
         </header>
 
-        {showModal && !isLoggedIn && (
+        {!isLoggedIn && (
           <div
             className={dashboardStyles.modalIniAdm}
           >
@@ -164,6 +207,12 @@ const PanelAdmin = () => {
                   }
                   placeholder="Contraseña"
                 />
+
+                {loginError && (
+                  <p style={{ color: "red", margin: "0.5rem 0" }}>
+                    {loginError}
+                  </p>
+                )}
 
                 <button
                   type="submit"

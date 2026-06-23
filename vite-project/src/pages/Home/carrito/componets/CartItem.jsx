@@ -31,8 +31,6 @@ const CartItem = ({
       return;
     }
 
-    console.log("cosas:",producto)
-
     dispatch(
       actualizarCarrito(
         index,

@@ -11,6 +11,7 @@ const getCategorias = require("../controllers/producto/getCategoria")
 const createCategoria = require("../controllers/producto/createCategoria")
 const updateCategoria = require("../controllers/producto/updateCategoria")
 const deleteCategoria = require("../controllers/producto/deleteCategoria")
+const { verificarTokenAdmin } = require("../middleware/auth");
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.get("/producto", async (req, res) => {
     }
 })
 
-router.post("/nuevoProducto", upload.any(), async (req, res) => {
+router.post("/nuevoProducto", verificarTokenAdmin, upload.any(), async (req, res) => {
     try {
 
         const files = req.files;
@@ -69,7 +70,7 @@ router.get("/categoria", async (req, res) => {
     }
 })
 
-router.patch("/cambio/:id", async (req, res) => {
+router.patch("/cambio/:id", verificarTokenAdmin, async (req, res) => {
     try {
 
 
@@ -83,7 +84,7 @@ router.patch("/cambio/:id", async (req, res) => {
 });
 
 
-router.patch("/editar/:id", async (req, res) => {
+router.patch("/editar/:id", verificarTokenAdmin, async (req, res) => {
     try {
         const productoModificado = await actualizarCantidadDisponibleVariante(req, res);
         res.status(200).json({
@@ -97,7 +98,7 @@ router.patch("/editar/:id", async (req, res) => {
 });
 
 
-router.delete("/eliminar/:id", async (req, res) => {
+router.delete("/eliminar/:id", verificarTokenAdmin, async (req, res) => {
     const { id } = req.params;
     try {
         const eliminar = await deleteProduct(id);
@@ -124,7 +125,7 @@ router.get("/name/:nombre", async (req, res) => {
 
 
 
-router.post("/categorias", async (req, res) => {
+router.post("/categorias", verificarTokenAdmin, async (req, res) => {
     const { nombre } = req.body;
 
     const categoria = await createCategoria(nombre);
@@ -156,11 +157,13 @@ router.get("/traercategorias", async (req, res) => {
 });
 router.put(
     "/categorias/:id",
+    verificarTokenAdmin,
     updateCategoria
 );
 
 router.delete(
     "/categorias/:id",
+    verificarTokenAdmin,
     deleteCategoria
 );
 

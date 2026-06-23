@@ -1,5 +1,9 @@
-
 import axios from "axios";
+
+// URL base del backend. En desarrollo cae a localhost:3004 (como hasta ahora).
+// En producción, definí VITE_API_URL en un archivo .env (o en las variables
+// de entorno del hosting del front) con la URL real del backend desplegado.
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3004";
 
 const storedAdminToken = localStorage.getItem("adminToken");
 if (storedAdminToken) {
@@ -44,6 +48,7 @@ export const CHECK_EMAIL_EXISTENCE_FAILURE = 'CHECK_EMAIL_EXISTENCE_FAILURE';
 export const OBTENER_INFO_USUARIO = " OBTENER_INFO_USUARIO";
 export const GET_CLIENTES = 'GET_CLIENTES';
 export const ADMIN_LOGIN_SUCCESS = "ADMIN_LOGIN_SUCCESS";
+export const ADMIN_LOGOUT = "ADMIN_LOGOUT";
 
 //PEDidos
 export const POST_PEDIDO = "POST_PEDIDO";
@@ -599,7 +604,7 @@ export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispa
 export const LoginAdmin = (password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3004/Nadmin/loginc', {
+      const response = await axios.post(`${API_URL}/Nadmin/loginc`, {
         password,
       });
 
@@ -617,6 +622,51 @@ export const LoginAdmin = (password) => {
       console.error(error);
       dispatch({ type: 'ADMIN_LOGIN_FAILURE', payload: { error: error.message } });
       throw error;
+    }
+  };
+};
+
+// Cierra la sesión de admin: limpia el token guardado y el header por defecto,
+// y resetea el estado en redux para que el panel vuelva a pedir contraseña.
+export const logoutAdmin = () => {
+  return (dispatch) => {
+    localStorage.removeItem('adminToken');
+    delete axios.defaults.headers.common.Authorization;
+    dispatch({ type: ADMIN_LOGOUT });
+  };
+};
+
+// Verifica contra el backend si el token guardado en localStorage sigue siendo
+// válido (no venció, no es inválido). Si no lo es, limpia la sesión local.
+// Se usa al montar el panel admin para no confiar a ciegas en localStorage.
+export const verifyAdminToken = () => {
+  return async (dispatch) => {
+    const token = localStorage.getItem('adminToken');
+
+    if (!token) {
+      dispatch({ type: ADMIN_LOGOUT });
+      return { success: false };
+    }
+
+    try {
+      const response = await axios.get(`${API_URL}/Nadmin/verify`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data?.success) {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        dispatch({ type: ADMIN_LOGIN_SUCCESS });
+        return { success: true };
+      }
+
+      dispatch(logoutAdmin());
+      return { success: false };
+    } catch (error) {
+      // Token inválido o vencido (401/403), o backend no disponible:
+      // en cualquier caso, no dejamos al usuario "logueado" a medias.
+      console.error('Token de admin inválido o expirado:', error.message);
+      dispatch(logoutAdmin());
+      return { success: false };
     }
   };
 };

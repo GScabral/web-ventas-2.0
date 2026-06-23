@@ -16,8 +16,6 @@ const Carrito = () => {
   const [showCheckout, setShowCheckout] =
     useState(false);
 
-    console.log(carrito)
-
   return (
     <div className={styles.page}>
 
@@ -37,7 +35,7 @@ const Carrito = () => {
               {carrito.map(
                 (producto, index) => (
                   <CartItem
-                    key={index}
+                    key={`${producto.id}-${producto.color || ""}-${producto.talla || ""}-${index}`}
                     producto={producto}
                     index={index}
                   />
