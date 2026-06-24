@@ -1,0 +1,357 @@
+/* ============================================================
+   SISTEMA DE DISEÑO — Tienda de moda y belleza
+   Dirección: moderno y vibrante, con temperatura cálida.
+   Fondo cacao oscuro, acentos terracota/mostaza/rosa,
+   display serif de carácter + sans geométrica.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* ---- Color: superficies ---- */
+  --bg-base: #1a1410;
+  --bg-elevated: #2a1f18;
+  --bg-elevated-2: #382a20;
+  --bg-overlay: rgba(26, 20, 16, 0.85);
+
+  /* ---- Color: acentos ---- */
+  --accent-terracota: #ff6b35;
+  --accent-terracota-soft: #ff9466;
+  --accent-mostaza: #e8a33d;
+  --accent-mostaza-soft: #f3c270;
+  --accent-rosa: #d6708a;
+  /* para detalles puntuales y ofertas */
+
+  /* ---- Color: texto ---- */
+  --text-primary: #f7f0e8;
+  --text-secondary: #c2ad9c;
+  --text-muted: #8a7565;
+  --text-on-accent: #1a1410;
+
+  /* ---- Color: estado ---- */
+  --color-success: #7fb069;
+  --color-error: #ff5c5c;
+  --color-warning: #e8a33d;
+
+  /* ---- Bordes ---- */
+  --border-subtle: rgba(247, 240, 232, 0.08);
+  --border-medium: rgba(247, 240, 232, 0.14);
+  --border-accent: rgba(255, 107, 53, 0.4);
+
+  /* ---- Gradientes ---- */
+  --gradient-brand: linear-gradient(135deg, var(--accent-terracota) 0%, #f2913f 50%, var(--accent-mostaza) 100%);
+  --gradient-brand-soft: linear-gradient(135deg, rgba(255, 107, 53, 0.18) 0%, rgba(232, 163, 61, 0.12) 100%);
+  --gradient-surface: linear-gradient(160deg, var(--bg-elevated) 0%, var(--bg-base) 100%);
+
+  /* ---- Tipografía ---- */
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.25rem;
+  --fs-3xl: 3rem;
+  --fs-4xl: 4rem;
+
+  /* ---- Espaciado (escala de 4px) ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+
+  /* ---- Radios ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 999px;
+
+  /* ---- Sombras (con tinte de color, no negras puras) ---- */
+  --shadow-sm: 0 2px 8px rgba(15, 10, 8, 0.4);
+  --shadow-md: 0 8px 24px rgba(15, 10, 8, 0.45);
+  --shadow-lg: 0 16px 48px rgba(15, 10, 8, 0.5);
+  --shadow-glow-terracota: 0 8px 32px rgba(255, 107, 53, 0.28);
+  --shadow-glow-mostaza: 0 8px 32px rgba(232, 163, 61, 0.2);
+
+  /* ---- Transiciones ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 160ms;
+  --t-base: 240ms;
+  --t-slow: 400ms;
+
+  /* ---- Layout ---- */
+  --content-max: 1280px;
+  --nav-height: 76px;
+}
+
+/* ============================================================
+   RESET BASE
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   UTILIDADES COMPARTIDAS DE LAYOUT
+   (sustituyen a .container / .row / .col-* de Bootstrap)
+   ============================================================ */
+
+.contenedor {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--sp-5);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.grid {
+  display: grid;
+}
+
+/* ============================================================
+   COMPONENTES DE UI COMPARTIDOS
+   ============================================================ */
+
+/* Botón primario: relleno con gradiente de marca */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--sp-3) var(--sp-5);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out), opacity var(--t-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  box-shadow: var(--shadow-glow-terracota);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 12px 36px rgba(255, 107, 53, 0.42);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--accent-mostaza);
+  color: var(--accent-mostaza);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: var(--sp-2) var(--sp-3);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.btn-danger {
+  background: rgba(255, 92, 122, 0.15);
+  color: var(--color-error);
+  border: 1px solid rgba(255, 92, 122, 0.3);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(255, 92, 122, 0.25);
+}
+
+/* Tarjeta base */
+.tarjeta {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* Etiqueta / eyebrow */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-mostaza);
+}
+
+/* Texto con gradiente de marca (uso puntual, no para todo) */
+.texto-gradiente {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Foco visible accesible en toda la app */
+:focus-visible {
+  outline: 2px solid var(--accent-mostaza);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Scrollbar con identidad propia (webkit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-elevated-2);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-terracota);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — breakpoints de referencia para todo el sitio
+   sm: 480px · md: 768px · lg: 1024px · xl: 1280px
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .contenedor {
+    padding: 0 var(--sp-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .contenedor {
+    padding: 0 var(--sp-3);
+  }
+}

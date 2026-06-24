@@ -10,7 +10,6 @@ const getCategoria = async () => {
     });
 
     const categoriasUnicas = categorias.map(cat => cat.categoria);
-    console.log('Categorías:', categoriasUnicas);
   } catch (error) {
     console.error('Error al obtener las categorías:', error);
   }

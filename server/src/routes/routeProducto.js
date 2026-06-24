@@ -140,7 +140,6 @@ router.get("/traercategorias", async (req, res) => {
 
         const categorias = await getCategorias();
 
-        console.log(categorias);
 
         res.status(200).json(categorias);
 
