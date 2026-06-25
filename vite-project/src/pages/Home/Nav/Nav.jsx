@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import FiltrosSidebar from "../barralado/filtros";
-import "./nav.css"
+import "./Nav.css"
 
 const Nav = () => {
   const dispatch = useDispatch();

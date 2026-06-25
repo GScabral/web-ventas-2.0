@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProductModal from "./productModal";
 import ProductPrice from "./productPrice";
 import ProductActions from "./productoActions";
-import "./card.css"
+import "./Card.css"
 
 const ProductCard = ({ product }) => {
 
