@@ -808,7 +808,7 @@ export const getCategorias =
 
     try {
 
-      const response = await axios.get("${API_URL}/producto/traercategorias");
+      const response = await axios.get(`${API_URL}/producto/traercategorias`);
 
       dispatch({
         type: "GET_CATEGORIAS",
@@ -816,6 +816,6 @@ export const getCategorias =
       });
 
     } catch (error) {
-      console.error(error);
+      console.error(error);``
     }
   };
