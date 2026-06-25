@@ -3,7 +3,7 @@ import axios from "axios";
 // URL base del backend. En desarrollo cae a localhost:3004 (como hasta ahora).
 // En producción, definí VITE_API_URL en un archivo .env (o en las variables
 // de entorno del hosting del front) con la URL real del backend desplegado.
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3004";
+export const API_URL = "https://web-ventas-2-0-2.onrender.com" ;
 
 const storedAdminToken = localStorage.getItem("adminToken");
 if (storedAdminToken) {
@@ -58,7 +58,7 @@ export const POST_PEDIDO = "POST_PEDIDO";
 export const getProductos = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/producto/producto`);
+      const response = await axios.get(`${API_URL}/producto/producto`);
 
 
       dispatch({
@@ -74,7 +74,7 @@ export const getProductos = () => {
 export const getAllClientes = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/cliente/allClientes`)
+      const response = await axios.get(`${API_URL}/cliente/allClientes`)
 
       dispatch({
         type: GET_CLIENTES,
@@ -91,7 +91,7 @@ export const getPedidoById = (id) => {
 
     const response =
       await axios.get(
-        `http://localhost:3004/pedido/${id}`
+        `${API_URL}/pedido/${id}`
       );
 
     return response.data;
@@ -102,7 +102,7 @@ export const getPedidos = () => {
     try {
 
       const response = await axios.get(
-        "http://localhost:3004/pedido/Lpedidos"
+        "${API_URL}/pedido/Lpedidos"
       );
 
       dispatch({
@@ -121,7 +121,7 @@ export const addPedido = (pedidoData) => {
     try {
 
       const response = await axios.post(
-        "http://localhost:3004/pedido/nuevoPedido",
+        "${API_URL}/pedido/nuevoPedido",
         pedidoData
       );
 
@@ -144,7 +144,7 @@ export const addProduct = (formData) => {
   return async function (dispatch) {
     try {
       const response = await axios.post(
-        "http://localhost:3004/producto/nuevoProducto",
+        "${API_URL}/producto/nuevoProducto",
         formData
       );
 
@@ -169,7 +169,7 @@ export const addProduct = (formData) => {
 export const getById = (id) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/producto/ProductoId/${id}`);
+      const response = await axios.get(`${API_URL}/producto/ProductoId/${id}`);
 
       if (response.data) {
         dispatch({
@@ -234,7 +234,7 @@ export const createUsuario = (userData) => {
 
   return async function (dispatch) {
     try {
-      const response = await axios.post(`http://localhost:3004/cliente/nuevoCliente`, userData);
+      const response = await axios.post(`${API_URL}/cliente/nuevoCliente`, userData);
       dispatch({
         type: ADD_USUARIO, // Ajusta este tipo de acción según tu configuración de Redux
         payload: response.data, // Puedes ajustar esto dependiendo de la estructura de datos devuelta por el servidor
@@ -250,7 +250,7 @@ export const ingresarUsuario = (userData) => {
     try {
 
 
-      const response = await axios.post(`http://localhost:3004/cliente/login`, userData);
+      const response = await axios.post(`${API_URL}/cliente/login`, userData);
 
 
 
@@ -281,7 +281,7 @@ export const ingresarUsuario = (userData) => {
 export const obtenerInformacionUsuario = (correo, contraseña) => {
   return async function (dispatch) {
     try {
-      const response = await axios.post(`http://localhost:3004/cliente/InfoUsuario`, { correo, contraseña });
+      const response = await axios.post(`${API_URL}/cliente/InfoUsuario`, { correo, contraseña });
 
       console.log("Respuesta del servidor al obtener información del usuario:", response);
 
@@ -315,7 +315,7 @@ export const obtenerInformacionUsuario = (correo, contraseña) => {
 export const obtenerClientePorId = (id) => {
   return async function (dispatch) {
     try {
-      const response = await axios.get(`http://localhost:3004/cliente/cliente/${id}`);
+      const response = await axios.get(`${API_URL}/cliente/cliente/${id}`);
 
       if (response.status !== 200) {
         throw new Error('Error al obtener el cliente por ID');
@@ -381,7 +381,7 @@ export const eliminarFav = (index) => {
 export const cambios = (id, datosProducto) => {
   return async function (dispatch) {
     try {
-      const response = await axios.patch(`http://localhost:3004/Nadmin/cambioAdmin/${id}`, datosProducto);
+      const response = await axios.patch(`${API_URL}/Nadmin/cambioAdmin/${id}`, datosProducto);
       dispatch({
         type: CAMBIO,
         payload: response.data,
@@ -409,7 +409,7 @@ export const cambios = (id, datosProducto) => {
 export const borrar = async (id) => {
   try {
 
-    const borrar = await axios.delete(`http://localhost:3004/producto/eliminar/${id}`)
+    const borrar = await axios.delete(`${API_URL}/producto/eliminar/${id}`)
 
     if (borrar.status !== 200) {
       throw new Error('Error al obtener el cliente por ID');
@@ -431,7 +431,7 @@ export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate d
   return async function (dispatch) {
     try {
 
-      const response = await axios.patch(`http://localhost:3004/producto/cambio/${id}`, {
+      const response = await axios.patch(`${API_URL}/producto/cambio/${id}`, {
         cantidad_disponible: cantidad_disponible // Aquí envía cantidad_disponible
       });
       // Despachar la acción después de que la solicitud sea exitosa
@@ -455,7 +455,7 @@ export const actualizarEstadoPedidoGeneral =
 
         const response =
           await axios.put(
-            `http://localhost:3004/pedido/${id}/estado`,
+            `${API_URL}/pedido/${id}/estado`,
             { estado }
           );
 
@@ -484,7 +484,7 @@ export const cancelarPedido =
 
         const response =
           await axios.put(
-            `http://localhost:3004/pedido/${id}/cancelar`
+            `${API_URL}/pedido/${id}/cancelar`
           );
 
         dispatch({
@@ -509,7 +509,7 @@ export const eliminarPedido =
       try {
 
         await axios.delete(
-          `http://localhost:3004/pedido/${id}`
+          `${API_URL}/pedido/${id}`
         );
 
         dispatch({
@@ -534,7 +534,7 @@ export const buscar = (name) => {
   return async function (dispatch) {
     try {
 
-      const response = await axios.get(`http://localhost:3004/producto/name/${name}`);
+      const response = await axios.get(`${API_URL}/producto/name/${name}`);
 
       // Log the data to the console
       // console.log("Resultados de la búsqueda:",response);
@@ -585,7 +585,7 @@ export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispa
 
 
   try {
-    const response = await axios.post("http://localhost:3004/Nadmin/confirmacionPedido", {
+    const response = await axios.post("${API_URL}/Nadmin/confirmacionPedido", {
       idPedido,
       infoPedido,
       correo,
@@ -674,7 +674,7 @@ export const verifyAdminToken = () => {
 export const ofertas = (oferta) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('http://localhost:3004/oferta/nuevaOferta', {
+      const response = await axios.post('${API_URL}/oferta/nuevaOferta', {
         oferta: oferta
       });
       dispatch({ type: OFERTA, payload: response.data }); // Dispara una acción de éxito con los datos devueltos por el servidor si es necesario
@@ -690,7 +690,7 @@ export const ofertas = (oferta) => {
 export const getOfertas = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get('http://localhost:3004/oferta/ofertas');
+      const response = await axios.get('${API_URL}/oferta/ofertas');
 
       dispatch({
         type: GET_OFERTAS,
@@ -710,7 +710,7 @@ export const borrarOferta = (id) => {
     try {
 
       const borrar = await axios.delete(
-        `http://localhost:3004/oferta/eliminar/${id}`
+        `${API_URL}/oferta/eliminar/${id}`
       );
 
       dispatch({
@@ -738,7 +738,7 @@ export const createCategoria =
 
         const { data } =
           await axios.post(
-            "http://localhost:3004/producto/categorias",
+            "${API_URL}/producto/categorias",
             {
               nombre
             }
@@ -766,7 +766,7 @@ export const updateCategoria =
 
         const { data } =
           await axios.put(
-            `http://localhost:3004/producto/categorias/${id}`,
+            `${API_URL}/producto/categorias/${id}`,
             {
               nombre
             }
@@ -789,7 +789,7 @@ export const deleteCategoria =
       try {
 
         await axios.delete(
-          `http://localhost:3004/producto/categorias/${id}`
+          `${API_URL}/producto/categorias/${id}`
         );
 
         dispatch({
@@ -808,7 +808,7 @@ export const getCategorias =
 
     try {
 
-      const response = await axios.get("http://localhost:3004/producto/traercategorias");
+      const response = await axios.get("${API_URL}/producto/traercategorias");
 
       dispatch({
         type: "GET_CATEGORIAS",
