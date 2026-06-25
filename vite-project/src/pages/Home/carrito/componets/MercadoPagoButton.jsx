@@ -6,6 +6,7 @@ import React, {
 
 import axios from "axios";
 
+import { API_URL } from "../../../../redux/action";
 import styles from "../styles/MercadoPagoButton.module.css";
 
 const MP_PUBLIC_KEY =
@@ -51,7 +52,7 @@ const MercadoPagoButton = ({
 
                     const response =
                         await axios.post(
-                            "http://localhost:3004/mp/create_preference",
+                            `${API_URL}/mp/create_preference`,
                             productos
                         );
 
