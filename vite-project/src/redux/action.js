@@ -102,7 +102,7 @@ export const getPedidos = () => {
     try {
 
       const response = await axios.get(
-        "${API_URL}/pedido/Lpedidos"
+        `${API_URL}/pedido/Lpedidos`
       );
 
       dispatch({
@@ -121,7 +121,7 @@ export const addPedido = (pedidoData) => {
     try {
 
       const response = await axios.post(
-        "${API_URL}/pedido/nuevoPedido",
+        `${API_URL}/pedido/nuevoPedido`,
         pedidoData
       );
 
@@ -144,7 +144,7 @@ export const addProduct = (formData) => {
   return async function (dispatch) {
     try {
       const response = await axios.post(
-        "${API_URL}/producto/nuevoProducto",
+        `${API_URL}/producto/nuevoProducto`,
         formData
       );
 
@@ -585,7 +585,7 @@ export const enviarCorreo = (idPedido, infoPedido, correo, total) => async dispa
 
 
   try {
-    const response = await axios.post("${API_URL}/Nadmin/confirmacionPedido", {
+    const response = await axios.post(`${API_URL}/Nadmin/confirmacionPedido`, {
       idPedido,
       infoPedido,
       correo,
@@ -674,7 +674,7 @@ export const verifyAdminToken = () => {
 export const ofertas = (oferta) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('${API_URL}/oferta/nuevaOferta', {
+      const response = await axios.post(`${API_URL}/oferta/nuevaOferta`, {
         oferta: oferta
       });
       dispatch({ type: OFERTA, payload: response.data }); // Dispara una acción de éxito con los datos devueltos por el servidor si es necesario
@@ -690,7 +690,7 @@ export const ofertas = (oferta) => {
 export const getOfertas = () => {
   return async function (dispatch) {
     try {
-      const response = await axios.get('${API_URL}/oferta/ofertas');
+      const response = await axios.get(`${API_URL}/oferta/ofertas`);
 
       dispatch({
         type: GET_OFERTAS,
@@ -738,7 +738,7 @@ export const createCategoria =
 
         const { data } =
           await axios.post(
-            "${API_URL}/producto/categorias",
+            `${API_URL}/producto/categorias`,
             {
               nombre
             }
