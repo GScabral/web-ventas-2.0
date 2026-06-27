@@ -22,7 +22,7 @@ const TicketPage = () => {
 
     const pedido = useMemo(() => {
 
-        return pedidos.find(
+        return pedidos?.find(
             p =>
                 String(p.id_pedido) === String(id) ||
                 String(p.id) === String(id)

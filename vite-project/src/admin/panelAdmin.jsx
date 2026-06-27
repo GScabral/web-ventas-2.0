@@ -168,8 +168,7 @@ const PanelAdmin = () => {
             <button
               type="button"
               onClick={handleLogout}
-              className={dashboardStyles.loginButton}
-              style={{ marginLeft: "1rem" }}
+              className={`${dashboardStyles.loginButton} ${dashboardStyles.logoutBtn}`}
             >
               Cerrar sesión
             </button>

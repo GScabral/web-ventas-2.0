@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ofertas } from "../../redux/action";
-import { Modal, Button, Form } from "react-bootstrap";
 import "./ofertas.css";
 
 const OfertasModal = ({ product, show, handleClose }) => {
@@ -50,52 +49,82 @@ const OfertasModal = ({ product, show, handleClose }) => {
       });
   };
 
+  if (!show) return null;
+
   return (
-    <Modal show={show} onHide={handleClose} className="ofertas-modal">
-      <Modal.Header closeButton className="ofertas-modal-header">
-        <Modal.Title>Oferta para {product && product.nombre}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="ofertas-modal-body">
-        <Form>
-          <Form.Group controlId="ofertaPorcentaje">
-            <Form.Label>Porcentaje de la oferta</Form.Label>
-            <Form.Control
+    <div className="custom-modal-overlay" onClick={handleClose}>
+      <div
+        className="custom-modal ofertas-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="custom-modal-header ofertas-modal-header">
+          <h2>Oferta para {product && product.nombre}</h2>
+
+          <button
+            type="button"
+            className="custom-modal-close"
+            onClick={handleClose}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="custom-modal-body ofertas-modal-body">
+          <div className="form-group">
+            <label htmlFor="ofertaPorcentaje">Porcentaje de la oferta</label>
+            <input
+              id="ofertaPorcentaje"
               type="number"
               value={oferta}
               onChange={handleOferta}
               placeholder="Ingrese el porcentaje de la oferta"
               className="ofertas-input"
             />
-          </Form.Group>
-          <Form.Group controlId="inicioOferta">
-            <Form.Label>Fecha de inicio</Form.Label>
-            <Form.Control
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="inicioOferta">Fecha de inicio</label>
+            <input
+              id="inicioOferta"
               type="date"
               value={inicio}
               onChange={handleInicioChange}
               className="ofertas-input"
             />
-          </Form.Group>
-          <Form.Group controlId="finOferta">
-            <Form.Label>Fecha de fin</Form.Label>
-            <Form.Control
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="finOferta">Fecha de fin</label>
+            <input
+              id="finOferta"
               type="date"
               value={fin}
               onChange={handleFinChange}
               className="ofertas-input"
             />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="ofertas-modal-footer">
-        <Button variant="secondary" onClick={handleClose} className="ofertas-cancel-button">
-          Cancelar
-        </Button>
-        <Button variant="primary" onClick={handleOfertaSubmit} className="ofertas-submit-button">
-          Aplicar Oferta
-        </Button>
-      </Modal.Footer>
-    </Modal>
+          </div>
+        </div>
+
+        <div className="custom-modal-footer ofertas-modal-footer">
+          <button
+            type="button"
+            className="btn-cancel ofertas-cancel-button"
+            onClick={handleClose}
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="button"
+            className="btn-save ofertas-submit-button"
+            onClick={handleOfertaSubmit}
+          >
+            Aplicar Oferta
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

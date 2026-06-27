@@ -9,7 +9,6 @@ import {
   paginado,
 } from "../../redux/action";
 
-import { Modal } from "react-bootstrap";
 import EditProductModal from "./editar";
 import OfertasModal from "../ofertas/ofertas";
 import ProductCard from "./components/ProductCard";
@@ -258,23 +257,16 @@ const ProductList = () => {
 
       {/* MODAL EDITAR */}
 
-      <Modal
+      <EditProductModal
         show={showEditModal}
-        onHide={() =>
+        handleClose={() =>
           setShowEditModal(false)
         }
-      >
-        <EditProductModal
-          show={showEditModal}
-          handleClose={() =>
-            setShowEditModal(false)
-          }
-          product={selectedProduct}
-          handleSaveChanges={
-            handleSaveChanges
-          }
-        />
-      </Modal>
+        product={selectedProduct}
+        handleSaveChanges={
+          handleSaveChanges
+        }
+      />
 
       {/* MODAL OFERTA */}
 

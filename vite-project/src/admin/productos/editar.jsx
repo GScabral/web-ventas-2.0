@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "react-bootstrap";
 import "./editar.css";
 
 const EditProductModal = ({
@@ -26,6 +25,7 @@ const EditProductModal = ({
   }, [product]);
 
   if (!editedProduct) return null;
+  if (!show) return null;
 
   const handleInputChange = (
     field,
@@ -108,20 +108,28 @@ const EditProductModal = ({
   };
 
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      size="xl"
-      centered
-      className="edit-modal"
+    <div
+      className="custom-modal-overlay"
+      onClick={handleClose}
     >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          Editar Producto
-        </Modal.Title>
-      </Modal.Header>
+      <div
+        className="custom-modal edit-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="custom-modal-header">
+          <h2>Editar Producto</h2>
 
-      <Modal.Body>
+          <button
+            type="button"
+            className="custom-modal-close"
+            onClick={handleClose}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="custom-modal-body">
 
         <div className="edit-layout">
 
@@ -208,6 +216,7 @@ const EditProductModal = ({
 
                       <button
                         type="button"
+                        key={section}
                         className={`section-chip ${editedProduct.sections?.some(
                           s => s.section === section
                         )
@@ -332,26 +341,27 @@ const EditProductModal = ({
 
         </div>
 
-      </Modal.Body>
+        </div>
 
-      <Modal.Footer>
+        <div className="custom-modal-footer">
 
-        <button
-          className="btn-cancel"
-          onClick={handleClose}
-        >
-          Cancelar
-        </button>
+          <button
+            className="btn-cancel"
+            onClick={handleClose}
+          >
+            Cancelar
+          </button>
 
-        <button
-          className="btn-save"
-          onClick={handleSave}
-        >
-          Guardar Cambios
-        </button>
+          <button
+            className="btn-save"
+            onClick={handleSave}
+          >
+            Guardar Cambios
+          </button>
 
-      </Modal.Footer>
-    </Modal>
+        </div>
+      </div>
+    </div>
   );
 };
 

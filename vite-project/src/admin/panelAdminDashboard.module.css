@@ -1,10 +1,12 @@
 .dashboardContainer {
   display: flex;
   min-height: 100vh;
-  background: #f8fafc;
+  background: var(--bg-base);
 }
 
-/* SIDEBAR */
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
 
 .sidebar {
   width: 280px;
@@ -14,196 +16,249 @@
   left: 0;
   top: 0;
 
-  background: #111827;
+  background: var(--bg-elevated);
 
-  color: white;
+  color: var(--text-primary);
 
   display: flex;
   flex-direction: column;
 
-  padding: 24px;
+  padding: var(--sp-5);
 
-  border-right: 1px solid #1f2937;
+  border-right: 1px solid var(--border-subtle);
 
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .logo {
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 600;
 
-  margin-bottom: 40px;
+  margin-bottom: var(--sp-7);
 }
 
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--sp-2);
 }
 
 .menuButton {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--sp-3);
 
   text-decoration: none;
 
-  color: #d1d5db;
+  color: var(--text-secondary);
 
-  padding: 14px 16px;
+  padding: var(--sp-3) var(--sp-4);
 
-  border-radius: 12px;
+  border-radius: var(--radius-md);
 
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+
+  transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
 }
 
 .menuButton:hover {
-  background: #1f2937;
-  color: white;
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
 }
 
 .active {
-  background: #2563eb;
-  color: white;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent) !important;
+  box-shadow: var(--shadow-glow-terracota);
 }
 
-/* MAIN */
+/* ============================================================
+   MAIN
+   ============================================================ */
 
 .mainContent {
   flex: 1;
   margin-left: 280px;
+  min-width: 0;
 
   display: flex;
   flex-direction: column;
 }
 
 .header {
-  height: 80px;
+  min-height: 80px;
 
-  background: white;
+  background: var(--bg-elevated);
 
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-subtle);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--sp-3);
 
-  padding: 0 32px;
+  padding: 0 var(--sp-6);
 }
 
 .headerTitle {
   margin: 0;
-
-  font-size: 1.5rem;
-  font-weight: 700;
-
-  color: #111827;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .headerSubtitle {
-  margin: 4px 0 0;
-
-  color: #6b7280;
-
-  font-size: 0.9rem;
+  margin: var(--sp-1) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
 }
 
 .mobileMenu {
   display: none;
 
-  border: none;
-  background: transparent;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 
-  font-size: 1.5rem;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+
+  font-size: var(--fs-md);
 
   cursor: pointer;
 }
 
-/* CONTENT */
-
-.contentCard {
-  margin: 24px;
-
-  padding: 24px;
-
-  background: white;
-
-  border-radius: 20px;
-
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.04),
-    0 10px 15px rgba(0, 0, 0, 0.02);
-
-  min-height: calc(100vh - 130px);
+.logoutBtn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  width: auto;
+  margin-left: var(--sp-4);
 }
 
-/* LOGIN */
+/* ============================================================
+   CONTENT
+   ============================================================ */
+
+.contentCard {
+  margin: var(--sp-6);
+
+  padding: var(--sp-6);
+
+  background: var(--bg-elevated);
+
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
+
+  min-height: calc(100vh - 80px - 48px);
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
 
 .modalIniAdm {
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--bg-overlay);
+  backdrop-filter: blur(4px);
 
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--sp-4);
 
   z-index: 2000;
 }
 
 .modalContentIniAdm {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
 
-  background: white;
+  background: var(--bg-elevated);
 
-  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
 
-  padding: 30px;
+  padding: var(--sp-6);
+
+  box-shadow: var(--shadow-lg);
+}
+
+.modalContentIniAdm h2 {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-4);
 }
 
 .inputLabel {
   display: block;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
 
-  margin-bottom: 10px;
-
-  font-weight: 600;
+  margin-bottom: var(--sp-2);
 }
 
 .inputPassword {
   width: 100%;
 
-  padding: 12px;
+  padding: var(--sp-3) var(--sp-4);
 
-  border: 1px solid #d1d5db;
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
 
-  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
 
-  margin-bottom: 20px;
+  margin-bottom: var(--sp-4);
+}
+
+.inputPassword:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
 }
 
 .loginButton {
   width: 100%;
 
-  padding: 12px;
+  padding: var(--sp-3);
 
   border: none;
+  border-radius: var(--radius-full);
 
-  border-radius: 10px;
+  background: var(--gradient-brand);
 
-  background: #2563eb;
-
-  color: white;
+  color: var(--text-on-accent);
+  font-weight: 700;
+  font-size: var(--fs-base);
 
   cursor: pointer;
+  box-shadow: var(--shadow-glow-terracota);
+  transition: transform var(--t-fast) var(--ease-out);
 }
 
-/* RESPONSIVE */
+.loginButton:hover {
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 
 @media (max-width: 900px) {
   .sidebar {
     transform: translateX(-100%);
-    transition: 0.3s;
+    transition: transform var(--t-slow) var(--ease-out);
   }
 
   .sidebarOpen {
@@ -215,149 +270,100 @@
   }
 
   .mobileMenu {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 75vw;
-    max-width: 250px;
-    padding: 20px 16px;
-
+    width: 78vw;
+    max-width: 280px;
+    padding: var(--sp-4);
   }
 
   .logo {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-
+    font-size: var(--fs-md);
+    margin-bottom: var(--sp-5);
   }
 
   .menuButton {
-    padding: 12px 14px;
-    gap: 10px;
-    font-size: 0.9rem;
-
+    padding: var(--sp-3);
+    font-size: var(--fs-sm);
   }
 
   .header {
-    height: 70px;
-    padding: 0 20px;
-
-  }
-
-  .headerTitle {
-    font-size: 1.2rem;
-
-  }
-
-  .headerSubtitle {
-    font-size: 0.8rem;
-
-  }
-
-  .contentCard {
-    margin: 16px;
-    padding: 16px;
-
-  }
-
-  .modalContentIniAdm {
-    width: min(90%, 350px);
-    padding: 24px;
-
-  }
-
-
-}
-
-@media (max-width: 600px) {
-  .sidebar {
-    width: 100vw;
-    max-width: none;
-    padding: 16px 12px;
-
-  }
-
-  .logo {
-    font-size: 1rem;
-    margin-bottom: 20px;
-
-  }
-
-  .menu {
-    gap: 6px;
-
-  }
-
-  .menuButton {
-    padding: 10px 12px;
-    gap: 8px;
-    font-size: 0.85rem;
-
-  }
-
-  .header {
-    height: 60px;
-    padding: 0 16px;
+    min-height: 64px;
+    padding: 0 var(--sp-4);
     flex-wrap: wrap;
-
+    gap: var(--sp-2);
   }
 
   .headerTitle {
-    font-size: 1rem;
-
+    font-size: var(--fs-md);
   }
 
   .headerSubtitle {
     display: none;
-
   }
 
-  .mobileMenu {
-    font-size: 1.2rem;
-
+  .logoutBtn {
+    margin-left: 0 !important;
+    width: auto;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-xs);
   }
 
   .contentCard {
-    margin: 12px 8px;
-    padding: 12px;
-    border-radius: 12px;
-    min-height: calc(100vh - 100px);
-
-  }
-
-  .modalIniAdm {
-    z-index: 3000;
-
+    margin: var(--sp-4);
+    padding: var(--sp-4);
+    min-height: calc(100vh - 64px - 32px);
   }
 
   .modalContentIniAdm {
-    width: 90%;
-    max-width: 300px;
-    padding: 20px;
-    border-radius: 16px;
+    max-width: min(92vw, 360px);
+    padding: var(--sp-5);
+  }
+}
 
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100vw;
+    max-width: none;
   }
 
-  .inputLabel {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
+  .header {
+    padding: 0 var(--sp-3);
+  }
 
+  .headerTitle {
+    font-size: var(--fs-base);
+  }
+
+  .mobileMenu {
+    width: 36px;
+    height: 36px;
+    font-size: var(--fs-base);
+  }
+
+  .contentCard {
+    margin: var(--sp-3);
+    padding: var(--sp-3);
+    border-radius: var(--radius-md);
+  }
+
+  .modalContentIniAdm {
+    padding: var(--sp-4);
   }
 
   .inputPassword {
-    padding: 10px;
-    font-size: 14px;
-    margin-bottom: 16px;
-
+    padding: var(--sp-3);
+    font-size: var(--fs-sm);
   }
 
   .loginButton {
-    padding: 10px;
-    font-size: 14px;
-
+    padding: var(--sp-3);
+    font-size: var(--fs-sm);
   }
-
-
 }

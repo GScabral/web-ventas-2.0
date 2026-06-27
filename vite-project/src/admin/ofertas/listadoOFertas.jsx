@@ -63,7 +63,7 @@ const OfertasLista = () => {
 
                 <div className="offers-counter">
 
-                    {ofertas.length}
+                    {ofertas?.length || 0}
 
                 </div>
 
@@ -71,7 +71,7 @@ const OfertasLista = () => {
 
             <div className="offers-grid">
 
-                {ofertas.map(oferta => (
+                {ofertas?.map(oferta => (
 
                     <div
                         key={oferta.id_oferta}

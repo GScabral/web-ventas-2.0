@@ -340,6 +340,166 @@ ol {
 }
 
 /* ============================================================
+   MODAL PROPIO
+   Reemplaza a los componentes Modal de react-bootstrap, que ya
+   no tienen estilos reales porque se sacó Bootstrap del proyecto.
+   ============================================================ */
+
+.custom-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  animation: customModalFadeIn 0.25s var(--ease-out);
+}
+
+@keyframes customModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.custom-modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: customModalSlideUp 0.3s var(--ease-out);
+}
+
+@keyframes customModalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.custom-modal-header h2 {
+  font-size: var(--fs-lg);
+}
+
+.custom-modal-close {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-elevated-2);
+  color: var(--text-secondary);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+
+.custom-modal-close:hover {
+  background: var(--color-error);
+  color: var(--text-primary);
+}
+
+.custom-modal-body {
+  padding: var(--sp-5);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.custom-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.custom-modal-footer .btn-cancel,
+.custom-modal-footer .btn-save {
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+
+.custom-modal-footer .btn-cancel {
+  background: var(--bg-elevated-2);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
+}
+
+.custom-modal-footer .btn-cancel:hover {
+  color: var(--text-primary);
+}
+
+.custom-modal-footer .btn-save {
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  box-shadow: var(--shadow-glow-terracota);
+}
+
+.custom-modal-footer .btn-save:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .custom-modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .custom-modal {
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .custom-modal-header,
+  .custom-modal-body,
+  .custom-modal-footer {
+    padding: var(--sp-4);
+  }
+
+  .custom-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .custom-modal-footer .btn-cancel,
+  .custom-modal-footer .btn-save {
+    width: 100%;
+    padding: var(--sp-3);
+  }
+}
+
+/* ============================================================
    RESPONSIVE — breakpoints de referencia para todo el sitio
    sm: 480px · md: 768px · lg: 1024px · xl: 1280px
    ============================================================ */
