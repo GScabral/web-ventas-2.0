@@ -112,6 +112,13 @@ const PanelAdmin = () => {
 
   return (
     <div className={dashboardStyles.dashboardContainer}>
+      {isSidebarOpen && (
+        <div
+          className={dashboardStyles.sidebarOverlay}
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       <aside
         className={`${dashboardStyles.sidebar}
         ${isSidebarOpen
@@ -128,6 +135,7 @@ const PanelAdmin = () => {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={() => setIsSidebarOpen(false)}
               className={({ isActive }) =>
                 `${dashboardStyles.menuButton}
                 ${isActive
@@ -160,8 +168,9 @@ const PanelAdmin = () => {
             onClick={() =>
               setIsSidebarOpen(!isSidebarOpen)
             }
+            aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
           >
-            ☰
+            {isSidebarOpen ? "×" : "☰"}
           </button>
 
           {isLoggedIn && (

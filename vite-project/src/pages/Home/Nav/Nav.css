@@ -497,4 +497,76 @@
     width: 98%;
   }
 
-  .nav-logo {\n    font-size: 1.3rem;\n    letter-spacing: 1px;\n  }\n\n  .nav-logo-animated {\n    font-size: 1.8rem;\n    letter-spacing: 2px;\n    gap: 6px;\n  }\n\n  .nav-burger,\n  .nav-cart {\n    width: 44px;\n    height: 44px;\n    font-size: 16px;\n  }\n\n  .nav-cart-badge {\n    width: 20px;\n    height: 20px;\n    font-size: 11px;\n  }\n}\n\n@media (max-width: 600px) {\n  .nav-inner {\n    height: 70px;\n    width: 100%;\n  }\n\n  .nav-logo {\n    font-size: 1rem;\n    letter-spacing: 1px;\n  }\n\n  .nav-logo-animated {\n    font-size: 1.2rem;\n    letter-spacing: 1.5px;\n    gap: 4px;\n  }\n\n  .nav-burger,\n  .nav-cart {\n    width: 40px;\n    height: 40px;\n    font-size: 16px;\n    border-radius: 8px;\n  }\n\n  .nav-cart-badge {\n    width: 18px;\n    height: 18px;\n    font-size: 10px;\n    top: -4px;\n    right: -4px;\n  }\n\n  .nav-menu-slide {\n    width: 100vw;\n    max-width: none;\n    padding: 80px 12px 20px;\n  }\n\n  .nav-link {\n    font-size: 14px;\n    padding: 10px 12px;\n  }\n\n  .dropdown-card.open {\n    padding: 12px;\n  }\n}"
+  .nav-logo {
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+  }
+
+  .nav-logo-animated {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    gap: 6px;
+  }
+
+  .nav-burger,
+  .nav-cart {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .nav-cart-badge {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-inner {
+    height: 70px;
+    width: 100%;
+  }
+
+  .nav-logo {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  .nav-logo-animated {
+    font-size: 1.2rem;
+    letter-spacing: 1.5px;
+    gap: 4px;
+  }
+
+  .nav-burger,
+  .nav-cart {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+
+  .nav-cart-badge {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    top: -4px;
+    right: -4px;
+  }
+
+  .nav-menu-slide {
+    width: 100vw;
+    max-width: none;
+    padding: 80px 12px 20px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .dropdown-card.open {
+    padding: 12px;
+  }
+}

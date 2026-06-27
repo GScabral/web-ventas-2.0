@@ -31,6 +31,10 @@
   overflow-y: auto;
 }
 
+.sidebarOverlay {
+  display: none;
+}
+
 .logo {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
@@ -269,10 +273,29 @@
     margin-left: 0;
   }
 
+  /* El header tiene que quedar SIEMPRE por encima del sidebar
+     (que es fixed con z-index alto), o el botón ☰ que lo cierra
+     queda tapado en cuanto el sidebar se abre, y el usuario se
+     queda sin forma de volver a cerrarlo. */
+  .header {
+    position: relative;
+    z-index: 1100;
+    background: var(--bg-elevated);
+  }
+
   .mobileMenu {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .sidebarOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: var(--bg-overlay);
+    backdrop-filter: blur(2px);
+    z-index: 999;
   }
 }
 
