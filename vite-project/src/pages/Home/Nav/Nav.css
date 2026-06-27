@@ -84,13 +84,13 @@
 }
 
 .nav-logo-gradient {
-    background: linear-gradient(
-        90deg,
-        #5D8BE8 30%,
-        #ffffff 100%
-    );
+    display: inline-block;
 
+    background: linear-gradient(90deg, #5D8BE8 30%, #fff 100%);
+    background-clip: text;
     -webkit-background-clip: text;
+
+    color: transparent;
     -webkit-text-fill-color: transparent;
 
     font-weight: 800;
