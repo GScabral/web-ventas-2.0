@@ -14,6 +14,11 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
       },
 
+      id_variante: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+
       nombre: {
         type: DataTypes.STRING,
       },

@@ -1,5 +1,10 @@
-const { Pedido, DetallesPedido, Productos, oferta } = require("../../db");
+const { Pedido, DetallesPedido, Productos, oferta, variantesproductos, conn } = require("../../db");
 const { Op } = require("sequelize");
+
+// Error "esperado": stock insuficiente, producto inexistente, etc.
+// Se distingue de errores técnicos para devolver 400 con un mensaje
+// que el comprador pueda entender, en vez de un 500 genérico.
+class ErrorPedido extends Error {}
 
 // Busca el precio real de un producto en la base de datos, aplicando
 // el descuento de una oferta activa si corresponde. Nunca confía en el
@@ -108,99 +113,134 @@ const nuevoPedido = async (req, res) => {
     // se toma del body, siempre se recalcula desde lo que hay en Productos
     // (y la oferta activa, si existe). Esto evita que alguien manipule el
     // precio desde el navegador antes de enviar el pedido.
-    const productosVerificados = [];
+    //
+    // Todo esto corre dentro de una transacción con bloqueo de fila
+    // (FOR UPDATE) sobre la variante vendida: si dos compras del mismo
+    // producto llegan casi al mismo tiempo, la segunda espera a que la
+    // primera termine de leer y descontar el stock antes de chequear el
+    // suyo. Sin esto, ambas podrían leer "hay 1 disponible" al mismo
+    // tiempo y vender 2 unidades de algo que solo había 1.
+    const resultado = await conn.transaction(async (t) => {
 
-    for (const item of productos) {
-      const idProducto = item.id || item.id_producto;
+      const productosVerificados = [];
 
-      if (!idProducto) {
-        return res.status(400).json({
-          error: `Falta el id del producto "${item.nombre || ""}"`
+      for (const item of productos) {
+        const idProducto = item.id || item.id_producto;
+
+        if (!idProducto) {
+          throw new ErrorPedido(
+            `Falta el id del producto "${item.nombre || ""}"`
+          );
+        }
+
+        const infoReal = await obtenerPrecioReal(idProducto);
+
+        if (!infoReal) {
+          throw new ErrorPedido(
+            `Producto con id ${idProducto} no encontrado`
+          );
+        }
+
+        const cantidad = Number(
+          item.cantidad ||
+          item.cantidad_elegida ||
+          1
+        );
+
+        const idVariante =
+          item.idVariante ||
+          item.id_variante ||
+          null;
+
+        let variante = null;
+
+        if (idVariante) {
+
+          // Bloquea la fila de esta variante hasta que la transacción
+          // termine, para que ninguna otra venta simultánea la toque
+          // mientras decidimos si hay stock suficiente.
+          variante = await variantesproductos.findByPk(
+            idVariante,
+            { transaction: t, lock: t.LOCK.UPDATE }
+          );
+
+          if (!variante) {
+            throw new ErrorPedido(
+              `La variante seleccionada de "${infoReal.nombre}" ya no existe`
+            );
+          }
+
+          if (variante.cantidad_disponible < cantidad) {
+            throw new ErrorPedido(
+              `No queda stock suficiente de "${infoReal.nombre}"` +
+              (item.talle ? ` (talle ${item.talle}` : "") +
+              (item.color ? `${item.talle ? ", " : " ("}color ${item.color})` : (item.talle ? ")" : "")) +
+              `. Quedan ${variante.cantidad_disponible} unidades.`
+            );
+          }
+
+          await variante.decrement(
+            "cantidad_disponible",
+            { by: cantidad, transaction: t }
+          );
+        }
+
+        productosVerificados.push({
+          nombre: infoReal.nombre,
+          precio: infoReal.precio,
+          cantidad,
+          color: item.color || null,
+          talle: item.talle || null,
+          idVariante,
         });
       }
 
-      const infoReal = await obtenerPrecioReal(idProducto);
-
-      if (!infoReal) {
-        return res.status(400).json({
-          error: `Producto con id ${idProducto} no encontrado`
-        });
-      }
-
-      const cantidad = Number(
-        item.cantidad ||
-        item.cantidad_elegida ||
-        1
+      const totalPedido = productosVerificados.reduce(
+        (acc, item) => acc + item.precio * item.cantidad,
+        0
       );
 
-      productosVerificados.push({
-        nombre: infoReal.nombre,
-        precio: infoReal.precio,
-        cantidad,
-        color: item.color || null,
-        talle: item.talle || null,
-      });
-    }
+      const pedido = await Pedido.create(
+        {
+          email_cliente: emailCliente,
+          nombre: nombreCliente,
+          telefono: telefonoCliente,
+          provincia: provinciaCliente,
+          ciudad: ciudadCliente,
+          direccion: direccionCliente,
+          tipo_entrega: tipoEntrega,
+          total_pedido: totalPedido,
+          estado: "pendiente"
+        },
+        { transaction: t }
+      );
 
-    const totalPedido = productosVerificados.reduce(
-      (acc, item) => acc + item.precio * item.cantidad,
-      0
-    );
+      await Promise.all(
+        productosVerificados.map((producto) => {
 
-    const pedido = await Pedido.create({
+          return DetallesPedido.create(
+            {
+              PedidoIdPedido: pedido.id_pedido,
+              id_variante: producto.idVariante,
+              nombre: producto.nombre,
+              cantidad: producto.cantidad,
+              precio_unitario: producto.precio,
+              color: producto.color,
+              talle: producto.talle,
+              total: producto.precio * producto.cantidad
+            },
+            { transaction: t }
+          );
 
-      email_cliente: emailCliente,
+        })
+      );
 
-      nombre: nombreCliente,
-
-      telefono: telefonoCliente,
-
-      provincia: provinciaCliente,
-
-      ciudad: ciudadCliente,
-
-      direccion: direccionCliente,
-
-      tipo_entrega: tipoEntrega,
-
-      total_pedido: totalPedido,
-
-      estado: "pendiente"
+      return pedido;
     });
-
-    await Promise.all(
-      productosVerificados.map((producto) => {
-
-        return DetallesPedido.create({
-
-          PedidoIdPedido:
-            pedido.id_pedido,
-
-          nombre:
-            producto.nombre,
-
-          cantidad:
-            producto.cantidad,
-
-          precio_unitario:
-            producto.precio,
-
-          color:
-            producto.color,
-
-          talle:
-            producto.talle,
-
-          total:
-            producto.precio * producto.cantidad
-        });
-
-      })
-    );
 
     const pedidoCompleto =
       await Pedido.findByPk(
-        pedido.id_pedido,
+        resultado.id_pedido,
         {
           include: [
             DetallesPedido
@@ -213,6 +253,12 @@ const nuevoPedido = async (req, res) => {
     );
 
   } catch (error) {
+
+    if (error instanceof ErrorPedido) {
+      return res.status(400).json({
+        error: error.message
+      });
+    }
 
     console.error(
       "ERROR NUEVO PEDIDO:",
