@@ -35,6 +35,41 @@ const NewProduct = ({ addProduct, createCategoria }) => {
   const [errorMsg, setErrorMsg] =
     useState("");
 
+  // Errores por campo, para mostrar el aviso pegado a cada input
+  // en vez de un único cartel genérico al final del formulario.
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const validateField = (field, value) => {
+    let message = "";
+
+    if (field === "productName" && !value.trim()) {
+      message = "Ingresá un nombre para el producto.";
+    }
+
+    if (field === "productPrice") {
+      if (!value) {
+        message = "Ingresá un precio.";
+      } else if (Number(value) <= 0) {
+        message = "El precio debe ser mayor a 0.";
+      }
+    }
+
+    if (field === "productDescrip" && !value.trim()) {
+      message = "Agregá una descripción.";
+    }
+
+    if (field === "productGrupo" && !value.trim()) {
+      message = "Ingresá una rama para el producto.";
+    }
+
+    setFieldErrors((prev) => ({
+      ...prev,
+      [field]: message,
+    }));
+
+    return message === "";
+  };
+
 
   useEffect(() => {
     dispatch(getCategorias());
@@ -47,28 +82,29 @@ const NewProduct = ({ addProduct, createCategoria }) => {
 
     setSuccessMsg("");
     setErrorMsg("");
-    if (
-      !productName ||
-      !productPrice ||
-      !productDescrip ||
-      (!categoriaId && !nuevaCategoria)
-    ) {
+
+    const nameOk = validateField("productName", productName);
+    const priceOk = validateField("productPrice", productPrice);
+    const descripOk = validateField("productDescrip", productDescrip);
+    const grupoOk = validateField("productGrupo", productGrupo);
+
+    if (!categoriaId && !nuevaCategoria.trim()) {
       setErrorMsg(
-        "Completa todos los campos obligatorios."
+        "Elegí una categoría existente o creá una nueva."
       );
       return;
     }
 
-    if (Number(productPrice) <= 0) {
+    if (!nameOk || !priceOk || !descripOk || !grupoOk) {
       setErrorMsg(
-        "El precio debe ser mayor a 0."
+        "Revisá los campos marcados en rojo."
       );
       return;
     }
 
     if (variantesData.length === 0) {
       setErrorMsg(
-        "Agrega al menos una variante."
+        "Agregá al menos una variante (color, imágenes y tallas)."
       );
       return;
     }
@@ -76,7 +112,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
     for (const variante of variantesData) {
       if (!variante.color) {
         setErrorMsg(
-          "Cada variante debe tener un color."
+          "Cada variante necesita un color."
         );
         return;
       }
@@ -86,7 +122,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
         variante.imagenFiles.length === 0
       ) {
         setErrorMsg(
-          "Cada variante debe tener al menos una imagen."
+          `La variante "${variante.color}" necesita al menos una imagen.`
         );
         return;
       }
@@ -96,7 +132,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
         variante.tallas.length === 0
       ) {
         setErrorMsg(
-          "Cada variante debe tener al menos una talla."
+          `La variante "${variante.color}" necesita al menos una talla.`
         );
         return;
       }
@@ -108,7 +144,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
           talla.cantidad <= 0
         ) {
           setErrorMsg(
-            "Todas las tallas deben tener nombre y stock válido."
+            `Revisá las tallas de la variante "${variante.color}": todas necesitan nombre y stock mayor a 0.`
           );
           return;
         }
@@ -211,6 +247,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
       setSelectedSections([]);
 
       setVariantesData([]);
+      setFieldErrors({});
     } catch (error) {
       console.error(error);
 
@@ -354,6 +391,44 @@ const NewProduct = ({ addProduct, createCategoria }) => {
 
   };
 
+  // Checklist de progreso: qué falta para poder publicar.
+  // Se muestra en PublishCard así la persona ve de un vistazo
+  // qué le falta, sin tener que tocar "Guardar" para enterarse.
+  const checklist = [
+    {
+      label: "Nombre del producto",
+      done: productName.trim().length > 0,
+    },
+    {
+      label: "Precio válido",
+      done: Number(productPrice) > 0,
+    },
+    {
+      label: "Descripción",
+      done: productDescrip.trim().length > 0,
+    },
+    {
+      label: "Rama y categoría",
+      done:
+        productGrupo.trim().length > 0 &&
+        (Boolean(categoriaId) || nuevaCategoria.trim().length > 0),
+    },
+    {
+      label: "Al menos una variante completa",
+      done:
+        variantesData.length > 0 &&
+        variantesData.every(
+          (v) =>
+            v.color &&
+            v.imagenFiles?.length > 0 &&
+            v.tallas?.length > 0 &&
+            v.tallas.every((t) => t.talla && t.cantidad > 0)
+        ),
+    },
+  ];
+
+  const isReadyToPublish = checklist.every((item) => item.done);
+
   return (
     <div className="new-product-page">
       <div className="new-product-header">
@@ -384,6 +459,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
         <div className="new-product-layout">
           <div className="left-column">
             <ProductInfoCard
+              stepNumber={1}
               productName={productName}
               setProductName={
                 setProductName
@@ -398,11 +474,16 @@ const NewProduct = ({ addProduct, createCategoria }) => {
               setProductDescrip={
                 setProductDescrip
               }
+              fieldErrors={fieldErrors}
+              validateField={validateField}
             />
 
             <div className="variants-section">
               <div className="variants-header">
-                <h2>Variantes</h2>
+                <h2>
+                  <span className="step-badge">3</span>
+                  Variantes
+                </h2>
 
                 <button
                   type="button"
@@ -414,6 +495,26 @@ const NewProduct = ({ addProduct, createCategoria }) => {
                   + Agregar Variante
                 </button>
               </div>
+
+              {variantesData.length === 0 && (
+                <div className="variants-empty-state">
+                  <p>
+                    Todavía no agregaste ninguna variante.
+                  </p>
+                  <span>
+                    Cada variante representa un color con sus
+                    imágenes y tallas disponibles. Necesitás
+                    al menos una para poder publicar.
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-add-variant"
+                    onClick={handleAddVariante}
+                  >
+                    + Agregar mi primera variante
+                  </button>
+                </div>
+              )}
 
               {variantesData.map(
                 (variante, index) => (
@@ -451,6 +552,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
 
           <div className="right-column">
             <CategoryCard
+              stepNumber={2}
               productGrupo={productGrupo}
               setProductGrupo={setProductGrupo}
 
@@ -461,10 +563,17 @@ const NewProduct = ({ addProduct, createCategoria }) => {
 
               nuevaCategoria={nuevaCategoria}
               setNuevaCategoria={setNuevaCategoria}
+
+              fieldErrors={fieldErrors}
+              validateField={validateField}
             />
             <div className="sections-card">
 
               <h3>Mostrar producto en</h3>
+              <p className="sections-hint">
+                Opcional: elegí en qué secciones de la
+                tienda querés que aparezca.
+              </p>
 
               <label className="section-option">
 
@@ -533,6 +642,7 @@ const NewProduct = ({ addProduct, createCategoria }) => {
             </div>
 
             <PublishCard
+              stepNumber={4}
               loading={loading}
               variantesData={
                 variantesData
@@ -543,6 +653,8 @@ const NewProduct = ({ addProduct, createCategoria }) => {
               productPrice={
                 productPrice
               }
+              checklist={checklist}
+              isReadyToPublish={isReadyToPublish}
             />
           </div>
         </div>

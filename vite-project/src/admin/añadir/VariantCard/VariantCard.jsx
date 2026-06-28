@@ -51,6 +51,7 @@ const VariantCard = ({
                     type="text"
                     placeholder="Ej: Negro"
                     value={variante.color}
+                    className={!variante.color ? "input-missing" : ""}
                     onChange={(e) => {
                         const updated = [...variantesData];
 
@@ -59,8 +60,13 @@ const VariantCard = ({
 
                         setVariantesData(updated);
                     }}
-                    required
                 />
+
+                {!variante.color && (
+                    <span className="variant-hint">
+                        Falta el color de esta variante
+                    </span>
+                )}
 
             </div>
 
@@ -79,8 +85,13 @@ const VariantCard = ({
 
                         setVariantesData(updated);
                     }}
-                    required
                 />
+
+                {variante.imagenFiles.length === 0 && (
+                    <span className="variant-hint">
+                        Falta al menos una imagen
+                    </span>
+                )}
 
             </div>
 
@@ -158,6 +169,8 @@ const VariantCard = ({
                                             <input
                                                 type="text"
                                                 value={talla.talla}
+                                                placeholder="Ej: M"
+                                                className={!talla.talla ? "input-missing" : ""}
                                                 onChange={(e) =>
                                                     handleTallaChange(
                                                         index,
@@ -166,7 +179,6 @@ const VariantCard = ({
                                                         e.target.value
                                                     )
                                                 }
-                                                required
                                             />
                                         </td>
 
@@ -175,6 +187,7 @@ const VariantCard = ({
                                                 type="number"
                                                 min="1"
                                                 value={talla.cantidad}
+                                                className={!talla.cantidad || talla.cantidad <= 0 ? "input-missing" : ""}
                                                 onChange={(e) =>
                                                     handleTallaChange(
                                                         index,
@@ -183,7 +196,6 @@ const VariantCard = ({
                                                         e.target.value
                                                     )
                                                 }
-                                                required
                                             />
                                         </td>
 

@@ -500,6 +500,29 @@ ol {
 }
 
 /* ============================================================
+   STEP BADGE
+   Círculo numerado para indicar el orden de secciones en
+   formularios largos de una sola página (ej. crear producto).
+   ============================================================ */
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  margin-right: var(--sp-2);
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+/* ============================================================
    RESPONSIVE — breakpoints de referencia para todo el sitio
    sm: 480px · md: 768px · lg: 1024px · xl: 1280px
    ============================================================ */
