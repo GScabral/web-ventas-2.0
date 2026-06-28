@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBagShopping } from "@fortawesome/free-solid-svg-icons";
 
 import CartItem from "./componets/CartItem";
 import CartSummary from "./componets/CartSummary";
@@ -21,14 +24,31 @@ const Carrito = () => {
 
       <div className={styles.container}>
 
-        <h1>Mi Carrito</h1>
+        <h1 className={styles.pageTitle}>Mi Carrito</h1>
 
         {!carrito.length ? (
           <div className={styles.empty}>
-            Tu carrito está vacío
+            <FontAwesomeIcon
+              icon={faBagShopping}
+              className={styles.emptyIcon}
+            />
+
+            <p>Tu carrito está vacío</p>
+
+            <span>
+              Todavía no agregaste ningún producto
+            </span>
+
+            <Link
+              to="/"
+              className={styles.emptyCta}
+            >
+              Ir a la tienda
+            </Link>
           </div>
         ) : (
-          <>
+
+          <div className={styles.layout}>
 
             <div className={styles.products}>
 
@@ -51,7 +71,7 @@ const Carrito = () => {
               }
             />
 
-          </>
+          </div>
         )}
 
       </div>

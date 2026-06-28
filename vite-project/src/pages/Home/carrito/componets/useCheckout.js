@@ -44,7 +44,12 @@ const useCheckout = () => {
     }));
   };
 
+  const [submitError, setSubmitError] =
+    useState("");
+
   const confirmarPedido = async () => {
+
+    setSubmitError("");
 
     try {
 
@@ -159,10 +164,6 @@ Total: $${total}
           vaciarCarrito()
         );
 
-        alert(
-          "Pedido creado correctamente"
-        );
-
         return true;
       }
 
@@ -170,8 +171,8 @@ Total: $${total}
 
       console.error(error);
 
-      alert(
-        "Error al crear pedido"
+      setSubmitError(
+        "No pudimos crear el pedido. Probá de nuevo en un momento."
       );
 
     } finally {
@@ -191,6 +192,9 @@ Total: $${total}
     confirmarPedido,
 
     loading,
+
+    submitError,
+    setSubmitError,
   };
 };
 

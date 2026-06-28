@@ -1,61 +1,117 @@
 import React from "react";
+import styles from "../styles/ShippingForm.module.css";
 
-const ShippingForm = ({ data, onChange }) => {
+const ShippingForm = ({ data, onChange, fieldErrors = {} }) => {
   return (
-    <>
-      <select
-        name="tipoEntrega"
-        value={data.tipoEntrega}
-        onChange={onChange}
-      >
-        <option value="ENVIO">
-          Envío a domicilio
-        </option>
+    <div className={styles.fieldsWrapper}>
 
-        <option value="RETIRO">
-          Retiro en local
-        </option>
-      </select>
+      <div className={styles.formGroup}>
+        <label>Forma de entrega</label>
 
-      <input
-        name="nombre"
-        placeholder="Nombre"
-        value={data.nombre}
-        onChange={onChange}
-      />
+        <select
+          name="tipoEntrega"
+          value={data.tipoEntrega}
+          onChange={onChange}
+        >
+          <option value="ENVIO">
+            Envío a domicilio
+          </option>
 
-      <input
-        name="telefono"
-        placeholder="Teléfono"
-        value={data.telefono}
-        onChange={onChange}
-      />
+          <option value="RETIRO">
+            Retiro en local
+          </option>
+        </select>
+      </div>
+
+      <div className={`${styles.formGroup} ${fieldErrors.nombre ? styles.hasError : ""}`}>
+        <label>Nombre</label>
+
+        <input
+          name="nombre"
+          placeholder="Nombre completo"
+          value={data.nombre}
+          onChange={onChange}
+        />
+
+        {fieldErrors.nombre && (
+          <span className={styles.fieldError}>
+            {fieldErrors.nombre}
+          </span>
+        )}
+      </div>
+
+      <div className={`${styles.formGroup} ${fieldErrors.telefono ? styles.hasError : ""}`}>
+        <label>Teléfono</label>
+
+        <input
+          name="telefono"
+          placeholder="Ej: 3794123456"
+          value={data.telefono}
+          onChange={onChange}
+        />
+
+        {fieldErrors.telefono && (
+          <span className={styles.fieldError}>
+            {fieldErrors.telefono}
+          </span>
+        )}
+      </div>
 
       {data.tipoEntrega === "ENVIO" && (
         <>
-          <input
-            name="provincia"
-            placeholder="Provincia"
-            value={data.provincia}
-            onChange={onChange}
-          />
+          <div className={`${styles.formGroup} ${fieldErrors.provincia ? styles.hasError : ""}`}>
+            <label>Provincia</label>
 
-          <input
-            name="ciudad"
-            placeholder="Ciudad"
-            value={data.ciudad}
-            onChange={onChange}
-          />
+            <input
+              name="provincia"
+              placeholder="Provincia"
+              value={data.provincia}
+              onChange={onChange}
+            />
 
-          <input
-            name="direccion"
-            placeholder="Dirección"
-            value={data.direccion}
-            onChange={onChange}
-          />
+            {fieldErrors.provincia && (
+              <span className={styles.fieldError}>
+                {fieldErrors.provincia}
+              </span>
+            )}
+          </div>
+
+          <div className={`${styles.formGroup} ${fieldErrors.ciudad ? styles.hasError : ""}`}>
+            <label>Ciudad</label>
+
+            <input
+              name="ciudad"
+              placeholder="Ciudad"
+              value={data.ciudad}
+              onChange={onChange}
+            />
+
+            {fieldErrors.ciudad && (
+              <span className={styles.fieldError}>
+                {fieldErrors.ciudad}
+              </span>
+            )}
+          </div>
+
+          <div className={`${styles.formGroup} ${fieldErrors.direccion ? styles.hasError : ""}`}>
+            <label>Dirección</label>
+
+            <input
+              name="direccion"
+              placeholder="Calle y número"
+              value={data.direccion}
+              onChange={onChange}
+            />
+
+            {fieldErrors.direccion && (
+              <span className={styles.fieldError}>
+                {fieldErrors.direccion}
+              </span>
+            )}
+          </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

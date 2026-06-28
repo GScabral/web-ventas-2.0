@@ -1,47 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ShippingForm from "./ShippingForm";
 import useCheckout from "./useCheckout";
 
 import styles from "../styles/CheckoutModal.module.css";
 
-const CheckoutModal = ({show,onClose,}) => {
-  const { email,setEmail,shippingData, handleShippingChange,confirmarPedido,loading, } = useCheckout();
+const CheckoutModal = ({ show, onClose }) => {
+  const {
+    email,
+    setEmail,
+    shippingData,
+    handleShippingChange,
+    confirmarPedido,
+    loading,
+    submitError,
+    setSubmitError,
+  } = useCheckout();
+
+  const [fieldErrors, setFieldErrors] = useState({});
 
   if (!show) return null;
 
   const handleSubmit = async () => {
+    const errors = {};
 
     if (!email) {
-      alert("Ingrese un correo electrónico");
-      return;
+      errors.email = "Ingresá tu correo electrónico.";
     }
 
     if (!shippingData.nombre) {
-      alert("Ingrese su nombre");
-      return;
+      errors.nombre = "Ingresá tu nombre.";
     }
 
     if (!shippingData.telefono) {
-      alert("Ingrese un teléfono");
-      return;
+      errors.telefono = "Ingresá un teléfono de contacto.";
     }
 
     if (shippingData.tipoEntrega === "ENVIO") {
       if (!shippingData.provincia) {
-        alert("Ingrese una provincia");
-        return;
+        errors.provincia = "Ingresá tu provincia.";
       }
 
       if (!shippingData.ciudad) {
-        alert("Ingrese una ciudad");
-        return;
+        errors.ciudad = "Ingresá tu ciudad.";
       }
 
       if (!shippingData.direccion) {
-        alert("Ingrese una dirección");
-        return;
+        errors.direccion = "Ingresá tu dirección.";
       }
+    }
+
+    setFieldErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
     }
 
     const ok = await confirmarPedido();
@@ -52,52 +64,90 @@ const CheckoutModal = ({show,onClose,}) => {
   };
 
   return (
-    <div className={styles.overlay}>
+    <div className="custom-modal-overlay" onClick={onClose}>
 
-      <div className={styles.modal}>
+      <div
+        className={`custom-modal ${styles.modal}`}
+        onClick={(e) => e.stopPropagation()}
+      >
 
-        <button
-          className={styles.closeButton}
-          onClick={onClose}
-        >
-          ×
-        </button>
+        <div className="custom-modal-header">
+          <h2>Finalizar Compra</h2>
 
-        <h2 className={styles.title}>
-          Finalizar Compra
-        </h2>
+          <button
+            type="button"
+            className="custom-modal-close"
+            onClick={onClose}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
 
-        <div className={styles.formGroup}>
+        <div className="custom-modal-body">
 
-          <label>
-            Correo electrónico
-          </label>
+          {submitError && (
+            <div className={styles.submitError}>
+              {submitError}
+            </div>
+          )}
 
-          <input
-            type="email"
-            placeholder="ejemplo@email.com"
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
+          <div
+            className={`${styles.formGroup} ${fieldErrors.email ? styles.hasError : ""}`}
+          >
+
+            <label>
+              Correo electrónico
+            </label>
+
+            <input
+              type="email"
+              placeholder="ejemplo@email.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setSubmitError("");
+              }}
+            />
+
+            {fieldErrors.email && (
+              <span className={styles.fieldError}>
+                {fieldErrors.email}
+              </span>
+            )}
+
+          </div>
+
+          <ShippingForm
+            data={shippingData}
+            onChange={handleShippingChange}
+            fieldErrors={fieldErrors}
           />
 
         </div>
 
-        <ShippingForm
-          data={shippingData}
-          onChange={handleShippingChange}
-        />
+        <div className="custom-modal-footer">
 
-        <button
-          className={styles.confirmButton}
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          {loading
-            ? "Procesando pedido..."
-            : "Confirmar Pedido"}
-        </button>
+          <button
+            type="button"
+            className="btn-cancel"
+            onClick={onClose}
+          >
+            Cancelar
+          </button>
+
+          <button
+            type="button"
+            className="btn-save"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading
+              ? "Procesando pedido..."
+              : "Confirmar Pedido"}
+          </button>
+
+        </div>
 
       </div>
 

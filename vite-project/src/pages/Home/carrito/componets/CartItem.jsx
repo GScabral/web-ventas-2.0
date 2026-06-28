@@ -26,7 +26,7 @@ const CartItem = ({
 
     if (
       producto.cantidad >=
-      producto.variante.cantidad_disponible
+      (producto.variante?.cantidad_disponible ?? Infinity)
     ) {
       return;
     }
@@ -82,42 +82,76 @@ const CartItem = ({
 
         <h3>{producto.nombre}</h3>
 
-        <p>
-          Color: {producto.color}
-        </p>
+        <div className={styles.variantTags}>
+          {producto.color && (
+            <span className={styles.tag}>
+              {producto.color}
+            </span>
+          )}
 
-        <p>
-          Talle: {producto.talla}
-        </p>
+          {producto.talla && (
+            <span className={styles.tag}>
+              Talle {producto.talla}
+            </span>
+          )}
+        </div>
 
-        <p>
-          Precio: $
+        <p className={styles.unitPrice}>
+          $
           {Number(
             producto.precio
-          ).toLocaleString("es-AR")}
+          ).toLocaleString("es-AR")}{" "}
+          c/u
         </p>
 
       </div>
 
       <div className={styles.actions}>
 
-        {/* <button onClick={decrementar}>
-          <FontAwesomeIcon
-            icon={faMinus}
-          />
-        </button> */}
-
-        <span>
-          {producto.cantidad}
+        <span className={styles.subtotal}>
+          $
+          {(
+            Number(producto.precio) *
+            producto.cantidad
+          ).toLocaleString("es-AR")}
         </span>
 
-        {/* <button onClick={incrementar}>
-          <FontAwesomeIcon
-            icon={faPlus}
-          />
-        </button> */}
+        <div className={styles.quantityControl}>
 
-        <button onClick={eliminar}>
+          <button
+            onClick={decrementar}
+            disabled={producto.cantidad <= 1}
+            aria-label="Restar uno"
+          >
+            <FontAwesomeIcon
+              icon={faMinus}
+            />
+          </button>
+
+          <span>
+            {producto.cantidad}
+          </span>
+
+          <button
+            onClick={incrementar}
+            disabled={
+              producto.cantidad >=
+              (producto.variante?.cantidad_disponible ?? Infinity)
+            }
+            aria-label="Sumar uno"
+          >
+            <FontAwesomeIcon
+              icon={faPlus}
+            />
+          </button>
+
+        </div>
+
+        <button
+          className={styles.deleteBtn}
+          onClick={eliminar}
+          aria-label="Eliminar producto"
+        >
           <FontAwesomeIcon
             icon={faTrashAlt}
           />

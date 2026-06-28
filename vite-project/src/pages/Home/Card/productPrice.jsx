@@ -10,7 +10,7 @@ const ProductPrice = ({
         state => state.ofertasActivas
     );
 
-    const ofertaProducto = ofertas.find(
+    const ofertaProducto = ofertas?.find(
         oferta =>
             oferta.producto_id === productoId
     );
