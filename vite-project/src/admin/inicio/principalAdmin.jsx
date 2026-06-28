@@ -1,9 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  getProductos,
+  getPedidos,
+  getOfertas,
+} from "../../redux/action";
 
 import "./principal.css";
 
 const Principal = () => {
+  const dispatch = useDispatch();
+
+  const productos = useSelector(
+    (state) => state.allProductosforFiltro || []
+  );
+
+  const pedidos = useSelector(
+    (state) => state.allPedidos || []
+  );
+
+  const ofertas = useSelector(
+    (state) => state.ofertasActivas || []
+  );
+
+  useEffect(() => {
+    dispatch(getProductos());
+    dispatch(getPedidos());
+    dispatch(getOfertas());
+  }, [dispatch]);
+
+  const totalProductos = productos.length;
+
+  const pedidosPendientes = pedidos.filter(
+    (pedido) =>
+      (pedido.estado || "").toLowerCase() === "pendiente"
+  ).length;
+
+  const ahora = new Date();
+
+  const ofertasVigentes = ofertas.filter((oferta) => {
+    const inicio = new Date(oferta.inicio);
+    const fin = new Date(oferta.fin);
+    return inicio <= ahora && ahora <= fin;
+  }).length;
+
   return (
     <div className="dashboard">
 
@@ -18,18 +60,18 @@ const Principal = () => {
       <div className="stats-grid">
 
         <div className="stat-card">
-          <h3>Productos</h3>
-          <span>152</span>
+          <span className="stat-label">Productos</span>
+          <span className="stat-value">{totalProductos}</span>
         </div>
 
         <div className="stat-card">
-          <h3>Pedidos</h3>
-          <span>18</span>
+          <span className="stat-label">Pedidos pendientes</span>
+          <span className="stat-value">{pedidosPendientes}</span>
         </div>
 
         <div className="stat-card">
-          <h3>Ofertas</h3>
-          <span>7</span>
+          <span className="stat-label">Ofertas vigentes</span>
+          <span className="stat-value">{ofertasVigentes}</span>
         </div>
 
       </div>
@@ -44,19 +86,19 @@ const Principal = () => {
             to="/admin/new"
             className="action-btn"
           >
-            Añadir Producto
+            Añadir producto
           </Link>
 
           <Link
             to="/admin/lista"
-            className="action-btn"
+            className="action-btn action-btn-secondary"
           >
             Inventario
           </Link>
 
           <Link
             to="/admin/PedidosLista"
-            className="action-btn"
+            className="action-btn action-btn-secondary"
           >
             Pedidos
           </Link>

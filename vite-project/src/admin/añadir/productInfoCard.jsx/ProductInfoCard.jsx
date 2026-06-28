@@ -2,18 +2,28 @@ import React from "react";
 import "./ProductInfoCard.css";
 
 const ProductInfoCard = ({
+    stepNumber,
     productName,
     setProductName,
     productPrice,
     setProductPrice,
     productDescrip,
     setProductDescrip,
+    fieldErrors = {},
+    validateField,
 }) => {
     return (
         <div className="product-info-card">
 
             <div className="card-header">
-                <h2>Información General</h2>
+                <h2>
+                    {stepNumber && (
+                        <span className="step-badge">
+                            {stepNumber}
+                        </span>
+                    )}
+                    Información General
+                </h2>
                 <p>Datos principales del producto</p>
             </div>
 
@@ -26,9 +36,26 @@ const ProductInfoCard = ({
                     onChange={(e) =>
                         setProductName(e.target.value)
                     }
+                    onBlur={(e) =>
+                        validateField?.(
+                            "productName",
+                            e.target.value
+                        )
+                    }
+                    className={
+                        fieldErrors.productName
+                            ? "input-error"
+                            : ""
+                    }
                     placeholder="Ej: Camiseta Oversize"
                     required
                 />
+
+                {fieldErrors.productName && (
+                    <span className="field-error">
+                        {fieldErrors.productName}
+                    </span>
+                )}
             </div>
 
             <div className="form-group">
@@ -41,9 +68,26 @@ const ProductInfoCard = ({
                     onChange={(e) =>
                         setProductPrice(e.target.value)
                     }
+                    onBlur={(e) =>
+                        validateField?.(
+                            "productPrice",
+                            e.target.value
+                        )
+                    }
+                    className={
+                        fieldErrors.productPrice
+                            ? "input-error"
+                            : ""
+                    }
                     placeholder="0"
                     required
                 />
+
+                {fieldErrors.productPrice && (
+                    <span className="field-error">
+                        {fieldErrors.productPrice}
+                    </span>
+                )}
             </div>
 
             <div className="form-group">
@@ -55,9 +99,26 @@ const ProductInfoCard = ({
                     onChange={(e) =>
                         setProductDescrip(e.target.value)
                     }
+                    onBlur={(e) =>
+                        validateField?.(
+                            "productDescrip",
+                            e.target.value
+                        )
+                    }
+                    className={
+                        fieldErrors.productDescrip
+                            ? "input-error"
+                            : ""
+                    }
                     placeholder="Describe el producto..."
                     required
                 />
+
+                {fieldErrors.productDescrip && (
+                    <span className="field-error">
+                        {fieldErrors.productDescrip}
+                    </span>
+                )}
             </div>
 
         </div>

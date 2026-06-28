@@ -2,6 +2,7 @@ import React from "react";
 import "./CategoryCard.css";
 
 const CategoryCard = ({
+  stepNumber,
   productGrupo,
   setProductGrupo,
 
@@ -11,7 +12,10 @@ const CategoryCard = ({
   setCategoriaId,
 
   nuevaCategoria,
-  setNuevaCategoria
+  setNuevaCategoria,
+
+  fieldErrors = {},
+  validateField,
 }) => {
 
   return (
@@ -20,7 +24,14 @@ const CategoryCard = ({
 
       <div className="card-header">
 
-        <h2>Categorización</h2>
+        <h2>
+          {stepNumber && (
+            <span className="step-badge">
+              {stepNumber}
+            </span>
+          )}
+          Categorización
+        </h2>
 
         <p>
           Organiza correctamente el producto
@@ -42,9 +53,26 @@ const CategoryCard = ({
               e.target.value
             )
           }
+          onBlur={(e) =>
+            validateField?.(
+              "productGrupo",
+              e.target.value
+            )
+          }
+          className={
+            fieldErrors.productGrupo
+              ? "input-error"
+              : ""
+          }
           placeholder="Ej: Indumentaria"
           required
         />
+
+        {fieldErrors.productGrupo && (
+          <span className="field-error">
+            {fieldErrors.productGrupo}
+          </span>
+        )}
 
       </div>
 

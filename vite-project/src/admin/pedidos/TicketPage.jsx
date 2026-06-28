@@ -46,16 +46,18 @@ const TicketPage = () => {
 
     }
 
+    const detalles = pedido.DetallesPedidos || [];
+
     const totalPedido =
-        pedido.detalles.reduce(
+        detalles.reduce(
             (acc, item) =>
                 acc + (item.total || 0),
             0
         );
 
-    const fecha = new Date(
-        pedido.fecha
-    ).toLocaleString("es-AR");
+    const fecha = pedido.fecha_pedido
+        ? new Date(pedido.fecha_pedido).toLocaleString("es-AR")
+        : "";
 
     return (
 
@@ -84,7 +86,7 @@ const TicketPage = () => {
                         </strong>
 
                         <p>
-                            #{pedido.id}
+                            #{pedido.id_pedido}
                         </p>
 
                     </div>
@@ -119,7 +121,7 @@ const TicketPage = () => {
 
                     </div>
 
-                    {pedido.detalles.map(
+                    {detalles.map(
                         item => (
 
                             <div
