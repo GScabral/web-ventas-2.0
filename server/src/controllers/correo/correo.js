@@ -1,11 +1,18 @@
 const nodemailer = require('nodemailer')
+require('dotenv').config()
 
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS;
+
+if (!EMAIL_USER || !EMAIL_PASS) {
+    console.error('⚠️  Faltan EMAIL_USER y/o EMAIL_PASS en las variables de entorno. El envío de correos va a fallar.');
+}
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'amoremioshowroomok@gmail.com',
-        pass: 'z a l b s c v l l f d l x h w y'
+        user: EMAIL_USER,
+        pass: EMAIL_PASS
     }
 })
 
@@ -13,7 +20,7 @@ const transporter = nodemailer.createTransport({
 const enviarCorreo = async (idPedido, infoPedido, destinatario, total) => {
     try {
         const mailOption = {
-            from: 'amoremioshowroomok@gmail.com',
+            from: EMAIL_USER,
             to: destinatario,
             subject: 'Confirmación de Pedido - Amore Mio',
             html: `
@@ -157,7 +164,7 @@ const enviarCorreo = async (idPedido, infoPedido, destinatario, total) => {
 
         <div class="footer">
             <p>Gracias por elegir <strong>Tienda Online</strong>.</p>
-            <p><a href="mailto:amoremioshowroomok@gmail.com">amoremioshowroomok@gmail.com</a></p>
+            <p><a href="mailto:${EMAIL_USER}">${EMAIL_USER}</a></p>
         </div>
 
     </div>

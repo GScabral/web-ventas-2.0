@@ -7,11 +7,16 @@ const inicioSesion = require("../controllers/cliente/INS")
 const verificarCorreo=require("../controllers/cliente/checkEmail")
 const obtenerInfUsuario=require("../controllers/cliente/getInfoUsuario")
 const allClientes=require("../controllers/cliente/getAllClientes")
+const { verificarTokenAdmin } = require("../middleware/auth");
 
 
 const router = Router();
 
-router.get("/cliente/:id", async (req, res) => {
+// Protegida: solo el admin puede consultar los datos de un cliente por id.
+// No hay sesión de cliente real (basada en JWT propio) todavía, así que no
+// podemos validar "este es tu propio perfil"; por ahora, gestión de
+// clientes = tarea de admin.
+router.get("/cliente/:id", verificarTokenAdmin, async (req, res) => {
   const { id } = req.params; // Captura el parámetro ID de la URL
 
   try {
@@ -43,7 +48,8 @@ router.get("/check",async(req,res)=>{
   }
 })
 
-router.get("/allClientes",async(req,res)=>{
+// Protegida: lista completa de clientes, solo para el panel de admin.
+router.get("/allClientes", verificarTokenAdmin, async(req,res)=>{
   try{
     const listaC=await allClientes()
     res.status(200).json(listaC)

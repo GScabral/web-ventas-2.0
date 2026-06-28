@@ -13,13 +13,40 @@ require('./db.js');
 const server = express();
 server.name = 'Server';
 
+// Orígenes desde los que se permite llamar a la API. En producción, el
+// origen real del frontend (CLIENT_URL) viene de una variable de entorno;
+// los demás son fallbacks para no romper nada si todavía no se configuró.
+// Para permitir más de un dominio, separar con comas en CLIENT_URL.
+const defaultOrigins = [
+  'https://amoremio.onrender.com',
+  'http://localhost:5173',
+  'http://localhost:3005',
+];
+
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map((url) => url.trim())
+  : defaultOrigins;
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Sin "origin" (curl, Postman, requests del propio servidor) se permite:
+    // no hay navegador de por medio, así que no aplica la protección de CORS.
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    console.warn(`CORS bloqueado para origen no permitido: ${origin}`);
+    return callback(new Error('No permitido por CORS'));
+  },
+  credentials: true,
+};
+
 // Middleware
 server.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan('dev'));
-server.use(cors()); // Habilita CORS de forma genérica para producción
+server.use(cors(corsOptions));
 
 // Rutas
 server.use('/', routes);

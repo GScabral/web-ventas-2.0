@@ -1,4 +1,8 @@
 const nodemailer = require("nodemailer");
+require('dotenv').config();
+
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS;
 
 async function enviarCorreoEstado(email, id_pedido, estado) {
     const textos = {
@@ -13,13 +17,13 @@ async function enviarCorreoEstado(email, id_pedido, estado) {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: 'amoremioshowroomok@gmail.com',
-            pass: 'z a l b s c v l l f d l x h w y'
+            user: EMAIL_USER,
+            pass: EMAIL_PASS
         }
     });
 
     await transporter.sendMail({
-        from: 'amoremioshowroomok@gmail.com',
+        from: EMAIL_USER,
         to: email,
         subject: `Actualización de pedido Nº ${id_pedido}`,
         html: `
