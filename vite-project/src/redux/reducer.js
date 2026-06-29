@@ -180,19 +180,8 @@ const reducer = (state = initialState, action) => {
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     case FILTER: {
-      const { rama, categoria, subcategoria } = action.payload;
+      const { categoria, subcategoria } = action.payload;
       let filteredProducts = state.allProductosBackUp;
-
-
-      // 👉 Filtrar por Rama
-      if (rama) {
-        const ramaFiltrada = rama.toLowerCase();
-        filteredProducts = filteredProducts.filter(
-          (producto) =>
-            producto.rama &&
-            producto.rama.toLowerCase() === ramaFiltrada
-        );
-      }
 
       // 👉 Filtrar por Categoría
       // El backend devuelve "categoria" como un objeto { id, nombre, slug }
@@ -236,7 +225,7 @@ const reducer = (state = initialState, action) => {
         filter: true,
         totalPages,
         currentPage: 1,                            // 👈 resetea siempre a la página 1
-        filters: { ...state.filters, rama, categoria, subcategoria },
+        filters: { ...state.filters, categoria, subcategoria },
       };
     }
 

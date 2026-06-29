@@ -22,11 +22,6 @@ const Nav = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
 
-  let selectedMainCategory = "";
-  if (location.pathname.startsWith("/Accesorios")) selectedMainCategory = "Accesorios";
-  else if (location.pathname.startsWith("/Maquillaje")) selectedMainCategory = "Maquillaje";
-  else selectedMainCategory = "Ropa";
-
 
   // Animación bump en carrito
   useEffect(() => {
@@ -115,7 +110,6 @@ const Nav = () => {
         {/* NUEVO DROPDOWN ANIMADO */}
         <div className={`dropdown-card ${showCategories ? "open" : ""}`}>
           <FiltrosSidebar
-            selectedMainCategory={selectedMainCategory}
             selectedSubcategory={selectedSubcategory}
             setSelectedSubcategory={setSelectedSubcategory}
             selectedPriceOrder={selectedPriceOrder}
@@ -128,5 +122,3 @@ const Nav = () => {
 };
 
 export default Nav;
-
-

@@ -16,7 +16,7 @@ import {
 
 import "./filtros.css";
 
-const FiltrosSidebar = ({ selectedMainCategory, selectedSubcategory, setSelectedSubcategory, selectedPriceOrder, setSelectedPriceOrder, }) => {
+const FiltrosSidebar = ({ selectedSubcategory, setSelectedSubcategory, selectedPriceOrder, setSelectedPriceOrder, }) => {
 
   const dispatch = useDispatch();
 
@@ -43,7 +43,6 @@ const FiltrosSidebar = ({ selectedMainCategory, selectedSubcategory, setSelected
 
     dispatch(
       filterProduc({
-        rama: selectedMainCategory || "",
         categoria: selectedSubcategory || "",
         subcategoria: "",
         tallas,
@@ -57,7 +56,6 @@ const FiltrosSidebar = ({ selectedMainCategory, selectedSubcategory, setSelected
     colores,
     precioMax,
     selectedSubcategory,
-    selectedMainCategory,
     dispatch
   ]);
 
