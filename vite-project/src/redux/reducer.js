@@ -139,6 +139,13 @@ const reducer = (state = initialState, action) => {
     case ORDER:
       const newSortOrder = action.payload;
 
+      // Si hay un filtro activo, hay que ordenar sobre lo ya filtrado
+      // (state.filtered), no sobre el listado completo sin filtrar.
+      // Si no hay filtro, se ordena sobre todo el catálogo.
+      const baseParaOrdenar = state.filter
+        ? state.filtered
+        : state.allProductosBackUp;
+
       // Verificar si el nuevo tipo de orden es una cadena vacía
       const isClearOrder = newSortOrder === "";
 
@@ -146,7 +153,7 @@ const reducer = (state = initialState, action) => {
       if (isClearOrder) {
         return {
           ...state,
-          allProductos: state.allProductosBackUp.slice(0, ITEMS_PER_PAGE), // Restaurar al estado original sin orden aplicado
+          allProductos: baseParaOrdenar.slice(0, ITEMS_PER_PAGE), // Restaurar sin orden, respetando el filtro activo
           sortOrder: "", // Limpiar el tipo de orden
         };
       }
@@ -155,15 +162,20 @@ const reducer = (state = initialState, action) => {
       let ordenarProducto = [];
 
       if (newSortOrder === "precioAsc") {
-        ordenarProducto = [...state.allProductosBackUp].sort((prev, next) => prev.precio - next.precio);
+        ordenarProducto = [...baseParaOrdenar].sort((prev, next) => prev.precio - next.precio);
       } else if (newSortOrder === "precioDesc") {
-        ordenarProducto = [...state.allProductosBackUp].sort((prev, next) => next.precio - prev.precio);
+        ordenarProducto = [...baseParaOrdenar].sort((prev, next) => next.precio - prev.precio);
       }
 
       return {
         ...state,
         allProductos: ordenarProducto.slice(0, ITEMS_PER_PAGE), // Aplicar el nuevo orden a la primera página
-        allProductosBackUp: ordenarProducto,
+        // Solo se pisa allProductosBackUp cuando NO hay filtro activo:
+        // si hay un filtro, el backup completo del catálogo debe
+        // quedar intacto para poder "deshacer" el filtro más tarde.
+        ...(state.filter
+          ? { filtered: ordenarProducto }
+          : { allProductosBackUp: ordenarProducto }),
         sortOrder: newSortOrder,
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
@@ -183,12 +195,15 @@ const reducer = (state = initialState, action) => {
       }
 
       // 👉 Filtrar por Categoría
+      // El backend devuelve "categoria" como un objeto { id, nombre, slug }
+      // (o null si el producto no tiene categoría asignada), no como texto.
+      // Por eso se compara contra categoria?.nombre, no contra el objeto.
       if (categoria) {
         const categoriaFiltrada = categoria.toLowerCase();
         filteredProducts = filteredProducts.filter(
           (producto) =>
-            producto.categoria &&
-            producto.categoria.toLowerCase() === categoriaFiltrada
+            producto.categoria?.nombre &&
+            producto.categoria.nombre.toLowerCase() === categoriaFiltrada
         );
       }
 
