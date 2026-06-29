@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { agregarAlCarrito } from "../../../redux/action";
@@ -27,11 +27,18 @@ const Detail = () => {
   const [color, setColor] = useState("");
   const [cantidad, setCantidad] = useState(1);
   const [imgIndex, setImgIndex] = useState(0);
+  const [stockError, setStockError] = useState("");
 
   const stock = useMemo(() => {
     const v = variantes.find(v => v.talla === talle && v.color === color);
     return v?.cantidad_disponible || 0;
   }, [talle, color, variantes]);
+
+  // Si el cliente cambia el talle, el color o la cantidad después de
+  // ver el error, lo limpiamos para no dejar un mensaje viejo pegado.
+  useEffect(() => {
+    setStockError("");
+  }, [talle, color, cantidad]);
 
   const recomendados = useMemo(() => {
     return allProductos.filter(
@@ -46,12 +53,26 @@ const Detail = () => {
 
     if (!variante) return;
 
+    if (cantidad > variante.cantidad_disponible) {
+      setStockError(
+        `Solo quedan ${variante.cantidad_disponible} unidades disponibles.`
+      );
+      return;
+    }
+
+    setStockError("");
+
     dispatch(agregarAlCarrito({
       id: info?.id,
       nombre: info?.nombre,
       precio: calcularPrecioFinal(info?.precio, oferta),
       cantidad,
+      // Se manda con los dos nombres a propósito: CartItem.jsx lo
+      // muestra como "talla", y useCheckout.js / el backend lo leen
+      // como "talle". Mandar ambos evita que el talle se pierda en
+      // alguno de los dos pasos por una diferencia de nombre.
       talla,
+      talle: talla,
       color,
       idVariante: variante.idVariante,
       imagen: variante.imagenes?.[0]
@@ -86,6 +107,7 @@ const Detail = () => {
             cantidad={cantidad}
             setCantidad={setCantidad}
             stock={stock}
+            stockError={stockError}
             onAdd={handleAdd}
           />
 

@@ -11,6 +11,7 @@ const BuyBox = ({
     cantidad,
     setCantidad,
     stock,
+    stockError,
     onAdd
 }) => {
     const talles = [...new Set(variantes.map(v => v.talla))];
@@ -38,7 +39,14 @@ const BuyBox = ({
                     max={stock}
                     value={cantidad}
                     onChange={(e) => setCantidad(+e.target.value)}
+                    className={stockError ? "qty-input-error" : ""}
                 />
+
+                {stockError && (
+                    <span className="qty-error">
+                        {stockError}
+                    </span>
+                )}
             </div>
 
             <button className="add-btn" onClick={onAdd}>

@@ -28,6 +28,15 @@
   font-size: 1rem;
 }
 
+.qty-input-error {
+  border-color: #e74c3c !important;
+}
+
+.qty-error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+}
+
 .add-btn {
   height: 58px;
   border: none;
@@ -75,6 +84,10 @@
 
   .qty label {
     font-size: 0.95rem;
+  }
+
+  .qty-error {
+    font-size: 0.8rem;
   }
 
   .qty input {
