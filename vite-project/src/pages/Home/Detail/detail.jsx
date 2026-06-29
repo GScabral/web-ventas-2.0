@@ -71,8 +71,8 @@ const Detail = () => {
       // muestra como "talla", y useCheckout.js / el backend lo leen
       // como "talle". Mandar ambos evita que el talle se pierda en
       // alguno de los dos pasos por una diferencia de nombre.
-      talla,
-      talle: talla,
+      talla: talle,
+      talle,
       color,
       idVariante: variante.idVariante,
       imagen: variante.imagenes?.[0]

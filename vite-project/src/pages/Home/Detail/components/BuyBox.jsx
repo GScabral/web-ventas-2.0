@@ -19,6 +19,22 @@ const BuyBox = ({
         variantes.filter(v => v.talla === talle).map(v => v.color)
     )];
 
+    const handleCantidadChange = (e) => {
+        const valor = +e.target.value;
+
+        if (!stock) {
+            setCantidad(valor);
+            return;
+        }
+
+        if (valor > stock) {
+            setCantidad(stock);
+            return;
+        }
+
+        setCantidad(valor);
+    };
+
     return (
         <div className="buybox">
 
@@ -36,9 +52,9 @@ const BuyBox = ({
                 <input
                     type="number"
                     min={1}
-                    max={stock}
+                    max={stock || undefined}
                     value={cantidad}
-                    onChange={(e) => setCantidad(+e.target.value)}
+                    onChange={handleCantidadChange}
                     className={stockError ? "qty-input-error" : ""}
                 />
 
