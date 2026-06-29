@@ -113,12 +113,11 @@ const Home = () => {
 
         {/* CATALOGO */}
 
-        <section className="home-section catalog-layout">
+        <section id="catalogo" className="home-section catalog-layout">
 
           <aside className="catalog-sidebar">
 
             <FiltrosSidebar
-              selectedMainCategory="Ropa"
               selectedSubcategory={selectedSubcategory}
               setSelectedSubcategory={setSelectedSubcategory}
               selectedPriceOrder={selectedPriceOrder}

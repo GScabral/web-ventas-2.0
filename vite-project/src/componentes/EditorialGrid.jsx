@@ -2,7 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./editorialGrid.css";
 
+const ACCENTS = ["accent-rosa", "accent-mostaza", "accent-terracota"];
+
 const EditorialGrid = ({ productos }) => {
+
+    if (!productos?.length) return null;
 
     return (
 
@@ -10,16 +14,11 @@ const EditorialGrid = ({ productos }) => {
 
             <div className="section-header">
 
-                <span>EDITORIAL</span>
+                <span>Editorial</span>
 
                 <h2>
                     Inspira tu próximo look
                 </h2>
-
-                <p>
-                    Descubre combinaciones, texturas y prendas
-                    seleccionadas para crear conjuntos con personalidad.
-                </p>
 
             </div>
 
@@ -30,42 +29,34 @@ const EditorialGrid = ({ productos }) => {
                     <Link
                         to={`/detail/${p.id}`}
                         key={p.id}
-                        className={`editorial-card ${
-                            index === 0 || index === 3
-                                ? "featured"
-                                : ""
-                        }`}
+                        className="editorial-item"
                     >
 
-                        <img
-                            src={
-                                p?.variantes?.[0]
-                                    ?.imagenes?.[0]
-                            }
-                            alt={p.nombre}
-                        />
+                        <div className="editorial-image-wrap">
 
-                        <div className="editorial-overlay" />
-
-                        <div className="editorial-info">
-
-                            <div className="editorial-number">
-                                {String(index + 1).padStart(2, "0")}
-                            </div>
-
-                            <span>
-                                {p.categoria.nombre}
-                            </span>
-
-                            <h3>
-                                {p.nombre}
-                            </h3>
-
-                            <p className="editorial-link">
-                                Ver inspiración →
-                            </p>
+                            <img
+                                src={
+                                    p?.variantes?.[0]
+                                        ?.imagenes?.[0]
+                                }
+                                alt={p.nombre}
+                            />
 
                         </div>
+
+                        <span
+                            className={`editorial-category ${ACCENTS[index % ACCENTS.length]}`}
+                        >
+                            {p.categoria?.nombre || "Sin categoría"}
+                        </span>
+
+                        <h3>
+                            {p.nombre}
+                        </h3>
+
+                        <p className="editorial-price">
+                            ${Number(p.precio).toLocaleString()}
+                        </p>
 
                     </Link>
 

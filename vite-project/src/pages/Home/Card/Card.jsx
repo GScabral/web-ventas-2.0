@@ -37,7 +37,7 @@ const ProductCard = ({ product }) => {
         <div className="product-info">
 
           <span className="product-category">
-            <span>{product.categoria.nombre}</span>
+            <span>{product.categoria?.nombre || ""}</span>
           </span>
 
           <h3 className="product-title">

@@ -6,57 +6,36 @@ const PromoBanner = ({ productos }) => {
 
     const producto = productos?.[0];
 
-    if (!producto) return null;
-
     return (
 
         <section className="promo-banner">
 
-            <div className="promo-image">
+            <span className="promo-eyebrow">
+                Hecho para durar
+            </span>
 
-                <img
-                    src={
-                        producto?.variantes?.[0]
-                            ?.imagenes?.[0]
-                    }
-                    alt={producto.nombre}
-                />
+            <h2>
+                Cada pieza pasa por nuestras manos
+                antes de llegar a las tuyas
+            </h2>
 
-            </div>
+            <div className="promo-actions">
 
-            <div className="promo-content">
+                <Link
+                    to="/catalogo"
+                    className="promo-btn"
+                >
+                    Conocé la colección
+                </Link>
 
-                <span>
-                    NUEVA TEMPORADA
-                </span>
-
-                <h2>
-                    Streetwear Premium
-                </h2>
-
-                <p>
-                    Diseños pensados para quienes buscan
-                    personalidad, comodidad y estilo en
-                    cada detalle.
-                </p>
-
-                <div className="promo-actions">
-
-                    <Link
-                        to="/catalogo"
-                        className="promo-btn primary"
-                    >
-                        Explorar colección
-                    </Link>
-
+                {producto && (
                     <Link
                         to={`/detail/${producto.id}`}
-                        className="promo-btn secondary"
+                        className="promo-link"
                     >
-                        Ver destacado
+                        Ver destacado →
                     </Link>
-
-                </div>
+                )}
 
             </div>
 

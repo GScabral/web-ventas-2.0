@@ -47,40 +47,61 @@ const Hero = () => {
 
     }, [heroImages.length]);
 
+    const scrollToCatalog = (e) => {
+        e.preventDefault();
+        document
+            .getElementById("catalogo")
+            ?.scrollIntoView({ behavior: "smooth" });
+    };
+
     return (
         <>
             <section className="hero">
 
-                {/* FONDO */}
-                <div className="hero-overlay" />
+                {/* IMAGEN EDITORIAL */}
+                <div className="hero-image">
 
-                {/* TEXTO */}
+                    {heroImages.map((img, index) => (
+                        <img
+                            key={index}
+                            src={img}
+                            alt={`Producto destacado ${index + 1}`}
+                            className={`hero-slide ${index === current ? "active" : ""
+                                }`}
+                        />
+                    ))}
+
+                </div>
+
+                {/* BLOQUE OSCURO DE TEXTO */}
                 <div className="hero-content">
 
                     <span className="hero-badge">
-                        HECHO CON PASIÓN Y DETALLE
+                        Hecho con pasión y detalle
                     </span>
 
                     <h1>
-                        Prendas con estilo
+                        Capas que
                         <br />
-                        para tu día a día
+                        cuentan algo
                     </h1>
 
                     <p>
-                        Diseños actuales, materiales seleccionados y producción
-                        cuidada para ofrecer ropa cómoda, auténtica y duradera.
+                        Diseños actuales, materiales seleccionados y
+                        producción cuidada para ofrecer ropa cómoda,
+                        auténtica y duradera.
                     </p>
 
                     {/* BOTONES */}
                     <div className="hero-buttons">
 
-                        <Link
-                            to="/shop"
+                        
+                     <a href="#catalogo"
+                            onClick={scrollToCatalog}
                             className="hero-btn primary"
                         >
                             Comprar ahora
-                        </Link>
+                        </a>
 
                         <Link
                             to="/catalogo"
@@ -94,20 +115,21 @@ const Hero = () => {
                     {/* BENEFICIOS */}
                     <div className="hero-benefits">
 
-                        <div
+                        <button
+                            type="button"
                             className="benefit clickable"
                             onClick={() => setShowShippingModal(true)}
                         >
-                            🚚 Envíos a todo el país
-                        </div>
+                            Envíos a todo el país
+                        </button>
 
-                        <div className="benefit">
-                            🔒 Compra segura
-                        </div>
+                        <span className="benefit">
+                            Compra segura
+                        </span>
 
-                        <div className="benefit">
-                            ⭐ Calidad garantizada
-                        </div>
+                        <span className="benefit">
+                            Calidad garantizada
+                        </span>
 
                     </div>
 
@@ -133,42 +155,24 @@ const Hero = () => {
 
                 </div>
 
-                {/* IMAGEN */}
-                <div className="hero-image">
-
-                    {heroImages.map((img, index) => (
-                        <img
-                            key={index}
-                            src={img}
-                            alt={`Producto destacado ${index + 1}`}
-                            className={`hero-slide ${index === current ? "active" : ""
-                                }`}
-                        />
-                    ))}
-
-                    <div className="floating-card">
-                        ✨ Colección destacada
-                    </div>
-
-                </div>
-
             </section>
 
             {/* MODAL ENVÍOS */}
             {showShippingModal && (
                 <div
-                    className="modal-overlay"
+                    className="hero-modal-overlay"
                     onClick={() => setShowShippingModal(false)}
                 >
                     <div
-                        className="modal-content"
+                        className="hero-modal-content"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
-                            className="modal-close"
+                            className="hero-modal-close"
                             onClick={() => setShowShippingModal(false)}
+                            aria-label="Cerrar"
                         >
-                            ✕
+                            ×
                         </button>
 
                         <h2>Información de envíos</h2>
@@ -180,23 +184,23 @@ const Hero = () => {
 
                         <ul>
                             <li>
-                                📦 Preparación del pedido en 24 a 48 horas hábiles.
+                                Preparación del pedido en 24 a 48 horas hábiles.
                             </li>
 
                             <li>
-                                🚚 Envíos a todo el país mediante correo y transporte.
+                                Envíos a todo el país mediante correo y transporte.
                             </li>
 
                             <li>
-                                📍 Recibirás un código de seguimiento cuando el pedido sea despachado.
+                                Recibirás un código de seguimiento cuando el pedido sea despachado.
                             </li>
 
                             <li>
-                                💳 El costo del envío se calcula automáticamente al finalizar la compra.
+                                El costo del envío se calcula automáticamente al finalizar la compra.
                             </li>
 
                             <li>
-                                📲 Te mantendremos informado sobre cada actualización del envío.
+                                Te mantendremos informado sobre cada actualización del envío.
                             </li>
                         </ul>
 

@@ -46,16 +46,20 @@
 }
 
 .product-category {
-  font-size: 0.8rem;
-  color: #777;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ff6b35;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.06em;
 }
 
 .product-title {
   margin: 8px 0;
+  font-family: 'Fraunces', 'Georgia', serif;
+  font-weight: 500;
   font-size: 1.2rem;
-  color: #222;
+  color: #2a2018;
 }
 
 .product-description {
@@ -117,17 +121,18 @@
 .add-cart-btn {
   width: 100%;
   border: none;
-  background: #111;
-  color: white;
+  background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+  color: #1a1410;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 600;
-  transition: .3s;
+  font-weight: 700;
+  font-family: 'Manrope', sans-serif;
+  transition: transform .25s ease;
 }
 
 .add-cart-btn:hover {
-  background: #333;
+  transform: translateY(-2px);
 }
 
 /* ==========================
@@ -205,8 +210,10 @@
 }
 
 .modal-title {
+  font-family: 'Fraunces', 'Georgia', serif;
+  font-weight: 500;
   font-size: 2rem;
-  color: #111;
+  color: #2a2018;
 }
 
 .modal-description {

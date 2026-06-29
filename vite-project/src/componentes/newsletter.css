@@ -15,8 +15,178 @@
             #002B81,
             #10254F);
 
-    color: white;
+.newsletter-card {
+    padding: 70px;
 
+    border-radius: 28px;
+
+    background: #1a1410;
+
+    color: #f7f0e8;
+
+    text-align: center;
+}
+
+.newsletter-card span {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    color: #e8a33d;
+}
+
+.newsletter-card h2 {
+    margin: 14px 0 8px;
+
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-weight: 500;
+    font-size: 36px;
+
+    color: #f7f0e8;
+}
+
+.newsletter-card p {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    color: #c2ad9c;
+}
+
+.newsletter-form {
+    margin-top: 28px;
+
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.newsletter-form input {
+    width: 320px;
+
+    padding: 15px 18px;
+
+    border: 1px solid rgba(247, 240, 232, 0.16);
+    border-radius: 999px;
+
+    background: rgba(247, 240, 232, 0.06);
+    color: #f7f0e8;
+
+    outline: none;
+
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+}
+
+.newsletter-form input::placeholder {
+    color: #8a7565;
+}
+
+.newsletter-form input:focus {
+    border-color: #e8a33d;
+}
+
+.newsletter-form button {
+    padding: 15px 28px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+    color: #1a1410;
+
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: transform .25s ease;
+}
+
+.newsletter-form button:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+    .newsletter-card {
+        padding: 50px;
+    }
+
+    .newsletter-card h2 {
+        font-size: 28px;
+    }
+
+    .newsletter-card p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-card {
+        padding: 40px 30px;
+        border-radius: 20px;
+    }
+
+    .newsletter-card h2 {
+        font-size: 24px;
+        margin: 12px 0 6px;
+    }
+
+    .newsletter-card p {
+        font-size: 13px;
+    }
+
+    .newsletter-form {
+        margin-top: 22px;
+        gap: 10px;
+    }
+
+    .newsletter-form input {
+        width: 280px;
+        padding: 13px 16px;
+        font-size: 13px;
+    }
+
+    .newsletter-form button {
+        padding: 13px 24px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 600px) {
+    .newsletter-card {
+        padding: 28px 20px;
+        border-radius: 16px;
+    }
+
+    .newsletter-card span {
+        font-size: 10px;
+    }
+
+    .newsletter-card h2 {
+        font-size: 19px;
+        margin: 10px 0 6px;
+    }
+
+    .newsletter-card p {
+        font-size: 12px;
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+        margin-top: 18px;
+    }
+
+    .newsletter-form input,
+    .newsletter-form button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+}
     text-align: center;
 }
 

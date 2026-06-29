@@ -4,22 +4,19 @@ import "./trendingSection.css";
 
 const TrendingSection = ({ productos }) => {
 
+    if (!productos?.length) return null;
+
     return (
 
         <section className="trending-section">
 
             <div className="trending-header">
 
-                <span>DESTACADOS</span>
+                <span>Destacados</span>
 
                 <h2>
                     Las prendas que marcan tendencia
                 </h2>
-
-                <p>
-                    Una selección especial con los productos
-                    más elegidos y recomendados de la temporada.
-                </p>
 
             </div>
 
@@ -44,7 +41,7 @@ const TrendingSection = ({ productos }) => {
 
                         <div className="featured-overlay">
 
-                            <span>⭐ Producto destacado</span>
+                            <span>Producto destacado</span>
 
                             <h3>
                                 {productos[0].nombre}
@@ -85,7 +82,7 @@ const TrendingSection = ({ productos }) => {
                             <div className="side-info">
 
                                 <span>
-                                    {producto.categoria}
+                                    {producto.categoria?.nombre || ""}
                                 </span>
 
                                 <h4>

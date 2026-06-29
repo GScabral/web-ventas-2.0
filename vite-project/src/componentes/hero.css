@@ -1,244 +1,23 @@
 .hero {
-    position: relative;
-
-    width: 100%;
-
-    min-height: 75vh;
-
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 1.15fr 0.95fr;
 
-    gap: 40px;
+    min-height: 560px;
 
-    align-items: center;
-
-    padding: 60px;
-
-    border-radius: 36px;
-
+    border-radius: 28px;
     overflow: hidden;
 
-    background:
-        linear-gradient(135deg,
-            #dfe8ff,
-            #eef4ff);
-
-    margin-bottom: 50px;
+    margin-bottom: 64px;
 }
 
 /* =========================
-   OVERLAY
-========================= */
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(circle at top right,
-            rgba(93, 139, 232, 0.18),
-            transparent 40%);
-
-    pointer-events: none;
-}
-
-/* =========================
-   CONTENT
-========================= */
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 24px;
-}
-
-.hero-badge {
-    width: fit-content;
-
-    padding: 10px 18px;
-
-    border-radius: 999px;
-
-    background:
-        rgba(93, 139, 232, 0.15);
-
-    color: #002B81;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    letter-spacing: 1px;
-}
-
-.hero-content h1 {
-    margin: 0;
-
-    font-size: 64px;
-    line-height: 1.05;
-
-    color: #002B81;
-}
-
-.hero-content p {
-    max-width: 520px;
-
-    font-size: 18px;
-    line-height: 1.7;
-
-    color: #40537a;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.hero-buttons {
-    display: flex;
-
-    gap: 18px;
-
-    flex-wrap: wrap;
-}
-
-.hero-btn {
-    padding: 16px 28px;
-
-    border-radius: 18px;
-
-    text-decoration: none;
-
-    font-weight: 700;
-
-    transition: 0.3s ease;
-}
-
-.hero-btn.primary {
-    background:
-        linear-gradient(135deg,
-            #002B81,
-            #5D8BE8);
-
-    color: white;
-}
-
-.hero-btn.secondary {
-    background: white;
-
-    color: #002B81;
-
-    border: 1px solid #dbe4ff;
-}
-
-.hero-btn:hover {
-    transform:
-        translateY(-3px) scale(1.03);
-}
-
-/* =========================
-   BENEFITS
-========================= */
-
-.hero-benefits {
-    display: flex;
-
-    gap: 14px;
-
-    flex-wrap: wrap;
-
-    align-items: center;
-}
-
-.benefit {
-    padding: 12px 18px;
-
-    border-radius: 16px;
-
-    background:
-        rgba(255, 255, 255, 0.65);
-
-    backdrop-filter: blur(10px);
-
-    font-weight: 600;
-
-    color: #10254F;
-}
-
-.clickable {
-    cursor: pointer;
-
-    transition: .3s ease;
-}
-
-.clickable:hover {
-    transform: translateY(-3px);
-
-    background:
-        rgba(93, 139, 232, 0.12);
-
-    box-shadow:
-        0 8px 20px rgba(93, 139, 232, 0.15);
-}
-
-/* =========================
-   STATS
-========================= */
-
-.hero-stats {
-    display: flex;
-
-    gap: 18px;
-
-    flex-wrap: wrap;
-
-    margin-top: 10px;
-}
-
-.stat-card {
-    min-width: 120px;
-
-    padding: 18px;
-
-    border-radius: 20px;
-
-    background:
-        rgba(255, 255, 255, 0.5);
-
-    backdrop-filter: blur(12px);
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 6px;
-}
-
-.stat-card strong {
-    font-size: 28px;
-
-    color: #002B81;
-}
-
-.stat-card span {
-    color: #5d6f96;
-}
-
-/* =========================
-   IMAGE
+   IMAGEN
 ========================= */
 
 .hero-image {
     position: relative;
-
-    z-index: 2;
-
-    height: 650px;
-
+    background: #ece2d4;
     overflow: hidden;
-
-    border-radius: 32px;
 }
 
 .hero-slide {
@@ -251,55 +30,189 @@
     object-fit: cover;
 
     opacity: 0;
-
     transform: scale(1);
 
     transition:
         opacity 1.4s ease,
         transform 7s ease;
-
-    box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.18);
 }
 
 .hero-slide.active {
     opacity: 1;
-
-    transform: scale(1.08);
+    transform: scale(1.06);
 }
 
 /* =========================
-   FLOATING CARD
+   CONTENIDO
 ========================= */
 
-.floating-card {
-    position: absolute;
+.hero-content {
+    background: #1a1410;
+    color: #f7f0e8;
 
-    bottom: 20px;
-    left: -20px;
+    padding: 64px 56px;
 
-    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
 
-    border-radius: 18px;
+    justify-content: center;
+}
 
-    background:
-        rgba(255, 255, 255, 0.85);
+.hero-badge {
+    width: fit-content;
 
-    backdrop-filter: blur(16px);
-
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
     font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
 
-    color: #002B81;
+    color: #e8a33d;
+}
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.12);
+.hero-content h1 {
+    margin: 0;
+
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1.1;
+
+    color: #f7f0e8;
+}
+
+.hero-content p {
+    max-width: 420px;
+
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+
+    color: #c2ad9c;
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+.hero-buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    padding: 14px 28px;
+
+    border-radius: 999px;
+
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+
+    text-decoration: none;
+
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.hero-btn.primary {
+    background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+    color: #1a1410;
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.28);
+}
+
+.hero-btn.secondary {
+    background: transparent;
+    color: #f7f0e8;
+    border: 1px solid rgba(247, 240, 232, 0.3);
+}
+
+.hero-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================
+   BENEFICIOS
+========================= */
+
+.hero-benefits {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.benefit {
+    padding: 8px 16px;
+
+    border-radius: 999px;
+
+    background: rgba(247, 240, 232, 0.08);
+    border: none;
+
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #c2ad9c;
+}
+
+.clickable {
+    cursor: pointer;
+    transition: background .25s ease, color .25s ease;
+}
+
+.clickable:hover {
+    background: rgba(247, 240, 232, 0.14);
+    color: #f7f0e8;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.hero-stats {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.stat-card {
+    min-width: 110px;
+
+    padding: 14px 16px;
+
+    border-radius: 14px;
+
+    background: rgba(247, 240, 232, 0.06);
+    border: 1px solid rgba(247, 240, 232, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-card strong {
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #f7f0e8;
+}
+
+.stat-card span {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    color: #8a7565;
 }
 
 /* =========================
    MODAL
 ========================= */
 
-.modal-overlay {
+.hero-modal-overlay {
     position: fixed;
     inset: 0;
 
@@ -307,145 +220,116 @@
     align-items: center;
     justify-content: center;
 
-    background:
-        rgba(0, 25, 80, 0.35);
-
-    backdrop-filter: blur(8px);
+    background: rgba(20, 15, 12, 0.7);
 
     z-index: 9999;
 
-    animation: fadeIn .25s ease;
+    animation: heroFadeIn .2s ease;
 }
 
-.modal-content {
-    width: min(550px, 92%);
+.hero-modal-content {
+    width: min(520px, 92%);
 
-    padding: 32px;
+    padding: 36px;
 
-    border-radius: 28px;
+    border-radius: 20px;
 
-    background:
-        rgba(255, 255, 255, 0.92);
+    background: #2a1f18;
+    border: 1px solid rgba(247, 240, 232, 0.08);
 
-    backdrop-filter: blur(20px);
-
-    border:
-        1px solid rgba(93, 139, 232, 0.15);
-
-    box-shadow:
-        0 20px 50px rgba(0, 43, 129, 0.15);
-
-    color: #10254F;
+    color: #f7f0e8;
 
     position: relative;
 
-    animation: modalUp .3s ease;
+    animation: heroModalUp .25s ease;
 }
 
-.modal-content h2 {
-    margin: 0 0 18px;
+.hero-modal-content h2 {
+    margin: 0 0 16px;
 
-    color: #002B81;
+    font-family: 'Fraunces', 'Georgia', serif;
+    font-size: 24px;
+    font-weight: 500;
 
-    font-size: 28px;
-    font-weight: 800;
+    color: #f7f0e8;
 }
 
-.modal-content p {
-    color: #40537a;
-
+.hero-modal-content p {
+    color: #c2ad9c;
     line-height: 1.7;
-
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
 }
 
-.modal-content ul {
+.hero-modal-content ul {
     list-style: none;
-
     padding: 0;
     margin: 0;
 
     display: flex;
     flex-direction: column;
-
-    gap: 12px;
+    gap: 10px;
 }
 
-.modal-content li {
-    padding: 14px 16px;
+.hero-modal-content li {
+    padding: 12px 14px;
 
-    border-radius: 14px;
+    border-radius: 10px;
 
-    background:
-        rgba(93, 139, 232, 0.08);
+    background: rgba(247, 240, 232, 0.06);
 
-    color: #10254F;
-
-    font-weight: 500;
-
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
     line-height: 1.5;
+    color: #c2ad9c;
 }
 
-.modal-close {
+.hero-modal-close {
     position: absolute;
 
-    top: 14px;
-    right: 14px;
+    top: 16px;
+    right: 16px;
 
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
 
     border: none;
+    border-radius: 50%;
 
-    border-radius: 12px;
-
-    background:
-        rgba(93, 139, 232, 0.12);
-
-    color: #002B81;
+    background: rgba(247, 240, 232, 0.08);
+    color: #f7f0e8;
 
     cursor: pointer;
 
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
 
-    transition: .25s ease;
+    transition: background .2s ease;
 }
 
-.modal-close:hover {
-    background:
-        rgba(93, 139, 232, 0.2);
-
-    transform: rotate(90deg);
+.hero-modal-close:hover {
+    background: rgba(247, 240, 232, 0.16);
 }
 
 /* =========================
    ANIMATIONS
 ========================= */
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+@keyframes heroFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-@keyframes modalUp {
+@keyframes heroModalUp {
     from {
         opacity: 0;
-
-        transform:
-            translateY(20px) scale(.96);
+        transform: translateY(16px) scale(.97);
     }
 
     to {
         opacity: 1;
-
-        transform:
-            translateY(0) scale(1);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -457,35 +341,38 @@
 
     .hero {
         grid-template-columns: 1fr;
-
-        padding: 40px;
-
-        gap: 30px;
-
         min-height: auto;
     }
 
-    .hero-content h1 {
-        font-size: 48px;
+    .hero-image {
+        height: 380px;
     }
 
-    .hero-image {
-        height: 500px;
+    .hero-content {
+        padding: 48px 40px;
+    }
+
+    .hero-content h1 {
+        font-size: 38px;
     }
 }
 
 @media (max-width: 768px) {
 
-    .hero {
-        padding: 30px 20px;
+    .hero-image {
+        height: 320px;
+    }
+
+    .hero-content {
+        padding: 36px 28px;
     }
 
     .hero-content h1 {
-        font-size: 36px;
+        font-size: 32px;
     }
 
     .hero-content p {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .hero-buttons {
@@ -495,65 +382,49 @@
     .hero-stats {
         flex-direction: column;
     }
-
-    .hero-image {
-        height: 400px;
-    }
 }
 
 @media (max-width: 600px) {
 
     .hero {
-        padding: 24px 16px;
+        border-radius: 18px;
+        margin-bottom: 40px;
+    }
 
-        margin-bottom: 30px;
+    .hero-image {
+        height: 260px;
+    }
+
+    .hero-content {
+        padding: 28px 20px;
+        gap: 16px;
     }
 
     .hero-content h1 {
-        font-size: 28px;
-
+        font-size: 26px;
         line-height: 1.2;
     }
 
     .hero-content p {
-        font-size: 14px;
-
+        font-size: 13px;
         max-width: 100%;
     }
 
     .hero-badge {
-        font-size: 11px;
-
-        padding: 8px 14px;
+        font-size: 10px;
     }
 
-    .hero-image {
-        height: 320px;
-    }
-
-    .floating-card {
-        left: 10px;
-        bottom: 10px;
-    }
-
-    .modal-content {
+    .hero-modal-content {
         padding: 24px;
-
-        border-radius: 22px;
+        border-radius: 16px;
     }
 
-    .modal-content h2 {
-        font-size: 22px;
+    .hero-modal-content h2 {
+        font-size: 20px;
     }
 
-    .modal-content li {
-        padding: 12px 14px;
-
-        font-size: 14px;
-    }
-
-    .modal-close {
-        width: 36px;
-        height: 36px;
+    .hero-modal-content li {
+        padding: 10px 12px;
+        font-size: 12px;
     }
 }
