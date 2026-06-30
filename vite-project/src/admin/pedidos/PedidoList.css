@@ -1,117 +1,122 @@
 .pedidos-page {
-  padding: 20px;
-  background: #f5f7fb;
-  min-height: 100vh;
+  padding: 0;
 }
 
 .pedidos-header {
-  margin-bottom: 25px;
+  margin-bottom: var(--sp-6);
 }
 
 .pedidos-header h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: var(--fs-2xl);
 }
 
 .pedidos-header p {
-  color: #666;
+  margin-top: var(--sp-1);
+  color: var(--text-secondary);
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(180px, 1fr)
-  );
-  gap: 15px;
-  margin-bottom: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
 }
 
 .stat-card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
+  background: var(--bg-elevated-2);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--radius-md);
   text-align: center;
-  box-shadow:
-    0 2px 8px rgba(0,0,0,.08);
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--border-medium);
 }
 
 .stat-card h3 {
   margin: 0;
-  font-size: 28px;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-primary);
 }
 
 .stat-card span {
-  color: #666;
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }
 
-.warning {
-  border-left: 5px solid #ff9800;
+.stat-card.warning {
+  border-top-color: var(--color-warning);
 }
 
-.info {
-  border-left: 5px solid #2196f3;
+.stat-card.info {
+  border-top-color: var(--accent-rosa);
 }
 
-.success {
-  border-left: 5px solid #4caf50;
+.stat-card.success {
+  border-top-color: var(--color-success);
 }
 
-.complete {
-  border-left: 5px solid #673ab7;
+.stat-card.complete {
+  border-top-color: var(--accent-terracota);
 }
 
 .feedback-success {
-  background: #4caf50;
-  color: white;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  background: rgba(127, 176, 105, 0.15);
+  border: 1px solid rgba(127, 176, 105, 0.35);
+  color: var(--color-success);
+  font-weight: 600;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-5);
 }
 
 .kanban-board {
   display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-5);
 }
 
 .kanban-column {
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-4);
   min-height: 600px;
-  box-shadow:
-    0 2px 8px rgba(0,0,0,.08);
+  box-shadow: var(--shadow-md);
 }
 
 .kanban-column h2 {
-  margin-bottom: 15px;
+  margin-bottom: var(--sp-4);
   text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #eee;
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--fs-md);
 }
 
 .pendiente {
-  color: #ff9800;
+  color: var(--color-warning);
 }
 
 .preparando {
-  color: #2196f3;
+  color: var(--accent-rosa);
 }
 
 .enviado {
-  color: #4caf50;
+  color: var(--color-success);
 }
 
 .entregado {
-  color: #673ab7;
+  color: var(--accent-terracota);
 }
 
 @media (max-width: 1400px) {
   .kanban-board {
-    grid-template-columns:
-      repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -120,25 +125,62 @@
     grid-template-columns: 1fr;
   }
 
-  .pedidos-page {
-    padding: 16px;
-  }
-
   .pedidos-header h1 {
-    font-size: 1.5rem;
+    font-size: var(--fs-xl);
   }
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: var(--sp-3);
   }
 
   .stat-card {
-    padding: 16px;
+    padding: var(--sp-3) var(--sp-4);
   }
 
   .stat-card h3 {
-    font-size: 24px;
+    font-size: var(--fs-xl);
   }
 
-  .kanban-column {\n    min-height: 400px;\n    padding: 12px;\n  }\n\n  .kanban-column h2 {\n    font-size: 1rem;\n    margin-bottom: 12px;\n  }\n}\n\n@media (max-width: 600px) {\n  .pedidos-page {\n    padding: 12px;\n  }\n\n  .pedidos-header h1 {\n    font-size: 1.2rem;\n  }\n\n  .pedidos-header p {\n    font-size: 0.85rem;\n  }\n\n  .stats-grid {\n    grid-template-columns: 1fr;\n  }\n\n  .stat-card {\n    padding: 12px;\n  }\n\n  .stat-card h3 {\n    font-size: 20px;\n  }\n\n  .kanban-board {\n    gap: 12px;\n  }\n\n  .kanban-column {\n    min-height: 300px;\n    padding: 10px;\n  }\n\n  .kanban-column h2 {\n    font-size: 0.9rem;\n    margin-bottom: 10px;\n  }\n}"
+  .kanban-column {
+    min-height: 400px;
+    padding: var(--sp-3);
+  }
+
+  .kanban-column h2 {
+    font-size: var(--fs-base);
+    margin-bottom: var(--sp-3);
+  }
+}
+
+@media (max-width: 600px) {
+  .pedidos-header h1 {
+    font-size: var(--fs-lg);
+  }
+
+  .pedidos-header p {
+    font-size: var(--fs-sm);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card h3 {
+    font-size: var(--fs-lg);
+  }
+
+  .kanban-board {
+    gap: var(--sp-3);
+  }
+
+  .kanban-column {
+    min-height: 300px;
+    padding: var(--sp-3);
+  }
+
+  .kanban-column h2 {
+    font-size: var(--fs-sm);
+    margin-bottom: var(--sp-2);
+  }
+}
