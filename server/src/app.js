@@ -19,7 +19,7 @@ server.name = 'Server';
 // los demás son fallbacks para no romper nada si todavía no se configuró.
 // Para permitir más de un dominio, separar con comas en CLIENT_URL.
 const defaultOrigins = [
-  'https://amoremio.onrender.com',
+  'https://web-ventas-2-0-3.onrender.com',
   'http://localhost:5173',
   'http://localhost:3005',
 ];

@@ -181,13 +181,13 @@ const EditProductModal = ({
                 <input
                   type="text"
                   value={
-                    editedProduct.categoria.nombre ||
+                    editedProduct.categoria?.nombre ||
                     ""
                   }
                   onChange={(e) =>
                     handleInputChange(
                       "categoria",
-                      e.target.value
+                      { nombre: e.target.value }
                     )
                   }
                 />

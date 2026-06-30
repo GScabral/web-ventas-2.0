@@ -9,7 +9,6 @@ import Principal from './admin/inicio/principalAdmin'
 import NewProduct from './admin/añadir/añadirProducto'
 import ProductList from './admin/productos/listadoProductos'
 import DevolucionCambio from './pages/Home/devolucion/devolucion'
-import VentaPorMayor from './pages/Home/VentaPorMayor/VentaPorMayor'
 import Catalogo from './pages/Home/temporada/Catalogo'
 // import Landing from './pages/landing/landing'
 // import NewUser from './CC/crearCuenta'
@@ -18,6 +17,10 @@ import Catalogo from './pages/Home/temporada/Catalogo'
 // import Ofertas from './pages/Home/ofertas/ofertas'
 // import PagAccesorios from './pages/Home/accesorios/pagAccesorios'
 // import PagMaquillaje from './pages/Home/maquillaje/PagMaquillaje'
+// VentaPorMayor.jsx hoy es solo un título de prueba sin contenido real
+// (sin formulario, sin info de contacto). Cuando tenga contenido de
+// verdad, descomentar este import y la ruta de abajo.
+// import VentaPorMayor from './pages/Home/VentaPorMayor/VentaPorMayor'
 
 function App() {
   const location = useLocation();

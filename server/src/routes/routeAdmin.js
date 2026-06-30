@@ -46,8 +46,11 @@ router.post("/NewAdmin", verificarTokenAdmin, async (req, res) => {
 
 router.patch("/cambioAdmin/:id", verificarTokenAdmin, async (req, res) => {
   try {
-    await actualizarStock(req.params.id, req.body); // Pasar todos los datos del producto
-    res.status(200).json();
+    const productoActualizado = await actualizarStock(req.params.id, req.body); // Pasar todos los datos del producto
+    res.status(200).json({
+      message: "Producto actualizado correctamente",
+      producto: productoActualizado
+    });
   } catch (error) {
     console.error("Error al cambiar:", error);
     res.status(500).json({ error: "Error al cambiar el producto" });
