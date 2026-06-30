@@ -1,0 +1,136 @@
+.promo-strip {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+
+  margin: 16px 0 24px;
+}
+
+.promo-strip-main {
+  position: relative;
+
+  background: linear-gradient(135deg, #1a1410 0%, #2a1f18 100%);
+  border-radius: 10px;
+
+  padding: 32px 28px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+
+  text-decoration: none;
+
+  min-height: 140px;
+}
+
+.promo-strip-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e8a33d;
+}
+
+.promo-strip-main h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  max-width: 420px;
+  line-height: 1.25;
+}
+
+.promo-strip-cta {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 4px;
+}
+
+.promo-strip-side {
+  position: relative;
+
+  border-radius: 10px;
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+
+  text-decoration: none;
+
+  min-height: 140px;
+}
+
+.promo-strip-side span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.promo-strip-side strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.promo-strip-ofertas {
+  background: linear-gradient(135deg, #d6708a 0%, #c2547a 100%);
+}
+
+.promo-strip-ofertas span,
+.promo-strip-ofertas strong {
+  color: #fff;
+}
+
+.promo-strip-nuevo {
+  background: linear-gradient(135deg, #ff6b35 0%, #e8a33d 100%);
+}
+
+.promo-strip-nuevo span,
+.promo-strip-nuevo strong {
+  color: #1a1410;
+}
+
+@media (max-width: 900px) {
+
+  .promo-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .promo-strip-main {
+    grid-column: 1 / -1;
+    padding: 26px 22px;
+    min-height: 120px;
+  }
+
+  .promo-strip-main h2 {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .promo-strip {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 12px 0 20px;
+  }
+
+  .promo-strip-main {
+    grid-column: auto;
+    padding: 22px 18px;
+    min-height: 100px;
+  }
+
+  .promo-strip-main h2 {
+    font-size: 17px;
+  }
+
+  .promo-strip-side {
+    min-height: 80px;
+    padding: 14px;
+  }
+}

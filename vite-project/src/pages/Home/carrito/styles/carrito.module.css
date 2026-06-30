@@ -1,7 +1,8 @@
 .page {
-  background: #f5f7fb;
+  background: #fff;
   min-height: 100vh;
   padding: 40px 20px;
+  font-family: 'Manrope', sans-serif;
 }
 
 .container {

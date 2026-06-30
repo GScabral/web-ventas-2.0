@@ -1,22 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .home-fondo {
     width: 100%;
     min-height: 100vh;
-
-    background: #faf6f0;
+    background: #fff;
+    font-family: 'Manrope', sans-serif;
 }
 
 .home-wrapper {
     width: 100%;
-    max-width: 1440px;
+    max-width: 1400px;
     margin: 0 auto;
 
-    display: flex;
-    flex-direction: column;
-    gap: 96px;
-
-    padding: 0 4rem;
+    padding: 0 24px;
     box-sizing: border-box;
 }
 
@@ -24,25 +20,12 @@
     width: 100%;
 }
 
-.hero-block {
-    padding-top: 2rem;
-}
-
-.showcase-section {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 3rem;
-}
-
-.showcase-column {
-    width: 100%;
-    min-width: 0;
-}
-
 .catalog-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+
+    margin-bottom: 40px;
 }
 
 .catalog-sidebar {
@@ -56,7 +39,7 @@
 }
 
 .newsletter-block {
-    padding-bottom: 2rem;
+    margin-bottom: 32px;
 }
 
 .loading-container {
@@ -72,8 +55,8 @@
 }
 
 .spinner-dot {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #ff6b35;
     animation: spinnerBounce 1.2s infinite ease-in-out;
@@ -101,32 +84,21 @@
     }
 }
 
-@media (max-width: 1200px) {
-    .showcase-section {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 900px) {
 
     .catalog-layout {
         grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-
-    .home-wrapper {
-        padding: 0 1.25rem;
-        gap: 64px;
     }
 }
 
 @media (max-width: 600px) {
 
     .home-wrapper {
-        padding: 0 1rem;
-        gap: 48px;
+        padding: 0 12px;
     }
 
     .catalog-layout {
-        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 28px;
     }
 }

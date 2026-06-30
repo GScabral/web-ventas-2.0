@@ -1,8 +1,9 @@
 .detail-page {
   width: 100%;
   min-height: 100vh;
-  background: #f8f9fb;
+  background: #fff;
   padding: 40px 5%;
+  font-family: 'Manrope', sans-serif;
 }
 
 .detail-grid {

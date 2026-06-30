@@ -1,138 +1,75 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import ProductCard from "../Card/Card";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getProductos } from "../../../redux/action";
+
+import FiltrosSidebar from "../barralado/filtros";
+import ProductGrid from "../Cards/productGrid";
+import Paginado from "../../../componentes/paginacion";
+import Footer from "../footer/Footer";
+
 import "./catalogo.css";
 
 const Catalogo = () => {
+
+    const dispatch = useDispatch();
 
     const productos = useSelector(
         state => state.allProductos
     );
 
-    const destacado = productos?.[0];
+    const [loading, setLoading] = useState(true);
+
+    const [selectedSubcategory, setSelectedSubcategory] = useState("");
+    const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
+
+    useEffect(() => {
+        setLoading(true);
+        dispatch(getProductos()).finally(() => setLoading(false));
+    }, [dispatch]);
 
     return (
-        <div className="catalogo">
 
-            {/* HERO */}
+        <div className="catalogo-page">
 
-            <section className="lookbook-hero">
+            <div className="catalogo-wrapper">
 
-                <div className="lookbook-overlay">
-
-                    <span>
-                        NUEVA TEMPORADA
-                    </span>
-
-                    <h1>
-                        STREETWEAR
-                        <br />
-                        PREMIUM
-                    </h1>
-
-                    <p>
-                        Diseñado para quienes entienden
-                        que el estilo no se sigue,
-                        se crea.
-                    </p>
-
-                    <a
-                        href="#coleccion"
-                        className="hero-btn"
-                    >
-                        Ver colección
-                    </a>
-
+                <div className="catalogo-header">
+                    <h1>Catálogo completo</h1>
+                    <p>{productos?.length || 0} productos</p>
                 </div>
 
-            </section>
+                <div className="catalogo-layout">
 
-            {/* DESTACADO */}
+                    <aside className="catalogo-sidebar">
 
-            {destacado && (
-
-                <section className="featured-product">
-
-                    <div className="featured-image">
-
-                        <img
-                            src={
-                                destacado.variantes?.[0]
-                                    ?.imagenes?.[0]
-                            }
-                            alt={destacado.nombre}
+                        <FiltrosSidebar
+                            selectedSubcategory={selectedSubcategory}
+                            setSelectedSubcategory={setSelectedSubcategory}
+                            selectedPriceOrder={selectedPriceOrder}
+                            setSelectedPriceOrder={setSelectedPriceOrder}
                         />
 
-                    </div>
+                    </aside>
 
-                    <div className="featured-content">
+                    <section className="catalogo-products">
 
-                        <span>
-                            PRODUCTO DESTACADO
-                        </span>
+                        {loading ? (
+                            <p className="catalogo-loading">Cargando productos...</p>
+                        ) : (
+                            <>
+                                <ProductGrid productos={productos} />
+                                <Paginado />
+                            </>
+                        )}
 
-                        <h2>
-                            {destacado.nombre}
-                        </h2>
-
-                        <p>
-                            {destacado.descripcion}
-                        </p>
-
-                        <h3>
-                            ${destacado.precio}
-                        </h3>
-
-                    </div>
-
-                </section>
-
-            )}
-
-            {/* FRASE */}
-
-            <section className="editorial-quote">
-
-                <h2>
-                    "La ropa no define quién eres.
-                    Tu actitud sí."
-                </h2>
-
-            </section>
-
-            {/* PRODUCTOS */}
-
-            <section
-                id="coleccion"
-                className="products-section"
-            >
-
-                <div className="section-header">
-
-                    <span>
-                        COLECCIÓN COMPLETA
-                    </span>
-
-                    <h2>
-                        Nuevos Ingresos
-                    </h2>
+                    </section>
 
                 </div>
 
-                <div className="products-grid">
+            </div>
 
-                    {productos.map(producto => (
-
-                        <ProductCard
-                            key={producto.id}
-                            product={producto}
-                        />
-
-                    ))}
-
-                </div>
-
-            </section>
+            <Footer />
 
         </div>
     );

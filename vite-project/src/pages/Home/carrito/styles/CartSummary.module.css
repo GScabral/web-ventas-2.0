@@ -40,21 +40,24 @@
 
   border-radius: 12px;
 
-  background: #ec4899;
+  background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
 
-  color: white;
+  color: #1a1410;
 
-  font-weight: 700;
+  font-weight: 800;
 
   cursor: pointer;
 
   transition: .2s;
 
   margin-bottom: 20px;
+
+  font-family: 'Manrope', sans-serif;
 }
 
 .card button:hover {
-  background: #db2777;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
 }
 
 @media (max-width: 768px) {

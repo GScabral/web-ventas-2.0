@@ -14,19 +14,25 @@ require('./db.js');
 const server = express();
 server.name = 'Server';
 
-// Orígenes desde los que se permite llamar a la API. En producción, el
-// origen real del frontend (CLIENT_URL) viene de una variable de entorno;
-// los demás son fallbacks para no romper nada si todavía no se configuró.
-// Para permitir más de un dominio, separar con comas en CLIENT_URL.
+// Orígenes desde los que se permite llamar a la API. Se combinan SIEMPRE
+// los dominios conocidos de abajo con lo que venga en CLIENT_URL (si está
+// seteada), en vez de que uno reemplace al otro. Así, si en Render cambia
+// el nombre del servicio del frontend y alguien se olvida de actualizar
+// CLIENT_URL, el sitio no se cae por completo: solo hay que acordarse de
+// agregar el nuevo dominio a esta lista o a la variable de entorno.
+// Para permitir más de un dominio en CLIENT_URL, separarlos con comas.
 const defaultOrigins = [
+  'https://amoremio.onrender.com',
   'https://web-ventas-2-0-3.onrender.com',
   'http://localhost:5173',
   'http://localhost:3005',
 ];
 
-const allowedOrigins = process.env.CLIENT_URL
+const envOrigins = process.env.CLIENT_URL
   ? process.env.CLIENT_URL.split(',').map((url) => url.trim())
-  : defaultOrigins;
+  : [];
+
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
 const corsOptions = {
   origin: (origin, callback) => {

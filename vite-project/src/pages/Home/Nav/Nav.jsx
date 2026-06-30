@@ -1,29 +1,31 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductos, buscar } from "../../../redux/action";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
-import FiltrosSidebar from "../barralado/filtros";
-import "./Nav.css"
+import { buscar, getProductos, getCategorias } from "../../../redux/action";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { STORE_CONFIG } from "../../../config/storeConfig";
+import "./Nav.css";
 
 const Nav = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const carrito = useSelector((state) => state.carrito);
+  const categorias = useSelector((state) => state.categorias) || [];
 
-  const [showCategories, setShowCategories] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [overlay, setOverlay] = useState(false);
   const [cartBump, setCartBump] = useState(false);
   const navRef = useRef(null);
 
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
+  // El Nav está montado en casi toda la navegación pública (a diferencia
+  // del sidebar de filtros, que solo vive en la home); por eso dispara su
+  // propia carga de categorías en vez de depender de que otro componente
+  // ya las haya pedido.
+  useEffect(() => {
+    dispatch(getCategorias());
+  }, [dispatch]);
 
-
-  // Animación bump en carrito
+  // Animación de "bump" cuando se agrega algo al carrito.
   useEffect(() => {
     if (carrito && carrito.length > 0) {
       setCartBump(true);
@@ -32,14 +34,14 @@ const Nav = () => {
     }
   }, [carrito]);
 
-  // Blur y sombra al hacer scroll
+  // Sombra al hacer scroll.
   useEffect(() => {
     const handleScroll = () => {
       if (navRef.current) {
         if (window.scrollY > 10) {
-          navRef.current.classList.add("nav-blur");
+          navRef.current.classList.add("nav-scrolled");
         } else {
-          navRef.current.classList.remove("nav-blur");
+          navRef.current.classList.remove("nav-scrolled");
         }
       }
     };
@@ -47,76 +49,139 @@ const Nav = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Overlay para menú lateral
-  const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
-    setOverlay(!menuOpen ? true : false);
-  };
-  const handleOverlayClick = () => {
+  // Si el menú mobile queda abierto y la ruta cambia, lo cerramos.
+  useEffect(() => {
     setMenuOpen(false);
-    setOverlay(false);
+  }, [location.pathname]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const term = searchTerm.trim();
+
+    if (!term) return;
+
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+
+    dispatch(buscar(term));
   };
 
-  // Links con animación y activo
-  const navLinks = [
-    { to: "/", label: "Ropa" },
-    { to: "/Accesorios", label: "Accesorios" },
-    { to: "/Maquillaje", label: "Maquillaje" }
-  ];
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    dispatch(getProductos());
+  };
 
   return (
-    <nav className="nav-boutique" ref={navRef}>
-      {/* Overlay para menú lateral */}
-      {overlay && <div className="nav-overlay" onClick={handleOverlayClick}></div>}
-      <div className="nav-inner">
-        {/* BURGER */}
-        {/* <button className="nav-burger" onClick={handleMenuToggle} aria-label="Abrir menú">
-          <FontAwesomeIcon icon={menuOpen ? faTimes : faBars} />
-        </button> */}
-        {/* LOGO animado */}
-        <h1 className="nav-logo nav-logo-animated">
-          <span className="nav-logo-gradient">nombre</span> <span className="nav-logo-light">tienda</span>
-        </h1>
-        {/* CART */}
-        {window.location.pathname !== "/carrito" && (
-          <Link to="/carrito">
-            <button className={`nav-cart${cartBump ? " bump" : ""}`} aria-label="Ver carrito">
-              <FontAwesomeIcon icon={faShoppingCart} />
-              {carrito && carrito.length > 0 && (
-                <span className="nav-cart-badge">{carrito.length}</span>
-              )}
+    <nav className="nav-shein" ref={navRef}>
+
+      <div className="nav-top">
+
+        <button
+          type="button"
+          className="nav-burger"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={menuOpen}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <Link to="/" className="nav-logo">
+          {STORE_CONFIG.name}
+        </Link>
+
+        <form className="nav-search" onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Buscar productos..."
+            aria-label="Buscar productos"
+          />
+
+          {searchTerm && (
+            <button
+              type="button"
+              className="nav-search-clear"
+              onClick={handleClearSearch}
+              aria-label="Limpiar búsqueda"
+            >
+              ×
             </button>
+          )}
+
+          <button type="submit" className="nav-search-btn" aria-label="Buscar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        </form>
+
+        {location.pathname !== "/carrito" && (
+          <Link to="/carrito" className={`nav-cart${cartBump ? " bump" : ""}`} aria-label="Ver carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            {carrito && carrito.length > 0 && (
+              <span className="nav-cart-badge">{carrito.length}</span>
+            )}
           </Link>
         )}
+
       </div>
-      {/* MENÚ LATERAL SLIDE-IN */}
-      <aside className={`nav-menu nav-menu-slide ${menuOpen ? "show" : ""}`} role="navigation" aria-label="Menú principal">
-        {navLinks.map(link => (
-          <Link
-            key={link.to}
-            to={link.to}
-            className={`nav-link nav-link-animated${location.pathname === link.to ? " active" : ""}`}
-            onClick={handleMenuToggle}
-          >
-            {link.label}
-          </Link>
-        ))}
-        <button
-          className="nav-link dropdown-btn"
-          onClick={() => setShowCategories(!showCategories)}
-        >
-          {showCategories ? "Cerrar filtros ▲" : "Filtros ▼"}
-        </button>
-        {/* NUEVO DROPDOWN ANIMADO */}
-        <div className={`dropdown-card ${showCategories ? "open" : ""}`}>
-          <FiltrosSidebar
-            selectedSubcategory={selectedSubcategory}
-            setSelectedSubcategory={setSelectedSubcategory}
-            selectedPriceOrder={selectedPriceOrder}
-            setSelectedPriceOrder={setSelectedPriceOrder}
-          />
+
+      {categorias.length > 0 && (
+        <div className="nav-categories">
+          {categorias.slice(0, 12).map((cat) => (
+            <Link
+              key={cat.id_categoria}
+              to={`/?categoria=${encodeURIComponent(cat.nombre)}`}
+              className="nav-category-chip"
+            >
+              {cat.nombre}
+            </Link>
+          ))}
         </div>
+      )}
+
+      {menuOpen && (
+        <div className="nav-mobile-overlay" onClick={() => setMenuOpen(false)} />
+      )}
+
+      <aside className={`nav-mobile-menu ${menuOpen ? "open" : ""}`} role="navigation" aria-label="Menú principal">
+
+        <Link to="/" className="nav-mobile-link">
+          Inicio
+        </Link>
+
+        <Link to="/catalogo" className="nav-mobile-link">
+          Catálogo
+        </Link>
+
+        {categorias.length > 0 && (
+          <>
+            <p className="nav-mobile-section-title">Categorías</p>
+
+            {categorias.map((cat) => (
+              <Link
+                key={cat.id_categoria}
+                to={`/?categoria=${encodeURIComponent(cat.nombre)}`}
+                className="nav-mobile-link nav-mobile-link-sub"
+              >
+                {cat.nombre}
+              </Link>
+            ))}
+          </>
+        )}
+
       </aside>
+
     </nav>
   );
 };

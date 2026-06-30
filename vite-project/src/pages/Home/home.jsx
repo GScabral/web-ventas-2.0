@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
-import { getProductos, getOfertas } from "../../redux/action";
+import { getProductos, getOfertas, filterProduc } from "../../redux/action";
 
-import Hero from "../../componentes/hero";
+import PromoStrip from "../../componentes/PromoStrip";
 import Footer from "../Home/footer/Footer";
 import Paginado from "../../componentes/paginacion";
-import TrendingSection from "../../componentes/TrendingSection";
-import EditorialGrid from "../../componentes/EditorialGrid";
-import PromoBanner from "../../componentes/PromoBanner";
 import Newsletter from "../../componentes/Newsletter";
 import FiltrosSidebar from "./barralado/filtros";
 import ProductGrid from "./Cards/productGrid";
@@ -18,18 +16,18 @@ import "./home.css";
 const Home = () => {
 
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
 
   const allProductos = useSelector(
     state => state.allProductos
   );
 
-
-
-
   const [loading, setLoading] = useState(true);
 
+  const categoriaDesdeUrl = searchParams.get("categoria") || "";
+
   const [selectedSubcategory, setSelectedSubcategory] =
-    useState("");
+    useState(categoriaDesdeUrl);
 
   const [selectedPriceOrder, setSelectedPriceOrder] =
     useState("");
@@ -43,29 +41,22 @@ const Home = () => {
 
   }, [dispatch]);
 
-  const heroProductos = allProductos.filter(producto =>
-    producto.sections?.some(
-      section => section.section === "hero"
-    )
-  );
+  // Si se llega desde un link del Nav con ?categoria=X (por ejemplo, al
+  // tocar un chip de categoría), aplicamos ese filtro automáticamente.
+  useEffect(() => {
 
-  const trendingProductos = allProductos.filter(producto =>
-    producto.sections?.some(
-      section => section.section === "trending"
-    )
-  );
+    if (!categoriaDesdeUrl) return;
 
-  const principalProductos = allProductos.filter(producto =>
-    producto.sections?.some(
-      section => section.section === "principal"
-    )
-  );
+    setSelectedSubcategory(categoriaDesdeUrl);
 
-  const bannerProductos = allProductos.filter(producto =>
-    producto.sections?.some(
-      section => section.section === "banner"
-    )
-  );
+    dispatch(
+      filterProduc({
+        categoria: categoriaDesdeUrl,
+        subcategoria: ""
+      })
+    );
+
+  }, [categoriaDesdeUrl, dispatch]);
 
   const Spinner = () => (
     <div className="spinner-home">
@@ -81,39 +72,11 @@ const Home = () => {
 
       <main className="home-wrapper">
 
-        {/* HERO */}
-
-        <section className="home-section hero-block">
-          <Hero productos={heroProductos} />
+        <section className="home-section">
+          <PromoStrip />
         </section>
 
-        {/* BANNER */}
-
-        <section className="home-section banner-block">
-          <PromoBanner productos={bannerProductos} />
-        </section>
-
-        {/* SHOWCASE */}
-
-        <section className="home-section showcase-section">
-
-          <div className="showcase-column">
-            <TrendingSection
-              productos={trendingProductos}
-            />
-          </div>
-
-          <div className="showcase-column">
-            <EditorialGrid
-              productos={principalProductos}
-            />
-          </div>
-
-        </section>
-
-        {/* CATALOGO */}
-
-        <section id="catalogo" className="home-section catalog-layout">
+        <section className="home-section catalog-layout">
 
           <aside className="catalog-sidebar">
 
@@ -146,8 +109,6 @@ const Home = () => {
           </section>
 
         </section>
-
-        {/* NEWSLETTER */}
 
         <section className="home-section newsletter-block">
           <Newsletter />

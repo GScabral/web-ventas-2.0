@@ -41,17 +41,18 @@
   height: 58px;
   border: none;
   border-radius: 16px;
-  background: #111;
-  color: white;
+  background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+  color: #1a1410;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 800;
   cursor: pointer;
   transition: .3s;
+  font-family: 'Manrope', sans-serif;
 }
 
 .add-btn:hover {
   transform: translateY(-2px);
-  background: #222;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
 }
 
 .add-btn:active {

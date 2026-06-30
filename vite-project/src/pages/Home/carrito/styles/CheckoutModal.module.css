@@ -81,15 +81,19 @@
 
   margin-top: 20px;
 
-  background: #111827;
+  border: none;
 
-  color: white;
+  background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+
+  color: #1a1410;
 
   padding: 14px;
 
   border-radius: 12px;
 
-  font-weight: 700;
+  font-weight: 800;
+
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
