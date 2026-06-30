@@ -21,11 +21,11 @@
 }
 
 .thumb:hover {
-  border-color: #ddd;
+  border-color: #ff6b35;
 }
 
 .thumb.active {
-  border-color: #111;
+  border-color: #ff6b35;
 }
 
 .thumb img {

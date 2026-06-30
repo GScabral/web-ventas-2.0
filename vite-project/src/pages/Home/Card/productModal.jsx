@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { agregarAlCarrito } from "../../../redux/action";
 import { useDispatch } from "react-redux";
@@ -9,55 +9,97 @@ const ProductModal = ({
   product
 }) => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [talla, setTalla] = useState("");
   const [color, setColor] = useState("");
   const [cantidad, setCantidad] = useState(1);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [agregado, setAgregado] = useState(false);
+
+  // Si el modal se cierra y se vuelve a abrir (por ejemplo, para otro
+  // producto), arrancamos limpio en vez de arrastrar la selección
+  // anterior.
+  useEffect(() => {
+    if (open) {
+      setTalla("");
+      setColor("");
+      setCantidad(1);
+      setErrorMsg("");
+      setAgregado(false);
+    }
+  }, [open, product?.id]);
 
   if (!open) return null;
 
+  const variantes = product?.variantes || [];
+
   const tallas = [
     ...new Set(
-      product.variantes.map(v => v.talla)
+      variantes.map(v => v.talla)
     )
   ];
 
-  const colores = product.variantes
+  const colores = variantes
     .filter(v => v.talla === talla)
     .map(v => v.color);
 
+  const varianteSeleccionada = variantes.find(
+    v => v.talla === talla && v.color === color
+  );
+
+  const stockDisponible = varianteSeleccionada?.cantidad_disponible ?? 0;
+
   const imagenPrincipal =
-    product?.variantes?.[0]?.imagenes?.[0];
+    varianteSeleccionada?.imagenes?.[0] ||
+    variantes?.[0]?.imagenes?.[0];
 
   const handleAgregarCarrito = () => {
+
     if (!talla) {
-      alert("Seleccione una talla");
+      setErrorMsg("Seleccioná un talle.");
       return;
     }
 
     if (!color) {
-      alert("Seleccione un color");
+      setErrorMsg("Seleccioná un color.");
       return;
     }
 
-    const varianteSeleccionada = product.variantes.find(
-      v => v.talla === talla && v.color === color
-    );
+    if (!varianteSeleccionada) {
+      setErrorMsg("Esa combinación de talle y color no está disponible.");
+      return;
+    }
 
-    const productoCarrito = {
+    if (cantidad > stockDisponible) {
+      setErrorMsg(`Solo quedan ${stockDisponible} unidades disponibles.`);
+      return;
+    }
+
+    setErrorMsg("");
+
+    dispatch(agregarAlCarrito({
       id: product.id,
       nombre: product.nombre,
       precio: product.precio,
       cantidad,
+      // Se manda con los dos nombres a propósito: CartItem.jsx lo
+      // muestra como "talla", y useCheckout.js / el backend lo leen
+      // como "talle". Mandar ambos evita que el talle se pierda en
+      // alguno de los dos pasos por una diferencia de nombre.
       talla,
+      talle: talla,
       color,
-      idVariante: varianteSeleccionada?.idVariante,
-      imagen: varianteSeleccionada?.imagenes?.[0]
-    };
+      idVariante: varianteSeleccionada.idVariante,
+      imagen: varianteSeleccionada.imagenes?.[0]
+    }));
 
+    setAgregado(true);
 
-    dispatch(agregarAlCarrito (productoCarrito))
+    setTimeout(() => {
+      onClose();
+    }, 900);
   };
+
   return (
 
     <div
@@ -70,16 +112,13 @@ const ProductModal = ({
         onClick={(e) => e.stopPropagation()}
       >
 
-        {/* CLOSE */}
-
         <button
           className="close-modal"
           onClick={onClose}
+          aria-label="Cerrar"
         >
           ×
         </button>
-
-        {/* LEFT */}
 
         <div className="modal-left">
 
@@ -91,12 +130,10 @@ const ProductModal = ({
 
         </div>
 
-        {/* RIGHT */}
-
         <div className="modal-right">
 
           <span className="modal-category">
-            {product.categoria.nombre}
+            {product.categoria?.nombre || ""}
           </span>
 
           <h2 className="modal-title">
@@ -108,10 +145,8 @@ const ProductModal = ({
           </p>
 
           <h3 className="modal-price">
-            ${product.precio}
+            ${Number(product.precio).toLocaleString("es-AR")}
           </h3>
-
-          {/* TALLES */}
 
           <div className="modal-section">
 
@@ -125,7 +160,11 @@ const ProductModal = ({
                   key={i}
                   className={`size-btn ${talla === t ? "active" : ""
                     }`}
-                  onClick={() => setTalla(t)}
+                  onClick={() => {
+                    setTalla(t);
+                    setColor("");
+                    setErrorMsg("");
+                  }}
                 >
                   {t}
                 </button>
@@ -135,8 +174,6 @@ const ProductModal = ({
             </div>
 
           </div>
-
-          {/* COLORES */}
 
           {talla && (
 
@@ -152,7 +189,10 @@ const ProductModal = ({
                     key={i}
                     className={`color-btn ${color === c ? "active" : ""
                       }`}
-                    onClick={() => setColor(c)}
+                    onClick={() => {
+                      setColor(c);
+                      setErrorMsg("");
+                    }}
                   >
                     {c}
                   </button>
@@ -165,16 +205,13 @@ const ProductModal = ({
 
           )}
 
-          {/* CANTIDAD */}
-
           <div className="quantity-row">
 
             <button
-              onClick={() =>
-                setCantidad(prev =>
-                  Math.max(1, prev - 1)
-                )
-              }
+              onClick={() => {
+                setCantidad(prev => Math.max(1, prev - 1));
+                setErrorMsg("");
+              }}
             >
               -
             </button>
@@ -182,24 +219,34 @@ const ProductModal = ({
             <span>{cantidad}</span>
 
             <button
-              onClick={() =>
-                setCantidad(prev => prev + 1)
-              }
+              onClick={() => {
+                setCantidad(prev =>
+                  varianteSeleccionada
+                    ? Math.min(stockDisponible, prev + 1)
+                    : prev + 1
+                );
+                setErrorMsg("");
+              }}
             >
               +
             </button>
 
           </div>
 
-          {/* ACTIONS */}
+          {errorMsg && (
+            <p className="modal-error">
+              {errorMsg}
+            </p>
+          )}
 
           <div className="modal-actions">
 
             <button
-              className="confirm-cart-btn"
+              className={`confirm-cart-btn ${agregado ? "added" : ""}`}
               onClick={handleAgregarCarrito}
+              disabled={agregado}
             >
-              Agregar al carrito
+              {agregado ? "Agregado ✓" : "Agregar al carrito"}
             </button>
 
             <Link

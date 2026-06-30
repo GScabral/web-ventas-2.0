@@ -42,7 +42,7 @@ const Detail = () => {
 
   const recomendados = useMemo(() => {
     return allProductos.filter(
-      p => p.categoria === info?.categoria && p.id !== info?.id
+      p => p.categoria?.id === info?.categoria?.id && p.id !== info?.id
     );
   }, [allProductos, info]);
 
