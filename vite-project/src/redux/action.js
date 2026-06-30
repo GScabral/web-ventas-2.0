@@ -408,22 +408,27 @@ export const cambios = (id, datosProducto) => {
   };
 };
 
-export const borrar = async (id) => {
-  try {
+export const borrar = (id) => {
+  return async function (dispatch) {
+    try {
 
-    const borrar = await axios.delete(`${API_URL}/producto/eliminar/${id}`)
+      const response = await axios.delete(`${API_URL}/producto/eliminar/${id}`)
 
-    if (borrar.status !== 200) {
-      throw new Error('Error al obtener el cliente por ID');
+      if (response.status !== 200) {
+        throw new Error('Error al eliminar el producto');
+      }
+
+      dispatch({
+        type: BORRAR_PRODUCTO,
+        payload: id,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error al eliminar el producto:', error);
+      throw error;
     }
-
-    dispatch({
-      type: BORRAR_PRODUCTO,
-      payload: borrar.data,
-    });
-  } catch (error) {
-    console.error('Error :', error);
-  }
+  };
 };
 
 
