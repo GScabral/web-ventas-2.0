@@ -24,10 +24,10 @@
 .form input:focus {
   outline: none;
 
-  border-color: #ec4899;
+  border-color: #ff6b35;
 
   box-shadow:
-    0 0 0 3px rgba(236,72,153,.15);
+    0 0 0 3px rgba(255,107,53,.15);
 }
 
 @media (max-width: 768px) {
