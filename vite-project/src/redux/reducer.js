@@ -36,7 +36,9 @@ import {
   GET_CATEGORIAS,
   CREATE_CATEGORIA,
   UPDATE_CATEGORIA,
-  DELETE_CATEGORIA
+  DELETE_CATEGORIA,
+  GET_BANNERS,
+  GET_BANNERS_ADMIN
 } from "./action"
 
 const initialState = {
@@ -64,6 +66,8 @@ const initialState = {
   cantidadOferta: {},
   ofertasActivas: [],
   categorias: [],
+  banners: [],
+  bannersAdmin: [],
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -573,6 +577,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ofertasActivas: ofertasActivas// Almacena las ofertas activas recibidas del servidor
+      };
+
+    case GET_BANNERS:
+      return {
+        ...state,
+        banners: action.payload
+      };
+
+    case GET_BANNERS_ADMIN:
+      return {
+        ...state,
+        bannersAdmin: action.payload
       };
 
     ///////////////////////////////////////////////////////////////////////////  

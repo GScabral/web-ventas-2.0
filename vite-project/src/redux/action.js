@@ -36,6 +36,8 @@ export const GET_CATEGORIAS = "GET_CATEGORIAS";
 export const CREATE_CATEGORIA = "CREATE_CATEGORIA";
 export const UPDATE_CATEGORIA = "UPDATE_CATEGORIA";
 export const DELETE_CATEGORIA = "DELETE_CATEGORIA";
+export const GET_BANNERS = "GET_BANNERS";
+export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
@@ -816,6 +818,63 @@ export const getCategorias =
       });
 
     } catch (error) {
-      console.error(error);``
+      console.error(error);
     }
   };
+
+// Banners promocionales: lo que se ve en la tira de la home (banner
+// grande + banners chicos), gestionables desde el admin.
+
+export const getBanners = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/banner/activos`);
+
+      dispatch({
+        type: GET_BANNERS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error('Error al obtener banners:', error);
+    }
+  };
+};
+
+export const getBannersAdmin = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/banner`);
+
+      dispatch({
+        type: GET_BANNERS_ADMIN,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error('Error al obtener banners (admin):', error);
+    }
+  };
+};
+
+export const crearBanner = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/banner`, datos);
+    await dispatch(getBannersAdmin());
+    return response.data;
+  };
+};
+
+export const actualizarBanner = (id, datos) => {
+  return async function (dispatch) {
+    const response = await axios.put(`${API_URL}/banner/${id}`, datos);
+    await dispatch(getBannersAdmin());
+    return response.data;
+  };
+};
+
+export const eliminarBanner = (id) => {
+  return async function (dispatch) {
+    const response = await axios.delete(`${API_URL}/banner/${id}`);
+    await dispatch(getBannersAdmin());
+    return response.data;
+  };
+};
