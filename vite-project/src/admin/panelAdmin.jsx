@@ -15,6 +15,7 @@ import ProductList from "./productos/listadoProductos";
 import PedidoList from "./pedidos/listadoPedidos";
 // import ClienteList from "./clientes/listadoClientes";
 import OfertasLista from "./ofertas/listadoOFertas";
+import BannersLista from "./banners/listadoBanners";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
 
@@ -48,6 +49,11 @@ const menuItems = [
     title: "Ofertas",
     path: "/admin/ofertas",
     icon: "🏷️",
+  },
+  {
+    title: "Banners",
+    path: "/admin/banners",
+    icon: "🖼️",
   },
 ];
 
@@ -297,6 +303,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <OfertasLista />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/banners"
+              element={
+                isLoggedIn ? (
+                  <BannersLista />
                 ) : (
                   <Navigate to="/admin/login" />
                 )
