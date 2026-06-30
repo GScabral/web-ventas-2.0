@@ -33,7 +33,7 @@ const createNewCliente = async (clienteData) => {
     if (process.env.NODE_ENV === 'development') {
       console.error("Error en la creación del cliente", error);
     }
-    return { error: error.message };
+    return { error: "No pudimos crear la cuenta. Intentá de nuevo en unos minutos." };
   }
 };
 

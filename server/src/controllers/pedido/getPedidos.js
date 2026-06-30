@@ -16,8 +16,10 @@ const getPedidos = async (req, res) => {
 
     } catch (error) {
 
+        console.error("Error al obtener los pedidos:", error);
+
         res.status(500).json({
-            error: error.message
+            error: "No pudimos obtener los pedidos."
         });
     }
 };

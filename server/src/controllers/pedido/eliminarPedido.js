@@ -36,8 +36,10 @@ const eliminarPedido = async (
 
     } catch (error) {
 
+        console.error("Error al eliminar el pedido:", error);
+
         res.status(500).json({
-            error: error.message
+            error: "No pudimos eliminar el pedido."
         });
     }
 };

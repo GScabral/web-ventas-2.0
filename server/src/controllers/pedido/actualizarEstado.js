@@ -30,8 +30,10 @@ const actualizarEstado = async (
 
     } catch (error) {
 
+        console.error("Error al actualizar el estado del pedido:", error);
+
         res.status(500).json({
-            error: error.message
+            error: "No pudimos actualizar el estado del pedido."
         });
     }
 };

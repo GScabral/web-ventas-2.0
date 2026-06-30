@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const helmet = require('helmet');
 const path = require('path');
 const routes = require('./routes/index.js');
 const upload = require("../multerConfig.js");
@@ -41,6 +42,18 @@ const corsOptions = {
 };
 
 // Middleware
+server.use(
+  helmet({
+    // El frontend está en otro dominio (Render) y consume imágenes desde
+    // Cloudinary y desde /uploads de este mismo servidor; la política por
+    // defecto de helmet para recursos cross-origin bloquearía eso.
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    // No servimos HTML propio que dependa de un Content-Security-Policy
+    // estricto (el frontend es una SPA aparte); lo dejamos desactivado
+    // para no romper nada hasta poder definir una política a medida.
+    contentSecurityPolicy: false,
+  })
+);
 server.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));

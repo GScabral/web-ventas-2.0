@@ -1,5 +1,6 @@
 const { Router } = require("express");
 require('dotenv').config();
+const rateLimit = require("express-rate-limit");
 
 const createAdmin = require("../controllers/admin/admin")
 const loginAdmin = require("../controllers/admin/login");
@@ -9,6 +10,20 @@ const { verificarTokenAdmin } = require("../middleware/auth");
 
 
 const router = Router();
+
+// Frena los intentos de fuerza bruta contra el login de admin: como solo
+// hay un usuario admin (sin bloqueo de cuenta posible), esto es la única
+// defensa real contra alguien probando contraseñas en bucle.
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 10, // 10 intentos por IP cada 15 minutos
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    error: "Demasiados intentos de inicio de sesión. Probá de nuevo en 15 minutos."
+  },
+});
 
 router.post("/NewAdmin", verificarTokenAdmin, async (req, res) => {
   try {
@@ -52,8 +67,8 @@ router.post('/confirmacionPedido', verificarTokenAdmin, async (req, res) => {
 
     res.status(500).json({
       message: 'Error al enviar el correo electrónico',
-      error: error.message,   // mensaje claro
-      code: error.code || null,  // ej: ETIMEDOUT, EAUTENTICACION, etc
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      code: process.env.NODE_ENV === 'development' ? (error.code || null) : undefined,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
@@ -61,7 +76,7 @@ router.post('/confirmacionPedido', verificarTokenAdmin, async (req, res) => {
 
 
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { correo, username, password } = req.body;
     const authResult = await loginAdmin({ correo, username, password });
@@ -77,7 +92,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/loginc', async (req, res) => {
+router.post('/loginc', loginLimiter, async (req, res) => {
   try {
     const { password } = req.body;
     const authResult = await loginAdmin({ password });

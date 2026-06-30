@@ -29,8 +29,10 @@ const cancelarPedido = async (
 
     } catch (error) {
 
+        console.error("Error al cancelar el pedido:", error);
+
         res.status(500).json({
-            error: error.message
+            error: "No pudimos cancelar el pedido."
         });
     }
 };

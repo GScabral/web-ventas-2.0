@@ -101,7 +101,7 @@ const createPreference = async (req, res) => {
         console.error("Error al procesar la solicitud:", error);
 
         res.status(400).json({
-            error: error.message
+            error: "No pudimos generar el link de pago. Intentá de nuevo en unos minutos."
         });
     }
 };

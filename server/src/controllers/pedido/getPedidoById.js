@@ -23,8 +23,10 @@ const getPedidoById = async (
 
     } catch (error) {
 
+        console.error("Error al obtener el pedido:", error);
+
         res.status(500).json({
-            error: error.message
+            error: "No pudimos obtener el pedido."
         });
     }
 };

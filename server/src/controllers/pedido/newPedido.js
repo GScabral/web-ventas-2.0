@@ -266,7 +266,7 @@ const nuevoPedido = async (req, res) => {
     );
 
     return res.status(500).json({
-      error: error.message
+      error: "No pudimos procesar el pedido. Intentá de nuevo en unos minutos."
     });
 
   }
