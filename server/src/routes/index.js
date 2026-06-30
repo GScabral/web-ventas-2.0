@@ -6,6 +6,7 @@ const routeProducto = require("../routes/routeProducto");
 const routePedido = require("../routes/routePedido");
 const routeOferta = require("../routes/routesOferta");
 const routeMp = require("../routes/routeMp");
+const routeBanner = require("../routes/routeBanner");
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/pedido", routePedido);
 
 router.use("/oferta", routeOferta);
 router.use("/mp", routeMp);
+router.use("/banner", routeBanner);
 
 module.exports = router;
