@@ -1,3 +1,12 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Pedidos (tablero kanban)
+   .stat-card, .pendiente/.preparando/.enviado/.entregado
+   vienen de adminCommon.css, así el vocabulario de color es
+   el mismo que en Inicio y Productos.
+   ============================================================ */
+
 .pedidos-page {
   padding: 0;
 }
@@ -8,7 +17,9 @@
 
 .pedidos-header h1 {
   margin: 0;
+  font-family: var(--font-display);
   font-size: var(--fs-2xl);
+  color: var(--text-primary);
 }
 
 .pedidos-header p {
@@ -23,51 +34,9 @@
   margin-bottom: var(--sp-6);
 }
 
-.stat-card {
-  background: var(--bg-elevated-2);
-  padding: var(--sp-4) var(--sp-5);
-  border-radius: var(--radius-md);
-  text-align: center;
-  border: 1px solid var(--border-subtle);
-  border-top: 3px solid var(--border-medium);
-}
-
-.stat-card h3 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: var(--fs-2xl);
-  color: var(--text-primary);
-}
-
-.stat-card span {
-  display: block;
-  margin-top: var(--sp-1);
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
-.stat-card.warning {
-  border-top-color: var(--color-warning);
-}
-
-.stat-card.info {
-  border-top-color: var(--accent-rosa);
-}
-
-.stat-card.success {
-  border-top-color: var(--color-success);
-}
-
-.stat-card.complete {
-  border-top-color: var(--accent-terracota);
-}
-
 .feedback-success {
-  background: rgba(127, 176, 105, 0.15);
-  border: 1px solid rgba(127, 176, 105, 0.35);
+  background: rgba(22, 163, 74, 0.1);
+  border: 1px solid rgba(22, 163, 74, 0.25);
   color: var(--color-success);
   font-weight: 600;
   padding: var(--sp-3) var(--sp-4);
@@ -82,36 +51,20 @@
 }
 
 .kanban-column {
-  background: var(--bg-elevated);
+  background: var(--bg-elevated-2);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--sp-4);
   min-height: 600px;
-  box-shadow: var(--shadow-md);
 }
 
 .kanban-column h2 {
   margin-bottom: var(--sp-4);
   text-align: center;
   padding-bottom: var(--sp-3);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-medium);
   font-size: var(--fs-md);
-}
-
-.pendiente {
-  color: var(--color-warning);
-}
-
-.preparando {
-  color: var(--accent-rosa);
-}
-
-.enviado {
-  color: var(--color-success);
-}
-
-.entregado {
-  color: var(--accent-terracota);
+  color: var(--text-primary);
 }
 
 @media (max-width: 1400px) {
@@ -132,14 +85,6 @@
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--sp-3);
-  }
-
-  .stat-card {
-    padding: var(--sp-3) var(--sp-4);
-  }
-
-  .stat-card h3 {
-    font-size: var(--fs-xl);
   }
 
   .kanban-column {
@@ -164,10 +109,6 @@
 
   .stats-grid {
     grid-template-columns: 1fr;
-  }
-
-  .stat-card h3 {
-    font-size: var(--fs-lg);
   }
 
   .kanban-board {

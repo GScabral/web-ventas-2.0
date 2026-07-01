@@ -1,162 +1,161 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Ofertas
+   ============================================================ */
+
 .offers-page {
-  padding: 30px;
+  padding: 0;
 }
 
 .offers-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
 }
 
 .offers-header h1 {
-  margin: 0;
-  color: #111827;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--text-primary);
 }
 
 .offers-header p {
-  color: #6b7280;
-  margin-top: 5px;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  margin-top: var(--sp-1);
 }
 
 .offers-counter {
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
 
-  border-radius: 20px;
+  border-radius: var(--radius-md);
 
-  background: #2563eb;
+  background: var(--gradient-brand);
+  box-shadow: var(--shadow-glow-terracota);
 
-  color: white;
+  color: var(--text-on-accent);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 28px;
-  font-weight: bold;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 800;
 }
 
 .offers-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fill, minmax(320px, 1fr));
-
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-5);
 }
 
 .offer-card {
-  background: white;
-
-  border-radius: 20px;
-
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, .06);
-
-  transition: .3s;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--t-fast) var(--ease-out),
+              transform var(--t-fast) var(--ease-out);
 }
 
 .offer-card:hover {
-  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .offer-badge {
-  background: linear-gradient(135deg,
-      #ef4444,
-      #dc2626);
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
 
-  color: white;
+  padding: var(--sp-4);
 
-  padding: 16px;
-
-  font-size: 24px;
-
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 800;
 
   text-align: center;
 }
 
 .offer-content {
-  padding: 20px;
+  padding: var(--sp-5);
 }
 
 .offer-content h3 {
-  margin-bottom: 20px;
-  color: #111827;
+  margin-bottom: var(--sp-4);
+  font-size: var(--fs-md);
+  color: var(--text-primary);
 }
 
 .offer-info {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-sm);
 }
 
 .offer-info span {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .offer-info strong {
-  color: #111827;
+  color: var(--text-primary);
 }
 
 .status {
-  margin-top: 20px;
+  margin-top: var(--sp-4);
 
-  padding: 8px 12px;
+  padding: var(--sp-1) var(--sp-3);
 
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 
   display: inline-block;
 
-  font-size: 13px;
-
-  font-weight: 600;
+  font-size: var(--fs-xs);
+  font-weight: 700;
 }
 
 .status.active {
-  background: #dcfce7;
-  color: #15803d;
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--color-success);
 }
 
 .status.expired {
-  background: #fee2e2;
-  color: #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--color-error);
 }
 
 .delete-offer-btn {
   width: 100%;
-
+  border-radius: 0;
   border: none;
+  border-top: 1px solid var(--border-subtle);
 
-  background: #111827;
+  background: transparent;
+  color: var(--text-secondary);
 
-  color: white;
+  padding: var(--sp-3);
 
-  padding: 14px;
-
-  cursor: pointer;
-
-  font-weight: 600;
-
-  transition: .3s;
+  font-size: var(--fs-sm);
 }
 
 .delete-offer-btn:hover {
-  background: #dc2626;
+  background: rgba(220, 38, 38, 0.06);
+  color: var(--color-error);
+  border-color: var(--border-subtle);
 }
 
 @media (max-width: 768px) {
-
-  .offers-page {
-    padding: 20px;
-  }
-
   .offers-header {
     flex-direction: column;
-    gap: 20px;
+    gap: var(--sp-3);
     align-items: flex-start;
   }
 

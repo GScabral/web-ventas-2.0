@@ -1,146 +1,108 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Inventario de productos
+   ============================================================ */
+
 .products-page {
-  padding: 30px;
+  padding: 0;
 }
 
 .products-header {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
-  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
 }
 
 .products-header h1 {
   margin: 0;
-
-  font-size: 32px;
-
-  color: #111827;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-primary);
 }
 
 .products-header p {
-  margin-top: 8px;
-
-  color: #6b7280;
+  margin-top: var(--sp-1);
+  color: var(--text-secondary);
 }
 
 .products-stats {
   display: flex;
-
-  gap: 20px;
+  gap: var(--sp-4);
 }
 
-.stat-card {
-  background: white;
-
-  padding: 18px 24px;
-
-  border-radius: 16px;
-
-  box-shadow:
-    0 4px 16px rgba(0,0,0,.06);
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 6px;
-}
-
-.stat-card span {
-  color: #6b7280;
-
-  font-size: 13px;
-}
-
-.stat-card strong {
-  font-size: 28px;
-
-  color: #2563eb;
+/* .stat-card viene de adminCommon.css; acá solo agrandamos
+   el número para que se lea bien como cifra destacada. */
+.products-stats .stat-card strong {
+  color: var(--accent-terracota);
 }
 
 .search-container {
-  margin-bottom: 30px;
+  margin-bottom: var(--sp-6);
 }
 
 .search-container input {
   width: 100%;
-
-  padding: 14px 18px;
-
-  border: 1px solid #d1d5db;
-
-  border-radius: 12px;
-
-  font-size: 15px;
-
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-base);
+  color: var(--text-primary);
   outline: none;
+  transition: border-color var(--t-fast) var(--ease-out);
+}
+
+.search-container input::placeholder {
+  color: var(--text-muted);
 }
 
 .search-container input:focus {
-  border-color: #2563eb;
+  border-color: var(--accent-terracota);
 }
 
 .products-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fill,minmax(360px,1fr));
-
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--sp-5);
 }
 
 .feedback-alert {
-  padding: 14px;
-
-  border-radius: 12px;
-
-  margin-bottom: 20px;
-
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-5);
   font-weight: 600;
+  font-size: var(--fs-sm);
 }
 
 .feedback-alert.success {
-  background: #ecfdf5;
-
-  color: #047857;
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--color-success);
 }
 
 .feedback-alert.error {
-  background: #fef2f2;
-
-  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+  color: var(--color-error);
 }
 
 @media (max-width: 768px) {
-
-  .products-page {
-    padding: 20px;
-  }
-
   .products-header {
     flex-direction: column;
-
     align-items: flex-start;
-
-    gap: 20px;
+    gap: var(--sp-4);
   }
 
   .products-grid {
     grid-template-columns: 1fr;
   }
-
 }
 
 @media (max-width: 1024px) {
-  .products-page {
-    padding: 24px;
-  }
-
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 
   .products-stats {
@@ -149,42 +111,25 @@
 }
 
 @media (max-width: 600px) {
-  .products-page {
-    padding: 12px;
-  }
-
   .products-header h1 {
-    font-size: 18px;
+    font-size: var(--fs-lg);
   }
 
   .products-header p {
-    font-size: 13px;
+    font-size: var(--fs-sm);
   }
 
   .products-stats {
-    gap: 8px;
+    gap: var(--sp-2);
     flex-direction: column;
   }
 
-  .stat-card {
-    width: 100%;
-    padding: 12px 14px;
-  }
-
-  .stat-card span {
-    font-size: 12px;
-  }
-
-  .stat-card strong {
-    font-size: 18px;
-  }
-
   .search-container input {
-    padding: 10px 12px;
-    font-size: 13px;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-sm);
   }
 
   .feedback-alert {
-    font-size: 13px;
+    font-size: var(--fs-xs);
   }
 }

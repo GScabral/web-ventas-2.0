@@ -1,46 +1,36 @@
-.modal-oferta-container {
-  padding: 1rem;
-  font-size: 1rem;
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Modal "Asignar oferta"
+   (el .custom-modal base ya viene de Design-system.css;
+   acá solo lo que es específico de este formulario)
+   ============================================================ */
+
+.ofertas-modal {
+  max-width: 420px;
 }
 
-.modal-oferta-container input,
-.modal-oferta-container select {
+.ofertas-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.ofertas-input {
   width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  padding: var(--sp-3) var(--sp-4);
+
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
 }
 
-.modal-oferta-container button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .modal-oferta-container {
-    font-size: 0.9rem;
-  }
-
-  .modal-oferta-container input,
-  .modal-oferta-container select {
-    font-size: 0.9rem;
-  }
-
-  .modal-oferta-container button {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-oferta-container {
-    font-size: 0.8rem;
-  }
-
-  .modal-oferta-container button {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-  }
+.ofertas-input:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
+  background: var(--bg-elevated);
 }
