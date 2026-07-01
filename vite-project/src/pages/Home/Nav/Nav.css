@@ -48,12 +48,21 @@
 }
 
 .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 20px;
   font-weight: 800;
   color: #1a1a1a;
   text-decoration: none;
   white-space: nowrap;
   letter-spacing: -0.02em;
+}
+
+.nav-logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-search {

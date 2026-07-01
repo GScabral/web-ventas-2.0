@@ -11,6 +11,13 @@ const Nav = () => {
   const navigate = useNavigate();
   const carrito = useSelector((state) => state.carrito);
   const categorias = useSelector((state) => state.categorias) || [];
+  const configuracion = useSelector((state) => state.configuracion);
+
+  // Mientras no cargó la configuración de Personalización (o si el
+  // admin dejó el campo vacío), usamos el valor por defecto del
+  // archivo estático, para no mostrar "undefined" ni nada vacío.
+  const nombreTienda = configuracion?.nombre_tienda || STORE_CONFIG.name;
+  const logoUrl = configuracion?.logo_url;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -90,7 +97,14 @@ const Nav = () => {
         </button>
 
         <Link to="/" className="nav-logo">
-          {STORE_CONFIG.name}
+          {logoUrl && (
+            <img
+              src={logoUrl}
+              alt={nombreTienda}
+              className="nav-logo-img"
+            />
+          )}
+          {nombreTienda}
         </Link>
 
         <form className="nav-search" onSubmit={handleSearchSubmit}>

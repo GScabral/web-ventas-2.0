@@ -6,9 +6,31 @@ const { ConfiguracionSitio } = require("../../db");
 const esColorHexValido = (valor) =>
   typeof valor === "string" && /^#[0-9a-fA-F]{6}$/.test(valor);
 
+// Pares tipográficos válidos (ver vite-project/src/config/fuentes.js
+// para el detalle de qué fuente real carga cada clave).
+const FUENTES_VALIDAS = ["clasica", "moderna", "elegante", "minimal"];
+
+// Campos de texto libre: si vienen, deben ser string (pueden venir
+// vacíos para "borrar" el dato, ej. sacar el Facebook si no tiene).
+const CAMPOS_TEXTO_LIBRE = [
+  "tagline",
+  "logo_url",
+  "whatsapp",
+  "instagram",
+  "facebook",
+  "direccion",
+  "maps_url",
+];
+
 const actualizarConfiguracion = async (datos) => {
 
-  const { nombre_tienda, color_primario, color_secundario, color_acento } = datos;
+  const {
+    nombre_tienda,
+    color_primario,
+    color_secundario,
+    color_acento,
+    fuente,
+  } = datos;
 
   const camposAActualizar = {};
 
@@ -31,6 +53,24 @@ const actualizarConfiguracion = async (datos) => {
     }
 
     camposAActualizar[campo] = valor;
+  }
+
+  if (fuente !== undefined) {
+    if (!FUENTES_VALIDAS.includes(fuente)) {
+      throw new Error(`La tipografía "${fuente}" no es una opción válida.`);
+    }
+    camposAActualizar.fuente = fuente;
+  }
+
+  for (const campo of CAMPOS_TEXTO_LIBRE) {
+    const valor = datos[campo];
+    if (valor === undefined) continue;
+
+    if (typeof valor !== "string") {
+      throw new Error(`El campo "${campo}" debe ser texto.`);
+    }
+
+    camposAActualizar[campo] = valor.trim();
   }
 
   const [configuracion] = await ConfiguracionSitio.findOrCreate({
