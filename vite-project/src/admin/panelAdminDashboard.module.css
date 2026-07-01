@@ -14,12 +14,18 @@
   --bg-elevated-2: #f0f1f4;
   --bg-overlay: rgba(17, 20, 27, 0.5);
 
-  /* ---- Acentos (se mantiene la identidad de marca) ---- */
-  --accent-terracota: #ff6b35;
+  /* ---- Acentos ----
+     OJO: estos NO se hardcodean acá. Si los fijamos en este
+     selector, pisan para siempre lo que el cliente elija desde
+     Admin > Personalización (las custom properties de un
+     descendiente ganan sobre las de :root, aunque :root las
+     haya seteado después vía JS). Los dejamos heredar de :root
+     (Design-system.css / ThemeLoader) a propósito. Solo fijamos
+     los tintes "soft", que son detalles de fondo del tema claro,
+     no la identidad de marca en sí.
+     ---- */
   --accent-terracota-soft: #fff0e9;
-  --accent-mostaza: #e8a33d;
   --accent-mostaza-soft: #fdf3e2;
-  --accent-rosa: #d6708a;
 
   /* ---- Texto ---- */
   --text-primary: #1c2029;
@@ -37,8 +43,11 @@
   --border-medium: #e1e3e8;
   --border-accent: rgba(255, 107, 53, 0.35);
 
-  /* ---- Gradientes ---- */
-  --gradient-brand: linear-gradient(135deg, #ff6b35 0%, #f2913f 55%, #e8a33d 100%);
+  /* ---- Gradientes ----
+     Referencian los acentos con var(), así que si el color de
+     marca cambia desde Personalización, el degradado de los
+     botones lo sigue automáticamente. */
+  --gradient-brand: linear-gradient(135deg, var(--accent-terracota) 0%, var(--accent-terracota) 55%, var(--accent-mostaza) 100%);
   --gradient-brand-soft: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(232, 163, 61, 0.06) 100%);
   --gradient-surface: linear-gradient(160deg, #ffffff 0%, #f4f5f7 100%);
 
