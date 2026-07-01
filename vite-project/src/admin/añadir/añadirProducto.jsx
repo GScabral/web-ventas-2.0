@@ -368,29 +368,6 @@ const NewProduct = ({ addProduct, createCategoria }) => {
     );
   };
 
-  const handleSectionChange = (e) => {
-
-    const { value, checked } = e.target;
-
-    if (checked) {
-
-      setSelectedSections(prev => [
-        ...prev,
-        value
-      ]);
-
-    } else {
-
-      setSelectedSections(prev =>
-        prev.filter(
-          section => section !== value
-        )
-      );
-
-    }
-
-  };
-
   // Checklist de progreso: qué falta para poder publicar.
   // Se muestra en PublishCard así la persona ve de un vistazo
   // qué le falta, sin tener que tocar "Guardar" para enterarse.
@@ -567,80 +544,6 @@ const NewProduct = ({ addProduct, createCategoria }) => {
               fieldErrors={fieldErrors}
               validateField={validateField}
             />
-            <div className="sections-card">
-
-              <h3>Mostrar producto en</h3>
-              <p className="sections-hint">
-                Opcional: elegí en qué secciones de la
-                tienda querés que aparezca.
-              </p>
-
-              <label className="section-option">
-
-                <input
-                  type="checkbox"
-                  value="hero"
-                  checked={selectedSections.includes("hero")}
-                  onChange={handleSectionChange}
-                />
-
-                Hero Principal
-
-              </label>
-
-              <label className="section-option">
-
-                <input
-                  type="checkbox"
-                  value="trending"
-                  checked={selectedSections.includes("trending")}
-                  onChange={handleSectionChange}
-                />
-
-                Trending
-
-              </label>
-
-              <label className="section-option">
-
-                <input
-                  type="checkbox"
-                  value="principal"
-                  checked={selectedSections.includes("principal")}
-                  onChange={handleSectionChange}
-                />
-
-                principal
-
-              </label>
-
-              <label className="section-option">
-
-                <input
-                  type="checkbox"
-                  value="featured"
-                  checked={selectedSections.includes("featured")}
-                  onChange={handleSectionChange}
-                />
-
-                Destacados
-
-              </label>
-              <label className="section-option">
-
-                <input
-                  type="checkbox"
-                  value="banner"
-                  checked={selectedSections.includes("banner")}
-                  onChange={handleSectionChange}
-                />
-
-                banner
-
-              </label>
-
-            </div>
-
             <PublishCard
               stepNumber={4}
               loading={loading}
