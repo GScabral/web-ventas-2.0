@@ -1,0 +1,166 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Inicio (dashboard)
+   .stat-card viene de adminCommon.css.
+   ============================================================ */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.welcome-card,
+.quick-actions {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome-card {
+  padding: var(--sp-6);
+  background: var(--gradient-surface);
+}
+
+.welcome-card h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-2);
+  color: var(--text-primary);
+}
+
+.welcome-card p {
+  color: var(--text-secondary);
+  font-size: var(--fs-base);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-4);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.quick-actions {
+  padding: var(--sp-6);
+}
+
+.quick-actions h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  margin-bottom: var(--sp-4);
+  color: var(--text-primary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  box-shadow: var(--shadow-glow-terracota);
+  transition: transform var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(255, 107, 53, 0.3);
+}
+
+.action-btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: none;
+  border: 1px solid var(--border-medium);
+}
+
+.action-btn-secondary:hover {
+  border-color: var(--accent-mostaza);
+  color: var(--accent-mostaza);
+  box-shadow: none;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    gap: var(--sp-4);
+  }
+
+  .welcome-card,
+  .quick-actions {
+    padding: var(--sp-4);
+  }
+
+  .welcome-card h2 {
+    font-size: var(--fs-md);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: var(--fs-2xl);
+  }
+
+  .actions {
+    gap: var(--sp-2);
+  }
+
+  .action-btn {
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--fs-sm);
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    gap: var(--sp-3);
+  }
+
+  .welcome-card,
+  .quick-actions {
+    padding: var(--sp-3);
+  }
+
+  .stat-value {
+    font-size: var(--fs-xl);
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: var(--sp-3);
+  }
+}

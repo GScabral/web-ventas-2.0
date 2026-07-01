@@ -1,0 +1,182 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Tarjeta de pedido individual
+   .btn-ticket / .btn-details ya vienen estilizados desde
+   adminCommon.css.
+   ============================================================ */
+
+.pedido-card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--sp-4);
+}
+
+.pedido-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.pedido-id {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pedido-date {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  margin-top: 2px;
+}
+
+.pedido-email {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  margin-top: 2px;
+}
+
+.pedido-total {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--accent-terracota);
+}
+
+.pedido-actions {
+  margin-top: var(--sp-5);
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.pedido-actions select {
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+  padding: 0 var(--sp-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+}
+
+.pedido-actions select:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
+}
+
+.pedido-details {
+  margin-top: var(--sp-5);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--sp-5);
+}
+
+.detalle-item {
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.detalle-item:last-child {
+  border-bottom: none;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0;
+}
+
+.chips span {
+  background: var(--accent-terracota-soft);
+  color: var(--accent-terracota);
+  padding: 4px var(--sp-3);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.subtotal {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .pedido-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-2);
+  }
+
+  .pedido-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pedido-card {
+    padding: var(--sp-4);
+  }
+
+  .pedido-total {
+    font-size: var(--fs-lg);
+  }
+}
+
+@media (max-width: 600px) {
+  .pedido-card {
+    padding: var(--sp-3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--sp-3);
+  }
+
+  .pedido-id {
+    font-size: var(--fs-base);
+  }
+
+  .pedido-date {
+    font-size: var(--fs-xs);
+  }
+
+  .pedido-total {
+    font-size: var(--fs-md);
+  }
+
+  .pedido-actions {
+    margin-top: var(--sp-3);
+    gap: var(--sp-2);
+    flex-direction: column;
+  }
+
+  .pedido-actions select,
+  .btn-ticket,
+  .btn-details {
+    width: 100%;
+    height: 38px;
+    padding: 0 var(--sp-3);
+    font-size: var(--fs-xs);
+  }
+
+  .pedido-details {
+    margin-top: var(--sp-3);
+    padding-top: var(--sp-3);
+  }
+
+  .detalle-item {
+    padding: var(--sp-2) 0;
+  }
+
+  .chips {
+    gap: var(--sp-1);
+  }
+
+  .chips span {
+    padding: 3px var(--sp-2);
+    font-size: 0.7rem;
+  }
+}

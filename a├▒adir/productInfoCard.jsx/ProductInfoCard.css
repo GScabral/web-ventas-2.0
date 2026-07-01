@@ -1,0 +1,27 @@
+@import "../../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Tarjeta "Información del producto"
+   .form-group y .card-header vienen de adminCommon.css.
+   ============================================================ */
+
+.product-info-card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+  .product-info-card {
+    padding: var(--sp-4);
+  }
+}
+
+@media (max-width: 600px) {
+  .product-info-card {
+    padding: var(--sp-3);
+    border-radius: var(--radius-md);
+  }
+}

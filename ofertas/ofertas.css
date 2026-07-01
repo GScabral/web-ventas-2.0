@@ -1,0 +1,36 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Modal "Asignar oferta"
+   (el .custom-modal base ya viene de Design-system.css;
+   acá solo lo que es específico de este formulario)
+   ============================================================ */
+
+.ofertas-modal {
+  max-width: 420px;
+}
+
+.ofertas-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.ofertas-input {
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+}
+
+.ofertas-input:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
+  background: var(--bg-elevated);
+}

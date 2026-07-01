@@ -1,0 +1,222 @@
+@import "../adminCommon.css";
+
+.banners-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.banners-header h1 {
+  margin: 0;
+  font-size: var(--fs-2xl);
+}
+
+.banners-header p {
+  margin-top: var(--sp-1);
+  color: var(--text-secondary);
+}
+
+.banner-form {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-md);
+}
+
+.banner-form h2 {
+  margin: 0 0 var(--sp-5);
+  font-size: var(--fs-lg);
+}
+
+.banner-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4);
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.form-group label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select {
+  height: 42px;
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--sp-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+}
+
+.form-group input[type="color"] {
+  padding: 4px;
+  cursor: pointer;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
+}
+
+.banner-form-error {
+  margin: var(--sp-4) 0 0;
+  color: var(--color-error);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.banner-form-actions {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-5);
+}
+
+.btn-save-banner {
+  border: none;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  padding: var(--sp-3) var(--sp-6);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  box-shadow: var(--shadow-glow-terracota);
+}
+
+.btn-save-banner:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel-banner {
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+  padding: var(--sp-3) var(--sp-6);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.banners-section h2 {
+  font-size: var(--fs-md);
+  margin-bottom: var(--sp-4);
+}
+
+.banners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-4);
+}
+
+.banners-empty {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  padding: var(--sp-5);
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.banner-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.banner-card.inactivo {
+  opacity: 0.5;
+}
+
+.banner-card-preview {
+  height: 110px;
+  padding: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  color: #fff;
+}
+
+.banner-card-preview span {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.banner-card-preview strong {
+  font-size: var(--fs-sm);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.banner-card-info {
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+}
+
+.banner-card-link {
+  margin: 0 0 var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.banner-card-vigencia {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+}
+
+.banner-card-actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.banner-card-actions button {
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+.banner-card-delete {
+  border-color: rgba(255, 92, 92, 0.3) !important;
+  color: var(--color-error) !important;
+}
+
+@media (max-width: 768px) {
+  .banner-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-full {
+    grid-column: auto;
+  }
+
+  .banners-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,62 @@
+@import "../../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Badges de talle / color dentro de la tarjeta de producto
+   ============================================================ */
+
+.product-badges {
+  margin-bottom: var(--sp-5);
+}
+
+.badge-group {
+  margin-bottom: var(--sp-3);
+}
+
+.badge-title {
+  display: block;
+  margin-bottom: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.badge {
+  padding: 4px var(--sp-3);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.badge-size {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.badge-color {
+  background: var(--accent-mostaza-soft);
+  color: #a86a1f;
+}
+
+@media (max-width: 768px) {
+  .badges {
+    gap: var(--sp-1);
+  }
+}
+
+@media (max-width: 600px) {
+  .product-badges {
+    margin-bottom: var(--sp-4);
+  }
+
+  .badge-group {
+    margin-bottom: var(--sp-2);
+  }
+}

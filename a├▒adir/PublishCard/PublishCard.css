@@ -1,0 +1,142 @@
+@import "../../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Tarjeta "Publicar"
+   ============================================================ */
+
+.publish-card {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: var(--sp-4);
+}
+
+.publish-header {
+  margin-bottom: var(--sp-5);
+}
+
+.publish-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+}
+
+.publish-header p {
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.publish-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+}
+
+.publish-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--fs-sm);
+}
+
+.publish-item span {
+  color: var(--text-secondary);
+}
+
+.publish-item strong {
+  color: var(--text-primary);
+}
+
+/* ---- Checklist de campos completos ---- */
+
+.publish-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+
+.check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.publish-hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--sp-4);
+}
+
+.publish-button {
+  width: 100%;
+  border: none;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  padding: var(--sp-4);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: var(--shadow-glow-terracota);
+  transition: transform var(--t-fast) var(--ease-out),
+              opacity var(--t-fast) var(--ease-out);
+}
+
+.publish-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.publish-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  .publish-card {
+    padding: var(--sp-4);
+    border-radius: var(--radius-md);
+  }
+
+  .publish-info {
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-4);
+  }
+
+  .publish-button {
+    padding: var(--sp-3);
+    font-size: var(--fs-sm);
+  }
+}
+
+@media (max-width: 600px) {
+  .publish-card {
+    position: static;
+    padding: var(--sp-3);
+    margin-bottom: var(--sp-4);
+  }
+
+  .publish-header {
+    margin-bottom: var(--sp-4);
+  }
+
+  .publish-item {
+    padding-bottom: var(--sp-2);
+    font-size: var(--fs-xs);
+  }
+}

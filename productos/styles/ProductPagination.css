@@ -1,0 +1,98 @@
+@import "../../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Paginación de inventario
+   ============================================================ */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-7);
+}
+
+.pagination-pages {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 700;
+  transition: border-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+
+.page-btn:hover {
+  border-color: var(--accent-terracota);
+  color: var(--accent-terracota);
+}
+
+.page-btn.active {
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  border-color: transparent;
+  box-shadow: var(--shadow-glow-terracota);
+}
+
+.pagination-arrow {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: var(--bg-elevated-2);
+  color: var(--text-primary);
+  transition: background var(--t-fast) var(--ease-out);
+}
+
+.pagination-arrow:hover:not(:disabled) {
+  background: var(--accent-terracota-soft);
+  color: var(--accent-terracota);
+}
+
+.pagination-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .pagination-container {
+    gap: var(--sp-2);
+    margin-top: var(--sp-6);
+  }
+
+  .page-btn,
+  .pagination-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: var(--fs-sm);
+  }
+}
+
+@media (max-width: 600px) {
+  .pagination-container {
+    gap: var(--sp-1);
+    margin-top: var(--sp-5);
+  }
+
+  .pagination-pages {
+    gap: var(--sp-1);
+  }
+
+  .page-btn,
+  .pagination-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: var(--fs-xs);
+    border-radius: 6px;
+  }
+}
