@@ -39,6 +39,7 @@ export const DELETE_CATEGORIA = "DELETE_CATEGORIA";
 export const GET_BANNERS = "GET_BANNERS";
 export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const GET_CONFIGURACION = "GET_CONFIGURACION";
+export const MOSTRAR_TOAST = "MOSTRAR_TOAST";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
@@ -933,3 +934,16 @@ export const actualizarConfiguracion = (datos) => {
     return response.data;
   };
 };
+
+// Aviso global chico (ej. "Se agregó al carrito"). El key con
+// Date.now() es a propósito: así, si el mismo mensaje se dispara dos
+// veces seguidas (agregar el mismo producto de nuevo), el Toast lo
+// vuelve a mostrar en vez de quedarse "pegado" porque el mensaje no
+// cambió.
+export const mostrarToast = (mensaje) => ({
+  type: MOSTRAR_TOAST,
+  payload: {
+    mensaje,
+    key: Date.now(),
+  },
+});
