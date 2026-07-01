@@ -24,7 +24,33 @@ router.get("/producto", async (req, res) => {
     }
 })
 
-router.post("/nuevoProducto", verificarTokenAdmin, upload.any(), async (req, res) => {
+// El error de Cloudinary (credenciales inválidas, corte de red, cuota
+// superada, etc.) ocurre DENTRO del middleware de subida, antes de que
+// el try/catch de la ruta llegue a actuar. Sin este envoltorio, ese
+// error salta directo al manejador de errores genérico de toda la app
+// (ver app.js), que devuelve el mensaje técnico crudo del SDK de
+// Cloudinary tal cual — algo como "Server returned unexpected status
+// code - 403", que no le dice nada útil al admin sobre qué pasó ni qué
+// hacer. Acá lo interceptamos, lo logueamos completo para debug, y
+// respondemos con un mensaje claro y accionable.
+const subirImagenes = (req, res, next) => {
+    upload.any()(req, res, (error) => {
+        if (error) {
+            console.error("Error al subir imágenes a Cloudinary:", error);
+
+            return res.status(502).json({
+                error:
+                    "No pudimos subir las imágenes del producto. " +
+                    "Puede ser un problema temporal de conexión — probá de nuevo en un minuto. " +
+                    "Si el error se repite, avisale al administrador del sistema."
+            });
+        }
+
+        next();
+    });
+};
+
+router.post("/nuevoProducto", verificarTokenAdmin, subirImagenes, async (req, res) => {
     try {
 
         const files = req.files;
