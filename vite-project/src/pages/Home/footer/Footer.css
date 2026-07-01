@@ -41,7 +41,7 @@
 }
 
 .footer-box a:hover {
-  color: #ff6b35;
+  color: var(--accent-terracota);
 }
 
 .footer-box ul {

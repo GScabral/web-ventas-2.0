@@ -24,7 +24,7 @@
 .form input:focus {
   outline: none;
 
-  border-color: #ff6b35;
+  border-color: var(--accent-terracota);
 
   box-shadow:
     0 0 0 3px rgba(255,107,53,.15);

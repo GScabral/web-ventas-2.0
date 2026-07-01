@@ -13,7 +13,7 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
 
-    color: #ff6b35;
+    color: var(--accent-terracota);
 }
 
 .section-header h2 {
@@ -68,15 +68,15 @@
 }
 
 .editorial-category.accent-rosa {
-    color: #d6708a;
+    color: var(--accent-rosa);
 }
 
 .editorial-category.accent-mostaza {
-    color: #e8a33d;
+    color: var(--accent-mostaza);
 }
 
 .editorial-category.accent-terracota {
-    color: #ff6b35;
+    color: var(--accent-terracota);
 }
 
 .editorial-item h3 {

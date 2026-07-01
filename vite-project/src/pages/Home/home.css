@@ -58,18 +58,18 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #ff6b35;
+    background: var(--accent-terracota);
     animation: spinnerBounce 1.2s infinite ease-in-out;
 }
 
 .spinner-dot:nth-child(2) {
     animation-delay: 0.15s;
-    background: #e8a33d;
+    background: var(--accent-mostaza);
 }
 
 .spinner-dot:nth-child(3) {
     animation-delay: 0.3s;
-    background: #d6708a;
+    background: var(--accent-rosa);
 }
 
 @keyframes spinnerBounce {

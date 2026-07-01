@@ -13,7 +13,7 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
 
-    color: #d6708a;
+    color: var(--accent-rosa);
 }
 
 .trending-header h2 {
@@ -80,7 +80,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
 
-    color: #e8a33d;
+    color: var(--accent-mostaza);
 }
 
 .featured-overlay h3 {
@@ -138,7 +138,7 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
 
-    color: #ff6b35;
+    color: var(--accent-terracota);
 }
 
 .side-info h4 {

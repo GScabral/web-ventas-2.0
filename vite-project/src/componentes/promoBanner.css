@@ -21,7 +21,7 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
 
-    color: #e8a33d;
+    color: var(--accent-mostaza);
 }
 
 .promo-banner h2 {

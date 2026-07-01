@@ -118,8 +118,8 @@
 }
 
 .quantityControl button:hover:not(:disabled) {
-  border-color: #ff6b35;
-  color: #ff6b35;
+  border-color: var(--accent-terracota);
+  color: var(--accent-terracota);
 }
 
 .quantityControl button:disabled {

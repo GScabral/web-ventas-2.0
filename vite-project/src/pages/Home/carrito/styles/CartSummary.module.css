@@ -40,7 +40,7 @@
 
   border-radius: 12px;
 
-  background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+  background: var(--gradient-brand);
 
   color: #1a1410;
 

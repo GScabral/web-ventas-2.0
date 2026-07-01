@@ -21,11 +21,11 @@
 }
 
 .thumb:hover {
-  border-color: #ff6b35;
+  border-color: var(--accent-terracota);
 }
 
 .thumb.active {
-  border-color: #ff6b35;
+  border-color: var(--accent-terracota);
 }
 
 .thumb img {

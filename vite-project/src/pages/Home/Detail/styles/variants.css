@@ -30,7 +30,7 @@
 }
 
 .chip:hover {
-  border-color: #ff6b35;
+  border-color: var(--accent-terracota);
 }
 
 .chip.active {

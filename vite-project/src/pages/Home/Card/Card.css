@@ -29,7 +29,7 @@
   left: 8px;
   z-index: 2;
 
-  background: #e8a33d;
+  background: var(--accent-mostaza);
   color: #1a1410;
 
   font-size: 11px;
@@ -71,7 +71,7 @@
 }
 
 .product-quick-add:hover {
-  background: #ff6b35;
+  background: var(--accent-terracota);
   color: #fff;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .product-price-row .product-price-final {
-  color: #d6708a;
+  color: var(--accent-rosa);
 }
 
 .product-price-old {
@@ -218,7 +218,7 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #ff6b35;
+  color: var(--accent-terracota);
 }
 
 .modal-title {
@@ -275,7 +275,7 @@
 
 .size-btn:hover,
 .color-btn:hover {
-  border-color: #ff6b35;
+  border-color: var(--accent-terracota);
 }
 
 .size-btn.active,
@@ -304,7 +304,7 @@
 }
 
 .quantity-row button:hover {
-  border-color: #ff6b35;
+  border-color: var(--accent-terracota);
 }
 
 .quantity-row span {
@@ -342,7 +342,7 @@
 }
 
 .confirm-cart-btn {
-  background: linear-gradient(135deg, #ff6b35 0%, #f2913f 50%, #e8a33d 100%);
+  background: var(--gradient-brand);
   color: #1a1410;
   border: none;
 }
