@@ -7,10 +7,13 @@ import styles from "../styles/CheckoutModal.module.css";
 
 const CheckoutModal = ({ show, onClose }) => {
   const {
+    carrito,
+    total,
     email,
     setEmail,
     shippingData,
     handleShippingChange,
+    setTipoEntrega,
     confirmarPedido,
     loading,
     submitError,
@@ -86,6 +89,40 @@ const CheckoutModal = ({ show, onClose }) => {
 
         <div className="custom-modal-body">
 
+          {/* Resumen: para no perder de vista qué se está comprando
+              mientras se completan los datos. */}
+          <div className={styles.resumen}>
+
+            <span className={styles.resumenLabel}>
+              Tu pedido ({carrito.length} {carrito.length === 1 ? "producto" : "productos"})
+            </span>
+
+            <div className={styles.resumenLista}>
+              {carrito.map((item, i) => (
+                <div key={i} className={styles.resumenItem}>
+                  <span className={styles.resumenItemNombre}>
+                    {item.nombre}
+                    {item.color && ` · ${item.color}`}
+                    {item.talla && ` · Talle ${item.talla}`}
+                    {" "}× {item.cantidad_elegida ?? item.cantidad ?? 1}
+                  </span>
+                  <span className={styles.resumenItemPrecio}>
+                    ${(
+                      (item.precio ?? item.precio_unitario ?? 0) *
+                      (item.cantidad_elegida ?? item.cantidad ?? 1)
+                    ).toLocaleString("es-AR")}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.resumenTotal}>
+              <span>Total</span>
+              <strong>${total.toLocaleString("es-AR")}</strong>
+            </div>
+
+          </div>
+
           {submitError && (
             <div className={styles.submitError}>
               {submitError}
@@ -121,6 +158,7 @@ const CheckoutModal = ({ show, onClose }) => {
           <ShippingForm
             data={shippingData}
             onChange={handleShippingChange}
+            onTipoEntregaChange={setTipoEntrega}
             fieldErrors={fieldErrors}
           />
 
@@ -144,7 +182,7 @@ const CheckoutModal = ({ show, onClose }) => {
           >
             {loading
               ? "Procesando pedido..."
-              : "Confirmar Pedido"}
+              : `Confirmar Pedido · $${total.toLocaleString("es-AR")}`}
           </button>
 
         </div>

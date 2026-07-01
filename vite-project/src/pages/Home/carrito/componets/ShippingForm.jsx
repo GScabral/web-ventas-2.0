@@ -1,64 +1,82 @@
 import React from "react";
 import styles from "../styles/ShippingForm.module.css";
 
-const ShippingForm = ({ data, onChange, fieldErrors = {} }) => {
+const ShippingForm = ({ data, onChange, onTipoEntregaChange, fieldErrors = {} }) => {
   return (
     <div className={styles.fieldsWrapper}>
 
-      <div className={styles.formGroup}>
-        <label>Forma de entrega</label>
+      <div className={styles.section}>
+        <span className={styles.sectionTitle}>Forma de entrega</span>
 
-        <select
-          name="tipoEntrega"
-          value={data.tipoEntrega}
-          onChange={onChange}
-        >
-          <option value="ENVIO">
-            Envío a domicilio
-          </option>
+        <div className={styles.entregaToggle}>
+          <button
+            type="button"
+            className={
+              data.tipoEntrega === "ENVIO"
+                ? `${styles.entregaBtn} ${styles.entregaBtnActiva}`
+                : styles.entregaBtn
+            }
+            onClick={() => onTipoEntregaChange("ENVIO")}
+          >
+            📦 Envío a domicilio
+          </button>
 
-          <option value="RETIRO">
-            Retiro en local
-          </option>
-        </select>
+          <button
+            type="button"
+            className={
+              data.tipoEntrega === "RETIRO"
+                ? `${styles.entregaBtn} ${styles.entregaBtnActiva}`
+                : styles.entregaBtn
+            }
+            onClick={() => onTipoEntregaChange("RETIRO")}
+          >
+            🏬 Retiro en local
+          </button>
+        </div>
       </div>
 
-      <div className={`${styles.formGroup} ${fieldErrors.nombre ? styles.hasError : ""}`}>
-        <label>Nombre</label>
+      <div className={styles.section}>
+        <span className={styles.sectionTitle}>Tus datos</span>
 
-        <input
-          name="nombre"
-          placeholder="Nombre completo"
-          value={data.nombre}
-          onChange={onChange}
-        />
+        <div className={`${styles.formGroup} ${fieldErrors.nombre ? styles.hasError : ""}`}>
+          <label>Nombre</label>
 
-        {fieldErrors.nombre && (
-          <span className={styles.fieldError}>
-            {fieldErrors.nombre}
-          </span>
-        )}
-      </div>
+          <input
+            name="nombre"
+            placeholder="Nombre completo"
+            value={data.nombre}
+            onChange={onChange}
+          />
 
-      <div className={`${styles.formGroup} ${fieldErrors.telefono ? styles.hasError : ""}`}>
-        <label>Teléfono</label>
+          {fieldErrors.nombre && (
+            <span className={styles.fieldError}>
+              {fieldErrors.nombre}
+            </span>
+          )}
+        </div>
 
-        <input
-          name="telefono"
-          placeholder="Ej: 3794123456"
-          value={data.telefono}
-          onChange={onChange}
-        />
+        <div className={`${styles.formGroup} ${fieldErrors.telefono ? styles.hasError : ""}`}>
+          <label>Teléfono</label>
 
-        {fieldErrors.telefono && (
-          <span className={styles.fieldError}>
-            {fieldErrors.telefono}
-          </span>
-        )}
+          <input
+            name="telefono"
+            placeholder="Ej: 3794123456"
+            value={data.telefono}
+            onChange={onChange}
+          />
+
+          {fieldErrors.telefono && (
+            <span className={styles.fieldError}>
+              {fieldErrors.telefono}
+            </span>
+          )}
+        </div>
       </div>
 
       {data.tipoEntrega === "ENVIO" && (
-        <>
+        <div className={styles.section}>
+          <span className={styles.sectionTitle}>Dirección de envío</span>
+
           <div className={`${styles.formGroup} ${fieldErrors.provincia ? styles.hasError : ""}`}>
             <label>Provincia</label>
 
@@ -109,7 +127,7 @@ const ShippingForm = ({ data, onChange, fieldErrors = {} }) => {
               </span>
             )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

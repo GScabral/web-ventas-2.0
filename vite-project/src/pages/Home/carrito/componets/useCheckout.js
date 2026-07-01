@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   addPedido,
   vaciarCarrito,
 } from "../../../../redux/action";
+
+import { STORE_CONFIG } from "../../../../config/storeConfig";
 
 const useCheckout = () => {
 
@@ -15,6 +16,17 @@ const useCheckout = () => {
   const carrito = useSelector(
     state => state.carrito
   );
+
+  // Mismo criterio que en Nav/Footer: si Personalización todavía no
+  // cargó, o el admin no cargó un WhatsApp, usamos el valor por
+  // defecto del archivo estático. Antes esto estaba escrito a mano acá
+  // ("+5493794562823"), así que cambiar el WhatsApp desde el admin no
+  // tenía ningún efecto en el checkout real.
+  const configuracion = useSelector(
+    state => state.configuracion
+  );
+
+  const whatsapp = configuracion?.whatsapp || STORE_CONFIG.whatsapp;
 
   const [email, setEmail] =
     useState("");
@@ -44,8 +56,25 @@ const useCheckout = () => {
     }));
   };
 
+  // Para el toggle de forma de entrega: no depende de un evento de
+  // input, así que tiene su propio setter directo.
+  const setTipoEntrega = (tipo) => {
+    setShippingData(prev => ({
+      ...prev,
+      tipoEntrega: tipo,
+    }));
+  };
+
   const [submitError, setSubmitError] =
     useState("");
+
+  const total = carrito.reduce(
+    (acc, item) =>
+      acc +
+      (item.precio ?? item.precio_unitario ?? 0) *
+      (item.cantidad_elegida ?? item.cantidad ?? 1),
+    0
+  );
 
   const confirmarPedido = async () => {
 
@@ -105,25 +134,6 @@ const useCheckout = () => {
           })
           .join("\n");
 
-        const total = carrito.reduce(
-          (acc, item) => {
-
-            const precio =
-              item.precio ??
-              item.precio_unitario ??
-              0;
-
-            const cantidad =
-              item.cantidad_elegida ??
-              item.cantidad ??
-              1;
-
-            return acc + precio * cantidad;
-
-          },
-          0
-        );
-
         const mensaje = `
 🛒 NUEVO PEDIDO
 
@@ -149,12 +159,8 @@ ${productos}
 Total: $${total}
       `;
 
-        // CAMBIAR POR TU NÚMERO
-        const numero =
-          "+5493794562823";
-
         window.open(
-          `https://wa.me/${numero}?text=${encodeURIComponent(
+          `https://wa.me/${whatsapp}?text=${encodeURIComponent(
             mensaje
           )}`,
           "_blank"
@@ -181,13 +187,18 @@ Total: $${total}
 
     }
   };
+
   return {
+
+    carrito,
+    total,
 
     email,
     setEmail,
 
     shippingData,
     handleShippingChange,
+    setTipoEntrega,
 
     confirmarPedido,
 

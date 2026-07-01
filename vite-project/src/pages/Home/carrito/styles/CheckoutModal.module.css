@@ -1,157 +1,150 @@
-.overlay {
-  position: fixed;
-  inset: 0;
-
-  background: rgba(0,0,0,.6);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 9999;
-}
-
 .modal {
   width: 100%;
-  max-width: 650px;
-
+  max-width: 620px;
   background: white;
-
   border-radius: 20px;
-
-  padding: 30px;
-
+  padding: 0;
   position: relative;
-
-  animation: aparecer .25s ease;
-}
-
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  color: #1a1a1a;
 }
 
 .modal h2 {
-  margin-bottom: 25px;
+  color: #1a1a1a;
+  font-size: 20px;
 }
 
-.modal input {
+/* ---- Resumen del pedido ---- */
+
+.resumen {
+  background: #faf9f7;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.resumenLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.resumenLista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.resumenItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.resumenItemNombre {
+  color: #444;
+  flex: 1;
+}
+
+.resumenItemPrecio {
+  color: #1a1a1a;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.resumenTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+  font-size: 15px;
+}
+
+.resumenTotal strong {
+  font-size: 18px;
+  color: var(--accent-terracota, #ff6b35);
+}
+
+/* ---- Formulario: campos genéricos (email, y los reusados por ShippingForm) ---- */
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+}
+
+.formGroup input {
   width: 100%;
-
-  padding: 14px;
-
+  padding: 13px 14px;
   border: 1px solid #ddd;
-
   border-radius: 10px;
-
-  margin-bottom: 15px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.modal button {
-  border: none;
-
-  cursor: pointer;
+.formGroup input:focus {
+  outline: none;
+  border-color: var(--accent-terracota, #ff6b35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
 }
 
-.modal > button:first-child {
-  position: absolute;
-
-  right: 15px;
-  top: 15px;
-
-  width: 35px;
-  height: 35px;
-
-  border-radius: 50%;
-
-  background: #f3f4f6;
-
-  font-size: 22px;
+.hasError input {
+  border-color: #e24b4a;
 }
 
-.modal > button:last-child {
-  width: 100%;
+.fieldError {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e24b4a;
+}
 
-  margin-top: 20px;
-
-  border: none;
-
-  background: var(--gradient-brand);
-
-  color: #1a1410;
-
-  padding: 14px;
-
-  border-radius: 12px;
-
-  font-weight: 800;
-
-  cursor: pointer;
+.submitError {
+  background: #fdecea;
+  color: #b3261e;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
 }
 
 @media (max-width: 768px) {
-  .modal {
-    max-width: 90vw;
-    padding: 24px;
-  }
-
   .modal h2 {
     font-size: 18px;
-    margin-bottom: 20px;
   }
 
-  .modal input {
-    padding: 12px;
-    font-size: 0.95rem;
-  }
-
-  .modal > button:first-child {
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
+  .resumen {
+    padding: 14px;
   }
 }
 
 @media (max-width: 600px) {
-  .overlay {
-    padding: 16px;
-  }
-
   .modal {
     max-width: 100%;
-    padding: 16px;
-    border-radius: 16px;
+    border-radius: 16px 16px 0 0;
   }
 
   .modal h2 {
     font-size: 16px;
-    margin-bottom: 16px;
   }
 
-  .modal input {
-    padding: 10px;
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-  }
-
-  .modal > button:first-child {
-    width: 28px;
-    height: 28px;
-    font-size: 18px;
-    right: 12px;
-    top: 12px;
-  }
-
-  .modal > button:last-child {
-    padding: 12px;
-    font-size: 0.85rem;
-    margin-top: 12px;
+  .resumenLista {
+    max-height: 120px;
   }
 }
