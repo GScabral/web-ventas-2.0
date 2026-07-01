@@ -5,6 +5,7 @@ import PanelAdmin from './admin/panelAdmin'
 import Detail from './pages/Home/Detail/detail'
 import Carrito from './pages/Home/carrito/carrito'
 import Nav from './pages/Home/Nav/Nav'
+import ThemeLoader from './componentes/ThemeLoader'
 import Principal from './admin/inicio/principalAdmin'
 import NewProduct from './admin/añadir/añadirProducto'
 import ProductList from './admin/productos/listadoProductos'
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <div>
+      <ThemeLoader />
       {!hideNav && <Nav />}
       <Routes>
         <Route path='/' element={<Home />} />

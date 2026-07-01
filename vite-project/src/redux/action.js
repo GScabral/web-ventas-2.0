@@ -38,6 +38,7 @@ export const UPDATE_CATEGORIA = "UPDATE_CATEGORIA";
 export const DELETE_CATEGORIA = "DELETE_CATEGORIA";
 export const GET_BANNERS = "GET_BANNERS";
 export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
+export const GET_CONFIGURACION = "GET_CONFIGURACION";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
@@ -880,6 +881,41 @@ export const eliminarBanner = (id) => {
   return async function (dispatch) {
     const response = await axios.delete(`${API_URL}/banner/${id}`);
     await dispatch(getBannersAdmin());
+    return response.data;
+  };
+};
+
+// Configuración de marca (colores + nombre de tienda). Se pide una
+// vez al cargar el sitio y se usa para pintar las variables CSS de
+// Design-system.css, así cada instalación puede tener su propia
+// identidad sin tocar código.
+
+export const getConfiguracion = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/configuracion`);
+
+      dispatch({
+        type: GET_CONFIGURACION,
+        payload: response.data,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener la configuración:", error);
+    }
+  };
+};
+
+export const actualizarConfiguracion = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.put(`${API_URL}/configuracion`, datos);
+
+    dispatch({
+      type: GET_CONFIGURACION,
+      payload: response.data,
+    });
+
     return response.data;
   };
 };

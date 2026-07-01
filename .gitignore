@@ -1,3 +1,5 @@
 .env
 node_modules/
 package-lock.json
+cleanupSeend.js
+seed30.js

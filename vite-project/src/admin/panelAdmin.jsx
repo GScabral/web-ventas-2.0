@@ -16,6 +16,7 @@ import PedidoList from "./pedidos/listadoPedidos";
 // import ClienteList from "./clientes/listadoClientes";
 import OfertasLista from "./ofertas/listadoOFertas";
 import BannersLista from "./banners/listadoBanners";
+import Personalizacion from "./personalizacion/Personalizacion";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
 
@@ -54,6 +55,11 @@ const menuItems = [
     title: "Banners",
     path: "/admin/banners",
     icon: "🖼️",
+  },
+  {
+    title: "Personalización",
+    path: "/admin/personalizacion",
+    icon: "🎨",
   },
 ];
 
@@ -314,6 +320,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <BannersLista />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/personalizacion"
+              element={
+                isLoggedIn ? (
+                  <Personalizacion />
                 ) : (
                   <Navigate to="/admin/login" />
                 )
