@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { agregarAlCarrito } from "../../../redux/action";
+import { agregarAlCarrito, mostrarToast } from "../../../redux/action";
 
 import { useProductDetail } from "./hooks/useProductDetail";
 import { useProductOffer } from "./hooks/useProductOffer";
@@ -77,6 +77,8 @@ const Detail = () => {
       idVariante: variante.idVariante,
       imagen: variante.imagenes?.[0]
     }));
+
+    dispatch(mostrarToast(`${info?.nombre} se agregó al carrito`));
   };
 
   return (

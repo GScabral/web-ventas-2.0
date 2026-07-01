@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { agregarAlCarrito } from "../../../redux/action";
+import { agregarAlCarrito, mostrarToast } from "../../../redux/action";
 import { useDispatch } from "react-redux";
 
 const ProductModal = ({
@@ -92,6 +92,8 @@ const ProductModal = ({
       idVariante: varianteSeleccionada.idVariante,
       imagen: varianteSeleccionada.imagenes?.[0]
     }));
+
+    dispatch(mostrarToast(`${product.nombre} se agregó al carrito`));
 
     setAgregado(true);
 

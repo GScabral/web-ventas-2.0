@@ -39,7 +39,8 @@ import {
   DELETE_CATEGORIA,
   GET_BANNERS,
   GET_BANNERS_ADMIN,
-  GET_CONFIGURACION
+  GET_CONFIGURACION,
+  MOSTRAR_TOAST
 } from "./action"
 
 const initialState = {
@@ -70,6 +71,7 @@ const initialState = {
   banners: [],
   bannersAdmin: [],
   configuracion: null,
+  toast: null,
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -597,6 +599,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         configuracion: action.payload
+      };
+
+    case MOSTRAR_TOAST:
+      return {
+        ...state,
+        toast: action.payload
       };
 
     ///////////////////////////////////////////////////////////////////////////  
