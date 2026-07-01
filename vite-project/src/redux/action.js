@@ -39,7 +39,6 @@ export const DELETE_CATEGORIA = "DELETE_CATEGORIA";
 export const GET_BANNERS = "GET_BANNERS";
 export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const GET_CONFIGURACION = "GET_CONFIGURACION";
-export const MOSTRAR_TOAST = "MOSTRAR_TOAST";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
@@ -533,10 +532,24 @@ export const eliminarPedido =
       }
     };
 
-export const actualizarCarrito = (nuevoCarrito) => ({
-  type: ACTUALIZAR_CARRITO,
-  payload: nuevoCarrito,
-});
+// Actualiza un producto puntual del carrito (ej. cambiar la cantidad
+// desde CartItem). Recibe el índice del producto en el carrito y el
+// producto ya con los datos nuevos, y arma acá el array completo con
+// ese único ítem reemplazado — así el componente que dispara la
+// acción no necesita conocer el resto del carrito ni el reducer
+// necesita hacer lógica extra.
+export const actualizarCarrito = (index, productoActualizado) => (dispatch, getState) => {
+  const carritoActual = getState().carrito;
+
+  const nuevoCarrito = carritoActual.map((item, i) =>
+    i === index ? productoActualizado : item
+  );
+
+  dispatch({
+    type: ACTUALIZAR_CARRITO,
+    payload: nuevoCarrito,
+  });
+};
 
 
 export const buscar = (name) => {
@@ -920,16 +933,3 @@ export const actualizarConfiguracion = (datos) => {
     return response.data;
   };
 };
-
-// Aviso global chico (ej. "Se agregó al carrito"). El key con
-// Date.now() es a propósito: así, si el mismo mensaje se dispara dos
-// veces seguidas (agregar el mismo producto de nuevo), el Toast lo
-// vuelve a mostrar en vez de quedarse "pegado" porque el mensaje no
-// cambió.
-export const mostrarToast = (mensaje) => ({
-  type: MOSTRAR_TOAST,
-  payload: {
-    mensaje,
-    key: Date.now(),
-  },
-});
