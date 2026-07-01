@@ -47,11 +47,25 @@ const Detail = () => {
   }, [allProductos, info]);
 
   const handleAdd = () => {
+
+    if (!talle) {
+      setStockError("Seleccioná un talle.");
+      return;
+    }
+
+    if (!color) {
+      setStockError("Seleccioná un color.");
+      return;
+    }
+
     const variante = variantes.find(
       v => v.talla === talle && v.color === color
     );
 
-    if (!variante) return;
+    if (!variante) {
+      setStockError("Esa combinación de talle y color no está disponible.");
+      return;
+    }
 
     if (cantidad > variante.cantidad_disponible) {
       setStockError(

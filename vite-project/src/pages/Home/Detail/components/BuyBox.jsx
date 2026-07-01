@@ -55,15 +55,14 @@ const BuyBox = ({
                     max={stock || undefined}
                     value={cantidad}
                     onChange={handleCantidadChange}
-                    className={stockError ? "qty-input-error" : ""}
                 />
-
-                {stockError && (
-                    <span className="qty-error">
-                        {stockError}
-                    </span>
-                )}
             </div>
+
+            {stockError && (
+                <span className="qty-error">
+                    {stockError}
+                </span>
+            )}
 
             <button className="add-btn" onClick={onAdd}>
                 Agregar al carrito
