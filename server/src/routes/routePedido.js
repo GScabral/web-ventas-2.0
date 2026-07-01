@@ -2,6 +2,7 @@ const { Router } = require("express");
 
 const nuevoPedido = require("../controllers/pedido/newPedido");
 const getPedidos = require("../controllers/pedido/getPedidos");
+const getEstadisticas = require("../controllers/pedido/getEstadisticas");
 const getPedidoById = require("../controllers/pedido/getPedidoById");
 const actualizarEstado = require("../controllers/pedido/actualizarEstado");
 const cancelarPedido = require("../controllers/pedido/cancelarPedido");
@@ -17,6 +18,18 @@ router.post("/nuevoPedido", nuevoPedido);
 // Lista de pedidos: alias `/Lpedidos` y ruta raíz `/` para compatibilidad con frontend
 router.get("/Lpedidos", verificarTokenAdmin, getPedidos);
 router.get("/", verificarTokenAdmin, getPedidos);
+
+// Tiene que ir ANTES de /:id — si no, Express interpreta "estadisticas"
+// como si fuera el :id de un pedido y nunca llega a este handler.
+router.get("/estadisticas", verificarTokenAdmin, async (req, res) => {
+  try {
+    const estadisticas = await getEstadisticas();
+    res.status(200).json(estadisticas);
+  } catch (error) {
+    console.error("Error al obtener estadísticas:", error);
+    res.status(500).json({ error: "No pudimos obtener las estadísticas." });
+  }
+});
 
 router.get("/:id", verificarTokenAdmin, getPedidoById);
 

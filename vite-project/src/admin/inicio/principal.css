@@ -164,3 +164,143 @@
     padding: var(--sp-3);
   }
 }
+
+/* ============================================================
+   Vendido en texto (producto más vendido: nombre largo, no un
+   número) — se achica la fuente para que quepa sin desbordar.
+   ============================================================ */
+
+.stat-value-texto {
+  font-size: var(--fs-lg) !important;
+  line-height: 1.25;
+}
+
+/* ============================================================
+   Tarjeta genérica del dashboard (envuelve al gráfico)
+   ============================================================ */
+
+.dashboard-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   Gráfico de ventas por día
+   ============================================================ */
+
+.ventas-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--sp-4);
+}
+
+.ventas-chart-titulo {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ventas-chart-toggle {
+  display: flex;
+  gap: var(--sp-1);
+  background: var(--bg-elevated-2);
+  border-radius: var(--radius-full);
+  padding: 3px;
+}
+
+.ventas-chart-toggle button {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.ventas-chart-toggle button.activo {
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+}
+
+.ventas-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ventas-chart-vacio {
+  padding: var(--sp-6) var(--sp-4);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ============================================================
+   Alerta de stock bajo
+   ============================================================ */
+
+.stock-bajo-card {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  border-left: 4px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+}
+
+.stock-bajo-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-3);
+}
+
+.stock-bajo-icono {
+  font-size: var(--fs-md);
+}
+
+.stock-bajo-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.stock-bajo-item {
+  background: var(--bg-elevated-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: border-color var(--t-fast) var(--ease-out);
+}
+
+.stock-bajo-item:hover {
+  color: var(--color-warning);
+}
+
+.stock-bajo-vermas {
+  color: var(--accent-terracota);
+}
+
+@media (max-width: 600px) {
+  .ventas-chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-2);
+  }
+
+  .stock-bajo-card {
+    padding: var(--sp-3) var(--sp-4);
+  }
+}

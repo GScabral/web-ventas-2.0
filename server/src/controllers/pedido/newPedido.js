@@ -1,5 +1,6 @@
-const { Pedido, DetallesPedido, Productos, oferta, variantesproductos, conn } = require("../../db");
+const { Pedido, DetallesPedido, Productos, oferta, variantesproductos, conn, ConfiguracionSitio } = require("../../db");
 const { Op } = require("sequelize");
+const notificarNuevoPedido = require("../correo/notificarNuevoPedido");
 
 // Error "esperado": stock insuficiente, producto inexistente, etc.
 // Se distingue de errores técnicos para devolver 400 con un mensaje
@@ -247,6 +248,24 @@ const nuevoPedido = async (req, res) => {
           ]
         }
       );
+
+    // Aviso al dueño de la tienda de que entró un pedido nuevo. Corre
+    // aparte de la respuesta al cliente: si el email falla (o no está
+    // configurado), el pedido ya se creó bien igual, así que no debe
+    // afectar la respuesta que recibe el comprador.
+    try {
+      const configuracion = await ConfiguracionSitio.findOne({ where: { id: 1 } });
+
+      if (configuracion?.email_notificaciones) {
+        await notificarNuevoPedido(
+          pedidoCompleto,
+          pedidoCompleto.DetallesPedidos || [],
+          configuracion.email_notificaciones
+        );
+      }
+    } catch (errorNotificacion) {
+      console.error("No se pudo enviar la notificación de pedido nuevo:", errorNotificacion);
+    }
 
     return res.status(201).json(
       pedidoCompleto

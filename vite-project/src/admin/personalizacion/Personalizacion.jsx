@@ -23,6 +23,7 @@ const FORM_VACIO = {
     facebook: "",
     direccion: "",
     maps_url: "",
+    email_notificaciones: "",
 };
 
 const Personalizacion = () => {
@@ -57,6 +58,7 @@ const Personalizacion = () => {
             facebook: configuracion.facebook || "",
             direccion: configuracion.direccion || "",
             maps_url: configuracion.maps_url || "",
+            email_notificaciones: configuracion.email_notificaciones || "",
         });
     }, [configuracion]);
 
@@ -287,6 +289,24 @@ const Personalizacion = () => {
                                 onChange={(e) => handleChange("maps_url", e.target.value)}
                                 placeholder="https://maps.app.goo.gl/..."
                             />
+                        </div>
+                    </section>
+
+                    {/* ---- Notificaciones ---- */}
+                    <section className="personalizacion-section">
+                        <h2>Notificaciones</h2>
+
+                        <div className="form-group">
+                            <label>Avisarme por correo cuando entra un pedido</label>
+                            <input
+                                type="email"
+                                value={form.email_notificaciones}
+                                onChange={(e) => handleChange("email_notificaciones", e.target.value)}
+                                placeholder="tu-email@ejemplo.com"
+                            />
+                            <p className="campo-hint">
+                                Dejalo vacío si no querés recibir avisos por correo.
+                            </p>
                         </div>
                     </section>
 

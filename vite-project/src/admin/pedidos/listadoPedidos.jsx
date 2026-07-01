@@ -1,6 +1,7 @@
 import React, {
   useState,
   useEffect,
+  useRef,
   useCallback
 } from "react";
 
@@ -11,12 +12,103 @@ import {
 
 import {
   getPedidos,
-  actualizarEstadoPedidoGeneral
+  actualizarEstadoPedidoGeneral,
+  mostrarToast
 } from "../../redux/action";
 
 import PedidoCard from "./pedidoCardList";
 
 import "./PedidoList.css";
+
+// Arma un CSV con separador ";" (no ",") y BOM UTF-8 al principio: es
+// lo que hace que Excel en español/Argentina lo abra bien de una, con
+// tildes correctas y sin mezclar columnas — con coma como separador,
+// Excel en este idioma suele interpretarlo todo como una sola columna
+// porque la coma la usa como separador decimal.
+const escaparCampoCSV = (valor) => {
+  const texto = String(valor ?? "").replace(/"/g, '""');
+  return `"${texto}"`;
+};
+
+const exportarPedidosCSV = (pedidos) => {
+
+  const encabezados = [
+    "ID", "Fecha", "Cliente", "Email", "Teléfono",
+    "Tipo de entrega", "Provincia", "Ciudad", "Dirección",
+    "Estado", "Productos", "Total",
+  ];
+
+  const filas = pedidos.map((pedido) => {
+
+    const productos = (pedido.DetallesPedidos || [])
+      .map((d) => `${d.nombre} x${d.cantidad}`)
+      .join(" | ");
+
+    return [
+      pedido.id_pedido,
+      pedido.fecha_pedido
+        ? new Date(pedido.fecha_pedido).toLocaleDateString("es-AR")
+        : "",
+      pedido.nombre,
+      pedido.email_cliente,
+      pedido.telefono,
+      pedido.tipo_entrega,
+      pedido.provincia,
+      pedido.ciudad,
+      pedido.direccion,
+      pedido.estado,
+      productos,
+      pedido.total_pedido,
+    ].map(escaparCampoCSV).join(";");
+  });
+
+  const contenido = [
+    encabezados.map(escaparCampoCSV).join(";"),
+    ...filas,
+  ].join("\r\n");
+
+  const BOM = "\uFEFF";
+  const blob = new Blob([BOM + contenido], { type: "text/csv;charset=utf-8;" });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const fecha = new Date().toISOString().slice(0, 10);
+
+  link.href = url;
+  link.download = `pedidos_${fecha}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+// Beep corto generado con Web Audio API, sin depender de ningún
+// archivo de audio externo. Si el navegador bloquea el audio por no
+// haber interacción previa del usuario, simplemente no suena — no es
+// crítico, el toast visual ya avisa igual.
+const reproducirAvisoSonoro = () => {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    const contexto = new AudioContextClass();
+    const oscilador = contexto.createOscillator();
+    const ganancia = contexto.createGain();
+
+    oscilador.type = "sine";
+    oscilador.frequency.setValueAtTime(880, contexto.currentTime);
+
+    ganancia.gain.setValueAtTime(0.15, contexto.currentTime);
+    ganancia.gain.exponentialRampToValueAtTime(0.001, contexto.currentTime + 0.4);
+
+    oscilador.connect(ganancia);
+    ganancia.connect(contexto.destination);
+
+    oscilador.start();
+    oscilador.stop(contexto.currentTime + 0.4);
+  } catch (error) {
+    // Silencioso a propósito: el aviso sonoro es un extra, no algo
+    // de lo que dependa el flujo de gestión de pedidos.
+  }
+};
 
 const PedidoList = () => {
   const dispatch = useDispatch();
@@ -28,9 +120,53 @@ const PedidoList = () => {
   const [feedbackMsg, setFeedbackMsg] =
     useState("");
 
+  // IDs de pedidos ya vistos, para poder detectar cuáles son nuevos en
+  // cada actualización. Empieza en null (todavía no se cargó nada) así
+  // el primer pedido que carga la pantalla no dispara un aviso falso.
+  const idsConocidos = useRef(null);
+
   useEffect(() => {
     dispatch(getPedidos());
   }, [dispatch]);
+
+  // Revisa cada 30 segundos si hay pedidos nuevos, mientras esta
+  // pantalla esté abierta. No es tiempo real (no hay websockets acá),
+  // pero para el uso normal de un admin chequeando pedidos alcanza.
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      dispatch(getPedidos());
+    }, 30000);
+
+    return () => clearInterval(intervalo);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!allPedidos.length) return;
+
+    const idsActuales = new Set(allPedidos.map((p) => p.id_pedido));
+
+    if (idsConocidos.current === null) {
+      // Primera carga: solo registramos qué hay, sin avisar nada.
+      idsConocidos.current = idsActuales;
+      return;
+    }
+
+    const nuevos = allPedidos.filter(
+      (p) => !idsConocidos.current.has(p.id_pedido)
+    );
+
+    if (nuevos.length > 0) {
+      reproducirAvisoSonoro();
+
+      const mensaje = nuevos.length === 1
+        ? `Nuevo pedido de ${nuevos[0].nombre || "un cliente"} — $${Number(nuevos[0].total_pedido).toLocaleString("es-AR")}`
+        : `${nuevos.length} pedidos nuevos`;
+
+      dispatch(mostrarToast(mensaje));
+    }
+
+    idsConocidos.current = idsActuales;
+  }, [allPedidos, dispatch]);
 
   const handleEstadoChange =
     useCallback(
@@ -84,6 +220,15 @@ const PedidoList = () => {
             de la tienda
           </p>
         </div>
+
+        <button
+          type="button"
+          className="btn-exportar-pedidos"
+          onClick={() => exportarPedidosCSV(allPedidos)}
+          disabled={!allPedidos.length}
+        >
+          Exportar a Excel/CSV
+        </button>
       </div>
 
       <div className="stats-grid">

@@ -5,6 +5,8 @@ import ProductActions from "./ProductActions";
 
 import "../styles/ProductCard.css";
 
+const UMBRAL_STOCK_BAJO = 5;
+
 const ProductCard = ({
     producto,
     onEdit,
@@ -18,6 +20,9 @@ const ProductCard = ({
                 (variante.cantidad_disponible || 0),
             0
         ) || 0;
+
+    const stockBajo = totalStock > 0 && totalStock <= UMBRAL_STOCK_BAJO;
+    const sinStock = totalStock === 0;
 
     return (
         <div className="product-card">
@@ -35,6 +40,12 @@ const ProductCard = ({
                     </h3>
 
                 </div>
+
+                {(stockBajo || sinStock) && (
+                    <span className={sinStock ? "stock-badge stock-badge-agotado" : "stock-badge stock-badge-bajo"}>
+                        {sinStock ? "Sin stock" : "Últimas unidades"}
+                    </span>
+                )}
 
             </div>
 
@@ -79,7 +90,7 @@ const ProductCard = ({
                         Stock Total
                     </span>
 
-                    <strong>
+                    <strong className={sinStock ? "stock-total-agotado" : stockBajo ? "stock-total-bajo" : ""}>
 
                         {totalStock}
 

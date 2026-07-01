@@ -40,7 +40,8 @@ import {
   GET_BANNERS,
   GET_BANNERS_ADMIN,
   GET_CONFIGURACION,
-  MOSTRAR_TOAST
+  MOSTRAR_TOAST,
+  GET_ESTADISTICAS
 } from "./action"
 
 const initialState = {
@@ -72,6 +73,7 @@ const initialState = {
   bannersAdmin: [],
   configuracion: null,
   toast: null,
+  estadisticas: null,
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -605,6 +607,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         toast: action.payload
+      };
+
+    case GET_ESTADISTICAS:
+      return {
+        ...state,
+        estadisticas: action.payload
       };
 
     ///////////////////////////////////////////////////////////////////////////  

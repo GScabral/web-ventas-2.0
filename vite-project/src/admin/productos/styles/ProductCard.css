@@ -134,3 +134,30 @@
     font-size: var(--fs-base) !important;
   }
 }
+
+.stock-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.stock-badge-bajo {
+  background: rgba(217, 119, 6, 0.14);
+  color: var(--color-warning);
+}
+
+.stock-badge-agotado {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--color-error);
+}
+
+.stock-total-bajo {
+  color: var(--color-warning) !important;
+}
+
+.stock-total-agotado {
+  color: var(--color-error) !important;
+}

@@ -40,6 +40,7 @@ export const GET_BANNERS = "GET_BANNERS";
 export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const GET_CONFIGURACION = "GET_CONFIGURACION";
 export const MOSTRAR_TOAST = "MOSTRAR_TOAST";
+export const GET_ESTADISTICAS = "GET_ESTADISTICAS";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
@@ -947,3 +948,19 @@ export const mostrarToast = (mensaje) => ({
     key: Date.now(),
   },
 });
+
+// Estadísticas de ventas para el dashboard de Inicio del admin.
+export const getEstadisticas = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/pedido/estadisticas`);
+
+      dispatch({
+        type: GET_ESTADISTICAS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error al obtener estadísticas:", error);
+    }
+  };
+};

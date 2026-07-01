@@ -13,6 +13,34 @@
 
 .pedidos-header {
   margin-bottom: var(--sp-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.btn-exportar-pedidos {
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+
+.btn-exportar-pedidos:hover:not(:disabled) {
+  border-color: var(--accent-terracota);
+  color: var(--accent-terracota);
+}
+
+.btn-exportar-pedidos:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .pedidos-header h1 {

@@ -20,6 +20,7 @@ const CAMPOS_TEXTO_LIBRE = [
   "facebook",
   "direccion",
   "maps_url",
+  "email_notificaciones",
 ];
 
 const actualizarConfiguracion = async (datos) => {

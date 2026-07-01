@@ -89,6 +89,13 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
+    // A dónde avisar cuando entra un pedido nuevo. Si queda vacío,
+    // simplemente no se manda ningún aviso (no es obligatorio).
+    email_notificaciones: {
+      type: DataTypes.STRING(150),
+      allowNull: true,
+    },
+
   });
 
   return ConfiguracionSitio;
