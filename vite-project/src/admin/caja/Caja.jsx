@@ -23,6 +23,24 @@ const formatearFechaHora = (fecha) =>
         minute: "2-digit",
     });
 
+const formatearHora = (fecha) =>
+    new Date(fecha).toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+const METODOS_PAGO = [
+    { value: "efectivo", label: "💵 Efectivo" },
+    { value: "transferencia", label: "🏦 Transferencia" },
+    { value: "tarjeta_debito", label: "💳 Tarjeta débito" },
+    { value: "tarjeta_credito", label: "💳 Tarjeta crédito" },
+    { value: "mercado_pago", label: "📱 Mercado Pago" },
+    { value: "otro", label: "Otro" },
+];
+
+const labelMetodoPago = (valor) =>
+    METODOS_PAGO.find(m => m.value === valor)?.label || valor;
+
 const Caja = () => {
 
     const dispatch = useDispatch();
@@ -39,6 +57,7 @@ const Caja = () => {
     const [tipoMovimiento, setTipoMovimiento] = useState("ingreso");
     const [conceptoMovimiento, setConceptoMovimiento] = useState("");
     const [montoMovimiento, setMontoMovimiento] = useState("");
+    const [metodoPagoMovimiento, setMetodoPagoMovimiento] = useState("efectivo");
     const [registrando, setRegistrando] = useState(false);
     const [errorMovimiento, setErrorMovimiento] = useState("");
 
@@ -93,10 +112,12 @@ const Caja = () => {
                 tipo: tipoMovimiento,
                 concepto: conceptoMovimiento,
                 monto: Number(montoMovimiento),
+                metodo_pago: metodoPagoMovimiento,
             }));
 
             setConceptoMovimiento("");
             setMontoMovimiento("");
+            setMetodoPagoMovimiento("efectivo");
 
             dispatch(mostrarToast(
                 tipoMovimiento === "ingreso" ? "Ingreso registrado." : "Egreso registrado."
@@ -233,17 +254,17 @@ const Caja = () => {
                         </div>
 
                         <div className="caja-resumen-item caja-resumen-ingreso">
-                            <span>Ingresos</span>
+                            <span>Ingresos (todos los métodos)</span>
                             <strong>+{formatearMoneda(cajaActual.totalIngresos)}</strong>
                         </div>
 
                         <div className="caja-resumen-item caja-resumen-egreso">
-                            <span>Egresos</span>
+                            <span>Egresos (todos los métodos)</span>
                             <strong>-{formatearMoneda(cajaActual.totalEgresos)}</strong>
                         </div>
 
                         <div className="caja-resumen-item caja-resumen-saldo">
-                            <span>Saldo esperado</span>
+                            <span>Saldo esperado en el cajón (solo efectivo)</span>
                             <strong>{formatearMoneda(cajaActual.saldoActual)}</strong>
                         </div>
 
@@ -300,6 +321,24 @@ const Caja = () => {
                                 />
                             </div>
 
+                            <div className="form-group">
+                                <label>Método de pago</label>
+                                <select
+                                    value={metodoPagoMovimiento}
+                                    onChange={(e) => setMetodoPagoMovimiento(e.target.value)}
+                                >
+                                    {METODOS_PAGO.map((m) => (
+                                        <option key={m.value} value={m.value}>
+                                            {m.label}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className="campo-hint">
+                                    Solo lo marcado como "Efectivo" afecta el
+                                    conteo del cajón al cerrar caja.
+                                </p>
+                            </div>
+
                             {errorMovimiento && <p className="caja-error">{errorMovimiento}</p>}
 
                             <button
@@ -325,9 +364,14 @@ const Caja = () => {
                                     <div key={mov.id_movimiento} className="caja-movimiento-item">
                                         <div>
                                             <span className="caja-movimiento-concepto">{mov.concepto}</span>
-                                            <span className="caja-movimiento-fecha">
-                                                {formatearFechaHora(mov.fecha)}
-                                            </span>
+                                            <div className="caja-movimiento-meta">
+                                                <span className="caja-movimiento-hora">
+                                                    🕐 {formatearHora(mov.fecha)}
+                                                </span>
+                                                <span className="caja-movimiento-metodo">
+                                                    {labelMetodoPago(mov.metodo_pago)}
+                                                </span>
+                                            </div>
                                         </div>
                                         <span className={`caja-movimiento-monto ${mov.tipo}`}>
                                             {mov.tipo === "ingreso" ? "+" : "-"}{formatearMoneda(mov.monto)}

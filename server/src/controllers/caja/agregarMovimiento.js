@@ -13,7 +13,7 @@ const agregarMovimiento = async (req, res) => {
             });
         }
 
-        const { tipo, concepto, monto } = req.body;
+        const { tipo, concepto, monto, metodo_pago } = req.body;
 
         if (!["ingreso", "egreso"].includes(tipo)) {
             return res.status(400).json({ error: "El tipo debe ser 'ingreso' o 'egreso'." });
@@ -29,10 +29,20 @@ const agregarMovimiento = async (req, res) => {
             return res.status(400).json({ error: "El monto tiene que ser mayor a 0." });
         }
 
+        const METODOS_VALIDOS = [
+            "efectivo", "transferencia", "tarjeta_debito",
+            "tarjeta_credito", "mercado_pago", "otro",
+        ];
+
+        const metodoPago = metodo_pago && METODOS_VALIDOS.includes(metodo_pago)
+            ? metodo_pago
+            : "efectivo";
+
         const movimiento = await CajaMovimiento.create({
             tipo,
             concepto: concepto.trim(),
             monto: montoNumerico,
+            metodo_pago: metodoPago,
             CajaSesionId: sesion.id_sesion,
         });
 

@@ -253,11 +253,26 @@
   font-weight: 600;
 }
 
-.caja-movimiento-fecha {
-  display: block;
+.caja-movimiento-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: 4px;
+}
+
+.caja-movimiento-hora {
   font-size: var(--fs-xs);
   color: var(--text-muted);
-  margin-top: 2px;
+  font-weight: 700;
+}
+
+.caja-movimiento-metodo {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--bg-elevated-2);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
 }
 
 .caja-movimiento-monto {

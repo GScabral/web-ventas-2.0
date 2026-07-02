@@ -27,6 +27,24 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
 
+    // Con qué se cobró/pagó este movimiento. Útil sobre todo para
+    // separar ventas en efectivo (que sí afectan lo que hay en el
+    // cajón físico) de las que se cobraron por transferencia o MP
+    // (que no deberían sumarse al conteo de efectivo, aunque sí sean
+    // parte de las ventas del día).
+    metodo_pago: {
+      type: DataTypes.ENUM(
+        "efectivo",
+        "transferencia",
+        "tarjeta_debito",
+        "tarjeta_credito",
+        "mercado_pago",
+        "otro"
+      ),
+      allowNull: false,
+      defaultValue: "efectivo",
+    },
+
     fecha: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

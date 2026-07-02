@@ -24,15 +24,22 @@ const cerrarCaja = async (req, res) => {
 
         const movimientos = sesion.CajaMovimientos || [];
 
-        const totalIngresos = movimientos
-            .filter(m => m.tipo === "ingreso")
+        // Mismo criterio que en getCajaActual: el arqueo de caja (lo
+        // que se cuenta físicamente) solo se compara contra los
+        // movimientos en EFECTIVO. Ventas por transferencia/MP/tarjeta
+        // no pasan por el cajón, así que no pueden generar una
+        // diferencia de "falta" o "sobra" en el conteo físico.
+        const esEfectivo = (m) => m.metodo_pago === "efectivo";
+
+        const totalIngresosEfectivo = movimientos
+            .filter(m => m.tipo === "ingreso" && esEfectivo(m))
             .reduce((acc, m) => acc + Number(m.monto), 0);
 
-        const totalEgresos = movimientos
-            .filter(m => m.tipo === "egreso")
+        const totalEgresosEfectivo = movimientos
+            .filter(m => m.tipo === "egreso" && esEfectivo(m))
             .reduce((acc, m) => acc + Number(m.monto), 0);
 
-        const montoEsperado = Number(sesion.monto_inicial) + totalIngresos - totalEgresos;
+        const montoEsperado = Number(sesion.monto_inicial) + totalIngresosEfectivo - totalEgresosEfectivo;
         const diferencia = montoContadoNumerico - montoEsperado;
 
         await sesion.update({
