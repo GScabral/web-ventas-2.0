@@ -1,6 +1,7 @@
-const { Pedido, DetallesPedido, Productos, oferta, variantesproductos, conn, ConfiguracionSitio } = require("../../db");
+const { Pedido, DetallesPedido, Productos, oferta, variantesproductos, conn, ConfiguracionSitio, Cupon } = require("../../db");
 const { Op } = require("sequelize");
 const notificarNuevoPedido = require("../correo/notificarNuevoPedido");
+const validarCupon = require("../cupon/validarCupon");
 
 // Error "esperado": stock insuficiente, producto inexistente, etc.
 // Se distingue de errores técnicos para devolver 400 con un mensaje
@@ -53,7 +54,9 @@ const nuevoPedido = async (req, res) => {
       telefono,
       provincia,
       ciudad,
-      direccion
+      direccion,
+
+      cupon_codigo,
     } = req.body;
 
     const emailCliente =
@@ -196,10 +199,30 @@ const nuevoPedido = async (req, res) => {
         });
       }
 
-      const totalPedido = productosVerificados.reduce(
+      const subtotal = productosVerificados.reduce(
         (acc, item) => acc + item.precio * item.cantidad,
         0
       );
+
+      // El cupón se vuelve a validar acá, del lado del servidor, con
+      // el mismo subtotal recién calculado a partir de precios reales
+      // de la base — nunca se confía en un "descuento" que mande el
+      // navegador. Si el código ya no es válido (venció, alcanzó el
+      // límite de usos, etc.) justo en el momento de confirmar, el
+      // pedido se sigue creando igual, pero sin el descuento.
+      let descuentoCupon = 0;
+      let cuponAplicado = null;
+
+      if (cupon_codigo) {
+        const resultadoCupon = await validarCupon(cupon_codigo, subtotal, { transaction: t });
+
+        if (resultadoCupon.valido) {
+          descuentoCupon = resultadoCupon.descuento;
+          cuponAplicado = resultadoCupon.cupon;
+        }
+      }
+
+      const totalPedido = Math.max(0, subtotal - descuentoCupon);
 
       const pedido = await Pedido.create(
         {
@@ -211,10 +234,19 @@ const nuevoPedido = async (req, res) => {
           direccion: direccionCliente,
           tipo_entrega: tipoEntrega,
           total_pedido: totalPedido,
+          cupon_codigo: cuponAplicado?.codigo || null,
+          descuento_cupon: descuentoCupon,
           estado: "pendiente"
         },
         { transaction: t }
       );
+
+      if (cuponAplicado) {
+        await cuponAplicado.increment(
+          "usos_actuales",
+          { by: 1, transaction: t }
+        );
+      }
 
       await Promise.all(
         productosVerificados.map((producto) => {

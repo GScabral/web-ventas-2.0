@@ -41,6 +41,7 @@ export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const GET_CONFIGURACION = "GET_CONFIGURACION";
 export const MOSTRAR_TOAST = "MOSTRAR_TOAST";
 export const GET_ESTADISTICAS = "GET_ESTADISTICAS";
+export const GET_CAJA_ACTUAL = "GET_CAJA_ACTUAL";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
 export const ADD_USUARIO = "ADD_USUARIO";
@@ -963,4 +964,50 @@ export const getEstadisticas = () => {
       console.error("Error al obtener estadísticas:", error);
     }
   };
+};
+
+// ---- Caja ----
+
+export const getCajaActual = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/caja/actual`);
+
+      dispatch({
+        type: GET_CAJA_ACTUAL,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error al obtener la caja actual:", error);
+    }
+  };
+};
+
+export const abrirCaja = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/caja/abrir`, datos);
+    await dispatch(getCajaActual());
+    return response.data;
+  };
+};
+
+export const agregarMovimientoCaja = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/caja/movimiento`, datos);
+    await dispatch(getCajaActual());
+    return response.data;
+  };
+};
+
+export const cerrarCaja = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/caja/cerrar`, datos);
+    await dispatch(getCajaActual());
+    return response.data;
+  };
+};
+
+export const getHistorialCajas = async () => {
+  const response = await axios.get(`${API_URL}/caja/historial`);
+  return response.data;
 };

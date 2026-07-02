@@ -12,6 +12,7 @@ const ProductCard = ({
     onEdit,
     onDelete,
     onOferta,
+    onDuplicar,
 }) => {
     const totalStock =
         producto?.variantes?.reduce(
@@ -109,6 +110,7 @@ const ProductCard = ({
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onOferta={onOferta}
+                onDuplicar={onDuplicar}
             />
 
         </div>

@@ -63,15 +63,108 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
-  padding-top: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid #eee;
+  font-size: 13.5px;
+  color: #666;
+}
+
+.resumenDescuento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+  color: var(--color-success, #16a34a);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.resumenTotalFinal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #ddd;
   font-size: 15px;
 }
 
-.resumenTotal strong {
+.resumenTotalFinal strong {
   font-size: 18px;
   color: var(--accent-terracota, #ff6b35);
+}
+
+/* ---- Cupón de descuento ---- */
+
+.cuponBox {
+  margin-bottom: 18px;
+}
+
+.cuponInputRow {
+  display: flex;
+  gap: 8px;
+}
+
+.cuponInputRow input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.cuponInputRow input:focus {
+  outline: none;
+  border-color: var(--accent-terracota, #ff6b35);
+}
+
+.cuponInputRow button {
+  border: none;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cuponInputRow button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cuponAplicado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #166534;
+}
+
+.cuponAplicado button {
+  border: none;
+  background: transparent;
+  color: #b3261e;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.cuponErrorMsg {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e24b4a;
 }
 
 /* ---- Formulario: campos genéricos (email, y los reusados por ShippingForm) ---- */

@@ -56,7 +56,7 @@ const models = sequelize.models;
 
 // Definir las relaciones
 if (models) {
-    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta, sections, Categorias } = models;
+    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta, sections, Categorias, CajaSesion, CajaMovimiento } = models;
 
     Pedido.belongsToMany(Productos, { through: 'pedidoproductos' });
     Productos.belongsToMany(Pedido, { through: 'pedidoproductos' });
@@ -102,6 +102,10 @@ if (models) {
     Productos.hasMany(variantesproductos, { foreignKey: 'ProductoIdProducto' });
 
     variantesproductos.belongsTo(Productos, { foreignKey: 'ProductoIdProducto' });
+
+    CajaSesion.hasMany(CajaMovimiento, { foreignKey: "CajaSesionId" });
+
+    CajaMovimiento.belongsTo(CajaSesion, { foreignKey: "CajaSesionId" });
 
 }
 

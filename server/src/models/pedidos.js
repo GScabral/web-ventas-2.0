@@ -62,6 +62,20 @@ module.exports = (sequelize) => {
     total_pedido: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
+    },
+
+    // Snapshot del cupón usado (si hubo). Se guarda el código y el
+    // monto descontado tal como quedó aplicado en su momento, para
+    // que si el cupón se borra o cambia después, el pedido conserve
+    // el registro real de lo que pagó el cliente.
+    cupon_codigo: {
+      type: DataTypes.STRING(30),
+      allowNull: true,
+    },
+
+    descuento_cupon: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0,
     }
 
   });

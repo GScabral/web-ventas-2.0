@@ -2,6 +2,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useMemo,
   useCallback
 } from "react";
 
@@ -189,23 +190,72 @@ const PedidoList = () => {
       [dispatch]
     );
 
+  // ---- Búsqueda y filtro por fecha ----
+
+  const [busqueda, setBusqueda] = useState("");
+  const [fechaDesde, setFechaDesde] = useState("");
+  const [fechaHasta, setFechaHasta] = useState("");
+
+  const pedidosFiltrados = useMemo(() => {
+
+    let resultado = allPedidos;
+
+    if (busqueda.trim()) {
+      const termino = busqueda.trim().toLowerCase();
+
+      resultado = resultado.filter((p) =>
+        String(p.id_pedido).includes(termino) ||
+        (p.nombre || "").toLowerCase().includes(termino) ||
+        (p.email_cliente || "").toLowerCase().includes(termino)
+      );
+    }
+
+    if (fechaDesde) {
+      const desde = new Date(fechaDesde);
+      desde.setHours(0, 0, 0, 0);
+
+      resultado = resultado.filter((p) =>
+        new Date(p.fecha_pedido) >= desde
+      );
+    }
+
+    if (fechaHasta) {
+      const hasta = new Date(fechaHasta);
+      hasta.setHours(23, 59, 59, 999);
+
+      resultado = resultado.filter((p) =>
+        new Date(p.fecha_pedido) <= hasta
+      );
+    }
+
+    return resultado;
+  }, [allPedidos, busqueda, fechaDesde, fechaHasta]);
+
+  const hayFiltrosActivos = busqueda.trim() || fechaDesde || fechaHasta;
+
+  const limpiarFiltros = () => {
+    setBusqueda("");
+    setFechaDesde("");
+    setFechaHasta("");
+  };
+
   const pendientes =
-    allPedidos.filter(
+    pedidosFiltrados.filter(
       (p) => p.estado === "pendiente"
     );
 
   const preparando =
-    allPedidos.filter(
+    pedidosFiltrados.filter(
       (p) => p.estado === "preparando"
     );
 
   const enviados =
-    allPedidos.filter(
+    pedidosFiltrados.filter(
       (p) => p.estado === "enviado"
     );
 
   const entregados =
-    allPedidos.filter(
+    pedidosFiltrados.filter(
       (p) => p.estado === "entregado"
     );
 
@@ -224,16 +274,64 @@ const PedidoList = () => {
         <button
           type="button"
           className="btn-exportar-pedidos"
-          onClick={() => exportarPedidosCSV(allPedidos)}
-          disabled={!allPedidos.length}
+          onClick={() => exportarPedidosCSV(pedidosFiltrados)}
+          disabled={!pedidosFiltrados.length}
         >
           Exportar a Excel/CSV
         </button>
       </div>
 
+      <div className="pedidos-filtros">
+
+        <input
+          type="text"
+          className="pedidos-buscador"
+          placeholder="Buscar por cliente, email o Nº de pedido..."
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+        />
+
+        <div className="pedidos-filtro-fechas">
+          <label>
+            Desde
+            <input
+              type="date"
+              value={fechaDesde}
+              onChange={(e) => setFechaDesde(e.target.value)}
+            />
+          </label>
+
+          <label>
+            Hasta
+            <input
+              type="date"
+              value={fechaHasta}
+              onChange={(e) => setFechaHasta(e.target.value)}
+            />
+          </label>
+        </div>
+
+        {hayFiltrosActivos && (
+          <button
+            type="button"
+            className="pedidos-limpiar-filtros"
+            onClick={limpiarFiltros}
+          >
+            Limpiar filtros
+          </button>
+        )}
+
+      </div>
+
+      {hayFiltrosActivos && (
+        <p className="pedidos-resultado-count">
+          {pedidosFiltrados.length} {pedidosFiltrados.length === 1 ? "resultado" : "resultados"}
+        </p>
+      )}
+
       <div className="stats-grid">
         <div className="stat-card">
-          <h3>{allPedidos.length}</h3>
+          <h3>{pedidosFiltrados.length}</h3>
           <span>Total</span>
         </div>
 

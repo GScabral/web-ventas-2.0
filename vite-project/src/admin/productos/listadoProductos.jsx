@@ -5,8 +5,10 @@ import {
   cambios,
   getProductos,
   borrar,
+  duplicarProducto,
   ofertas,
   paginado,
+  mostrarToast,
 } from "../../redux/action";
 
 import EditProductModal from "./editar";
@@ -93,6 +95,22 @@ const ProductList = () => {
     setTimeout(() => {
       setFeedbackMsg("");
     }, 2500);
+  };
+
+  const handleDuplicar = async (productId) => {
+    try {
+      await dispatch(duplicarProducto(productId));
+
+      dispatch(mostrarToast("Producto duplicado. Ya podés editarlo."));
+
+    } catch (error) {
+      setFeedbackMsg("No pudimos duplicar el producto");
+      setFeedbackType("error");
+
+      setTimeout(() => {
+        setFeedbackMsg("");
+      }, 2500);
+    }
   };
 
   const handleOferta = (productId) => {
@@ -236,6 +254,9 @@ const ProductList = () => {
               }
               onOferta={
                 handleOferta
+              }
+              onDuplicar={
+                handleDuplicar
               }
             />
           )

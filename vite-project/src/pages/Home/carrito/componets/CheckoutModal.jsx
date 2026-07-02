@@ -8,12 +8,21 @@ import styles from "../styles/CheckoutModal.module.css";
 const CheckoutModal = ({ show, onClose }) => {
   const {
     carrito,
+    subtotal,
     total,
     email,
     setEmail,
     shippingData,
     handleShippingChange,
     setTipoEntrega,
+    cuponInput,
+    setCuponInput,
+    cuponAplicado,
+    cuponError,
+    validandoCupon,
+    aplicarCupon,
+    quitarCupon,
+    descuentoCupon,
     confirmarPedido,
     loading,
     submitError,
@@ -117,9 +126,63 @@ const CheckoutModal = ({ show, onClose }) => {
             </div>
 
             <div className={styles.resumenTotal}>
+              <span>Subtotal</span>
+              <span>${subtotal.toLocaleString("es-AR")}</span>
+            </div>
+
+            {cuponAplicado && (
+              <div className={styles.resumenDescuento}>
+                <span>Cupón {cuponAplicado.codigo}</span>
+                <span>-${descuentoCupon.toLocaleString("es-AR")}</span>
+              </div>
+            )}
+
+            <div className={styles.resumenTotalFinal}>
               <span>Total</span>
               <strong>${total.toLocaleString("es-AR")}</strong>
             </div>
+
+          </div>
+
+          {/* ---- Cupón de descuento ---- */}
+          <div className={styles.cuponBox}>
+
+            {cuponAplicado ? (
+              <div className={styles.cuponAplicado}>
+                <span>
+                  ✓ Cupón <strong>{cuponAplicado.codigo}</strong> aplicado
+                </span>
+                <button type="button" onClick={quitarCupon}>
+                  Quitar
+                </button>
+              </div>
+            ) : (
+              <div className={styles.cuponInputRow}>
+                <input
+                  type="text"
+                  placeholder="Código de descuento"
+                  value={cuponInput}
+                  onChange={(e) => setCuponInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      aplicarCupon();
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={aplicarCupon}
+                  disabled={validandoCupon || !cuponInput.trim()}
+                >
+                  {validandoCupon ? "..." : "Aplicar"}
+                </button>
+              </div>
+            )}
+
+            {cuponError && (
+              <span className={styles.cuponErrorMsg}>{cuponError}</span>
+            )}
 
           </div>
 

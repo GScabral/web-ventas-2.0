@@ -9,12 +9,15 @@
 
 .product-actions {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--sp-2);
   margin-top: var(--sp-4);
 }
 
 .btn-action {
-  flex: 1;
+  flex: 1 1 40%;
+  min-width: 100px;
   border: none;
   padding: var(--sp-3);
   border-radius: var(--radius-sm);
@@ -45,6 +48,11 @@
 
 .btn-offer {
   background: var(--accent-mostaza);
+  color: #ffffff;
+}
+
+.btn-duplicar {
+  background: var(--text-secondary);
   color: #ffffff;
 }
 

@@ -8,6 +8,7 @@ import {
   faPencilAlt,
   faTrash,
   faPercent,
+  faCopy,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "../styles/ProductActions.css";
@@ -17,6 +18,7 @@ const ProductActions = ({
   onEdit,
   onDelete,
   onOferta,
+  onDuplicar,
 }) => {
   return (
     <div className="product-actions">
@@ -46,6 +48,21 @@ const ProductActions = ({
 
         Oferta
       </button>
+
+      {onDuplicar && (
+        <button
+          className="btn-action btn-duplicar"
+          onClick={() =>
+            onDuplicar(productId)
+          }
+        >
+          <FontAwesomeIcon
+            icon={faCopy}
+          />
+
+          Duplicar
+        </button>
+      )}
 
       <button
         className="btn-action btn-delete"

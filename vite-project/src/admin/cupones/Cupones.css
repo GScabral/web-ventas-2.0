@@ -1,0 +1,205 @@
+@import "../adminCommon.css";
+
+/* ============================================================
+   ADMIN — Cupones de descuento
+   ============================================================ */
+
+.cupones-page {
+  max-width: 1100px;
+}
+
+.cupones-header {
+  margin-bottom: var(--sp-6);
+}
+
+.cupones-header h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-primary);
+}
+
+.cupones-header p {
+  margin-top: var(--sp-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.cupones-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.cupon-form {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.cupon-form h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--sp-5);
+}
+
+.cupon-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+.campo-hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: -2px;
+}
+
+.cupon-error {
+  color: var(--color-error);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+}
+
+.cupon-success {
+  color: var(--color-success);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+}
+
+.btn-crear-cupon {
+  width: 100%;
+  border: none;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  box-shadow: var(--shadow-glow-terracota);
+  transition: transform var(--t-fast) var(--ease-out);
+}
+
+.btn-crear-cupon:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-crear-cupon:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---- Lista de cupones ---- */
+
+.cupones-lista h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--sp-4);
+}
+
+.cupon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  margin-bottom: var(--sp-3);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.cupon-item-inactivo {
+  opacity: 0.65;
+}
+
+.cupon-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cupon-item-codigo-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.cupon-item-codigo {
+  font-family: monospace;
+  font-size: var(--fs-md);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.cupon-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+.cupon-tag-activo {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--color-success);
+}
+
+.cupon-tag-off,
+.cupon-tag-vencido {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--color-error);
+}
+
+.cupon-item-detalle {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.cupon-item-usos {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.cupon-item-actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+@media (max-width: 1000px) {
+  .cupones-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .cupon-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cupon-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-3);
+  }
+
+  .cupon-item-actions {
+    width: 100%;
+  }
+
+  .cupon-item-actions button {
+    flex: 1;
+  }
+}

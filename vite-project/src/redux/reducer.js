@@ -41,7 +41,8 @@ import {
   GET_BANNERS_ADMIN,
   GET_CONFIGURACION,
   MOSTRAR_TOAST,
-  GET_ESTADISTICAS
+  GET_ESTADISTICAS,
+  GET_CAJA_ACTUAL
 } from "./action"
 
 const initialState = {
@@ -74,6 +75,7 @@ const initialState = {
   configuracion: null,
   toast: null,
   estadisticas: null,
+  cajaActual: null,
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -613,6 +615,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         estadisticas: action.payload
+      };
+
+    case GET_CAJA_ACTUAL:
+      return {
+        ...state,
+        cajaActual: action.payload
       };
 
     ///////////////////////////////////////////////////////////////////////////  

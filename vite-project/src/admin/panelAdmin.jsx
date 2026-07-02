@@ -17,6 +17,7 @@ import PedidoList from "./pedidos/listadoPedidos";
 import OfertasLista from "./ofertas/listadoOFertas";
 import BannersLista from "./banners/listadoBanners";
 import Personalizacion from "./personalizacion/Personalizacion";
+import Caja from "./caja/Caja";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
 
@@ -25,6 +26,11 @@ const menuItems = [
     title: "Inicio",
     path: "/admin/principal",
     icon: "📊",
+  },
+  {
+    title: "Caja",
+    path: "/admin/caja",
+    icon: "💰",
   },
   {
     title: "Añadir Producto",
@@ -331,6 +337,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <Personalizacion />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/caja"
+              element={
+                isLoggedIn ? (
+                  <Caja />
                 ) : (
                   <Navigate to="/admin/login" />
                 )

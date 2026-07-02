@@ -11,6 +11,7 @@ const getCategorias = require("../controllers/producto/getCategoria")
 const createCategoria = require("../controllers/producto/createCategoria")
 const updateCategoria = require("../controllers/producto/updateCategoria")
 const deleteCategoria = require("../controllers/producto/deleteCategoria")
+const duplicarProducto = require("../controllers/producto/duplicarProducto")
 const { verificarTokenAdmin } = require("../middleware/auth");
 
 const router = Router();
@@ -192,5 +193,7 @@ router.delete(
     deleteCategoria
 );
 
+
+router.post("/duplicar/:id", verificarTokenAdmin, duplicarProducto);
 
 module.exports = router;
