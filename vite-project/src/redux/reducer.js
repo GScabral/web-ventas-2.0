@@ -42,6 +42,7 @@ import {
   GET_CONFIGURACION,
   MOSTRAR_TOAST,
   GET_ESTADISTICAS,
+  GET_CUPONES,
   GET_CAJA_ACTUAL
 } from "./action"
 
@@ -75,6 +76,7 @@ const initialState = {
   configuracion: null,
   toast: null,
   estadisticas: null,
+  cupones: [],
   cajaActual: null,
 }
 
@@ -615,6 +617,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         estadisticas: action.payload
+      };
+
+    case GET_CUPONES:
+      return {
+        ...state,
+        cupones: action.payload
       };
 
     case GET_CAJA_ACTUAL:

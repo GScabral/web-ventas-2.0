@@ -18,6 +18,7 @@ import OfertasLista from "./ofertas/listadoOFertas";
 import BannersLista from "./banners/listadoBanners";
 import Personalizacion from "./personalizacion/Personalizacion";
 import Caja from "./caja/Caja";
+import Cupones from "./cupones/Cupones";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
 
@@ -56,6 +57,11 @@ const menuItems = [
     title: "Ofertas",
     path: "/admin/ofertas",
     icon: "🏷️",
+  },
+  {
+    title: "Cupones",
+    path: "/admin/cupones",
+    icon: "🎟️",
   },
   {
     title: "Banners",
@@ -326,6 +332,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <BannersLista />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/cupones"
+              element={
+                isLoggedIn ? (
+                  <Cupones />
                 ) : (
                   <Navigate to="/admin/login" />
                 )

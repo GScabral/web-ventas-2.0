@@ -41,6 +41,7 @@ export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const GET_CONFIGURACION = "GET_CONFIGURACION";
 export const MOSTRAR_TOAST = "MOSTRAR_TOAST";
 export const GET_ESTADISTICAS = "GET_ESTADISTICAS";
+export const GET_CUPONES = "GET_CUPONES";
 export const GET_CAJA_ACTUAL = "GET_CAJA_ACTUAL";
 export const ELIMINAR_PEDIDO = "ELIMINAR_PEDIDO";
 //CLIENTE
@@ -432,6 +433,20 @@ export const borrar = (id) => {
       console.error('Error al eliminar el producto:', error);
       throw error;
     }
+  };
+};
+
+// Duplica un producto (con todas sus variantes) del lado del
+// servidor, y vuelve a pedir el listado completo — más simple y
+// seguro que tratar de insertar el duplicado a mano en el estado,
+// porque la forma exacta que devuelve /duplicar no es la misma que
+// espera el resto de la pantalla (esta sí, porque pasa por el mismo
+// getProductos que ya usa todo lo demás).
+export const duplicarProducto = (id) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/producto/duplicar/${id}`);
+    await dispatch(getProductos());
+    return response.data;
   };
 };
 
@@ -964,6 +979,56 @@ export const getEstadisticas = () => {
       console.error("Error al obtener estadísticas:", error);
     }
   };
+};
+
+// ---- Cupones de descuento ----
+
+export const getCupones = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/cupon`);
+
+      dispatch({
+        type: GET_CUPONES,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error al obtener cupones:", error);
+    }
+  };
+};
+
+export const crearCupon = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/cupon`, datos);
+    await dispatch(getCupones());
+    return response.data;
+  };
+};
+
+export const toggleCupon = (id) => {
+  return async function (dispatch) {
+    await axios.put(`${API_URL}/cupon/${id}/toggle`);
+    await dispatch(getCupones());
+  };
+};
+
+export const eliminarCupon = (id) => {
+  return async function (dispatch) {
+    await axios.delete(`${API_URL}/cupon/${id}`);
+    await dispatch(getCupones());
+  };
+};
+
+// No es una acción de redux (no hay estado global que actualizar):
+// se usa directo en el checkout para validar el código a medida que
+// el cliente lo escribe, sin pasar por el store.
+export const validarCuponCheckout = async (codigo, subtotal) => {
+  const response = await axios.post(`${API_URL}/cupon/validar`, {
+    codigo,
+    subtotal,
+  });
+  return response.data;
 };
 
 // ---- Caja ----
