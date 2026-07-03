@@ -9,6 +9,7 @@ const getProductos = async () => {
   try {
 
     const productosConVariantes = await Productos.findAll({
+      where: { archivado: false },
       include: [
         {
           model: variantesproductos

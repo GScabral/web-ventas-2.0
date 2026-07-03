@@ -19,6 +19,8 @@ import BannersLista from "./banners/listadoBanners";
 import Personalizacion from "./personalizacion/Personalizacion";
 import Caja from "./caja/Caja";
 import Cupones from "./cupones/Cupones";
+import Papelera from "./papelera/Papelera";
+import BusquedaGlobal from "./BusquedaGlobal";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
 
@@ -42,6 +44,11 @@ const menuItems = [
     title: "Inventario",
     path: "/admin/lista",
     icon: "📦",
+  },
+  {
+    title: "Papelera",
+    path: "/admin/papelera",
+    icon: "🗑️",
   },
   {
     title: "Pedidos",
@@ -136,6 +143,8 @@ const PanelAdmin = () => {
 
   return (
     <div className={dashboardStyles.dashboardContainer}>
+      {isLoggedIn && <BusquedaGlobal />}
+
       {isSidebarOpen && (
         <div
           className={dashboardStyles.sidebarOverlay}
@@ -343,6 +352,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <Cupones />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/papelera"
+              element={
+                isLoggedIn ? (
+                  <Papelera />
                 ) : (
                   <Navigate to="/admin/login" />
                 )

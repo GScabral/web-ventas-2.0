@@ -12,6 +12,9 @@ const createCategoria = require("../controllers/producto/createCategoria")
 const updateCategoria = require("../controllers/producto/updateCategoria")
 const deleteCategoria = require("../controllers/producto/deleteCategoria")
 const duplicarProducto = require("../controllers/producto/duplicarProducto")
+const getProductosPapelera = require("../controllers/producto/getProductosPapelera")
+const restaurarProducto = require("../controllers/producto/restaurarProducto")
+const eliminarDefinitivo = require("../controllers/producto/eliminarDefinitivo")
 const { verificarTokenAdmin } = require("../middleware/auth");
 
 const router = Router();
@@ -195,5 +198,32 @@ router.delete(
 
 
 router.post("/duplicar/:id", verificarTokenAdmin, duplicarProducto);
+
+router.get("/papelera", verificarTokenAdmin, async (req, res) => {
+    try {
+        const productos = await getProductosPapelera();
+        res.status(200).json(productos);
+    } catch (error) {
+        res.status(500).json({ error: "No pudimos obtener la papelera." });
+    }
+});
+
+router.put("/restaurar/:id", verificarTokenAdmin, async (req, res) => {
+    try {
+        const producto = await restaurarProducto(req.params.id);
+        res.status(200).json(producto);
+    } catch (error) {
+        res.status(error.status || 500).json({ error: error.message || "No pudimos restaurar el producto." });
+    }
+});
+
+router.delete("/eliminarDefinitivo/:id", verificarTokenAdmin, async (req, res) => {
+    try {
+        const resultado = await eliminarDefinitivo(req.params.id);
+        res.status(200).json(resultado);
+    } catch (error) {
+        res.status(error.status || 500).json({ error: error.message || "No pudimos eliminar el producto." });
+    }
+});
 
 module.exports = router;

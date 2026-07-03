@@ -1,0 +1,113 @@
+@import "../adminCommon.css";
+
+.papelera-page {
+  max-width: 900px;
+}
+
+.papelera-header {
+  margin-bottom: var(--sp-6);
+}
+
+.papelera-header h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-primary);
+}
+
+.papelera-header p {
+  margin-top: var(--sp-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.papelera-cargando {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.papelera-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.papelera-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.papelera-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.papelera-item-nombre {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.papelera-item-meta {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.papelera-item-actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+.btn-restaurar,
+.btn-eliminar-definitivo {
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-restaurar {
+  color: var(--color-success);
+}
+
+.btn-restaurar:hover {
+  border-color: var(--color-success);
+  background: rgba(22, 163, 74, 0.06);
+}
+
+.btn-eliminar-definitivo {
+  color: var(--color-error);
+}
+
+.btn-eliminar-definitivo:hover {
+  border-color: var(--color-error);
+  background: rgba(220, 38, 38, 0.06);
+}
+
+@media (max-width: 600px) {
+  .papelera-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .papelera-item-actions {
+    width: 100%;
+  }
+
+  .papelera-item-actions button {
+    flex: 1;
+  }
+}

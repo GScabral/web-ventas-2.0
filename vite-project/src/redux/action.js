@@ -450,6 +450,30 @@ export const duplicarProducto = (id) => {
   };
 };
 
+// ---- Papelera de productos ----
+// getPapelera no guarda estado global (se usa solo dentro de la
+// pantalla de Papelera), mismo criterio que getHistorialCajas.
+
+export const getPapelera = async () => {
+  const response = await axios.get(`${API_URL}/producto/papelera`);
+  return response.data;
+};
+
+export const restaurarProducto = (id) => {
+  return async function (dispatch) {
+    const response = await axios.put(`${API_URL}/producto/restaurar/${id}`);
+    await dispatch(getProductos());
+    return response.data;
+  };
+};
+
+export const eliminarDefinitivoProducto = (id) => {
+  return async function () {
+    const response = await axios.delete(`${API_URL}/producto/eliminarDefinitivo/${id}`);
+    return response.data;
+  };
+};
+
 
 
 export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate de pasar cantidad_disponible aquí
