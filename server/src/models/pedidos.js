@@ -76,6 +76,14 @@ module.exports = (sequelize) => {
     descuento_cupon: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
+    },
+
+    // Evita que un mismo pedido genere el ingreso en caja dos veces
+    // (ej. si lo marcan "entregado", después lo pasan a otro estado
+    // por error, y lo vuelven a marcar "entregado").
+    registrado_en_caja: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     }
 
   });

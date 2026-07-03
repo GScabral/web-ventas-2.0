@@ -190,6 +190,28 @@ const PedidoList = () => {
       [dispatch]
     );
 
+  const handleMarcarEntregado =
+    useCallback(
+      async (pedidoId, metodoPago) => {
+        const resultado = await dispatch(
+          actualizarEstadoPedidoGeneral(
+            pedidoId,
+            "entregado",
+            metodoPago
+          )
+        );
+
+        if (resultado?.caja?.registrado) {
+          dispatch(mostrarToast("Pedido entregado. Se registró el ingreso en Caja."));
+        } else if (resultado?.caja?.motivo) {
+          dispatch(mostrarToast(`Pedido entregado. ${resultado.caja.motivo}`));
+        } else {
+          dispatch(mostrarToast("Pedido marcado como entregado."));
+        }
+      },
+      [dispatch]
+    );
+
   // ---- Búsqueda y filtro por fecha ----
 
   const [busqueda, setBusqueda] = useState("");
@@ -376,6 +398,9 @@ const PedidoList = () => {
               onEstadoChange={
                 handleEstadoChange
               }
+              onMarcarEntregado={
+                handleMarcarEntregado
+              }
             />
           ))}
         </div>
@@ -391,6 +416,9 @@ const PedidoList = () => {
               pedido={pedido}
               onEstadoChange={
                 handleEstadoChange
+              }
+              onMarcarEntregado={
+                handleMarcarEntregado
               }
             />
           ))}
@@ -408,6 +436,9 @@ const PedidoList = () => {
               onEstadoChange={
                 handleEstadoChange
               }
+              onMarcarEntregado={
+                handleMarcarEntregado
+              }
             />
           ))}
         </div>
@@ -423,6 +454,9 @@ const PedidoList = () => {
               pedido={pedido}
               onEstadoChange={
                 handleEstadoChange
+              }
+              onMarcarEntregado={
+                handleMarcarEntregado
               }
             />
           ))}

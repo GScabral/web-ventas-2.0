@@ -10,12 +10,28 @@ import {
 
 import "./PedidoCard.css";
 
+const METODOS_PAGO = [
+    { value: "efectivo", label: "💵 Efectivo" },
+    { value: "transferencia", label: "🏦 Transferencia" },
+    { value: "tarjeta_debito", label: "💳 Tarjeta débito" },
+    { value: "tarjeta_credito", label: "💳 Tarjeta crédito" },
+    { value: "mercado_pago", label: "📱 Mercado Pago" },
+    { value: "otro", label: "Otro" },
+];
+
 const PedidoCard = ({
     pedido,
-    onEstadoChange
+    onEstadoChange,
+    onMarcarEntregado,
 }) => {
 
     const [open, setOpen] = useState(false);
+
+    // Cuando eligen "Entregado" en el <select>, no se dispara el
+    // cambio de estado al toque: primero se pregunta el método de
+    // pago, así se puede generar el ingreso en Caja en el mismo paso
+    // (o el admin puede cancelar y no pasa nada).
+    const [pidiendoMetodoPago, setPidiendoMetodoPago] = useState(false);
 
     const fechaBonita = useMemo(() => {
 
@@ -71,12 +87,16 @@ const PedidoCard = ({
 
                 <select
                     value={pedido.estado}
-                    onChange={(e) =>
-                        onEstadoChange(
-                            pedido.id_pedido,
-                            e.target.value
-                        )
-                    }
+                    onChange={(e) => {
+                        if (e.target.value === "entregado" && !pedido.registrado_en_caja) {
+                            setPidiendoMetodoPago(true);
+                        } else {
+                            onEstadoChange(
+                                pedido.id_pedido,
+                                e.target.value
+                            );
+                        }
+                    }}
                 >
 
                     <option value="pendiente">
@@ -104,6 +124,39 @@ const PedidoCard = ({
                     </option>
 
                 </select>
+
+                {pidiendoMetodoPago && (
+                    <div className="metodo-pago-picker">
+
+                        <span className="metodo-pago-picker-label">
+                            ¿Cómo pagó? (se registra en Caja)
+                        </span>
+
+                        <div className="metodo-pago-picker-opciones">
+                            {METODOS_PAGO.map((m) => (
+                                <button
+                                    key={m.value}
+                                    type="button"
+                                    onClick={() => {
+                                        onMarcarEntregado(pedido.id_pedido, m.value);
+                                        setPidiendoMetodoPago(false);
+                                    }}
+                                >
+                                    {m.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        <button
+                            type="button"
+                            className="metodo-pago-picker-cancelar"
+                            onClick={() => setPidiendoMetodoPago(false)}
+                        >
+                            Cancelar
+                        </button>
+
+                    </div>
+                )}
 
                 <button
                     className="btn-ticket"

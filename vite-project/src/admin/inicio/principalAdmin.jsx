@@ -68,6 +68,21 @@ const Principal = () => {
     )
   );
 
+  // Pedidos que siguen en "pendiente" hace más de 48hs — el clásico
+  // "se me pasó por alto". No importa cuánto tiempo llevan en otros
+  // estados (preparando, enviado): lo urgente es lo que nunca se
+  // arrancó a procesar.
+  const HORAS_LIMITE_ESTANCADO = 48;
+
+  const pedidosEstancados = pedidos.filter((pedido) => {
+    if ((pedido.estado || "").toLowerCase() !== "pendiente") return false;
+
+    const horasDesdeElPedido =
+      (ahora - new Date(pedido.fecha_pedido)) / (1000 * 60 * 60);
+
+    return horasDesdeElPedido >= HORAS_LIMITE_ESTANCADO;
+  });
+
   const formatearMoneda = (valor) =>
     `$${Number(valor || 0).toLocaleString("es-AR")}`;
 
@@ -121,6 +136,41 @@ const Principal = () => {
       <div className="dashboard-card">
         <VentasChart ventasPorDia={estadisticas?.ventasPorDia || []} />
       </div>
+
+      {/* ---- Pedidos estancados ---- */}
+
+      {pedidosEstancados.length > 0 && (
+        <div className="pedidos-estancados-card">
+
+          <div className="pedidos-estancados-header">
+            <span className="pedidos-estancados-icono">⏰</span>
+            <span>
+              {pedidosEstancados.length === 1
+                ? "1 pedido lleva más de 48hs sin moverse de Pendiente"
+                : `${pedidosEstancados.length} pedidos llevan más de 48hs sin moverse de Pendiente`}
+            </span>
+          </div>
+
+          <div className="pedidos-estancados-lista">
+            {pedidosEstancados.slice(0, 5).map((pedido) => (
+              <Link
+                key={pedido.id_pedido}
+                to="/admin/PedidosLista"
+                className="pedidos-estancados-item"
+              >
+                #{pedido.id_pedido} — {pedido.nombre || "Sin nombre"}
+              </Link>
+            ))}
+
+            {pedidosEstancados.length > 5 && (
+              <Link to="/admin/PedidosLista" className="pedidos-estancados-item pedidos-estancados-vermas">
+                +{pedidosEstancados.length - 5} más
+              </Link>
+            )}
+          </div>
+
+        </div>
+      )}
 
       {/* ---- Stock bajo ---- */}
 

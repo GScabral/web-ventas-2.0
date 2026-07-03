@@ -474,7 +474,7 @@ export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate d
 }
 
 export const actualizarEstadoPedidoGeneral =
-  (id, estado) =>
+  (id, estado, metodo_pago) =>
     async (dispatch) => {
 
       try {
@@ -482,7 +482,7 @@ export const actualizarEstadoPedidoGeneral =
         const response =
           await axios.put(
             `${API_URL}/pedido/${id}/estado`,
-            { estado }
+            { estado, metodo_pago }
           );
 
         dispatch({

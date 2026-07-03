@@ -180,3 +180,56 @@
     font-size: 0.7rem;
   }
 }
+
+/* ============================================================
+   Selector de método de pago al marcar "Entregado"
+   ============================================================ */
+
+.metodo-pago-picker {
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--bg-elevated-2, #f5f5f5);
+  border: 1px solid var(--border-medium, #e0e0e0);
+  border-radius: 10px;
+}
+
+.metodo-pago-picker-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary, #666);
+  margin-bottom: 8px;
+}
+
+.metodo-pago-picker-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.metodo-pago-picker-opciones button {
+  border: 1px solid var(--border-medium, #ddd);
+  background: var(--bg-elevated, #fff);
+  color: var(--text-primary, #1a1a1a);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.metodo-pago-picker-opciones button:hover {
+  border-color: var(--accent-terracota, #ff6b35);
+  color: var(--accent-terracota, #ff6b35);
+}
+
+.metodo-pago-picker-cancelar {
+  border: none;
+  background: transparent;
+  color: var(--text-muted, #999);
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
