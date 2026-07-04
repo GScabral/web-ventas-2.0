@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import {
   Route,
   Routes,
@@ -9,22 +9,31 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { LoginAdmin, logoutAdmin, verifyAdminToken } from "../redux/action";
 
-import NewProduct from "./añadir/añadirProducto";
-import Principal from "./inicio/principalAdmin";
-import ProductList from "./productos/listadoProductos";
-import PedidoList from "./pedidos/listadoPedidos";
+// Cada sección se carga sola, cuando el admin entra a esa pantalla
+// puntual — así abrir /admin no descarga de una las 12 secciones
+// (Caja, Cupones, Papelera, etc.), solo el shell (sidebar/header) y
+// la que realmente se está mirando.
+const NewProduct = lazy(() => import("./añadir/añadirProducto"));
+const Principal = lazy(() => import("./inicio/principalAdmin"));
+const ProductList = lazy(() => import("./productos/listadoProductos"));
+const PedidoList = lazy(() => import("./pedidos/listadoPedidos"));
 // import ClienteList from "./clientes/listadoClientes";
-import OfertasLista from "./ofertas/listadoOFertas";
-import BannersLista from "./banners/listadoBanners";
-import Personalizacion from "./personalizacion/Personalizacion";
-import Caja from "./caja/Caja";
-import Cupones from "./cupones/Cupones";
-import Papelera from "./papelera/Papelera";
-import Envios from "./envios/Envios";
+const OfertasLista = lazy(() => import("./ofertas/listadoOFertas"));
+const BannersLista = lazy(() => import("./banners/listadoBanners"));
+const Personalizacion = lazy(() => import("./personalizacion/Personalizacion"));
+const Caja = lazy(() => import("./caja/Caja"));
+const Cupones = lazy(() => import("./cupones/Cupones"));
+const Papelera = lazy(() => import("./papelera/Papelera"));
+const Envios = lazy(() => import("./envios/Envios"));
+const TicketPage = lazy(() => import("./pedidos/TicketPage"));
+
+// Estas dos SÍ se cargan siempre de una: BusquedaGlobal está montada
+// en todo momento (escucha Ctrl/Cmd+K en cualquier pantalla) y
+// LoginScreen es lo primero que hay que mostrar si no hay sesión, así
+// que no tiene sentido diferirla.
 import BusquedaGlobal from "./BusquedaGlobal";
 import LoginScreen from "./login/LoginScreen";
 import dashboardStyles from "./panelAdminDashboard.module.css";
-import TicketPage from "./pedidos/TicketPage";
 
 const menuItems = [
   {
@@ -244,6 +253,7 @@ const PanelAdmin = () => {
         </header>
 
         <section className={dashboardStyles.contentCard}>
+          <Suspense fallback={<p style={{ padding: "2rem", textAlign: "center", color: "var(--text-muted)" }}>Cargando...</p>}>
           <Routes>
             <Route
               path="/principal"
@@ -377,6 +387,7 @@ const PanelAdmin = () => {
               }
             />
           </Routes>
+          </Suspense>
         </section>
       </main>
     </div>
