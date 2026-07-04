@@ -22,6 +22,7 @@ import Cupones from "./cupones/Cupones";
 import Papelera from "./papelera/Papelera";
 import Envios from "./envios/Envios";
 import BusquedaGlobal from "./BusquedaGlobal";
+import LoginScreen from "./login/LoginScreen";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
 
@@ -94,6 +95,7 @@ const PanelAdmin = () => {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loginError, setLoginError] = useState("");
+  const [loggingIn, setLoggingIn] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.isLoggedInAd);
 
@@ -113,6 +115,7 @@ const PanelAdmin = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoginError("");
+    setLoggingIn(true);
 
     const password = event.target.elements.password.value;
 
@@ -125,6 +128,8 @@ const PanelAdmin = () => {
     } catch (error) {
       console.error(error);
       setLoginError("Error al iniciar sesión");
+    } finally {
+      setLoggingIn(false);
     }
   };
 
@@ -147,9 +152,24 @@ const PanelAdmin = () => {
     );
   }
 
+  // Pantalla propia de login, no un modal flotando sobre el panel
+  // vacío: así el admin ni siquiera ve el sidebar/header hasta estar
+  // autenticado.
+  if (!isLoggedIn) {
+    return (
+      <div className={dashboardStyles.dashboardContainer}>
+        <LoginScreen
+          onSubmit={handleLogin}
+          loginError={loginError}
+          loading={loggingIn}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={dashboardStyles.dashboardContainer}>
-      {isLoggedIn && <BusquedaGlobal />}
+      <BusquedaGlobal />
 
       {isSidebarOpen && (
         <div
@@ -222,57 +242,6 @@ const PanelAdmin = () => {
             </button>
           )}
         </header>
-
-        {!isLoggedIn && (
-          <div
-            className={dashboardStyles.modalIniAdm}
-          >
-            <div
-              className={
-                dashboardStyles.modalContentIniAdm
-              }
-            >
-              <h2>Iniciar sesión</h2>
-
-              <form
-                onSubmit={handleLogin}
-                autoComplete="off"
-              >
-                <label
-                  className={
-                    dashboardStyles.inputLabel
-                  }
-                >
-                  Contraseña
-                </label>
-
-                <input
-                  type="password"
-                  name="password"
-                  className={
-                    dashboardStyles.inputPassword
-                  }
-                  placeholder="Contraseña"
-                />
-
-                {loginError && (
-                  <p style={{ color: "red", margin: "0.5rem 0" }}>
-                    {loginError}
-                  </p>
-                )}
-
-                <button
-                  type="submit"
-                  className={
-                    dashboardStyles.loginButton
-                  }
-                >
-                  Iniciar sesión
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
 
         <section className={dashboardStyles.contentCard}>
           <Routes>

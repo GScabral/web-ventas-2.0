@@ -259,76 +259,10 @@
 
 /* ============================================================
    LOGIN
+   (la pantalla de login en sí ahora vive en admin/login/LoginScreen —
+   acá solo queda .loginButton, que también usa el botón de "Cerrar
+   sesión" del header)
    ============================================================ */
-
-.modalIniAdm {
-  position: fixed;
-  inset: 0;
-
-  background: var(--bg-overlay);
-  backdrop-filter: blur(4px);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sp-4);
-
-  z-index: 2000;
-}
-
-.modalContentIniAdm {
-  width: 100%;
-  max-width: 380px;
-
-  background: var(--bg-elevated);
-
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-
-  padding: var(--sp-6);
-
-  box-shadow: var(--shadow-lg);
-}
-
-.modalContentIniAdm h2 {
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
-  margin-bottom: var(--sp-4);
-  color: var(--text-primary);
-}
-
-.inputLabel {
-  display: block;
-  font-size: var(--fs-sm);
-  font-weight: 700;
-  color: var(--text-secondary);
-
-  margin-bottom: var(--sp-2);
-}
-
-.inputPassword {
-  width: 100%;
-
-  padding: var(--sp-3) var(--sp-4);
-
-  background: var(--bg-elevated-2);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-sm);
-
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: var(--fs-base);
-
-  margin-bottom: var(--sp-4);
-
-  transition: border-color var(--t-fast) var(--ease-out);
-}
-
-.inputPassword:focus {
-  outline: none;
-  border-color: var(--accent-terracota);
-  background: var(--bg-elevated);
-}
 
 .loginButton {
   width: 100%;
@@ -440,11 +374,6 @@
     padding: var(--sp-4);
     min-height: calc(100vh - 64px - 32px);
   }
-
-  .modalContentIniAdm {
-    max-width: min(92vw, 360px);
-    padding: var(--sp-5);
-  }
 }
 
 @media (max-width: 480px) {
@@ -471,15 +400,6 @@
     margin: var(--sp-3);
     padding: var(--sp-3);
     border-radius: var(--radius-md);
-  }
-
-  .modalContentIniAdm {
-    padding: var(--sp-4);
-  }
-
-  .inputPassword {
-    padding: var(--sp-3);
-    font-size: var(--fs-sm);
   }
 
   .loginButton {
