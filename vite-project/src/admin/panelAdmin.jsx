@@ -20,6 +20,7 @@ import Personalizacion from "./personalizacion/Personalizacion";
 import Caja from "./caja/Caja";
 import Cupones from "./cupones/Cupones";
 import Papelera from "./papelera/Papelera";
+import Envios from "./envios/Envios";
 import BusquedaGlobal from "./BusquedaGlobal";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 import TicketPage from "./pedidos/TicketPage";
@@ -74,6 +75,11 @@ const menuItems = [
     title: "Banners",
     path: "/admin/banners",
     icon: "🖼️",
+  },
+  {
+    title: "Envíos",
+    path: "/admin/envios",
+    icon: "🚚",
   },
   {
     title: "Personalización",
@@ -363,6 +369,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <Papelera />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/envios"
+              element={
+                isLoggedIn ? (
+                  <Envios />
                 ) : (
                   <Navigate to="/admin/login" />
                 )

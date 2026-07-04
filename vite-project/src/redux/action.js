@@ -474,6 +474,44 @@ export const eliminarDefinitivoProducto = (id) => {
   };
 };
 
+// ---- Costos de envío ----
+// Ninguna guarda estado global de redux (se usan siempre con estado
+// local en el componente que las llama), mismo criterio que
+// getHistorialCajas / getPapelera.
+
+export const getCostosEnvioTodos = async () => {
+  const response = await axios.get(`${API_URL}/costo-envio/todos`);
+  return response.data;
+};
+
+export const crearCostoEnvio = (datos) => {
+  return async function () {
+    const response = await axios.post(`${API_URL}/costo-envio`, datos);
+    return response.data;
+  };
+};
+
+export const actualizarCostoEnvio = (id, datos) => {
+  return async function () {
+    const response = await axios.put(`${API_URL}/costo-envio/${id}`, datos);
+    return response.data;
+  };
+};
+
+export const eliminarCostoEnvio = (id) => {
+  return async function () {
+    const response = await axios.delete(`${API_URL}/costo-envio/${id}`);
+    return response.data;
+  };
+};
+
+// Pública: usada desde el checkout para calcular el envío antes de
+// confirmar.
+export const calcularCostoEnvioCheckout = async (provincia) => {
+  const response = await axios.get(`${API_URL}/costo-envio/calcular/${encodeURIComponent(provincia)}`);
+  return response.data;
+};
+
 
 
 export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate de pasar cantidad_disponible aquí

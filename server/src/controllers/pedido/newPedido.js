@@ -2,6 +2,7 @@ const { Pedido, DetallesPedido, Productos, oferta, variantesproductos, conn, Con
 const { Op } = require("sequelize");
 const notificarNuevoPedido = require("../correo/notificarNuevoPedido");
 const validarCupon = require("../cupon/validarCupon");
+const calcularCostoEnvio = require("../costoEnvio/calcularCostoEnvio");
 
 // Error "esperado": stock insuficiente, producto inexistente, etc.
 // Se distingue de errores técnicos para devolver 400 con un mensaje
@@ -222,7 +223,19 @@ const nuevoPedido = async (req, res) => {
         }
       }
 
-      const totalPedido = Math.max(0, subtotal - descuentoCupon);
+      // Costo de envío: se recalcula acá según la provincia, del
+      // mismo modo que el cupón — nunca se confía en un monto de
+      // envío que mande el navegador. Si es retiro en local, o no hay
+      // un costo cargado para esa provincia, queda en 0 (se coordina
+      // a mano en ese caso).
+      let costoEnvio = 0;
+
+      if (tipoEntrega === "ENVIO" && provinciaCliente) {
+        const resultadoEnvio = await calcularCostoEnvio(provinciaCliente);
+        costoEnvio = resultadoEnvio.costo;
+      }
+
+      const totalPedido = Math.max(0, subtotal - descuentoCupon + costoEnvio);
 
       const pedido = await Pedido.create(
         {
@@ -234,6 +247,7 @@ const nuevoPedido = async (req, res) => {
           direccion: direccionCliente,
           tipo_entrega: tipoEntrega,
           total_pedido: totalPedido,
+          costo_envio: costoEnvio,
           cupon_codigo: cuponAplicado?.codigo || null,
           descuento_cupon: descuentoCupon,
           estado: "pendiente"

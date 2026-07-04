@@ -23,6 +23,8 @@ const CheckoutModal = ({ show, onClose }) => {
     aplicarCupon,
     quitarCupon,
     descuentoCupon,
+    costoEnvio,
+    envioEncontrado,
     confirmarPedido,
     loading,
     submitError,
@@ -135,6 +137,19 @@ const CheckoutModal = ({ show, onClose }) => {
                 <span>Cupón {cuponAplicado.codigo}</span>
                 <span>-${descuentoCupon.toLocaleString("es-AR")}</span>
               </div>
+            )}
+
+            {shippingData.tipoEntrega === "ENVIO" && shippingData.provincia.trim() && (
+              costoEnvio > 0 ? (
+                <div className={styles.resumenEnvio}>
+                  <span>Envío a {shippingData.provincia}</span>
+                  <span>${costoEnvio.toLocaleString("es-AR")}</span>
+                </div>
+              ) : !envioEncontrado ? (
+                <p className={styles.envioSinCargar}>
+                  Todavía no tenemos un costo de envío cargado para "{shippingData.provincia}" — lo coordinamos por WhatsApp.
+                </p>
+              ) : null
             )}
 
             <div className={styles.resumenTotalFinal}>

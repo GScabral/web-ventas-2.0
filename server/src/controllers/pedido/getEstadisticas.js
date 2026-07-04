@@ -1,4 +1,4 @@
-const { Pedido, DetallesPedido } = require("../../db");
+const { Pedido, DetallesPedido, variantesproductos, Productos, Categorias } = require("../../db");
 const { Op } = require("sequelize");
 
 // Estadísticas para el dashboard de Inicio del admin: total vendido en
@@ -62,6 +62,53 @@ const getEstadisticas = async () => {
         }
     }
 
+    // Ventas por categoría: DetallesPedido no guarda la categoría
+    // directo (solo id_variante), así que hay que resolverla pasando
+    // por variantesproductos -> Productos -> Categorias. Se arma un
+    // mapa una sola vez para no consultar la base por cada detalle.
+    const idsVariantes = [
+        ...new Set(
+            pedidosDelPeriodo
+                .flatMap(p => p.DetallesPedidos || [])
+                .map(d => d.id_variante)
+                .filter(Boolean)
+        ),
+    ];
+
+    const variantesConCategoria = idsVariantes.length
+        ? await variantesproductos.findAll({
+            where: { id_variante: idsVariantes },
+            include: [{ model: Productos, include: [Categorias] }],
+        })
+        : [];
+
+    const categoriaPorVariante = {};
+
+    for (const variante of variantesConCategoria) {
+        categoriaPorVariante[variante.id_variante] =
+            variante.Producto?.Categoria?.nombre || "Sin categoría";
+    }
+
+    const statsPorCategoria = {};
+
+    for (const pedido of pedidosDelPeriodo) {
+        for (const detalle of (pedido.DetallesPedidos || [])) {
+
+            const categoria = categoriaPorVariante[detalle.id_variante] || "Sin categoría";
+
+            if (!statsPorCategoria[categoria]) {
+                statsPorCategoria[categoria] = { cantidad: 0, total: 0 };
+            }
+
+            statsPorCategoria[categoria].cantidad += detalle.cantidad;
+            statsPorCategoria[categoria].total += Number(detalle.total || 0);
+        }
+    }
+
+    const ventasPorCategoria = Object.entries(statsPorCategoria)
+        .map(([categoria, datos]) => ({ categoria, ...datos }))
+        .sort((a, b) => b.total - a.total);
+
     // Serie diaria para el gráfico: un total por día, completando con
     // $0 los días sin ventas (para que el gráfico no tenga huecos).
     const totalesPorDia = {};
@@ -90,6 +137,7 @@ const getEstadisticas = async () => {
         ventasMes,
         productoMasVendido,
         ventasPorDia,
+        ventasPorCategoria,
     };
 };
 

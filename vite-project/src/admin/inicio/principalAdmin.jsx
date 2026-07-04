@@ -10,6 +10,7 @@ import {
 } from "../../redux/action";
 
 import VentasChart from "./VentasChart";
+import VentasPorCategoria from "./VentasPorCategoria";
 
 import "./principal.css";
 
@@ -135,6 +136,10 @@ const Principal = () => {
 
       <div className="dashboard-card">
         <VentasChart ventasPorDia={estadisticas?.ventasPorDia || []} />
+      </div>
+
+      <div className="dashboard-card">
+        <VentasPorCategoria ventasPorCategoria={estadisticas?.ventasPorCategoria || []} />
       </div>
 
       {/* ---- Pedidos estancados ---- */}

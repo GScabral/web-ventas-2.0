@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,6 +6,7 @@ import {
   addPedido,
   vaciarCarrito,
   validarCuponCheckout,
+  calcularCostoEnvioCheckout,
 } from "../../../../redux/action";
 
 import { STORE_CONFIG } from "../../../../config/storeConfig";
@@ -116,7 +117,36 @@ const useCheckout = () => {
 
   const descuentoCupon = cuponAplicado?.descuento || 0;
 
-  const total = Math.max(0, subtotal - descuentoCupon);
+  // ---- Costo de envío ----
+  // Se recalcula solo, con un pequeño debounce mientras el cliente
+  // todavía está escribiendo la provincia, para no pegarle al
+  // backend en cada letra.
+  const [costoEnvio, setCostoEnvio] = useState(0);
+  const [envioEncontrado, setEnvioEncontrado] = useState(true);
+
+  useEffect(() => {
+
+    if (shippingData.tipoEntrega !== "ENVIO" || !shippingData.provincia.trim()) {
+      setCostoEnvio(0);
+      setEnvioEncontrado(true);
+      return;
+    }
+
+    const timeout = setTimeout(async () => {
+      try {
+        const resultado = await calcularCostoEnvioCheckout(shippingData.provincia.trim());
+        setCostoEnvio(resultado.costo);
+        setEnvioEncontrado(resultado.encontrado);
+      } catch (error) {
+        setCostoEnvio(0);
+        setEnvioEncontrado(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [shippingData.tipoEntrega, shippingData.provincia]);
+
+  const total = Math.max(0, subtotal - descuentoCupon + costoEnvio);
 
   const confirmarPedido = async () => {
 
@@ -205,6 +235,7 @@ Dirección: ${shippingData.direccion}
 Productos:
 ${productos}
 ${cuponAplicado ? `\nCupón aplicado: ${cuponAplicado.codigo} (-$${descuentoCupon.toLocaleString("es-AR")})` : ""}
+${shippingData.tipoEntrega === "ENVIO" && costoEnvio > 0 ? `\nCosto de envío: $${costoEnvio.toLocaleString("es-AR")}` : ""}
 
 Total: $${totalReal.toLocaleString("es-AR")}
       `;
@@ -259,6 +290,9 @@ Total: $${totalReal.toLocaleString("es-AR")}
     aplicarCupon,
     quitarCupon,
     descuentoCupon,
+
+    costoEnvio,
+    envioEncontrado,
 
     confirmarPedido,
 

@@ -80,6 +80,22 @@
   margin-top: 4px;
 }
 
+.resumenEnvio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.envioSinCargar {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+  font-style: italic;
+}
+
 .resumenTotalFinal {
   display: flex;
   justify-content: space-between;

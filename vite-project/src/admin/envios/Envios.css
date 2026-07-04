@@ -1,0 +1,138 @@
+@import "../adminCommon.css";
+
+.envios-page {
+  max-width: 1000px;
+}
+
+.envios-header {
+  margin-bottom: var(--sp-6);
+}
+
+.envios-header h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-primary);
+}
+
+.envios-header p {
+  margin-top: var(--sp-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  max-width: 520px;
+}
+
+.envios-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.envio-form {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.envio-form h2,
+.envios-lista h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--sp-5);
+}
+
+.envio-error {
+  color: var(--color-error);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+}
+
+.btn-agregar-envio {
+  width: 100%;
+  border: none;
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  box-shadow: var(--shadow-glow-terracota);
+}
+
+.btn-agregar-envio:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.envios-cargando {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.envio-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  margin-bottom: var(--sp-3);
+  box-shadow: var(--shadow-sm);
+}
+
+.envio-item-inactivo {
+  opacity: 0.6;
+}
+
+.envio-item-info {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+.envio-item-provincia {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.envio-item-costo {
+  font-size: var(--fs-md);
+  font-weight: 800;
+  color: var(--accent-terracota);
+}
+
+.envio-item-actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+@media (max-width: 1000px) {
+  .envios-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .envio-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .envio-item-actions {
+    width: 100%;
+  }
+
+  .envio-item-actions button {
+    flex: 1;
+  }
+}

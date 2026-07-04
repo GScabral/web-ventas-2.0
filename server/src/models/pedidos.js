@@ -84,6 +84,15 @@ module.exports = (sequelize) => {
     registrado_en_caja: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+
+    // Costo de envío aplicado en el momento de la compra (según la
+    // provincia). Se guarda el valor real cobrado, no una referencia
+    // a la tabla de costos — así, si el admin cambia el precio del
+    // envío después, los pedidos viejos no cambian retroactivamente.
+    costo_envio: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0,
     }
 
   });
