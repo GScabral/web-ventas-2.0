@@ -195,6 +195,18 @@ const reducer = (state = initialState, action) => {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     case FILTER: {
       const { categoria, subcategoria } = action.payload;
+
+      // Antes esto se marcaba "filter: true" SIEMPRE que se disparaba la
+      // acción, incluso sin categoría/subcategoría real (el sidebar de
+      // filtros la dispara al montar la página, con todo vacío). Eso
+      // dejaba el paginado leyendo para siempre de `state.filtered` en
+      // vez del catálogo completo, y si ese primer filtro llegaba a
+      // correr antes de que el catálogo terminara de cargar, `filtered`
+      // quedaba corto/vacío mientras `totalPages` ya mostraba el número
+      // real de páginas — resultado: tocar un número de página que caía
+      // fuera de ese `filtered` corto no hacía nada.
+      const hayFiltroActivo = Boolean(categoria) || Boolean(subcategoria);
+
       let filteredProducts = state.allProductosBackUp;
 
       // 👉 Filtrar por Categoría
@@ -224,19 +236,18 @@ const reducer = (state = initialState, action) => {
       const totalFilteredItems = filteredProducts.length;
       const totalPages = Math.ceil(totalFilteredItems / ITEMS_PER_PAGE);
 
-      const startIndex = (state.currentPage - 1) * ITEMS_PER_PAGE;
-      const endIndex = startIndex + ITEMS_PER_PAGE;
-      const paginatedFilteredProducts = filteredProducts.slice(
-        startIndex,
-        endIndex
-      );
-
+      // Se resetea siempre a la página 1, así que el recorte tiene que
+      // arrancar en el índice 0 — antes usaba state.currentPage (la
+      // página VIEJA) para cortar, pero currentPage se pisaba a 1 en el
+      // mismo return, así que mostraba datos de una página y decía
+      // estar en otra.
+      const paginatedFilteredProducts = filteredProducts.slice(0, ITEMS_PER_PAGE);
 
       return {
         ...state,
         allProductos: paginatedFilteredProducts,   // 👈 lo que se renderiza
         filtered: filteredProducts,                // 👈 guardas TODOS los filtrados aquí
-        filter: true,
+        filter: hayFiltroActivo,
         totalPages,
         currentPage: 1,                            // 👈 resetea siempre a la página 1
         filters: { ...state.filters, categoria, subcategoria },
