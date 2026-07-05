@@ -65,7 +65,7 @@
   border-radius: 999px;
 
   background: var(--gradient-brand);
-  color: #1a1410;
+  color: var(--text-on-accent);
 
   font-weight: 800;
   font-size: 13px;

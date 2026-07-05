@@ -43,7 +43,7 @@
   z-index: 2;
 
   background: var(--accent-mostaza);
-  color: #1a1410;
+  color: var(--text-primary);
 
   font-size: 11px;
   font-weight: 800;
@@ -97,7 +97,7 @@
 
   font-size: 12.5px;
   line-height: 1.35;
-  color: #3a2c22;
+  color: var(--text-primary);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -124,7 +124,7 @@
 
 .product-price-old {
   font-size: 11px;
-  color: #aaa;
+  color: var(--text-muted);
   text-decoration: line-through;
 }
 
@@ -182,7 +182,7 @@
   align-items: center;
   z-index: 2000;
   padding: 20px;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
 }
 
 .product-modal {
@@ -244,13 +244,13 @@
   margin: 0;
   font-size: 20px;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .modal-description {
   margin: 0;
   font-size: 13px;
-  color: #777;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
@@ -258,7 +258,7 @@
   margin: 0;
   font-size: 22px;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .modal-section {
@@ -270,7 +270,7 @@
 .modal-section label {
   font-size: 12px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 .sizes-grid,
@@ -288,7 +288,7 @@
   cursor: pointer;
   border-radius: 8px;
   font-size: 12.5px;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
@@ -355,14 +355,14 @@
   border-radius: 999px;
   font-weight: 800;
   font-size: 13px;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   transition: transform 0.15s ease, opacity 0.15s ease;
   cursor: pointer;
 }
 
 .confirm-cart-btn {
   background: var(--gradient-brand);
-  color: #1a1410;
+  color: var(--text-on-accent);
   border: none;
 }
 

@@ -1,8 +1,13 @@
 /* ============================================================
    SISTEMA DE DISEÑO — Tienda de moda y belleza
-   Dirección: moderno y vibrante, con temperatura cálida.
-   Fondo cacao oscuro, acentos terracota/mostaza/rosa,
-   display serif de carácter + sans geométrica.
+   Dirección: look SaaS/dashboard claro (mismo lenguaje que
+   admin/panelAdminDashboard.module.css, ahora extendido a toda
+   la tienda pública): superficies claras, sombras suaves
+   neutras, radios contenidos, tipografía sans unificada.
+   Los acentos de marca (terracota/mostaza/rosa) se conservan
+   porque siguen siendo configurables desde Admin > Personalización
+   vía ThemeLoader — cambia el fondo alrededor, no la identidad
+   de color de marca.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -15,43 +20,43 @@
 
 :root {
   /* ---- Color: superficies ---- */
-  --bg-base: #1a1410;
-  --bg-elevated: #2a1f18;
-  --bg-elevated-2: #382a20;
-  --bg-overlay: rgba(26, 20, 16, 0.85);
+  --bg-base: #f5f6f8;
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: #eef0f3;
+  --bg-overlay: rgba(17, 20, 27, 0.5);
 
   /* ---- Color: acentos ---- */
   --accent-terracota: #ff6b35;
-  --accent-terracota-soft: #ff9466;
+  --accent-terracota-soft: #fff0e9;
   --accent-mostaza: #e8a33d;
-  --accent-mostaza-soft: #f3c270;
+  --accent-mostaza-soft: #fdf3e2;
   --accent-rosa: #d6708a;
   /* para detalles puntuales y ofertas */
 
   /* ---- Color: texto ---- */
-  --text-primary: #f7f0e8;
-  --text-secondary: #c2ad9c;
-  --text-muted: #8a7565;
-  --text-on-accent: #1a1410;
+  --text-primary: #1c2029;
+  --text-secondary: #646d7a;
+  --text-muted: #9aa1ac;
+  --text-on-accent: #ffffff;
 
   /* ---- Color: estado ---- */
-  --color-success: #7fb069;
-  --color-error: #ff5c5c;
-  --color-warning: #e8a33d;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
 
   /* ---- Bordes ---- */
-  --border-subtle: rgba(247, 240, 232, 0.08);
-  --border-medium: rgba(247, 240, 232, 0.14);
-  --border-accent: rgba(255, 107, 53, 0.4);
+  --border-subtle: #edeef1;
+  --border-medium: #e1e3e8;
+  --border-accent: rgba(255, 107, 53, 0.35);
 
   /* ---- Gradientes ---- */
   --gradient-brand: linear-gradient(135deg, var(--accent-terracota) 0%, #f2913f 50%, var(--accent-mostaza) 100%);
-  --gradient-brand-soft: linear-gradient(135deg, rgba(255, 107, 53, 0.18) 0%, rgba(232, 163, 61, 0.12) 100%);
-  --gradient-surface: linear-gradient(160deg, var(--bg-elevated) 0%, var(--bg-base) 100%);
+  --gradient-brand-soft: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(232, 163, 61, 0.06) 100%);
+  --gradient-surface: linear-gradient(160deg, #ffffff 0%, var(--bg-base) 100%);
 
-  /* ---- Tipografía ---- */
-  --font-display: 'Fraunces', 'Georgia', serif;
-  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* ---- Tipografía (sans unificada, sin serif editorial) ---- */
+  --font-display: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
@@ -74,18 +79,18 @@
   --sp-8: 64px;
   --sp-9: 96px;
 
-  /* ---- Radios ---- */
+  /* ---- Radios (contenidos, estilo dashboard) ---- */
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --radius-full: 999px;
 
-  /* ---- Sombras (con tinte de color, no negras puras) ---- */
-  --shadow-sm: 0 2px 8px rgba(15, 10, 8, 0.4);
-  --shadow-md: 0 8px 24px rgba(15, 10, 8, 0.45);
-  --shadow-lg: 0 16px 48px rgba(15, 10, 8, 0.5);
-  --shadow-glow-terracota: 0 8px 32px rgba(255, 107, 53, 0.28);
-  --shadow-glow-mostaza: 0 8px 32px rgba(232, 163, 61, 0.2);
+  /* ---- Sombras suaves y neutras (nada de negro puro) ---- */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 6px 16px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.12);
+  --shadow-glow-terracota: 0 6px 16px rgba(255, 107, 53, 0.22);
+  --shadow-glow-mostaza: 0 6px 16px rgba(232, 163, 61, 0.18);
 
   /* ---- Transiciones ---- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

@@ -1,34 +1,32 @@
-.newsletter-section {
+/* ============================================================
+   NEWSLETTER
+   Nota: este archivo tenía una regla .newsletter-card duplicada
+   (una versión vieja con marca azul #002B81, dentro de la misma
+   llave que la versión activa) que quedó de un cambio de marca
+   anterior sin limpiar. Se dejó una sola versión, usando las
+   variables del sistema de diseño.
+   ============================================================ */
 
-    margin:
-        100px 0 60px;
+.newsletter-section {
+    margin: 100px 0 60px;
 }
 
 .newsletter-card {
-
     padding: 70px;
 
-    border-radius: 32px;
+    border-radius: var(--radius-lg);
 
-    background:
-        linear-gradient(135deg,
-            #002B81,
-            #10254F);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-sm);
 
-.newsletter-card {
-    padding: 70px;
-
-    border-radius: 28px;
-
-    background: #1a1410;
-
-    color: #f7f0e8;
+    color: var(--text-primary);
 
     text-align: center;
 }
 
 .newsletter-card span {
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -40,17 +38,17 @@
 .newsletter-card h2 {
     margin: 14px 0 8px;
 
-    font-family: 'Fraunces', 'Georgia', serif;
-    font-weight: 500;
+    font-family: var(--font-display);
+    font-weight: 700;
     font-size: 36px;
 
-    color: #f7f0e8;
+    color: var(--text-primary);
 }
 
 .newsletter-card p {
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 15px;
-    color: #c2ad9c;
+    color: var(--text-secondary);
 }
 
 .newsletter-form {
@@ -67,20 +65,20 @@
 
     padding: 15px 18px;
 
-    border: 1px solid rgba(247, 240, 232, 0.16);
+    border: 1px solid var(--border-medium);
     border-radius: 999px;
 
-    background: rgba(247, 240, 232, 0.06);
-    color: #f7f0e8;
+    background: var(--bg-elevated-2);
+    color: var(--text-primary);
 
     outline: none;
 
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 14px;
 }
 
 .newsletter-form input::placeholder {
-    color: #8a7565;
+    color: var(--text-muted);
 }
 
 .newsletter-form input:focus {
@@ -94,9 +92,9 @@
     border-radius: 999px;
 
     background: var(--gradient-brand);
-    color: #1a1410;
+    color: var(--text-on-accent);
 
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-weight: 700;
     font-size: 14px;
 
@@ -124,9 +122,13 @@
 }
 
 @media (max-width: 768px) {
+    .newsletter-section {
+        margin: 80px 0 50px;
+    }
+
     .newsletter-card {
         padding: 40px 30px;
-        border-radius: 20px;
+        border-radius: var(--radius-md);
     }
 
     .newsletter-card h2 {
@@ -156,9 +158,13 @@
 }
 
 @media (max-width: 600px) {
+    .newsletter-section {
+        margin: 60px 0 40px;
+    }
+
     .newsletter-card {
         padding: 28px 20px;
-        border-radius: 16px;
+        border-radius: var(--radius-md);
     }
 
     .newsletter-card span {
@@ -185,166 +191,5 @@
         box-sizing: border-box;
         padding: 12px 16px;
         font-size: 13px;
-    }
-}
-    text-align: center;
-}
-
-.newsletter-card span {
-
-    color: #99BBFF;
-
-    letter-spacing: 3px;
-
-    font-weight: 700;
-}
-
-.newsletter-card h2 {
-
-    font-size: 48px;
-
-    margin: 20px 0;
-}
-
-.newsletter-card p {
-
-    font-size: 18px;
-
-    opacity: 0.9;
-}
-
-.newsletter-form {
-
-    margin-top: 35px;
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 14px;
-
-    flex-wrap: wrap;
-}
-
-.newsletter-form input {
-
-    width: 340px;
-
-    padding: 18px;
-
-    border: none;
-
-    border-radius: 18px;
-
-    outline: none;
-
-    font-size: 16px;
-}
-
-.newsletter-form button {
-
-    padding: 18px 28px;
-
-    border: none;
-
-    border-radius: 18px;
-
-    background: #5D8BE8;
-
-    color: white;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-@media (max-width: 1024px) {
-    .newsletter-card {
-        padding: 50px;
-    }
-
-    .newsletter-card h2 {
-        font-size: 36px;
-    }
-
-    .newsletter-card p {
-        font-size: 16px;
-    }
-}
-
-@media (max-width: 768px) {
-    .newsletter-section {
-        margin: 80px 0 50px;
-    }
-
-    .newsletter-card {
-        padding: 40px 30px;
-    }
-
-    .newsletter-card h2 {
-        font-size: 28px;
-        margin: 15px 0;
-    }
-
-    .newsletter-card p {
-        font-size: 14px;
-    }
-
-    .newsletter-form {
-        margin-top: 25px;
-        gap: 10px;
-    }
-
-    .newsletter-form input {
-        width: 280px;
-        padding: 14px;
-        font-size: 14px;
-    }
-
-    .newsletter-form button {
-        padding: 14px 24px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 600px) {
-    .newsletter-section {
-        margin: 60px 0 40px;
-    }
-
-    .newsletter-card {
-        padding: 30px 20px;
-        border-radius: 20px;
-    }
-
-    .newsletter-card span {
-        font-size: 11px;
-        letter-spacing: 2px;
-    }
-
-    .newsletter-card h2 {
-        font-size: 20px;
-        margin: 12px 0;
-    }
-
-    .newsletter-card p {
-        font-size: 13px;
-    }
-
-    .newsletter-form {
-        flex-direction: column;
-        margin-top: 20px;
-    }
-
-    .newsletter-form input {
-        width: 100%;
-        padding: 12px 14px;
-        font-size: 14px;
-    }
-
-    .newsletter-form button {
-        width: 100%;
-        padding: 12px 14px;
-        font-size: 14px;
     }
 }

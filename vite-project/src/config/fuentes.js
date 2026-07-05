@@ -34,6 +34,6 @@ export const FUENTES = {
   },
 };
 
-export const FUENTE_POR_DEFECTO = "clasica";
+export const FUENTE_POR_DEFECTO = "moderna";
 
 export default FUENTES;

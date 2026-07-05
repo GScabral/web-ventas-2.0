@@ -47,8 +47,9 @@
 ========================= */
 
 .hero-content {
-    background: #1a1410;
-    color: #f7f0e8;
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
 
     padding: 64px 56px;
 
@@ -74,22 +75,22 @@
 .hero-content h1 {
     margin: 0;
 
-    font-family: 'Fraunces', 'Georgia', serif;
-    font-weight: 500;
+    font-family: var(--font-display);
+    font-weight: 700;
     font-size: 48px;
     line-height: 1.1;
 
-    color: #f7f0e8;
+    color: var(--text-primary);
 }
 
 .hero-content p {
     max-width: 420px;
 
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 15px;
     line-height: 1.7;
 
-    color: #c2ad9c;
+    color: var(--text-secondary);
 }
 
 /* =========================
@@ -118,14 +119,14 @@
 
 .hero-btn.primary {
     background: var(--gradient-brand);
-    color: #1a1410;
-    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.28);
+    color: var(--text-on-accent);
+    box-shadow: var(--shadow-glow-terracota);
 }
 
 .hero-btn.secondary {
     background: transparent;
-    color: #f7f0e8;
-    border: 1px solid rgba(247, 240, 232, 0.3);
+    color: var(--text-primary);
+    border: 1px solid var(--border-medium);
 }
 
 .hero-btn:hover {
@@ -149,14 +150,14 @@
 
     border-radius: 999px;
 
-    background: rgba(247, 240, 232, 0.08);
+    background: var(--bg-elevated-2);
     border: none;
 
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 13px;
     font-weight: 600;
 
-    color: #c2ad9c;
+    color: var(--text-secondary);
 }
 
 .clickable {
@@ -165,8 +166,8 @@
 }
 
 .clickable:hover {
-    background: rgba(247, 240, 232, 0.14);
-    color: #f7f0e8;
+    background: var(--border-medium);
+    color: var(--text-primary);
 }
 
 /* =========================
@@ -185,10 +186,10 @@
 
     padding: 14px 16px;
 
-    border-radius: 14px;
+    border-radius: var(--radius-md);
 
-    background: rgba(247, 240, 232, 0.06);
-    border: 1px solid rgba(247, 240, 232, 0.08);
+    background: var(--bg-elevated-2);
+    border: 1px solid var(--border-subtle);
 
     display: flex;
     flex-direction: column;
@@ -196,16 +197,16 @@
 }
 
 .stat-card strong {
-    font-family: 'Fraunces', 'Georgia', serif;
+    font-family: var(--font-display);
     font-size: 22px;
-    font-weight: 500;
-    color: #f7f0e8;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .stat-card span {
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 12px;
-    color: #8a7565;
+    color: var(--text-muted);
 }
 
 /* =========================
@@ -232,12 +233,13 @@
 
     padding: 36px;
 
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
 
-    background: #2a1f18;
-    border: 1px solid rgba(247, 240, 232, 0.08);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-lg);
 
-    color: #f7f0e8;
+    color: var(--text-primary);
 
     position: relative;
 
@@ -247,18 +249,18 @@
 .hero-modal-content h2 {
     margin: 0 0 16px;
 
-    font-family: 'Fraunces', 'Georgia', serif;
+    font-family: var(--font-display);
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 700;
 
-    color: #f7f0e8;
+    color: var(--text-primary);
 }
 
 .hero-modal-content p {
-    color: #c2ad9c;
+    color: var(--text-secondary);
     line-height: 1.7;
     margin-bottom: 18px;
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 14px;
 }
 
@@ -275,14 +277,14 @@
 .hero-modal-content li {
     padding: 12px 14px;
 
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 
-    background: rgba(247, 240, 232, 0.06);
+    background: var(--bg-elevated-2);
 
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-size: 13px;
     line-height: 1.5;
-    color: #c2ad9c;
+    color: var(--text-secondary);
 }
 
 .hero-modal-close {
@@ -297,8 +299,8 @@
     border: none;
     border-radius: 50%;
 
-    background: rgba(247, 240, 232, 0.08);
-    color: #f7f0e8;
+    background: var(--bg-elevated-2);
+    color: var(--text-primary);
 
     cursor: pointer;
 
@@ -309,7 +311,7 @@
 }
 
 .hero-modal-close:hover {
-    background: rgba(247, 240, 232, 0.16);
+    background: var(--border-medium);
 }
 
 /* =========================

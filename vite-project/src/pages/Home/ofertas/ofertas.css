@@ -6,8 +6,8 @@
 
     background:
         linear-gradient(180deg,
-            #CCDDFF,
-            #edf4ff);
+            var(--accent-mostaza-soft),
+            var(--bg-base));
 
     padding: 50px 20px;
 }
@@ -22,7 +22,7 @@
     font-size: 48px;
     font-weight: 800;
 
-    color: #002B81;
+    color: var(--accent-terracota);
 
     margin-bottom: 50px;
 
@@ -41,10 +41,7 @@
 
     border-radius: 50px;
 
-    background:
-        linear-gradient(90deg,
-            #002B81,
-            #5D8BE8);
+    background: var(--gradient-brand);
 
     display: block;
 
@@ -81,12 +78,12 @@
     font-size: 28px;
     font-weight: 700;
 
-    color: #002B81;
+    color: var(--accent-terracota);
 
     background:
         linear-gradient(180deg,
-            #CCDDFF,
-            #edf4ff);
+            var(--accent-mostaza-soft),
+            var(--bg-base));
 
     animation: pulseText 1.5s infinite;
 }
@@ -100,12 +97,9 @@
     top: 18px;
     left: 18px;
 
-    background:
-        linear-gradient(135deg,
-            #002B81,
-            #5D8BE8);
+    background: var(--gradient-brand);
 
-    color: white;
+    color: var(--text-on-accent);
 
     padding: 10px 14px;
 
@@ -116,8 +110,7 @@
 
     z-index: 5;
 
-    box-shadow:
-        0 10px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-glow-terracota);
 
     animation: pulseOffer 2s infinite;
 }
@@ -141,7 +134,7 @@
 .oferta-precio-original {
     text-decoration: line-through;
 
-    color: rgba(16, 37, 79, 0.55);
+    color: var(--text-muted);
 
     font-size: 16px;
 
@@ -149,7 +142,7 @@
 }
 
 .oferta-precio-final {
-    color: #002B81;
+    color: var(--accent-terracota);
 
     font-size: 26px;
     font-weight: 800;

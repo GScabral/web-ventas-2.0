@@ -40,14 +40,14 @@
 .add-btn {
   height: 58px;
   border: none;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   background: var(--gradient-brand);
-  color: #1a1410;
+  color: var(--text-on-accent);
   font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
   transition: .3s;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
 }
 
 .add-btn:hover {

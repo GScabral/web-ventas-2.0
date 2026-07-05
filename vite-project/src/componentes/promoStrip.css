@@ -9,8 +9,8 @@
 .promo-strip-main {
   position: relative;
 
-  background: linear-gradient(135deg, #1a1410 0%, #2a1f18 100%);
-  border-radius: 10px;
+  background: linear-gradient(135deg, #1c2029 0%, #2b3140 100%);
+  border-radius: var(--radius-md);
 
   padding: 32px 28px;
 
@@ -36,22 +36,23 @@
   margin: 0;
   font-size: 22px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-on-accent);
   max-width: 420px;
   line-height: 1.25;
+  font-family: var(--font-display);
 }
 
 .promo-strip-cta {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-on-accent);
   margin-top: 4px;
 }
 
 .promo-strip-side {
   position: relative;
 
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 18px;
 
   display: flex;
@@ -91,7 +92,7 @@
 
 .promo-strip-nuevo span,
 .promo-strip-nuevo strong {
-  color: #1a1410;
+  color: var(--text-primary);
 }
 
 @media (max-width: 900px) {
