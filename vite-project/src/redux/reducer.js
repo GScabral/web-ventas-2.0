@@ -3,6 +3,7 @@ import {
   ADD_PRODUCT,
   SEARCH_ID,
   PAGINADO,
+  GET_MIS_PEDIDOS,
   INI_USUARIO,
   FILTER,
   ORDER,
@@ -66,6 +67,7 @@ const initialState = {
   emailExists: false,
   allPedidos: [],
   allPedidosBackup: [],
+  misPedidos: [],
   isLoggedIn: false,
   isLoggedInAd: false,
   cantidadOferta: {},
@@ -194,18 +196,29 @@ const reducer = (state = initialState, action) => {
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     case FILTER: {
-      const { categoria, subcategoria } = action.payload;
+      const {
+        categoria,
+        subcategoria,
+        tallas = [],
+        colores = [],
+        precioMax = null,
+      } = action.payload;
 
       // Antes esto se marcaba "filter: true" SIEMPRE que se disparaba la
-      // acción, incluso sin categoría/subcategoría real (el sidebar de
-      // filtros la dispara al montar la página, con todo vacío). Eso
-      // dejaba el paginado leyendo para siempre de `state.filtered` en
-      // vez del catálogo completo, y si ese primer filtro llegaba a
-      // correr antes de que el catálogo terminara de cargar, `filtered`
-      // quedaba corto/vacío mientras `totalPages` ya mostraba el número
-      // real de páginas — resultado: tocar un número de página que caía
-      // fuera de ese `filtered` corto no hacía nada.
-      const hayFiltroActivo = Boolean(categoria) || Boolean(subcategoria);
+      // acción, incluso sin ningún criterio real (el sidebar de filtros
+      // la dispara al montar la página, con todo vacío). Eso dejaba el
+      // paginado leyendo para siempre de `state.filtered` en vez del
+      // catálogo completo, y si ese primer filtro llegaba a correr antes
+      // de que el catálogo terminara de cargar, `filtered` quedaba
+      // corto/vacío mientras `totalPages` ya mostraba el número real de
+      // páginas — resultado: tocar un número de página que caía fuera de
+      // ese `filtered` corto no hacía nada.
+      const hayFiltroActivo =
+        Boolean(categoria) ||
+        Boolean(subcategoria) ||
+        tallas.length > 0 ||
+        colores.length > 0 ||
+        (precioMax !== null && precioMax !== undefined);
 
       let filteredProducts = state.allProductosBackUp;
 
@@ -232,6 +245,36 @@ const reducer = (state = initialState, action) => {
         );
       }
 
+      // 👉 Filtrar por talla: alcanza con que UNA variante del producto
+      // tenga alguna de las tallas elegidas (un producto puede tener
+      // variantes en varios talles).
+      if (tallas.length > 0) {
+        filteredProducts = filteredProducts.filter((producto) =>
+          (producto.variantes || []).some((variante) =>
+            tallas.includes(variante.talla)
+          )
+        );
+      }
+
+      // 👉 Filtrar por color: mismo criterio que talla.
+      if (colores.length > 0) {
+        filteredProducts = filteredProducts.filter((producto) =>
+          (producto.variantes || []).some((variante) =>
+            colores.includes(variante.color)
+          )
+        );
+      }
+
+      // 👉 Filtrar por precio máximo. precioMax en null/undefined = sin
+      // límite. Importante que el "sin límite" sea el valor por
+      // defecto: si en cambio el default fuera un número fijo, se
+      // ocultarían productos caros sin que el usuario haya tocado nada.
+      if (precioMax !== null && precioMax !== undefined) {
+        filteredProducts = filteredProducts.filter(
+          (producto) => Number(producto.precio) <= Number(precioMax)
+        );
+      }
+
       // 🔑 Paginado siempre sobre productos filtrados
       const totalFilteredItems = filteredProducts.length;
       const totalPages = Math.ceil(totalFilteredItems / ITEMS_PER_PAGE);
@@ -250,7 +293,7 @@ const reducer = (state = initialState, action) => {
         filter: hayFiltroActivo,
         totalPages,
         currentPage: 1,                            // 👈 resetea siempre a la página 1
-        filters: { ...state.filters, categoria, subcategoria },
+        filters: { ...state.filters, categoria, subcategoria, tallas, colores, precioMax },
       };
     }
 
@@ -524,6 +567,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         allClientes: [...state.allClientes, nuevoUsuario], // Agregar el nuevo usuario al array de clientes en el estado
         // También puedes hacer otros ajustes necesarios al estado aquí
+      };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case GET_MIS_PEDIDOS:
+      return {
+        ...state,
+        misPedidos: action.payload,
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case GET_PEDIDOS:

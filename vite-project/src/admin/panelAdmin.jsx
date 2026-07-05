@@ -17,7 +17,7 @@ const NewProduct = lazy(() => import("./añadir/añadirProducto"));
 const Principal = lazy(() => import("./inicio/principalAdmin"));
 const ProductList = lazy(() => import("./productos/listadoProductos"));
 const PedidoList = lazy(() => import("./pedidos/listadoPedidos"));
-// import ClienteList from "./clientes/listadoClientes";
+const ClienteList = lazy(() => import("./clientes/listadoClientes"));
 const OfertasLista = lazy(() => import("./ofertas/listadoOFertas"));
 const BannersLista = lazy(() => import("./banners/listadoBanners"));
 const Personalizacion = lazy(() => import("./personalizacion/Personalizacion"));
@@ -66,11 +66,11 @@ const menuItems = [
     path: "/admin/PedidosLista",
     icon: "🛒",
   },
-  // {
-  //   title: "Clientes",
-  //   path: "/admin/clientes",
-  //   icon: "👥",
-  // },
+  {
+    title: "Clientes",
+    path: "/admin/clientes",
+    icon: "👥",
+  },
   {
     title: "Ofertas",
     path: "/admin/ofertas",
@@ -304,6 +304,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <TicketPage />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/clientes"
+              element={
+                isLoggedIn ? (
+                  <ClienteList />
                 ) : (
                   <Navigate to="/admin/login" />
                 )

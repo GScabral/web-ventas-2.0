@@ -18,8 +18,9 @@ const validarRegistroCliente = [
   body('contraseña')
     .notEmpty().withMessage('La contraseña es obligatoria')
     .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
-  body('info_contacto')
-    .notEmpty().withMessage('La información de contacto es obligatoria'),
+  // info_contacto se pedía acá antes, pero el modelo Cliente nunca tuvo
+  // esa columna (ver models/clientes.js) — se validaba un campo que
+  // después no se guardaba en ningún lado. Se saca del requisito.
 ];
 
 module.exports = {

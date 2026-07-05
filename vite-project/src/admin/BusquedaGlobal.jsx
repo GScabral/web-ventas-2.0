@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getProductos, getPedidos } from "../redux/action";
+import { getProductos, getPedidos, getAllClientes } from "../redux/action";
 
 import "./BusquedaGlobal.css";
 
@@ -20,6 +20,7 @@ const BusquedaGlobal = () => {
 
     const productos = useSelector(state => state.allProductosforFiltro) || [];
     const pedidos = useSelector(state => state.allPedidos) || [];
+    const clientes = useSelector(state => state.allClientes) || [];
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -44,12 +45,13 @@ const BusquedaGlobal = () => {
 
         if (!productos.length) dispatch(getProductos());
         if (!pedidos.length) dispatch(getPedidos());
+        if (!clientes.length) dispatch(getAllClientes());
     }, [abierto, dispatch]);
 
     const resultados = useMemo(() => {
         const termino = query.trim().toLowerCase();
 
-        if (!termino) return { productos: [], pedidos: [] };
+        if (!termino) return { productos: [], pedidos: [], clientes: [] };
 
         const productosEncontrados = productos
             .filter(p => (p.nombre || "").toLowerCase().includes(termino))
@@ -63,8 +65,18 @@ const BusquedaGlobal = () => {
             )
             .slice(0, 6);
 
-        return { productos: productosEncontrados, pedidos: pedidosEncontrados };
-    }, [query, productos, pedidos]);
+        const clientesEncontrados = clientes
+            .filter(c => {
+                const nombreCompleto = `${c.nombre || ""} ${c.apellido || ""}`.toLowerCase();
+                return (
+                    nombreCompleto.includes(termino) ||
+                    (c.correo || "").toLowerCase().includes(termino)
+                );
+            })
+            .slice(0, 6);
+
+        return { productos: productosEncontrados, pedidos: pedidosEncontrados, clientes: clientesEncontrados };
+    }, [query, productos, pedidos, clientes]);
 
     const cerrar = () => {
         setAbierto(false);
@@ -81,11 +93,17 @@ const BusquedaGlobal = () => {
         cerrar();
     };
 
+    const irACliente = () => {
+        navigate("/admin/clientes");
+        cerrar();
+    };
+
     if (!abierto) return null;
 
     const sinResultados = query.trim() &&
         resultados.productos.length === 0 &&
-        resultados.pedidos.length === 0;
+        resultados.pedidos.length === 0 &&
+        resultados.clientes.length === 0;
 
     return (
         <div className="busqueda-global-overlay" onClick={cerrar}>
@@ -148,6 +166,25 @@ const BusquedaGlobal = () => {
                                     <span>#{p.id_pedido} — {p.nombre || p.email_cliente}</span>
                                     <span className="busqueda-global-item-extra">
                                         {p.estado}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {resultados.clientes.length > 0 && (
+                        <div className="busqueda-global-grupo">
+                            <span className="busqueda-global-grupo-titulo">Clientes</span>
+                            {resultados.clientes.map((c) => (
+                                <button
+                                    key={`cli-${c.id_cliente}`}
+                                    className="busqueda-global-item"
+                                    onClick={irACliente}
+                                >
+                                    <span className="busqueda-global-item-icono">👤</span>
+                                    <span>{c.nombre} {c.apellido}</span>
+                                    <span className="busqueda-global-item-extra">
+                                        {c.correo}
                                     </span>
                                 </button>
                             ))}

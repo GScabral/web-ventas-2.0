@@ -20,4 +20,26 @@ function verificarTokenAdmin(req, res, next) {
   }
 }
 
-module.exports = { verificarTokenAdmin };
+// Verifica el token de un CLIENTE logueado (no admin). Se usa para las
+// pantallas de "cuenta de cliente" (ej. ver el propio historial de
+// pedidos). El token de cliente lo emite inicioSesion (INS.js) con
+// { userId }, sin isAdmin.
+function verificarTokenCliente(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ error: 'Token no proporcionado' });
+  }
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    if (!decoded.userId) {
+      return res.status(403).json({ error: 'Token inválido' });
+    }
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: 'Token inválido o expirado' });
+  }
+}
+
+module.exports = { verificarTokenAdmin, verificarTokenCliente };

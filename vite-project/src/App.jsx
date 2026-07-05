@@ -8,9 +8,10 @@ import ThemeLoader from './componentes/ThemeLoader'
 import Toast from './componentes/Toast'
 import DevolucionCambio from './pages/Home/devolucion/devolucion'
 import Catalogo from './pages/Home/temporada/Catalogo'
+import CrearCuenta from './pages/cuenta/crearCuenta'
+import IniciarSesion from './pages/cuenta/iniciarSesion'
+import MiCuenta from './pages/cuenta/miCuenta'
 // import Landing from './pages/landing/landing'
-// import NewUser from './CC/crearCuenta'
-// import Ingresar from './IS/iniciarSesion'
 // import Fav from './pages/Home/fav/fav'
 // import Ofertas from './pages/Home/ofertas/ofertas'
 // import PagAccesorios from './pages/Home/accesorios/pagAccesorios'
@@ -31,8 +32,8 @@ const PanelAdmin = React.lazy(() => import('./admin/panelAdmin'));
 
 function App() {
   const location = useLocation();
-  const hideNav = location.pathname === '/newUser' ||
-    location.pathname === '/iniciar' ||
+  const hideNav = location.pathname === '/crear-cuenta' ||
+    location.pathname === '/iniciar-sesion' ||
     location.pathname === '/carrito' ||
     /^\/detail\/\d+$/.test(location.pathname) ||
     location.pathname.startsWith('/admin');
@@ -51,8 +52,9 @@ function App() {
           <Route path='/DevolucionCambio' element={<DevolucionCambio />} />
           <Route path='/carrito' element={<Carrito />} />
           <Route path='/catalogo' element={<Catalogo />} />
-          {/* <Route path='/newUser' element={<NewUser />} />
-          <Route path='/iniciar' element={<Ingresar />} /> */}
+          <Route path='/crear-cuenta' element={<CrearCuenta />} />
+          <Route path='/iniciar-sesion' element={<IniciarSesion />} />
+          <Route path='/mi-cuenta' element={<MiCuenta />} />
           {/* <Route path='/Favorito' element={<Fav />} /> */}
           {/* <Route path='/Ofertas' element={<Ofertas />} /> */}
           {/* <Route path='/Accesorios' element={<PagAccesorios />} /> */}

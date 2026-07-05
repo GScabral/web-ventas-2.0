@@ -12,6 +12,7 @@ const Nav = () => {
   const carrito = useSelector((state) => state.carrito);
   const categorias = useSelector((state) => state.categorias) || [];
   const configuracion = useSelector((state) => state.configuracion);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
   // Mientras no cargó la configuración de Personalización (o si el
   // admin dejó el campo vacío), usamos el valor por defecto del
@@ -135,6 +136,17 @@ const Nav = () => {
           </button>
         </form>
 
+        <Link
+          to={isLoggedIn ? "/mi-cuenta" : "/iniciar-sesion"}
+          className="nav-cart"
+          aria-label={isLoggedIn ? "Mi cuenta" : "Iniciar sesión"}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </Link>
+
         {location.pathname !== "/carrito" && (
           <Link to="/carrito" className={`nav-cart${cartBump ? " bump" : ""}`} aria-label="Ver carrito">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -176,6 +188,10 @@ const Nav = () => {
 
         <Link to="/catalogo" className="nav-mobile-link">
           Catálogo
+        </Link>
+
+        <Link to={isLoggedIn ? "/mi-cuenta" : "/iniciar-sesion"} className="nav-mobile-link">
+          {isLoggedIn ? "Mi cuenta" : "Iniciar sesión"}
         </Link>
 
         {categorias.length > 0 && (

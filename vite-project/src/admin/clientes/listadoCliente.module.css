@@ -1,66 +1,89 @@
-.clientesContainer {
-  background: #23263a;
-  color: #ffb347;
-  border-radius: 10px;
-  padding: 2rem;
-  margin: 2rem auto;
-  max-width: 900px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+/* ============================================================
+   CLIENTES — listado + búsqueda
+   Antes este archivo tenía un tema morado/naranja (#23263a /
+   #ffb347) que no tenía nada que ver con el resto del panel.
+   Reescrito con las mismas variables que usa el resto del admin
+   (panelAdminDashboard.module.css / adminCommon.css).
+   ============================================================ */
+
+.busquedaBox {
+  margin-bottom: var(--sp-5);
+}
+
+.busquedaInput {
+  width: 100%;
+  max-width: 360px;
+
+  padding: var(--sp-3) var(--sp-4);
+
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out);
+}
+
+.busquedaInput:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
+  background: var(--bg-elevated);
+}
+
+.busquedaInput::placeholder {
+  color: var(--text-muted);
+}
+
+.tablaWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
 }
 
 .clientesTable {
   width: 100%;
+  min-width: 560px;
   border-collapse: collapse;
-  margin-top: 1rem;
 }
 
 .clientesTable th,
 .clientesTable td {
-  border: 1px solid #ffb347;
-  padding: 0.7rem 1rem;
+  padding: var(--sp-3) var(--sp-4);
   text-align: left;
+  font-size: var(--fs-sm);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
 }
 
 .clientesTable th {
-  background: #181c2b;
+  background: var(--bg-elevated-2);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.clientesTable tr:nth-child(even) {
-  background: #23263a;
+.clientesTable td {
+  color: var(--text-primary);
 }
 
-.clientesTable tr:nth-child(odd) {
-  background: #181c2b;
+.clientesTable tbody tr:last-child td {
+  border-bottom: none;
 }
 
-@media (max-width: 768px) {
-  .clientesContainer {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-
-  .clientesTable th,
-  .clientesTable td {
-    padding: 0.5rem 0.7rem;
-    font-size: 0.9rem;
-  }
+.clientesTable tbody tr:hover {
+  background: var(--bg-elevated-2);
 }
 
 @media (max-width: 600px) {
-  .clientesContainer {
-    padding: 1rem;
-    margin: 1rem 0.5rem;
-    border-radius: 8px;
-  }
-
-  .clientesTable {
-    font-size: 0.8rem;
-  }
-
   .clientesTable th,
   .clientesTable td {
-    padding: 0.4rem 0.5rem;
-    font-size: 0.75rem;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-xs);
   }
 }
-

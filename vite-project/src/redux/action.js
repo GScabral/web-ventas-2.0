@@ -27,6 +27,7 @@ export const BORRAR_PRODUCTO = "BORRAR_PRODUCTO";
 export const ACTUALIZAR_VARIANTES = "ACTUALIZAR_VARIANTES";
 export const ACTUALIZAR_CARRITO = "ACTUALIZAR_CARRITO"; export const BUSCAR_NOMBRE = "BUSCAR_NOMBRE";
 export const GET_PEDIDOS = 'GET_PEDIDOS';
+export const GET_MIS_PEDIDOS = 'GET_MIS_PEDIDOS';
 export const OFERTA = "OFERTA";
 export const BORRAR_OFERTA = "BORRAR_OFERTA";
 export const ENVIAR_ESTADO = 'ENVIAR_ESTADO';
@@ -246,8 +247,17 @@ export const createUsuario = (userData) => {
         type: ADD_USUARIO, // Ajusta este tipo de acción según tu configuración de Redux
         payload: response.data, // Puedes ajustar esto dependiendo de la estructura de datos devuelta por el servidor
       });
+      // Antes no se devolvía nada acá, así que la pantalla de registro
+      // no tenía forma de saber si salió bien, ni de mostrar el error
+      // real (ej. "ya existe una cuenta con ese correo") cuando fallaba.
+      return { success: true, cliente: response.data };
     } catch (error) {
+      const mensaje =
+        error.response?.data?.error ||
+        error.response?.data?.errors?.[0]?.msg ||
+        "No pudimos crear la cuenta. Intentá de nuevo en unos minutos.";
       console.error(error);
+      return { success: false, error: mensaje };
     }
   };
 };
@@ -263,6 +273,11 @@ export const ingresarUsuario = (userData) => {
 
       if (response.status === 200) {
         if (response.data) {
+          // Guardamos la sesión completa (token + idU) para poder
+          // restaurarla al refrescar la página — igual que ya se hacía
+          // con el admin (adminToken), esto no existía para clientes:
+          // antes, un F5 cerraba la sesión sin avisar.
+          localStorage.setItem('clienteSesion', JSON.stringify(response.data));
           dispatch({
             type: INI_USUARIO,
             payload: response.data,
@@ -343,9 +358,57 @@ export const obtenerClientePorId = (id) => {
 
 
 export const cerrarSesion = () => {
+  localStorage.removeItem('clienteSesion');
 
   return {
     type: CERRAR_SESION,
+  };
+};
+
+// Restaura la sesión de cliente guardada en localStorage (si hay una)
+// al arrancar la app, para que un refresh no lo mande de nuevo a
+// iniciar sesión.
+export const restaurarSesionCliente = () => {
+  return (dispatch) => {
+    try {
+      const guardada = localStorage.getItem('clienteSesion');
+
+      if (guardada) {
+        dispatch({
+          type: INI_USUARIO,
+          payload: JSON.parse(guardada),
+        });
+      }
+    } catch (error) {
+      console.error('No se pudo restaurar la sesión del cliente:', error);
+      localStorage.removeItem('clienteSesion');
+    }
+  };
+};
+
+// Historial de pedidos del cliente logueado (ver
+// server/src/controllers/pedido/getMisPedidos.js). Antes esta pantalla
+// no existía en absoluto.
+export const getMisPedidos = () => {
+  return async function (dispatch) {
+    try {
+      const guardada = localStorage.getItem('clienteSesion');
+      const token = guardada ? JSON.parse(guardada).token : null;
+
+      if (!token) {
+        dispatch({ type: GET_MIS_PEDIDOS, payload: [] });
+        return;
+      }
+
+      const response = await axios.get(`${API_URL}/pedido/mis-pedidos`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      dispatch({ type: GET_MIS_PEDIDOS, payload: response.data });
+    } catch (error) {
+      console.error('Error al obtener el historial de pedidos:', error);
+      dispatch({ type: GET_MIS_PEDIDOS, payload: [] });
+    }
   };
 };
 

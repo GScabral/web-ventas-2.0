@@ -86,7 +86,10 @@ router.post("/nuevoCliente", validarRegistroCliente, async (req, res) => {
   try {
     const nuevoCliente = await createNewCliente(req.body);
     if (nuevoCliente && nuevoCliente.error) {
-      res.status(404).json({ error: nuevoCliente.message });
+      // Antes decía "nuevoCliente.message", pero createNewCliente
+      // devuelve { error: "..." } en la rama de error, no .message —
+      // el mensaje real nunca llegaba al front (undefined).
+      res.status(400).json({ error: nuevoCliente.error });
     } else {
       res.status(200).json(nuevoCliente);
     }
@@ -104,7 +107,9 @@ router.post("/login", async (req, res) => {
       if (inisesion && inisesion.token) {
         res.status(200).json(inisesion);
       } else {
-        res.status(404).json({ error: inisesion.message || "Credenciales incorrectas" });
+        // inicioSesion devuelve { error: "..." }, no .message — igual
+        // que en /nuevoCliente, el mensaje real nunca llegaba al front.
+        res.status(401).json({ error: inisesion.error || "Credenciales incorrectas" });
       }
     } catch (error) {
       // Capturar el error y enviar una respuesta con más detalle sobre el error

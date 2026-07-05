@@ -1,0 +1,131 @@
+/* ============================================================
+   CUENTA DE CLIENTE — login / registro / mis pedidos
+   Reutiliza .contenedor, .tarjeta, .form-group, .btn/.btn-primary
+   de Design-system.css; acá solo lo específico de estas 3 pantallas.
+   ============================================================ */
+
+.cuenta-page {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--sp-7);
+  padding-bottom: var(--sp-7);
+}
+
+.cuenta-card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--sp-6);
+}
+
+.cuenta-card h1 {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-2);
+}
+
+.cuenta-subtitulo {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-5);
+}
+
+.cuenta-error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  color: var(--color-error);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-4);
+}
+
+.cuenta-submit {
+  width: 100%;
+  margin-top: var(--sp-2);
+}
+
+.cuenta-alt {
+  margin-top: var(--sp-5);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.cuenta-alt a {
+  color: var(--accent-terracota);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* ---- Mi cuenta / historial de pedidos ---- */
+
+.mi-cuenta-page {
+  padding: var(--sp-7) 0;
+}
+
+.mi-cuenta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  flex-wrap: wrap;
+}
+
+.mi-cuenta-header h1 {
+  font-size: var(--fs-xl);
+}
+
+.pedido-card {
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-4);
+}
+
+.pedido-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-3);
+}
+
+.pedido-card-id {
+  font-weight: 800;
+  font-family: var(--font-display);
+}
+
+.pedido-card-fecha {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.pedido-estado-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px var(--sp-3);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pedido-estado-badge.pendiente { background: rgba(217, 119, 6, 0.12); color: var(--color-warning); }
+.pedido-estado-badge.pagado,
+.pedido-estado-badge.preparando { background: rgba(37, 99, 235, 0.12); color: #2563eb; }
+.pedido-estado-badge.enviado { background: rgba(22, 163, 74, 0.12); color: var(--color-success); }
+.pedido-estado-badge.entregado { background: var(--accent-terracota-soft); color: var(--accent-terracota); }
+.pedido-estado-badge.cancelado { background: rgba(220, 38, 38, 0.1); color: var(--color-error); }
+
+.pedido-card-detalle {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.pedido-card-total {
+  margin-top: var(--sp-3);
+  font-weight: 800;
+  font-size: var(--fs-md);
+}
