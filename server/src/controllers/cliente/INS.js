@@ -25,13 +25,19 @@ const inicioSesion = async (correo, contraseña) => {
     // Verificar si el correo y la contraseña coinciden con los valores predeterminados en el archivo .env
     if (correo === process.env.ADMIN_EMAIL && contraseña === process.env.ADMIN_PASSWORD) {
       // Generar un token JWT para el usuario administrador
-      const token = jwt.sign({ userId: user.id, isAdmin: true }, secretKey, { expiresIn: '12h' });
+      const token = jwt.sign({ userId: user.id_cliente, isAdmin: true }, secretKey, { expiresIn: '12h' });
       return { token };
     }
 
-    // Generar un token JWT si las credenciales son válidas pero no son para el administrador
-    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '12h' });
-    const idU=user.id
+    // Generar un token JWT si las credenciales son válidas pero no son para el administrador.
+    // OJO: el modelo Cliente NO tiene un campo "id" — su primary key se
+    // llama "id_cliente". Antes esto firmaba el token con "user.id"
+    // (undefined siempre), así que todo token de cliente emitido tenía
+    // userId: undefined. verificarTokenCliente lo rechazaba siempre con
+    // 403 "Token inválido" — por eso /pedido/mis-pedidos nunca funcionó,
+    // ni siquiera con un login recién hecho.
+    const token = jwt.sign({ userId: user.id_cliente }, secretKey, { expiresIn: '12h' });
+    const idU = user.id_cliente;
 
     // Además del token, mandamos los datos básicos del cliente. Antes
     // solo viajaba { token, idU }, así que el front no tenía forma de

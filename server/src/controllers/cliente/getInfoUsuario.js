@@ -16,8 +16,10 @@ const obtenerInfUsuario = async (correo, contraseña) => {
       return { error: 'Credenciales inválidas', user: null };
     }
 
-    // Retornar el ID y la información del usuario
-    return { error: null, user: { id: user.id, nombre: user.nombre, correo: user.correo } };
+    // Retornar el ID y la información del usuario. El modelo Cliente no
+    // tiene un campo "id" — su primary key es "id_cliente" (mismo bug
+    // que había en INS.js).
+    return { error: null, user: { id: user.id_cliente, nombre: user.nombre, correo: user.correo } };
   } catch (error) {
     console.error("Error al obtener información del usuario:", error);
     return { error: 'Error al obtener la información del usuario', user: null };
