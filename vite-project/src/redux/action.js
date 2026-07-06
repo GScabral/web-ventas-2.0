@@ -20,8 +20,6 @@ export const ORDER = "ORDER";
 export const AGREGAR_AL_CARRITO = 'AGREGAR_AL_CARRITO';
 export const ELIMINAR_PRODUCTO_CARRITO = "ELIMINAR_PRODUCTO_CARRITO";
 export const VACIAR_CARRITO = "VACIAR_CARRITO";
-export const AGREGAR_FAV = " AGREGAR_FAV";
-export const ELIMINAR_PRODUCTO_FAV = "ELIMINAR_PRODUCTO_FAV";
 export const CAMBIO = "CAMBIO";
 export const BORRAR_PRODUCTO = "BORRAR_PRODUCTO";
 export const ACTUALIZAR_VARIANTES = "ACTUALIZAR_VARIANTES";
@@ -164,12 +162,6 @@ export const addProduct = (formData) => {
       return response.data;
     } catch (error) {
       console.error("ERROR:", error);
-
-      if (error.response) {
-        console.log("STATUS:", error.response.status);
-        console.log("DATA:", error.response.data);
-      }
-
       throw error;
     }
   };
@@ -305,8 +297,6 @@ export const obtenerInformacionUsuario = (correo, contraseña) => {
     try {
       const response = await axios.post(`${API_URL}/cliente/InfoUsuario`, { correo, contraseña });
 
-      console.log("Respuesta del servidor al obtener información del usuario:", response);
-
       if (response.status === 200) {
         if (response.data && response.data.user) {
           // Si hay datos de usuario en la respuesta, actualiza el estado con la información del usuario
@@ -431,20 +421,6 @@ export const eliminarProductoCarrito = (index) => {
 export const vaciarCarrito = () => {
   return {
     type: VACIAR_CARRITO,
-  };
-};
-
-export const agregarFav = (producto) => {
-  return {
-    type: AGREGAR_FAV,
-    payload: producto,
-  };
-};
-
-export const eliminarFav = (index) => {
-  return {
-    type: ELIMINAR_PRODUCTO_FAV,
-    payload: index,
   };
 };
 
@@ -577,8 +553,7 @@ export const calcularCostoEnvioCheckout = async (provincia) => {
 
 
 
-export const actualizarVariante = (id, cantidad_disponible) => { // Asegúrate de pasar cantidad_disponible aquí
-  console.log(id, cantidad_disponible)
+export const actualizarVariante = (id, cantidad_disponible) => {
   return async function (dispatch) {
     try {
 
@@ -700,9 +675,6 @@ export const buscar = (name) => {
     try {
 
       const response = await axios.get(`${API_URL}/producto/name/${name}`);
-
-      // Log the data to the console
-      // console.log("Resultados de la búsqueda:",response);
 
       if (response.data.length > 0) {
         dispatch({

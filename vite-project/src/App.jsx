@@ -11,11 +11,7 @@ import Catalogo from './pages/Home/temporada/Catalogo'
 import CrearCuenta from './pages/cuenta/crearCuenta'
 import IniciarSesion from './pages/cuenta/iniciarSesion'
 import MiCuenta from './pages/cuenta/miCuenta'
-// import Landing from './pages/landing/landing'
-// import Fav from './pages/Home/fav/fav'
-// import Ofertas from './pages/Home/ofertas/ofertas'
-// import PagAccesorios from './pages/Home/accesorios/pagAccesorios'
-// import PagMaquillaje from './pages/Home/maquillaje/PagMaquillaje'
+import Ofertas from './pages/Home/ofertas/ofertas'
 // VentaPorMayor.jsx hoy es solo un título de prueba sin contenido real
 // (sin formulario, sin info de contacto). Cuando tenga contenido de
 // verdad, descomentar este import y la ruta de abajo.
@@ -55,11 +51,8 @@ function App() {
           <Route path='/crear-cuenta' element={<CrearCuenta />} />
           <Route path='/iniciar-sesion' element={<IniciarSesion />} />
           <Route path='/mi-cuenta' element={<MiCuenta />} />
-          {/* <Route path='/Favorito' element={<Fav />} /> */}
-          {/* <Route path='/Ofertas' element={<Ofertas />} /> */}
-          {/* <Route path='/Accesorios' element={<PagAccesorios />} /> */}
+          <Route path='/ofertas' element={<Ofertas />} />
           {/* <Route path='/VentaPorMayor' element={<VentaPorMayor />} /> */}
-          {/* <Route path='/Maquillaje' element={<PagMaquillaje />} /> */}
         </Routes>
       </Suspense>
 

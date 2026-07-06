@@ -6,7 +6,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
 const routes = require('./routes/index.js');
-const upload = require("../multerConfig.js");
 
 
 require('./db.js');
@@ -60,7 +59,14 @@ server.use(
     contentSecurityPolicy: false,
   })
 );
-server.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
+// Antes esto apuntaba a "src/uploads" (relativo a server/src/), pero los
+// archivos que sube multer con storage en disco se guardan en
+// server/uploads/ (server/multerConfig.js, ya eliminado de uso activo:
+// las imágenes de producto actuales van todas a Cloudinary vía
+// server/src/upload.js). Esta ruta quedaba sirviendo un directorio que
+// no existía. Se corrige el path por si algún producto viejo todavía
+// referencia una imagen local (ver searchProducto.js).
+server.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());

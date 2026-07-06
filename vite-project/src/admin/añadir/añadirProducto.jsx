@@ -161,7 +161,6 @@ const NewProduct = ({ addProduct, createCategoria }) => {
 
         const categoriaCreada =
           await createCategoria(nuevaCategoria);
-        console.log("categoriaCreada:", categoriaCreada);
         categoriaFinal =
           categoriaCreada.id_categoria;
       }

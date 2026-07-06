@@ -162,19 +162,21 @@ const Nav = () => {
 
       </div>
 
-      {categorias.length > 0 && (
-        <div className="nav-categories">
-          {categorias.slice(0, 12).map((cat) => (
-            <Link
-              key={cat.id_categoria}
-              to={`/?categoria=${encodeURIComponent(cat.nombre)}`}
-              className="nav-category-chip"
-            >
-              {cat.nombre}
-            </Link>
-          ))}
-        </div>
-      )}
+      <div className="nav-categories">
+        <Link to="/ofertas" className="nav-category-chip nav-category-chip-ofertas">
+          Ofertas
+        </Link>
+
+        {categorias.slice(0, 12).map((cat) => (
+          <Link
+            key={cat.id_categoria}
+            to={`/?categoria=${encodeURIComponent(cat.nombre)}`}
+            className="nav-category-chip"
+          >
+            {cat.nombre}
+          </Link>
+        ))}
+      </div>
 
       {menuOpen && (
         <div className="nav-mobile-overlay" onClick={() => setMenuOpen(false)} />
@@ -188,6 +190,10 @@ const Nav = () => {
 
         <Link to="/catalogo" className="nav-mobile-link">
           Catálogo
+        </Link>
+
+        <Link to="/ofertas" className="nav-mobile-link">
+          Ofertas
         </Link>
 
         <Link to={isLoggedIn ? "/mi-cuenta" : "/iniciar-sesion"} className="nav-mobile-link">

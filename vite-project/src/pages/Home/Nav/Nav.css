@@ -201,6 +201,17 @@
   color: var(--text-on-accent);
 }
 
+.nav-category-chip-ofertas {
+  background: var(--accent-terracota-soft);
+  color: var(--accent-terracota);
+  font-weight: 700;
+}
+
+.nav-category-chip-ofertas:hover {
+  background: var(--accent-terracota);
+  color: var(--text-on-accent);
+}
+
 .nav-mobile-overlay {
   display: none;
 }

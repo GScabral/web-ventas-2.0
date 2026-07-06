@@ -7,7 +7,6 @@
         "start": "nodemon index.js"
     },
     "dependencies": {
-        "@mercadopago/sdk-react": "^0.0.19",
         "axios": "^1.6.2",
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.2",

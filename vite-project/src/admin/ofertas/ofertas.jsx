@@ -37,9 +37,6 @@ const OfertasModal = ({ product, show, handleClose }) => {
       fin: fin,
     };
 
-    // Log the data being sent
-    console.log("Enviando nueva oferta:", nuevaOferta);
-
     dispatch(ofertas(nuevaOferta))
       .then(() => {
         handleClose();

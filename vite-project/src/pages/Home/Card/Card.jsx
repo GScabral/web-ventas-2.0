@@ -9,10 +9,19 @@ const ProductCard = ({ product }) => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  // state.ofertasActivas trae TODAS las ofertas (vencidas, vigentes y
+  // futuras a propósito, ver getOferta.js) — acá sí hay que quedarse
+  // solo con la que esté vigente hoy, si no una oferta ya vencida
+  // seguía descontando precio en toda la tienda.
   const ofertas = useSelector(state => state.ofertasActivas) || [];
 
+  const ahora = new Date();
+
   const ofertaProducto = ofertas.find(
-    oferta => oferta.producto_id === product.id
+    oferta =>
+      oferta.producto_id === product.id &&
+      new Date(oferta.inicio) <= ahora &&
+      new Date(oferta.fin) >= ahora
   );
 
   const descuento = Number(ofertaProducto?.descuento || 0);

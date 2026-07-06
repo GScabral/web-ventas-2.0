@@ -12,8 +12,6 @@ import {
   AGREGAR_AL_CARRITO,
   ELIMINAR_PRODUCTO_CARRITO,
   VACIAR_CARRITO,
-  AGREGAR_FAV,
-  ELIMINAR_PRODUCTO_FAV,
   CAMBIO,
   BORRAR_PRODUCTO,
   POST_PEDIDO,
@@ -61,7 +59,6 @@ const initialState = {
   orderProducto: [],
   filtered: [],
   cliente: null,
-  fav: [],
   loading: false,
   errorMessage: '',
   emailExists: false,
@@ -336,24 +333,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         carrito: [],
       };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-    case AGREGAR_FAV:
-      const nuevoFav = action.payload;
-      return {
-        ...state,
-        fav: [...state.fav, nuevoFav]
-      }
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-    case ELIMINAR_PRODUCTO_FAV:
-      const indexFav = action.payload;
-      const nuevosProductosFav = [...state.fav];
-      nuevosProductosFav.splice(indexFav, 1);
-      return {
-        ...state,
-        fav: nuevosProductosFav,
-      };
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case CAMBIO:
       const productoModificado = action.payload; // Datos del producto modificado
       // Verificar que el ID del producto a modificar existe en el estado
@@ -403,16 +383,12 @@ const reducer = (state = initialState, action) => {
       const carritoActualizado = state.carrito.filter(
         (producto) => producto.id !== productoBorrar
       );
-      const favActualizado = state.fav.filter(
-        (producto) => producto.id !== productoBorrar
-      );
 
       return {
         ...state,
         allProductosBackUp: productosFiltrados, // Actualizar la lista de productos sin el producto borrado
         allProductos: productosFiltrados.slice(0, ITEMS_PER_PAGE), // Actualizar la lista mostrada si es necesario
         carrito: carritoActualizado, // Actualizar el carrito sin el producto borrado
-        fav: favActualizado, // Actualizar los favoritos sin el producto borrado
       };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case POST_PEDIDO:
