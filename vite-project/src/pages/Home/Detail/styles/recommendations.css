@@ -1,6 +1,6 @@
 .recommended {
   margin-top: 56px;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
 }
 
 .recommended h2 {

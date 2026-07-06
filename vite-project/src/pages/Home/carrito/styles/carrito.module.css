@@ -2,7 +2,7 @@
   background: #fff;
   min-height: 100vh;
   padding: 40px 20px;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
 }
 
 .container {

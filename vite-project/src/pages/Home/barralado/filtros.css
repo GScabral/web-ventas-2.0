@@ -48,7 +48,7 @@
   padding: 4px 0;
 
   font-size: 12.5px;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
   color: #666;
 
   transition: color 0.15s ease;

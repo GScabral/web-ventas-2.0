@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: #fff;
   padding: 40px 5%;
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
 }
 
 .detail-grid {

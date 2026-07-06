@@ -7,6 +7,7 @@ import {
   vaciarCarrito,
   validarCuponCheckout,
   calcularCostoEnvioCheckout,
+  getMisPedidos,
 } from "../../../../redux/action";
 
 import { STORE_CONFIG } from "../../../../config/storeConfig";
@@ -27,6 +28,35 @@ const useCheckout = () => {
   );
 
   const whatsapp = configuracion?.whatsapp || STORE_CONFIG.whatsapp;
+
+  // Si el cliente tiene sesión iniciada, precargamos sus datos en vez de
+  // pedirle que los tipee de cero cada vez que compra. La fuente más
+  // completa es su último pedido (tiene teléfono/provincia/ciudad, que
+  // el registro de cuenta ni siquiera guarda); si todavía no compró
+  // nunca, usamos lo poco que sí tiene la cuenta (nombre y correo).
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const cliente = useSelector(state => state.cliente);
+  const misPedidos = useSelector(state => state.misPedidos);
+
+  // "pedidosListos" marca que ya se intentó traer el historial (haya
+  // salido bien o mal), para no precargar de forma apurada solo con los
+  // datos flacos de la cuenta cuando en realidad el último pedido
+  // (con teléfono/provincia/ciudad incluidos) está por llegar.
+  const [pedidosListos, setPedidosListos] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+
+    let vigente = true;
+
+    dispatch(getMisPedidos()).finally(() => {
+      if (vigente) setPedidosListos(true);
+    });
+
+    return () => {
+      vigente = false;
+    };
+  }, [isLoggedIn, dispatch]);
 
   const [email, setEmail] =
     useState("");
@@ -64,6 +94,36 @@ const useCheckout = () => {
       tipoEntrega: tipo,
     }));
   };
+
+  // Se ejecuta una sola vez que llegan los datos (pedidos o cuenta), y
+  // solo completa los campos que todavía están vacíos — así, si el
+  // cliente ya empezó a escribir algo distinto, no se lo pisamos.
+  const [prefillHecho, setPrefillHecho] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn || !pedidosListos || prefillHecho) return;
+
+    // misPedidos viene ordenado del más nuevo al más viejo (DESC por
+    // fecha_pedido), así que el primero es el envío más reciente.
+    const ultimoPedido = Array.isArray(misPedidos) && misPedidos.length > 0
+      ? misPedidos[0]
+      : null;
+
+    if (!ultimoPedido && !cliente) return;
+
+    setEmail(prev => prev || ultimoPedido?.email_cliente || cliente?.correo || "");
+
+    setShippingData(prev => ({
+      ...prev,
+      nombre: prev.nombre || ultimoPedido?.nombre || cliente?.nombre || "",
+      telefono: prev.telefono || ultimoPedido?.telefono || "",
+      provincia: prev.provincia || ultimoPedido?.provincia || "",
+      ciudad: prev.ciudad || ultimoPedido?.ciudad || "",
+      direccion: prev.direccion || ultimoPedido?.direccion || cliente?.direccion || "",
+    }));
+
+    setPrefillHecho(true);
+  }, [isLoggedIn, pedidosListos, cliente, misPedidos, prefillHecho]);
 
   const [submitError, setSubmitError] =
     useState("");

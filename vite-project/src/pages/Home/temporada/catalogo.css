@@ -2,7 +2,7 @@
     width: 100%;
     min-height: 100vh;
     background: #fff;
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
 }
 
 .catalogo-wrapper {

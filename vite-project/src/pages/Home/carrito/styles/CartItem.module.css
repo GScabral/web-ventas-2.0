@@ -10,7 +10,7 @@
 
   padding: 16px;
 
-  font-family: 'Manrope', sans-serif;
+  font-family: var(--font-body);
 }
 
 .card img {

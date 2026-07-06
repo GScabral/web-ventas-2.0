@@ -42,7 +42,7 @@
 }
 
 .btn-edit {
-  background: #2563eb;
+  background: var(--color-info);
   color: #ffffff;
 }
 

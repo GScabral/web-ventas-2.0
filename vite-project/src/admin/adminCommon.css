@@ -55,12 +55,12 @@
 /* Modificadores de color: una franja superior sutil identifica
    el estado sin gritar (nada de fondos sólidos de color). */
 .stat-card.warning { border-top: 3px solid var(--color-warning); }
-.stat-card.info { border-top: 3px solid #2563eb; }
+.stat-card.info { border-top: 3px solid var(--color-info); }
 .stat-card.success { border-top: 3px solid var(--color-success); }
 .stat-card.complete { border-top: 3px solid var(--accent-terracota); }
 
 .stat-card.warning h3 { color: var(--color-warning); }
-.stat-card.info h3 { color: #2563eb; }
+.stat-card.info h3 { color: var(--color-info); }
 .stat-card.success h3 { color: var(--color-success); }
 .stat-card.complete h3 { color: var(--accent-terracota); }
 
@@ -69,7 +69,7 @@
    "pendiente" siempre sea el mismo tono en toda la pantalla. */
 
 .pendiente { color: var(--color-warning); }
-.preparando { color: #2563eb; }
+.preparando { color: var(--color-info); }
 .enviado { color: var(--color-success); }
 .entregado { color: var(--accent-terracota); }
 

@@ -32,8 +32,19 @@ const inicioSesion = async (correo, contraseña) => {
     // Generar un token JWT si las credenciales son válidas pero no son para el administrador
     const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '12h' });
     const idU=user.id
-    // Retornar el token para que pueda ser utilizado por el cliente
-    return { token,idU};
+
+    // Además del token, mandamos los datos básicos del cliente. Antes
+    // solo viajaba { token, idU }, así que el front no tenía forma de
+    // saber el nombre/dirección del cliente sin pedirlo aparte — se usa
+    // para precargar el checkout la próxima vez que compre.
+    return {
+      token,
+      idU,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      direccion: user.direccion,
+      correo: user.correo,
+    };
   } catch (error) {
     // Capturar errores específicos y devolver un mensaje genérico
     if (process.env.NODE_ENV === 'development') {
