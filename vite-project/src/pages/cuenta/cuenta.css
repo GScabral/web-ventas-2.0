@@ -1,7 +1,10 @@
 /* ============================================================
    CUENTA DE CLIENTE — login / registro / mis pedidos
-   Reutiliza .contenedor, .tarjeta, .form-group, .btn/.btn-primary
-   de Design-system.css; acá solo lo específico de estas 3 pantallas.
+   Reutiliza .contenedor, .tarjeta, .btn/.btn-primary de
+   Design-system.css. El .form-group de acá abajo es propio: el
+   comentario original decía que venía de Design-system.css, pero
+   esa clase nunca se definió ahí — los inputs de login/registro
+   corrían sin ningún estilo real, solo con lo heredado del navegador.
    ============================================================ */
 
 .cuenta-page {
@@ -11,26 +14,71 @@
   justify-content: center;
   padding-top: var(--sp-7);
   padding-bottom: var(--sp-7);
+
+  background: linear-gradient(180deg, var(--accent-terracota-soft) 0%, var(--bg-base) 45%);
 }
 
 .cuenta-card {
+  position: relative;
   width: 100%;
-  max-width: 420px;
-  padding: var(--sp-6);
+  max-width: 440px;
+  padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  overflow: hidden;
+
+  box-shadow: var(--shadow-lg);
+  animation: cuentaCardIn var(--t-slow) var(--ease-out);
+}
+
+.cuenta-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--gradient-brand);
+}
+
+@keyframes cuentaCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cuenta-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto var(--sp-5);
+  border-radius: var(--radius-lg);
+  background: var(--gradient-brand-soft);
+  color: var(--accent-terracota);
 }
 
 .cuenta-card h1 {
   font-size: var(--fs-xl);
   margin-bottom: var(--sp-2);
+  text-align: center;
 }
 
 .cuenta-subtitulo {
   color: var(--text-secondary);
   font-size: var(--fs-sm);
-  margin-bottom: var(--sp-5);
+  margin-bottom: var(--sp-6);
+  text-align: center;
 }
 
 .cuenta-error {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
   background: rgba(220, 38, 38, 0.08);
   border: 1px solid rgba(220, 38, 38, 0.25);
   color: var(--color-error);
@@ -40,9 +88,114 @@
   margin-bottom: var(--sp-4);
 }
 
+/* ---- Campos de formulario ---- */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  margin-bottom: var(--sp-4);
+}
+
+.form-group label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-2);
+  letter-spacing: 0.01em;
+}
+
+.form-group .input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-group .input-icon-wrap svg {
+  position: absolute;
+  left: var(--sp-3);
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color var(--t-fast) var(--ease-out);
+}
+
+.form-group input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--text-primary);
+  background: var(--bg-elevated-2);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+  transition: border-color var(--t-fast) var(--ease-out),
+              background var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out);
+}
+
+.form-group .input-icon-wrap input {
+  padding-left: 40px;
+}
+
+.form-group .input-icon-wrap.has-toggle input {
+  padding-right: 40px;
+}
+
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group input:hover {
+  border-color: var(--text-muted);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 3px var(--accent-terracota-soft);
+}
+
+.form-group .input-icon-wrap:focus-within svg {
+  color: var(--accent-terracota);
+}
+
+.password-toggle {
+  position: absolute;
+  right: var(--sp-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--t-fast) var(--ease-out);
+}
+
+.password-toggle:hover {
+  color: var(--text-secondary);
+}
+
 .cuenta-submit {
   width: 100%;
-  margin-top: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  font-size: var(--fs-base);
 }
 
 .cuenta-alt {
