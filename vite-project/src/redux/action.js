@@ -397,6 +397,19 @@ export const getMisPedidos = () => {
       dispatch({ type: GET_MIS_PEDIDOS, payload: response.data });
     } catch (error) {
       console.error('Error al obtener el historial de pedidos:', error);
+
+      // Antes esto solo vaciaba la lista, así que si el token venció
+      // (dura 12hs) o quedó inválido por algún otro motivo, la app
+      // seguía mostrando al cliente como logueado para siempre — cada
+      // pantalla que pedía datos volvía a fallar con 401/403 en
+      // silencio, sin ninguna forma de salir de ese estado salvo
+      // cerrar sesión a mano. Si el server dice que el token no sirve,
+      // se cierra la sesión acá mismo para que vuelva a pedir login.
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        localStorage.removeItem('clienteSesion');
+        dispatch({ type: CERRAR_SESION });
+      }
+
       dispatch({ type: GET_MIS_PEDIDOS, payload: [] });
     }
   };
