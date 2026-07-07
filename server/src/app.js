@@ -13,6 +13,13 @@ require('./db.js');
 const server = express();
 server.name = 'Server';
 
+// Render pone un proxy delante (agrega el header X-Forwarded-For con la IP
+// real del cliente). Sin esto, Express no confía en ese header y el
+// rate-limiter de /Nadmin/loginc (ver routeAdmin.js) no puede identificar
+// bien la IP de cada intento de login, lo que rompe la protección contra
+// fuerza bruta. "1" = confiar en un solo salto de proxy (el de Render).
+server.set('trust proxy', 1);
+
 // Orígenes desde los que se permite llamar a la API. Se combinan SIEMPRE
 // los dominios conocidos de abajo con lo que venga en CLIENT_URL (si está
 // seteada), en vez de que uno reemplace al otro. Así, si en Render cambia
