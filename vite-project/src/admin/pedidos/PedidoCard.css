@@ -41,6 +41,36 @@
   margin-top: 2px;
 }
 
+/* ============================================================
+   Badge de método de pago (Mercado Pago vs. WhatsApp)
+   ============================================================ */
+
+.badge-metodo-pago {
+  display: block;
+  width: fit-content;
+  margin-top: var(--sp-2);
+  padding: 3px var(--sp-3);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.badge-mp {
+  background: var(--accent-mostaza-soft);
+  color: var(--accent-mostaza);
+}
+
+.badge-whatsapp {
+  background: var(--bg-elevated-2);
+  color: var(--text-secondary);
+}
+
+.pedido-mp-id {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
 .pedido-total {
   font-family: var(--font-display);
   font-size: var(--fs-xl);

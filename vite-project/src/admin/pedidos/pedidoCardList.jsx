@@ -62,6 +62,18 @@ const PedidoCard = ({
                         Pedido #{pedido.id_pedido}
                     </span>
 
+                    <span
+                        className={
+                            pedido.metodo_pago === "mercadopago"
+                                ? "badge-metodo-pago badge-mp"
+                                : "badge-metodo-pago badge-whatsapp"
+                        }
+                    >
+                        {pedido.metodo_pago === "mercadopago"
+                            ? "💳 Mercado Pago"
+                            : "💬 WhatsApp"}
+                    </span>
+
                     <p className="pedido-email">
                         {pedido.email_cliente}
                     </p>
@@ -253,6 +265,12 @@ const PedidoCard = ({
                             este pedido.
                         </p>
 
+                    )}
+
+                    {pedido.metodo_pago === "mercadopago" && pedido.mp_payment_id && (
+                        <p className="pedido-mp-id">
+                            ID de pago en Mercado Pago: {pedido.mp_payment_id}
+                        </p>
                     )}
 
                 </div>

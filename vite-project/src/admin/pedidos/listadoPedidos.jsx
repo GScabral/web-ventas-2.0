@@ -217,6 +217,7 @@ const PedidoList = () => {
   const [busqueda, setBusqueda] = useState("");
   const [fechaDesde, setFechaDesde] = useState("");
   const [fechaHasta, setFechaHasta] = useState("");
+  const [metodoPago, setMetodoPago] = useState("");
 
   const pedidosFiltrados = useMemo(() => {
 
@@ -250,20 +251,39 @@ const PedidoList = () => {
       );
     }
 
-    return resultado;
-  }, [allPedidos, busqueda, fechaDesde, fechaHasta]);
+    if (metodoPago) {
+      resultado = resultado.filter((p) =>
+        metodoPago === "mercadopago"
+          ? p.metodo_pago === "mercadopago"
+          : p.metodo_pago !== "mercadopago"
+      );
+    }
 
-  const hayFiltrosActivos = busqueda.trim() || fechaDesde || fechaHasta;
+    return resultado;
+  }, [allPedidos, busqueda, fechaDesde, fechaHasta, metodoPago]);
+
+  const hayFiltrosActivos = busqueda.trim() || fechaDesde || fechaHasta || metodoPago;
 
   const limpiarFiltros = () => {
     setBusqueda("");
     setFechaDesde("");
     setFechaHasta("");
+    setMetodoPago("");
   };
 
   const pendientes =
     pedidosFiltrados.filter(
       (p) => p.estado === "pendiente"
+    );
+
+  // "pagado" es el estado que pone automáticamente el webhook de
+  // Mercado Pago apenas se confirma el pago (ver server/.../mp/webhook.js)
+  // — antes no tenía columna propia en el tablero, así que un pedido
+  // pagado online no aparecía en ningún lado hasta que alguien lo
+  // pasaba a mano a "preparando".
+  const pagados =
+    pedidosFiltrados.filter(
+      (p) => p.estado === "pagado"
     );
 
   const preparando =
@@ -279,6 +299,14 @@ const PedidoList = () => {
   const entregados =
     pedidosFiltrados.filter(
       (p) => p.estado === "entregado"
+    );
+
+  // Mismo caso: "cancelado" tampoco tenía columna, así que un pedido
+  // cancelado quedaba invisible en el tablero (solo se veía buscándolo
+  // por ID/email o en el CSV exportado).
+  const cancelados =
+    pedidosFiltrados.filter(
+      (p) => p.estado === "cancelado"
     );
 
   return (
@@ -333,6 +361,18 @@ const PedidoList = () => {
           </label>
         </div>
 
+        <label className="pedidos-filtro-metodo-pago">
+          Método de pago
+          <select
+            value={metodoPago}
+            onChange={(e) => setMetodoPago(e.target.value)}
+          >
+            <option value="">Todos</option>
+            <option value="mercadopago">Mercado Pago</option>
+            <option value="whatsapp">WhatsApp</option>
+          </select>
+        </label>
+
         {hayFiltrosActivos && (
           <button
             type="button"
@@ -362,6 +402,11 @@ const PedidoList = () => {
           <span>Pendientes</span>
         </div>
 
+        <div className="stat-card pagado">
+          <h3>{pagados.length}</h3>
+          <span>Pagados</span>
+        </div>
+
         <div className="stat-card info">
           <h3>{preparando.length}</h3>
           <span>Preparando</span>
@@ -375,6 +420,11 @@ const PedidoList = () => {
         <div className="stat-card complete">
           <h3>{entregados.length}</h3>
           <span>Entregados</span>
+        </div>
+
+        <div className="stat-card cancelado">
+          <h3>{cancelados.length}</h3>
+          <span>Cancelados</span>
         </div>
       </div>
 
@@ -392,6 +442,25 @@ const PedidoList = () => {
           </h2>
 
           {pendientes.map((pedido) => (
+            <PedidoCard
+              key={pedido.id_pedido}
+              pedido={pedido}
+              onEstadoChange={
+                handleEstadoChange
+              }
+              onMarcarEntregado={
+                handleMarcarEntregado
+              }
+            />
+          ))}
+        </div>
+
+        <div className="kanban-column">
+          <h2 className="pagado">
+            Pagados
+          </h2>
+
+          {pagados.map((pedido) => (
             <PedidoCard
               key={pedido.id_pedido}
               pedido={pedido}
@@ -449,6 +518,25 @@ const PedidoList = () => {
           </h2>
 
           {entregados.map((pedido) => (
+            <PedidoCard
+              key={pedido.id_pedido}
+              pedido={pedido}
+              onEstadoChange={
+                handleEstadoChange
+              }
+              onMarcarEntregado={
+                handleMarcarEntregado
+              }
+            />
+          ))}
+        </div>
+
+        <div className="kanban-column">
+          <h2 className="cancelado">
+            Cancelados
+          </h2>
+
+          {cancelados.map((pedido) => (
             <PedidoCard
               key={pedido.id_pedido}
               pedido={pedido}

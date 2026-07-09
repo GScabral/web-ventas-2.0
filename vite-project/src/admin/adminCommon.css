@@ -58,20 +58,29 @@
 .stat-card.info { border-top: 3px solid var(--color-info); }
 .stat-card.success { border-top: 3px solid var(--color-success); }
 .stat-card.complete { border-top: 3px solid var(--accent-terracota); }
+.stat-card.pagado { border-top: 3px solid var(--accent-mostaza); }
+.stat-card.cancelado { border-top: 3px solid var(--color-error); }
 
 .stat-card.warning h3 { color: var(--color-warning); }
 .stat-card.info h3 { color: var(--color-info); }
 .stat-card.success h3 { color: var(--color-success); }
 .stat-card.complete h3 { color: var(--accent-terracota); }
+.stat-card.pagado h3 { color: var(--accent-mostaza); }
+.stat-card.cancelado h3 { color: var(--color-error); }
 
 /* ---- Estados de pedido (kanban + chips) ----
    Mismo vocabulario de color que las stat-card, para que
-   "pendiente" siempre sea el mismo tono en toda la pantalla. */
+   "pendiente" siempre sea el mismo tono en toda la pantalla.
+   "pagado" usa mostaza (ni warning ni success) porque un pedido
+   pagado por Mercado Pago todavía no se preparó ni se envió —
+   es un estado intermedio, no "todo terminado bien" como enviado. */
 
 .pendiente { color: var(--color-warning); }
+.pagado { color: var(--accent-mostaza); }
 .preparando { color: var(--color-info); }
 .enviado { color: var(--color-success); }
 .entregado { color: var(--accent-terracota); }
+.cancelado { color: var(--color-error); }
 
 /* ---- Estado vacío genérico ---- */
 

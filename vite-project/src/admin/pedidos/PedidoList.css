@@ -74,7 +74,10 @@
 
 .kanban-board {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* 6 columnas (Pendientes/Pagados/Preparando/Enviados/Entregados/
+     Cancelados): 3 por fila en desktop, se reacomoda en los
+     media queries de abajo para pantallas más chicas. */
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--sp-5);
 }
 
@@ -203,6 +206,30 @@
   border-radius: var(--radius-sm);
   font-size: var(--fs-sm);
   color: var(--text-primary);
+}
+
+.pedidos-filtro-metodo-pago {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.pedidos-filtro-metodo-pago select {
+  height: 38px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border-medium);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  color: var(--text-primary);
+}
+
+.pedidos-filtro-metodo-pago select:focus {
+  outline: none;
+  border-color: var(--accent-terracota);
 }
 
 .pedidos-limpiar-filtros {
