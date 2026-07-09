@@ -223,6 +223,38 @@
   color: #e24b4a;
 }
 
+/* ---- Selector de método de pago ---- */
+
+.metodoPagoOpciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metodoPagoOpcion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.metodoPagoOpcion:has(input:checked) {
+  border-color: var(--accent-terracota, #ff6b35);
+  background: rgba(255, 107, 53, 0.06);
+}
+
+.metodoPagoOpcion input {
+  width: auto;
+  accent-color: var(--accent-terracota, #ff6b35);
+}
+
 .submitError {
   background: #fdecea;
   color: #b3261e;

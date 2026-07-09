@@ -93,7 +93,34 @@ module.exports = (sequelize) => {
     costo_envio: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
-    }
+    },
+
+    // Cómo se va a pagar (o pagó) este pedido. "whatsapp" es el
+    // camino original: se coordina el pago a mano fuera del sitio.
+    // "mercadopago" es el pago online — en ese caso el estado pasa a
+    // "pagado" solo cuando llega la confirmación real por webhook
+    // (ver controllers/mp/webhook.js), nunca antes.
+    metodo_pago: {
+      type: DataTypes.ENUM("whatsapp", "mercadopago"),
+      defaultValue: "whatsapp",
+    },
+
+    // Id de la Preference de Mercado Pago generada para este pedido.
+    // Sirve para volver a buscar/regenerar el checkout si el cliente
+    // vuelve atrás sin pagar.
+    mp_preference_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    // Id del Payment real ya confirmado por Mercado Pago (no de la
+    // preference). Se completa recién cuando el webhook verificó el
+    // pago contra la API de MP — nunca se confía en un dato que
+    // mande el navegador.
+    mp_payment_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
 
   });
 

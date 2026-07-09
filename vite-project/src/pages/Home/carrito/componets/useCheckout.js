@@ -128,6 +128,17 @@ const useCheckout = () => {
   const [submitError, setSubmitError] =
     useState("");
 
+  // "whatsapp": el camino de siempre, se coordina el pago a mano.
+  // "mercadopago": paga online; en ese caso no cerramos el checkout al
+  // crear el pedido, sino que mostramos el botón de pago para ESE pedido
+  // (ver pedidoCreado más abajo).
+  const [metodoPago, setMetodoPago] = useState("whatsapp");
+
+  // Se completa recién cuando el pedido ya se creó en el servidor y el
+  // cliente eligió pagar con Mercado Pago. CheckoutModal usa esto para
+  // pasar de "completá tus datos" a "pagá tu pedido #N".
+  const [pedidoCreado, setPedidoCreado] = useState(null);
+
   const subtotal = carrito.reduce(
     (acc, item) =>
       acc +
@@ -255,6 +266,17 @@ const useCheckout = () => {
 
       if (response) {
 
+        // El pedido ya está creado (stock descontado, precios validados
+        // por el servidor) sin importar cómo se termine pagando. Si el
+        // cliente eligió Mercado Pago, cortamos acá: no coordinamos por
+        // WhatsApp ni cerramos el modal, sino que mostramos el botón de
+        // pago para este pedido puntual.
+        if (metodoPago === "mercadopago") {
+          dispatch(vaciarCarrito());
+          setPedidoCreado(response);
+          return true;
+        }
+
         const productos = carrito
           .map((item) => {
 
@@ -355,6 +377,10 @@ Total: $${totalReal.toLocaleString("es-AR")}
     envioEncontrado,
 
     confirmarPedido,
+
+    metodoPago,
+    setMetodoPago,
+    pedidoCreado,
 
     loading,
 

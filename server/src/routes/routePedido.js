@@ -5,6 +5,7 @@ const getPedidos = require("../controllers/pedido/getPedidos");
 const getEstadisticas = require("../controllers/pedido/getEstadisticas");
 const getPedidoById = require("../controllers/pedido/getPedidoById");
 const getMisPedidos = require("../controllers/pedido/getMisPedidos");
+const getEstadoPublico = require("../controllers/pedido/getEstadoPublico");
 const actualizarEstado = require("../controllers/pedido/actualizarEstado");
 const cancelarPedido = require("../controllers/pedido/cancelarPedido");
 const eliminarPedido = require("../controllers/pedido/eliminarPedido");
@@ -14,6 +15,12 @@ const router = Router();
 
 // Pública: el cliente crea su pedido al finalizar la compra (no tiene login)
 router.post("/nuevoPedido", nuevoPedido);
+
+// Pública, de solo lectura y con muy pocos campos: la usan las pantallas
+// de pago-exitoso/fallido/pendiente después de volver de Mercado Pago.
+// Tiene que ir antes de "/:id" (esa es la versión completa, con auth de
+// admin) para que Express no la interprete como si "estado" fuera un id.
+router.get("/estado/:id", getEstadoPublico);
 
 // Cliente logueado: su propio historial de pedidos. Tiene que ir ANTES
 // de "/:id" (mismo motivo que "/estadisticas" más abajo) para que

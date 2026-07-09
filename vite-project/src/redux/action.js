@@ -146,6 +146,27 @@ export const addPedido = (pedidoData) => {
     }
   };
 };
+
+// Genera el checkout de Mercado Pago para un pedido QUE YA EXISTE (creado
+// antes con addPedido). No recibe el carrito ni ningún precio — el
+// backend arma la preferencia a partir de lo que ya quedó guardado en la
+// base de datos para ese pedido.
+export const crearPreferenciaMP = async (idPedido) => {
+  const response = await axios.post(
+    `${API_URL}/mp/crear-preferencia/${idPedido}`
+  );
+  return response.data; // { id, publicKey }
+};
+
+// Consulta pública (sin login) del estado de un pedido — la usan las
+// pantallas de pago-exitoso/fallido/pendiente al volver de Mercado Pago.
+export const getEstadoPedidoPublico = async (idPedido) => {
+  const response = await axios.get(
+    `${API_URL}/pedido/estado/${idPedido}`
+  );
+  return response.data;
+};
+
 export const addProduct = (formData) => {
   return async function (dispatch) {
     try {

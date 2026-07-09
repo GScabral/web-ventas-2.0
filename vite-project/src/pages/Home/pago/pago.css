@@ -1,0 +1,78 @@
+/* ============================================================
+   RESULTADO DE PAGO (Mercado Pago) — /pago-exitoso, /pago-fallido,
+   /pago-pendiente. Reutiliza .contenedor, .tarjeta, .btn/.btn-primary
+   de Design-system.css, mismo criterio que cuenta.css.
+   ============================================================ */
+
+.pago-resultado-page {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--sp-7);
+  padding-bottom: var(--sp-7);
+}
+
+.pago-resultado-card {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--sp-7) var(--sp-6);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.pago-resultado-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--sp-5);
+  border-radius: var(--radius-full);
+}
+
+.pago-resultado-exito .pago-resultado-icono {
+  background: rgba(22, 163, 74, 0.12);
+  color: var(--color-success);
+}
+
+.pago-resultado-error .pago-resultado-icono {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--color-error);
+}
+
+.pago-resultado-info .pago-resultado-icono {
+  background: var(--accent-terracota-soft);
+  color: var(--accent-terracota);
+}
+
+.pago-resultado-card h1 {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-3);
+}
+
+.pago-resultado-mensaje {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-4);
+}
+
+.pago-resultado-detalle {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  margin-bottom: var(--sp-2);
+}
+
+.pago-resultado-volver {
+  display: inline-block;
+  margin-top: var(--sp-5);
+}
+
+.pago-resultado-spin {
+  animation: pagoResultadoSpin 1.2s linear infinite;
+}
+
+@keyframes pagoResultadoSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

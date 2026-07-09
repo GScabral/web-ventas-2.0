@@ -28,6 +28,20 @@
   justify-content: center;
 }
 
+.cargando {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  text-align: center;
+  padding: var(--sp-4) 0;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: var(--fs-sm);
+  text-align: center;
+  padding: var(--sp-4) 0;
+}
+
 @media (max-width: 768px) {
   .container {
     margin-top: 20px;

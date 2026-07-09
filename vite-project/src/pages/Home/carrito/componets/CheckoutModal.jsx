@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import ShippingForm from "./ShippingForm";
+import MercadoPagoButton from "./MercadoPagoButton";
 import useCheckout from "./useCheckout";
 
 import styles from "../styles/CheckoutModal.module.css";
@@ -26,6 +27,9 @@ const CheckoutModal = ({ show, onClose }) => {
     costoEnvio,
     envioEncontrado,
     confirmarPedido,
+    metodoPago,
+    setMetodoPago,
+    pedidoCreado,
     loading,
     submitError,
     setSubmitError,
@@ -72,10 +76,51 @@ const CheckoutModal = ({ show, onClose }) => {
 
     const ok = await confirmarPedido();
 
-    if (ok) {
+    // Con WhatsApp el pedido queda coordinado ahí mismo y cerramos. Con
+    // Mercado Pago, en cambio, confirmarPedido ya dejó pedidoCreado
+    // cargado — nos quedamos en el modal para mostrar el botón de pago
+    // en vez de cerrar de una.
+    if (ok && metodoPago === "whatsapp") {
       onClose();
     }
   };
+
+  // ---- Paso 2: pedido ya creado, falta pagarlo con Mercado Pago ----
+  if (pedidoCreado) {
+    return (
+      <div className="custom-modal-overlay" onClick={onClose}>
+        <div
+          className={`custom-modal ${styles.modal}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="custom-modal-header">
+            <h2>Pagá tu pedido</h2>
+            <button
+              type="button"
+              className="custom-modal-close"
+              onClick={onClose}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="custom-modal-body">
+            <p className={styles.resumenLabel}>
+              Pedido #{pedidoCreado.id_pedido} · Total ${Number(pedidoCreado.total_pedido).toLocaleString("es-AR")}
+            </p>
+
+            <p className={styles.envioSinCargar}>
+              Guardamos tu pedido. Completá el pago para confirmarlo — vas a
+              recibir un correo apenas se acredite.
+            </p>
+
+            <MercadoPagoButton pedidoId={pedidoCreado.id_pedido} />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="custom-modal-overlay" onClick={onClose}>
@@ -240,6 +285,34 @@ const CheckoutModal = ({ show, onClose }) => {
             fieldErrors={fieldErrors}
           />
 
+          <div className={styles.formGroup}>
+            <label>¿Cómo querés pagar?</label>
+
+            <div className={styles.metodoPagoOpciones}>
+              <label className={styles.metodoPagoOpcion}>
+                <input
+                  type="radio"
+                  name="metodoPago"
+                  value="whatsapp"
+                  checked={metodoPago === "whatsapp"}
+                  onChange={() => setMetodoPago("whatsapp")}
+                />
+                Coordinar por WhatsApp
+              </label>
+
+              <label className={styles.metodoPagoOpcion}>
+                <input
+                  type="radio"
+                  name="metodoPago"
+                  value="mercadopago"
+                  checked={metodoPago === "mercadopago"}
+                  onChange={() => setMetodoPago("mercadopago")}
+                />
+                Pagar ahora con Mercado Pago
+              </label>
+            </div>
+          </div>
+
         </div>
 
         <div className="custom-modal-footer">
@@ -260,7 +333,9 @@ const CheckoutModal = ({ show, onClose }) => {
           >
             {loading
               ? "Procesando pedido..."
-              : `Confirmar Pedido · $${total.toLocaleString("es-AR")}`}
+              : metodoPago === "mercadopago"
+                ? `Ir a pagar · $${total.toLocaleString("es-AR")}`
+                : `Confirmar Pedido · $${total.toLocaleString("es-AR")}`}
           </button>
 
         </div>

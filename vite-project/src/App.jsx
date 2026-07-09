@@ -12,6 +12,7 @@ import CrearCuenta from './pages/cuenta/crearCuenta'
 import IniciarSesion from './pages/cuenta/iniciarSesion'
 import MiCuenta from './pages/cuenta/miCuenta'
 import Ofertas from './pages/Home/ofertas/ofertas'
+import PagoResultado from './pages/Home/pago/PagoResultado'
 // VentaPorMayor.jsx hoy es solo un título de prueba sin contenido real
 // (sin formulario, sin info de contacto). Cuando tenga contenido de
 // verdad, descomentar este import y la ruta de abajo.
@@ -52,6 +53,9 @@ function App() {
           <Route path='/iniciar-sesion' element={<IniciarSesion />} />
           <Route path='/mi-cuenta' element={<MiCuenta />} />
           <Route path='/ofertas' element={<Ofertas />} />
+          <Route path='/pago-exitoso' element={<PagoResultado />} />
+          <Route path='/pago-fallido' element={<PagoResultado />} />
+          <Route path='/pago-pendiente' element={<PagoResultado />} />
           {/* <Route path='/VentaPorMayor' element={<VentaPorMayor />} /> */}
         </Routes>
       </Suspense>

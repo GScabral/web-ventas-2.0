@@ -4,19 +4,21 @@ import React, {
     useState,
 } from "react";
 
-import axios from "axios";
-
-import { API_URL } from "../../../../redux/action";
+import { crearPreferenciaMP } from "../../../../redux/action";
 import styles from "../styles/MercadoPagoButton.module.css";
 
-const MP_PUBLIC_KEY =
-    "APP_USR-86f3d1a9-4907-4398-9aa3-c15a4ec927d2";
-
+// Antes este componente armaba el pago directo desde el carrito del
+// navegador, sin pasar por ningún Pedido guardado en la base — un pago
+// hecho por ese camino no quedaba registrado en el sistema ni descontaba
+// stock. Ahora recibe el id de un pedido YA CREADO (ver useCheckout.js:
+// primero se llama a addPedido, y solo si el cliente elige pagar con
+// Mercado Pago se monta este botón con ese id).
 const MercadoPagoButton = ({
-    carrito,
+    pedidoId,
 }) => {
-    const [preferenceId, setPreferenceId] =
-        useState(null);
+    const [preferenceId, setPreferenceId] = useState(null);
+    const [publicKey, setPublicKey] = useState(null);
+    const [error, setError] = useState("");
 
     const walletRef = useRef(null);
 
@@ -27,50 +29,28 @@ const MercadoPagoButton = ({
     */
 
     useEffect(() => {
-        const createPreference =
-            async () => {
-                if (!carrito?.length) {
-                    setPreferenceId(null);
-                    return;
-                }
+        const crear = async () => {
+            if (!pedidoId) {
+                setPreferenceId(null);
+                return;
+            }
 
-                try {
-                    const productos =
-                        carrito.map(
-                            (producto) => ({
-                                id:
-                                    producto.id,
+            try {
+                const data = await crearPreferenciaMP(pedidoId);
+                setPreferenceId(data.id);
+                setPublicKey(data.publicKey);
+            } catch (err) {
+                console.error("Error creando preferencia:", err);
+                setError(
+                    err.response?.data?.error ||
+                    "No pudimos generar el link de pago. Intentá de nuevo."
+                );
+                setPreferenceId(null);
+            }
+        };
 
-                                nombre:
-                                    producto.nombre,
-
-                                cantidad:
-                                    producto.cantidad_elegida ||
-                                    1,
-                            })
-                        );
-
-                    const response =
-                        await axios.post(
-                            `${API_URL}/mp/create_preference`,
-                            productos
-                        );
-
-                    setPreferenceId(
-                        response.data.id
-                    );
-                } catch (error) {
-                    console.error(
-                        "Error creando preferencia:",
-                        error
-                    );
-
-                    setPreferenceId(null);
-                }
-            };
-
-        createPreference();
-    }, [carrito]);
+        crear();
+    }, [pedidoId]);
 
     /*
     ==========================
@@ -79,21 +59,16 @@ const MercadoPagoButton = ({
     */
 
     useEffect(() => {
-        if (!preferenceId) return;
+        if (!preferenceId || !publicKey) return;
 
         const renderWallet = () => {
-            if (!window.MercadoPago)
-                return;
+            if (!window.MercadoPago) return;
 
             if (walletRef.current) {
-                walletRef.current.innerHTML =
-                    "";
+                walletRef.current.innerHTML = "";
             }
 
-            const mp =
-                new window.MercadoPago(
-                    MP_PUBLIC_KEY
-                );
+            const mp = new window.MercadoPago(publicKey);
 
             mp.checkout({
                 preference: {
@@ -101,57 +76,42 @@ const MercadoPagoButton = ({
                 },
 
                 render: {
-                    container:
-                        "#wallet_container",
-
-                    label:
-                        "Pagar con Mercado Pago",
+                    container: "#wallet_container",
+                    label: "Pagar con Mercado Pago",
                 },
             });
         };
 
-        const sdkExistente =
-            document.getElementById(
-                "mercadopago-sdk"
-            );
+        const sdkExistente = document.getElementById("mercadopago-sdk");
 
         if (!sdkExistente) {
-            const script =
-                document.createElement(
-                    "script"
-                );
-
-            script.src =
-                "https://sdk.mercadopago.com/js/v2";
-
-            script.id =
-                "mercadopago-sdk";
-
-            script.onload =
-                renderWallet;
-
-            document.body.appendChild(
-                script
-            );
+            const script = document.createElement("script");
+            script.src = "https://sdk.mercadopago.com/js/v2";
+            script.id = "mercadopago-sdk";
+            script.onload = renderWallet;
+            document.body.appendChild(script);
         } else {
             renderWallet();
         }
 
         return () => {
             if (walletRef.current) {
-                walletRef.current.innerHTML =
-                    "";
+                walletRef.current.innerHTML = "";
             }
         };
-    }, [preferenceId]);
+    }, [preferenceId, publicKey]);
 
-    if (!preferenceId) return null;
+    if (error) {
+        return <p className={styles.error}>{error}</p>;
+    }
+
+    if (!preferenceId) {
+        return <p className={styles.cargando}>Preparando el pago...</p>;
+    }
 
     return (
         <div className={styles.container}>
-            <h4 className={styles.title}>
-                Pago online
-            </h4>
+            <h4 className={styles.title}>Pago online</h4>
 
             <div
                 id="wallet_container"
