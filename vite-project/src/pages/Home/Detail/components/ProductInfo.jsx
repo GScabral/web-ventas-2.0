@@ -12,7 +12,7 @@ const ProductInfo = ({ name, description, price }) => {
       </p>
 
       <div className="price">
-        ${price}
+        ${Number(price).toLocaleString("es-AR")}
       </div>
 
     </div>
