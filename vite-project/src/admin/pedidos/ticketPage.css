@@ -40,8 +40,9 @@
 
 .ticket-info {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--sp-6);
+  flex-wrap: wrap;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-5);
   font-size: var(--fs-sm);
   color: var(--text-secondary);
 }
@@ -49,6 +50,50 @@
 .ticket-info p {
   margin-top: 4px;
   color: var(--text-primary);
+}
+
+.ticket-badge {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px var(--sp-3);
+  border-radius: var(--radius-full);
+  border: 1px solid currentColor;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* ============================================================
+   Cliente y entrega
+   ============================================================ */
+
+.ticket-cliente {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--bg-elevated-2);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.ticket-cliente strong {
+  display: block;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.ticket-cliente p {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.ticket-cliente-secundario {
+  color: var(--text-secondary) !important;
+  font-size: var(--fs-xs);
 }
 
 .ticket-products {
@@ -81,11 +126,25 @@
   margin-top: 4px;
 }
 
+.ticket-totales {
+  margin-top: var(--sp-5);
+}
+
+.ticket-subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
 .ticket-total {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--sp-5);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border-subtle);
   font-family: var(--font-display);
   font-size: var(--fs-xl);
   font-weight: 800;

@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const dotenv = require('dotenv');
 const { Pedido } = require('../../db');
 const enviarCorreo = require('../correo/correo');
+const registrarIngresoPedido = require('../caja/registrarIngresoPedido');
 
 dotenv.config();
 
@@ -113,6 +114,14 @@ const webhook = async (req, res) => {
 
             pedido.estado = 'pagado';
             pedido.mp_payment_id = String(pagoReal.id);
+
+            // Registra el ingreso en Caja apenas se confirma el pago, igual
+            // que se hace a mano cuando el admin marca un pedido como
+            // "Entregado" (ver pedido/actualizarEstado.js). Si no hay una
+            // caja abierta en ese momento, simplemente no se registra — no
+            // bloquea la confirmación del pago, que es lo importante.
+            await registrarIngresoPedido(pedido, 'mercado_pago');
+
             await pedido.save();
 
             if (pedido.email_cliente) {

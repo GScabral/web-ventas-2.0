@@ -4,10 +4,10 @@ const { Op } = require("sequelize");
 // Estadísticas para el dashboard de Inicio del admin: total vendido en
 // distintos rangos, el producto más vendido, y una serie diaria para
 // el gráfico. Se excluyen los pedidos cancelados de todos los totales
-// (no cuentan como venta real), pero se cuentan pendientes/preparando/
-// enviados/entregados por igual, porque el sitio no tiene todavía un
-// estado "pagado" confirmado de forma automática (el pago se coordina
-// por WhatsApp después de crear el pedido).
+// (no cuentan como venta real), pero se cuentan pendiente/pagado/
+// preparando/enviado/entregado por igual — incluye tanto los pedidos
+// coordinados por WhatsApp (pago fuera del sitio) como los ya
+// confirmados automáticamente por el webhook de Mercado Pago.
 const getEstadisticas = async () => {
 
     const ahora = new Date();

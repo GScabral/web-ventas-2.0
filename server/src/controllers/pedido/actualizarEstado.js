@@ -1,4 +1,5 @@
-const { Pedido, CajaSesion, CajaMovimiento } = require("../../db");
+const { Pedido } = require("../../db");
+const registrarIngresoPedido = require("../caja/registrarIngresoPedido");
 
 const actualizarEstado = async (
     req,
@@ -26,6 +27,9 @@ const actualizarEstado = async (
         // (así no hace falta cargarlo dos veces a mano). No rompe nada
         // si no hay caja abierta o si ya se había registrado antes —
         // en esos casos el pedido igual cambia de estado con normalidad.
+        // (Los pedidos pagados por Mercado Pago ya se registran solos
+        // apenas se confirma el pago, ver mp/webhook.js — acá cubrimos
+        // el resto: efectivo, transferencia, etc.)
         let cajaInfo = {
             registrado: false,
             motivo: null,
@@ -36,26 +40,7 @@ const actualizarEstado = async (
             metodo_pago &&
             !pedido.registrado_en_caja
         ) {
-
-            const sesionAbierta = await CajaSesion.findOne({
-                where: { estado: "abierta" },
-            });
-
-            if (!sesionAbierta) {
-                cajaInfo.motivo = "No hay ninguna caja abierta en este momento.";
-            } else {
-
-                await CajaMovimiento.create({
-                    tipo: "ingreso",
-                    concepto: `Pedido #${pedido.id_pedido}${pedido.nombre ? ` - ${pedido.nombre}` : ""}`,
-                    monto: pedido.total_pedido,
-                    metodo_pago,
-                    CajaSesionId: sesionAbierta.id_sesion,
-                });
-
-                pedido.registrado_en_caja = true;
-                cajaInfo.registrado = true;
-            }
+            cajaInfo = await registrarIngresoPedido(pedido, metodo_pago);
         }
 
         await pedido.save();
