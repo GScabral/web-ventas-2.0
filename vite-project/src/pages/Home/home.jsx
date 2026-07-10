@@ -5,7 +5,6 @@ import { useSearchParams } from "react-router-dom";
 import { getProductos, getOfertas, filterProduc } from "../../redux/action";
 
 import PromoStrip from "../../componentes/PromoStrip";
-import Footer from "../Home/footer/Footer";
 import Paginado from "../../componentes/paginacion";
 import Newsletter from "../../componentes/Newsletter";
 import FiltrosSidebar from "./barralado/filtros";
@@ -115,8 +114,6 @@ const Home = () => {
         </section>
 
       </main>
-
-      <Footer />
 
     </div>
   );

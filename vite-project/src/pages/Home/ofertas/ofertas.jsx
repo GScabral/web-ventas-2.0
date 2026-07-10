@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getProductos, getOfertas } from "../../../redux/action";
 import ProductGrid from "../Cards/productGrid";
-import Footer from "../footer/Footer";
 
 import "./ofertas.css";
 
@@ -54,8 +53,6 @@ const Ofertas = () => {
       ) : (
         <ProductGrid productos={productosConOferta} />
       )}
-
-      <Footer />
 
     </div>
   );

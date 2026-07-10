@@ -4,6 +4,7 @@ import Home from './pages/Home/home'
 import Detail from './pages/Home/Detail/detail'
 import Carrito from './pages/Home/carrito/carrito'
 import Nav from './pages/Home/Nav/Nav'
+import Footer from './pages/Home/footer/Footer'
 import ThemeLoader from './componentes/ThemeLoader'
 import Toast from './componentes/Toast'
 import DevolucionCambio from './pages/Home/devolucion/devolucion'
@@ -63,6 +64,8 @@ function App() {
           {/* <Route path='/VentaPorMayor' element={<VentaPorMayor />} /> */}
         </Routes>
       </Suspense>
+
+      {!hideNav && <Footer />}
 
     </div>
   )

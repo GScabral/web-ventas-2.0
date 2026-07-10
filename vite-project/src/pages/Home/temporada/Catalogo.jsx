@@ -6,7 +6,6 @@ import { getProductos } from "../../../redux/action";
 import FiltrosSidebar from "../barralado/filtros";
 import ProductGrid from "../Cards/productGrid";
 import Paginado from "../../../componentes/paginacion";
-import Footer from "../footer/Footer";
 
 import "./catalogo.css";
 
@@ -68,8 +67,6 @@ const Catalogo = () => {
                 </div>
 
             </div>
-
-            <Footer />
 
         </div>
     );
