@@ -1,8 +1,23 @@
 const nodemailer = require('nodemailer')
 require('dotenv').config()
+const { ConfiguracionSitio } = require('../../db');
 
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
+
+// Antes decía "Amore Mio" fijo en el asunto y el cuerpo del mail — quedó
+// pegado de una tienda anterior que usó este mismo código. Ahora toma el
+// nombre real configurado en Personalización (mismo dato que ya usan
+// Nav/Footer/ThemeLoader del lado del frontend), así este archivo sirve
+// para cualquier tienda que use este código sin tocar nada acá.
+const obtenerNombreTienda = async () => {
+    try {
+        const configuracion = await ConfiguracionSitio.findOne({ where: { id: 1 } });
+        return configuracion?.nombre_tienda || 'Tienda Online';
+    } catch (error) {
+        return 'Tienda Online';
+    }
+};
 
 if (!EMAIL_USER || !EMAIL_PASS) {
     console.error('⚠️  Faltan EMAIL_USER y/o EMAIL_PASS en las variables de entorno. El envío de correos va a fallar.');
@@ -19,10 +34,12 @@ const transporter = nodemailer.createTransport({
 
 const enviarCorreo = async (idPedido, infoPedido, destinatario, total) => {
     try {
+        const nombreTienda = await obtenerNombreTienda();
+
         const mailOption = {
             from: EMAIL_USER,
             to: destinatario,
-            subject: 'Confirmación de Pedido - Amore Mio',
+            subject: `Confirmación de Pedido - ${nombreTienda}`,
             html: `
 <!DOCTYPE html>
 <html lang="es">
@@ -139,7 +156,7 @@ const enviarCorreo = async (idPedido, infoPedido, destinatario, total) => {
 
         <div class="content">
             <p>Hola,</p>
-            <p>Gracias por comprar en <strong>Tienda Online</strong>. Aquí tienes el resumen de tu pedido:</p>
+            <p>Gracias por comprar en <strong>${nombreTienda}</strong>. Aquí tienes el resumen de tu pedido:</p>
 
             <div class="order-box">
                 <h2>Pedido Nº: ${idPedido}</h2>
@@ -163,7 +180,7 @@ const enviarCorreo = async (idPedido, infoPedido, destinatario, total) => {
         </div>
 
         <div class="footer">
-            <p>Gracias por elegir <strong>Tienda Online</strong>.</p>
+            <p>Gracias por elegir <strong>${nombreTienda}</strong>.</p>
             <p><a href="mailto:${EMAIL_USER}">${EMAIL_USER}</a></p>
         </div>
 

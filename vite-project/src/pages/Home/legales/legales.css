@@ -1,0 +1,85 @@
+/* ============================================================
+   LEGALES — Términos y Condiciones / Política de Privacidad.
+   Reutiliza .contenedor/.tarjeta de Design-system.css, mismo
+   criterio que cuenta.css y pago.css: nada de colores/tamaños
+   hardcodeados, todo con los tokens ya definidos.
+   ============================================================ */
+
+.legal-page {
+  padding-top: var(--sp-7);
+  padding-bottom: var(--sp-8);
+}
+
+.legal-tarjeta {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-6);
+}
+
+.legal-tarjeta h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--sp-2);
+}
+
+.legal-actualizado {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  margin-bottom: var(--sp-6);
+}
+
+.legal-tarjeta h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+  margin-top: var(--sp-6);
+  margin-bottom: var(--sp-3);
+}
+
+.legal-tarjeta h2:first-of-type {
+  margin-top: 0;
+}
+
+.legal-tarjeta p,
+.legal-tarjeta li {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+}
+
+.legal-tarjeta p {
+  margin-bottom: var(--sp-3);
+}
+
+.legal-tarjeta ul {
+  margin: 0 0 var(--sp-3);
+  padding-left: var(--sp-5);
+}
+
+.legal-tarjeta li {
+  margin-bottom: var(--sp-2);
+}
+
+.legal-tarjeta strong {
+  color: var(--text-primary);
+}
+
+.legal-tarjeta a {
+  color: var(--accent-terracota);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .legal-tarjeta {
+    padding: var(--sp-5) var(--sp-4);
+  }
+
+  .legal-tarjeta h1 {
+    font-size: var(--fs-xl);
+  }
+
+  .legal-tarjeta h2 {
+    font-size: var(--fs-md);
+  }
+}

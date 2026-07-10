@@ -1,10 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/tiendalog.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pagina</title>
+    <!-- Título/descripción de respaldo: se ven en la pestaña del navegador
+         un instante antes de que cargue React, y son los que leen los
+         crawlers de SEO y las previsualizaciones de links (WhatsApp,
+         redes) que no ejecutan JavaScript. Una vez que carga la app,
+         ThemeLoader.jsx pisa el <title> con el nombre real configurado
+         en Personalización (ver componentes/ThemeLoader.jsx). Al
+         reutilizar este sitio para otro cliente, actualizar estos dos
+         valores junto con config/storeConfig.js. -->
+    <title>Tienda Demo | Ropa y accesorios online</title>
+    <meta name="description" content="Tienda Demo — moda accesible para todos los días. Comprá ropa y accesorios online con envíos y pago por Mercado Pago." />
   </head>
   <body>
     <div id="root"></div>

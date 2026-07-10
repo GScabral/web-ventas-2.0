@@ -13,6 +13,8 @@ import IniciarSesion from './pages/cuenta/iniciarSesion'
 import MiCuenta from './pages/cuenta/miCuenta'
 import Ofertas from './pages/Home/ofertas/ofertas'
 import PagoResultado from './pages/Home/pago/PagoResultado'
+import Terminos from './pages/Home/legales/Terminos'
+import Privacidad from './pages/Home/legales/Privacidad'
 // VentaPorMayor.jsx hoy es solo un título de prueba sin contenido real
 // (sin formulario, sin info de contacto). Cuando tenga contenido de
 // verdad, descomentar este import y la ruta de abajo.
@@ -56,6 +58,8 @@ function App() {
           <Route path='/pago-exitoso' element={<PagoResultado />} />
           <Route path='/pago-fallido' element={<PagoResultado />} />
           <Route path='/pago-pendiente' element={<PagoResultado />} />
+          <Route path='/terminos-y-condiciones' element={<Terminos />} />
+          <Route path='/politica-de-privacidad' element={<Privacidad />} />
           {/* <Route path='/VentaPorMayor' element={<VentaPorMayor />} /> */}
         </Routes>
       </Suspense>
