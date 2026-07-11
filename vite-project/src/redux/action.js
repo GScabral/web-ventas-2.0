@@ -38,6 +38,10 @@ export const DELETE_CATEGORIA = "DELETE_CATEGORIA";
 export const GET_BANNERS = "GET_BANNERS";
 export const GET_BANNERS_ADMIN = "GET_BANNERS_ADMIN";
 export const GET_CONFIGURACION = "GET_CONFIGURACION";
+export const GET_LAYOUT_HOME = "GET_LAYOUT_HOME";
+export const GET_LAYOUT_HOME_BORRADOR = "GET_LAYOUT_HOME_BORRADOR";
+export const GET_TESTIMONIOS = "GET_TESTIMONIOS";
+export const GET_TESTIMONIOS_ADMIN = "GET_TESTIMONIOS_ADMIN";
 export const MOSTRAR_TOAST = "MOSTRAR_TOAST";
 export const GET_ESTADISTICAS = "GET_ESTADISTICAS";
 export const GET_CUPONES = "GET_CUPONES";
@@ -619,6 +623,109 @@ export const eliminarZonaMoto = (id) => {
 export const calcularCostoMotoCheckout = async (ciudad) => {
   const response = await axios.get(`${API_URL}/zona-moto/calcular/${encodeURIComponent(ciudad)}`);
   return response.data;
+};
+
+// ---- Diseño de la Home (layout de secciones + plantillas) ----
+
+// Pública: la lee el Home real de la tienda.
+export const getLayoutHome = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/layout-home`);
+      dispatch({ type: GET_LAYOUT_HOME, payload: response.data });
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener el diseño de la home:", error);
+    }
+  };
+};
+
+// Admin: la usa el editor de Diseño y la vista previa.
+export const getLayoutHomeBorrador = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/layout-home/borrador`);
+      dispatch({ type: GET_LAYOUT_HOME_BORRADOR, payload: response.data });
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener el borrador del diseño:", error);
+    }
+  };
+};
+
+export const actualizarLayoutHomeBorrador = (secciones) => {
+  return async function (dispatch) {
+    const response = await axios.put(`${API_URL}/layout-home/borrador`, { secciones });
+    await dispatch(getLayoutHomeBorrador());
+    return response.data;
+  };
+};
+
+export const publicarLayoutHome = () => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/layout-home/publicar`);
+    await dispatch(getLayoutHomeBorrador());
+    return response.data;
+  };
+};
+
+export const aplicarPlantillaDiseno = (plantilla) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/layout-home/plantilla`, { plantilla });
+    await dispatch(getLayoutHomeBorrador());
+    await dispatch(getConfiguracion());
+    return response.data;
+  };
+};
+
+// ---- Testimonios ----
+
+export const getTestimonios = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/testimonio/activos`);
+      dispatch({ type: GET_TESTIMONIOS, payload: response.data });
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener testimonios:", error);
+    }
+  };
+};
+
+export const getTestimoniosAdmin = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/testimonio`);
+      dispatch({ type: GET_TESTIMONIOS_ADMIN, payload: response.data });
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener testimonios (admin):", error);
+    }
+  };
+};
+
+export const crearTestimonio = (datos) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/testimonio`, datos);
+    await dispatch(getTestimoniosAdmin());
+    return response.data;
+  };
+};
+
+export const actualizarTestimonio = (id, datos) => {
+  return async function (dispatch) {
+    const response = await axios.put(`${API_URL}/testimonio/${id}`, datos);
+    await dispatch(getTestimoniosAdmin());
+    return response.data;
+  };
+};
+
+export const eliminarTestimonio = (id) => {
+  return async function (dispatch) {
+    const response = await axios.delete(`${API_URL}/testimonio/${id}`);
+    await dispatch(getTestimoniosAdmin());
+    return response.data;
+  };
 };
 
 

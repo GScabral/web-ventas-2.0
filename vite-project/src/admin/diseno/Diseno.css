@@ -1,0 +1,331 @@
+/* ============================================================
+   DISEÑO — editor de secciones de la Home + plantillas
+   ============================================================ */
+
+.diseno-page {
+    max-width: 920px;
+}
+
+.diseno-header {
+    margin-bottom: var(--sp-5, 20px);
+}
+
+.diseno-header h1 {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl, 28px);
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.diseno-header p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--fs-sm, 14px);
+    max-width: 640px;
+}
+
+/* ---- Tabs ---- */
+
+.diseno-tabs {
+    display: flex;
+    gap: var(--sp-2, 8px);
+    margin-bottom: var(--sp-5, 20px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.diseno-tab {
+    padding: 10px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: var(--fs-sm, 14px);
+    color: var(--text-muted);
+
+    border-bottom: 2px solid transparent;
+    transition: color var(--t-fast, 0.15s) ease, border-color var(--t-fast, 0.15s) ease;
+}
+
+.diseno-tab:hover {
+    color: var(--text-primary);
+}
+
+.diseno-tab.activa {
+    color: var(--accent-terracota);
+    border-bottom-color: var(--accent-terracota);
+}
+
+.diseno-cargando {
+    padding: var(--sp-6, 24px) 0;
+    color: var(--text-muted);
+    font-size: var(--fs-sm, 14px);
+}
+
+/* ---- Toolbar (Guardar / Vista previa / Publicar) ---- */
+
+.diseno-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3, 12px);
+    margin-bottom: var(--sp-4, 16px);
+}
+
+/* ---- Lista de secciones ---- */
+
+.diseno-secciones-lista {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4, 16px);
+}
+
+.diseno-seccion-card {
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background: var(--bg-elevated);
+    padding: var(--sp-4, 16px) var(--sp-5, 20px);
+
+    transition: opacity var(--t-fast, 0.15s) ease;
+}
+
+.diseno-seccion-card.oculta {
+    opacity: 0.55;
+}
+
+.diseno-seccion-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3, 12px);
+    flex-wrap: wrap;
+}
+
+.diseno-seccion-orden-botones {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.diseno-seccion-orden-botones button {
+    width: 26px;
+    height: 22px;
+    line-height: 1;
+
+    border: 1px solid var(--border-medium);
+    border-radius: 4px;
+    background: var(--bg-elevated-2);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 11px;
+
+    transition: border-color var(--t-fast, 0.15s) ease, color var(--t-fast, 0.15s) ease;
+}
+
+.diseno-seccion-orden-botones button:hover:not(:disabled) {
+    border-color: var(--accent-terracota);
+    color: var(--accent-terracota);
+}
+
+.diseno-seccion-orden-botones button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.diseno-seccion-icono {
+    font-size: 20px;
+}
+
+.diseno-seccion-nombre {
+    flex: 1;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: var(--fs-base, 15px);
+    color: var(--text-primary);
+}
+
+.diseno-seccion-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+
+    font-size: var(--fs-xs, 12px);
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.diseno-seccion-toggle input {
+    width: auto;
+    cursor: pointer;
+}
+
+.diseno-seccion-contenido {
+    margin-top: var(--sp-4, 16px);
+    padding-top: var(--sp-4, 16px);
+    border-top: 1px dashed var(--border-subtle);
+}
+
+.diseno-seccion-nota {
+    margin-top: var(--sp-4, 16px);
+    padding-top: var(--sp-4, 16px);
+    border-top: 1px dashed var(--border-subtle);
+}
+
+.form-group-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.form-group-checkbox input {
+    width: auto;
+}
+
+/* ---- Testimonios (mini CRUD dentro de la sección "testimonios") ---- */
+
+.testimonios-editor {
+    margin-top: var(--sp-4, 16px);
+    padding: var(--sp-4, 16px);
+
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated-2);
+}
+
+.testimonios-editor-titulo,
+.testimonios-editor-subtitulo {
+    display: block;
+    margin-bottom: var(--sp-3, 12px);
+
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: var(--fs-sm, 14px);
+    color: var(--text-primary);
+}
+
+.testimonios-editor-lista {
+    list-style: none;
+    margin: 0 0 var(--sp-5, 20px);
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2, 8px);
+}
+
+.testimonios-editor-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-3, 12px);
+
+    padding: var(--sp-3, 12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated);
+}
+
+.testimonios-editor-item-info p {
+    margin: 4px 0 0;
+    color: var(--text-secondary);
+    font-size: var(--fs-xs, 12px);
+}
+
+.testimonios-editor-estado {
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-success);
+}
+
+.testimonios-editor-estado.oculto {
+    color: var(--text-muted);
+}
+
+.testimonios-editor-acciones {
+    display: flex;
+    gap: var(--sp-2, 8px);
+    flex-shrink: 0;
+}
+
+.testimonios-editor-form-botones {
+    display: flex;
+    gap: var(--sp-3, 12px);
+}
+
+/* ---- Plantillas ---- */
+
+.plantillas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--sp-4, 16px);
+    margin-top: var(--sp-4, 16px);
+}
+
+.plantilla-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    padding: var(--sp-5, 20px);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background: var(--bg-elevated);
+}
+
+.plantilla-card.activa {
+    border-color: var(--accent-terracota);
+    box-shadow: var(--shadow-glow-terracota, none);
+}
+
+.plantilla-card-swatches {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.plantilla-card-swatches span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.plantilla-card h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-lg, 18px);
+    color: var(--text-primary);
+}
+
+.plantilla-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--fs-sm, 14px);
+}
+
+.plantilla-card-fuente {
+    font-size: var(--fs-xs, 12px);
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.plantilla-card-activa-badge {
+    margin-top: 8px;
+    align-self: flex-start;
+
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 107, 53, 0.12);
+    color: var(--accent-terracota);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.plantilla-card button {
+    margin-top: 8px;
+    align-self: flex-start;
+}

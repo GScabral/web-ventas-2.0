@@ -30,13 +30,20 @@ import Privacidad from './pages/Home/legales/Privacidad'
 // necesitarlo nunca.
 const PanelAdmin = React.lazy(() => import('./admin/panelAdmin'));
 
+// Vista previa del borrador de Diseño: vive fuera del shell del panel
+// (sidebar/header) para mostrarse con el mismo Nav/Footer que ve un
+// visitante real, pero sigue protegida por sesión de admin (ver
+// admin/diseno/PreviewHome.jsx). Por eso NO se registra dentro de las
+// Routes de panelAdmin.jsx.
+const PreviewHome = React.lazy(() => import('./admin/diseno/PreviewHome'));
+
 function App() {
   const location = useLocation();
   const hideNav = location.pathname === '/crear-cuenta' ||
     location.pathname === '/iniciar-sesion' ||
     location.pathname === '/carrito' ||
     /^\/detail\/\d+$/.test(location.pathname) ||
-    location.pathname.startsWith('/admin');
+    (location.pathname.startsWith('/admin') && location.pathname !== '/admin/preview-home');
 
 
   return (
@@ -47,6 +54,7 @@ function App() {
       <Suspense fallback={null}>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/admin/preview-home' element={<PreviewHome />} />
           <Route path='/admin/*' element={<PanelAdmin />} />
           <Route path="/detail/:id" element={<Detail />} />
           <Route path='/DevolucionCambio' element={<DevolucionCambio />} />

@@ -2,7 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./trendingSection.css";
 
-const TrendingSection = ({ productos }) => {
+const TrendingSection = ({
+    productos,
+    eyebrow = "Destacados",
+    titulo = "Las prendas que marcan tendencia",
+}) => {
 
     if (!productos?.length) return null;
 
@@ -12,10 +16,10 @@ const TrendingSection = ({ productos }) => {
 
             <div className="trending-header">
 
-                <span>Destacados</span>
+                <span>{eyebrow}</span>
 
                 <h2>
-                    Las prendas que marcan tendencia
+                    {titulo}
                 </h2>
 
             </div>

@@ -42,7 +42,11 @@ import {
   MOSTRAR_TOAST,
   GET_ESTADISTICAS,
   GET_CUPONES,
-  GET_CAJA_ACTUAL
+  GET_CAJA_ACTUAL,
+  GET_LAYOUT_HOME,
+  GET_LAYOUT_HOME_BORRADOR,
+  GET_TESTIMONIOS,
+  GET_TESTIMONIOS_ADMIN
 } from "./action"
 
 const initialState = {
@@ -77,6 +81,10 @@ const initialState = {
   estadisticas: null,
   cupones: [],
   cajaActual: null,
+  layoutHome: null,
+  layoutHomeBorrador: null,
+  testimonios: [],
+  testimoniosAdmin: [],
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -641,6 +649,30 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         configuracion: action.payload
+      };
+
+    case GET_LAYOUT_HOME:
+      return {
+        ...state,
+        layoutHome: action.payload
+      };
+
+    case GET_LAYOUT_HOME_BORRADOR:
+      return {
+        ...state,
+        layoutHomeBorrador: action.payload
+      };
+
+    case GET_TESTIMONIOS:
+      return {
+        ...state,
+        testimonios: action.payload
+      };
+
+    case GET_TESTIMONIOS_ADMIN:
+      return {
+        ...state,
+        testimoniosAdmin: action.payload
       };
 
     case MOSTRAR_TOAST:

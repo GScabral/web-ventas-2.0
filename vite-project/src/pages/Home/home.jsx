@@ -1,69 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
 
-import { getProductos, getOfertas, filterProduc } from "../../redux/action";
+import { getLayoutHome, getLayoutHomeBorrador } from "../../redux/action";
 
-import PromoStrip from "../../componentes/PromoStrip";
-import Paginado from "../../componentes/paginacion";
-import Newsletter from "../../componentes/Newsletter";
-import FiltrosSidebar from "./barralado/filtros";
-import ProductGrid from "./Cards/productGrid";
+import HomeSectionsRenderer from "../../componentes/HomeSectionsRenderer";
 
 import "./home.css";
 
-const Home = () => {
+// Antes acá vivía todo el catálogo (filtros, grilla, paginado) más
+// PromoStrip y Newsletter, en un orden fijo escrito directo en este
+// JSX. Ese bloque de catálogo ahora es su propia sección
+// (componentes/secciones/CatalogoSection.jsx). Home es solo un
+// "renderer": pide el layout guardado (armado desde el panel admin →
+// Diseño) y delega a HomeSectionsRenderer/sectionRegistry qué mostrar
+// y en qué orden.
+//
+// modo="borrador" lo usa la Vista previa del admin (ver
+// admin/diseno/PreviewHome.jsx) para ver los cambios sin publicar.
+// modo="publicado" (default) es lo que ve cualquier visitante real.
+const Home = ({ modo = "publicado" }) => {
 
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
 
-  const allProductos = useSelector(
-    state => state.allProductos
-  );
-
-  const [loading, setLoading] = useState(true);
-
-  const categoriaDesdeUrl = searchParams.get("categoria") || "";
-
-  const [selectedSubcategory, setSelectedSubcategory] =
-    useState(categoriaDesdeUrl);
-
-  const [selectedPriceOrder, setSelectedPriceOrder] =
-    useState("");
+  const layoutPublicado = useSelector(state => state.layoutHome);
+  const layoutBorrador = useSelector(state => state.layoutHomeBorrador);
 
   useEffect(() => {
+    if (modo === "borrador") {
+      dispatch(getLayoutHomeBorrador());
+    } else {
+      dispatch(getLayoutHome());
+    }
+  }, [modo, dispatch]);
 
-    setLoading(true);
-    dispatch(getOfertas())
-    dispatch(getProductos())
-      .finally(() => setLoading(false));
-
-  }, [dispatch]);
-
-  // Si se llega desde un link del Nav con ?categoria=X (por ejemplo, al
-  // tocar un chip de categoría), aplicamos ese filtro automáticamente.
-  useEffect(() => {
-
-    if (!categoriaDesdeUrl) return;
-
-    setSelectedSubcategory(categoriaDesdeUrl);
-
-    dispatch(
-      filterProduc({
-        categoria: categoriaDesdeUrl,
-        subcategoria: ""
-      })
-    );
-
-  }, [categoriaDesdeUrl, dispatch]);
-
-  const Spinner = () => (
-    <div className="spinner-home">
-      <div className="spinner-dot"></div>
-      <div className="spinner-dot"></div>
-      <div className="spinner-dot"></div>
-    </div>
-  );
+  const layout = modo === "borrador" ? layoutBorrador : layoutPublicado;
 
   return (
 
@@ -71,47 +41,7 @@ const Home = () => {
 
       <main className="home-wrapper">
 
-        <section className="home-section">
-          <PromoStrip />
-        </section>
-
-        <section className="home-section catalog-layout">
-
-          <aside className="catalog-sidebar">
-
-            <FiltrosSidebar
-              selectedSubcategory={selectedSubcategory}
-              setSelectedSubcategory={setSelectedSubcategory}
-              selectedPriceOrder={selectedPriceOrder}
-              setSelectedPriceOrder={setSelectedPriceOrder}
-            />
-
-          </aside>
-
-          <section className="catalog-products">
-
-            {loading ? (
-
-              <div className="loading-container">
-                <Spinner />
-              </div>
-
-            ) : (
-
-              <>
-                <ProductGrid productos={allProductos} />
-                <Paginado />
-              </>
-
-            )}
-
-          </section>
-
-        </section>
-
-        <section className="home-section newsletter-block">
-          <Newsletter />
-        </section>
+        <HomeSectionsRenderer secciones={layout?.secciones || []} />
 
       </main>
 
