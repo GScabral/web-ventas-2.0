@@ -96,6 +96,14 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
+    // Monto a partir del cual el envío sale gratis (se compara contra
+    // el subtotal del carrito antes de sumar costo_envio). null o 0
+    // significa "sin envío gratis configurado" — nunca se aplica.
+    envio_gratis_desde: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+
   });
 
   return ConfiguracionSitio;

@@ -24,6 +24,7 @@ const FORM_VACIO = {
     direccion: "",
     maps_url: "",
     email_notificaciones: "",
+    envio_gratis_desde: "",
 };
 
 const Personalizacion = () => {
@@ -59,6 +60,7 @@ const Personalizacion = () => {
             direccion: configuracion.direccion || "",
             maps_url: configuracion.maps_url || "",
             email_notificaciones: configuracion.email_notificaciones || "",
+            envio_gratis_desde: configuracion.envio_gratis_desde ?? "",
         });
     }, [configuracion]);
 
@@ -308,6 +310,33 @@ const Personalizacion = () => {
                                 Dejalo vacío si no querés recibir avisos por correo.
                             </p>
                         </div>
+                    </section>
+
+                    {/* ---- Envíos ---- */}
+                    <section className="personalizacion-section">
+                        <h2>Envíos</h2>
+
+                        <div className="form-group">
+                            <label>Envío gratis a partir de</label>
+                            <input
+                                type="number"
+                                min="0"
+                                value={form.envio_gratis_desde}
+                                onChange={(e) => handleChange("envio_gratis_desde", e.target.value)}
+                                placeholder="Ej: 50000"
+                            />
+                            <p className="campo-hint">
+                                Si el subtotal del carrito llega a este monto, el envío
+                                (por correo o por moto) sale gratis. Dejalo vacío para
+                                no ofrecer envío gratis.
+                            </p>
+                        </div>
+
+                        <p className="campo-hint">
+                            Las ciudades con envío por moto y las provincias con costo
+                            de envío por correo se configuran en la sección "Envíos"
+                            del panel, no acá.
+                        </p>
                     </section>
 
                     {errorMsg && <p className="personalizacion-error">{errorMsg}</p>}

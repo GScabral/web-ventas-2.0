@@ -122,6 +122,35 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
+    // Solo aplica cuando tipo_entrega es "ENVIO". "correo" es el envío
+    // tradicional por transportista (Correo Argentino, Andreani, etc,
+    // cobrado por provincia — ver CostoEnvio). "moto" es el envío
+    // rápido en moto/cadete dentro de la misma ciudad, solo disponible
+    // si esa ciudad está cargada como zona de moto (ver ZonaEnvioMoto).
+    medio_envio: {
+      type: DataTypes.ENUM("correo", "moto"),
+      allowNull: true,
+    },
+
+    // Datos de seguimiento para envío por correo/transportista.
+    numero_seguimiento: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    transportista: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    // Para envío por moto: nombre y/o teléfono del cadete que lo lleva.
+    // No hace falta número de seguimiento acá porque es una entrega
+    // directa y rápida, no un envío rastreable por una empresa externa.
+    datos_cadete: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
   });
 
   return Pedido;

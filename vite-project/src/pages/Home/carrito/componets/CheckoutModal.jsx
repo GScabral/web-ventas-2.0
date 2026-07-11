@@ -16,6 +16,14 @@ const CheckoutModal = ({ show, onClose }) => {
     shippingData,
     handleShippingChange,
     setTipoEntrega,
+    medioEnvio,
+    setMedioEnvio,
+    zonaMotoDisponible,
+    costoMoto,
+    costoEnvioCorreo,
+    envioGratisDesde,
+    envioGratisAplicado,
+    faltanteEnvioGratis,
     cuponInput,
     setCuponInput,
     cuponAplicado,
@@ -185,9 +193,16 @@ const CheckoutModal = ({ show, onClose }) => {
             )}
 
             {shippingData.tipoEntrega === "ENVIO" && shippingData.provincia.trim() && (
-              costoEnvio > 0 ? (
+              envioGratisAplicado ? (
                 <div className={styles.resumenEnvio}>
-                  <span>Envío a {shippingData.provincia}</span>
+                  <span>Envío {medioEnvio === "moto" && zonaMotoDisponible ? "por moto" : "a " + shippingData.provincia}</span>
+                  <span>¡Gratis!</span>
+                </div>
+              ) : costoEnvio > 0 ? (
+                <div className={styles.resumenEnvio}>
+                  <span>
+                    Envío {medioEnvio === "moto" && zonaMotoDisponible ? "por moto/cadete" : `a ${shippingData.provincia}`}
+                  </span>
                   <span>${costoEnvio.toLocaleString("es-AR")}</span>
                 </div>
               ) : !envioEncontrado ? (
@@ -195,6 +210,12 @@ const CheckoutModal = ({ show, onClose }) => {
                   Todavía no tenemos un costo de envío cargado para "{shippingData.provincia}" — lo coordinamos por WhatsApp.
                 </p>
               ) : null
+            )}
+
+            {shippingData.tipoEntrega === "ENVIO" && faltanteEnvioGratis > 0 && (
+              <p className={styles.envioSinCargar}>
+                Te faltan ${faltanteEnvioGratis.toLocaleString("es-AR")} en productos para tener envío gratis.
+              </p>
             )}
 
             <div className={styles.resumenTotalFinal}>
@@ -283,6 +304,11 @@ const CheckoutModal = ({ show, onClose }) => {
             onChange={handleShippingChange}
             onTipoEntregaChange={setTipoEntrega}
             fieldErrors={fieldErrors}
+            medioEnvio={medioEnvio}
+            onMedioEnvioChange={setMedioEnvio}
+            zonaMotoDisponible={zonaMotoDisponible}
+            costoMoto={costoMoto}
+            costoEnvioCorreo={costoEnvioCorreo}
           />
 
           <div className={styles.formGroup}>

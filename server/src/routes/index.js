@@ -11,6 +11,7 @@ const routeConfiguracion = require("../routes/routeConfiguracion");
 const routeCaja = require("../routes/routeCaja");
 const routeCupon = require("../routes/routeCupon");
 const routeCostoEnvio = require("../routes/routeCostoEnvio");
+const routeZonaMoto = require("../routes/routeZonaMoto");
 
 const router = Router();
 
@@ -32,5 +33,6 @@ router.use("/configuracion", routeConfiguracion);
 router.use("/caja", routeCaja);
 router.use("/cupon", routeCupon);
 router.use("/costo-envio", routeCostoEnvio);
+router.use("/zona-moto", routeZonaMoto);
 
 module.exports = router;

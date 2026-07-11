@@ -74,6 +74,22 @@ const actualizarConfiguracion = async (datos) => {
     camposAActualizar[campo] = valor.trim();
   }
 
+  // Umbral de envío gratis. Se permite null/"" para desactivarlo
+  // (vuelve a cobrarse el envío siempre), o un número >= 0.
+  if (datos.envio_gratis_desde !== undefined) {
+    const valor = datos.envio_gratis_desde;
+
+    if (valor === null || valor === "") {
+      camposAActualizar.envio_gratis_desde = null;
+    } else {
+      const numero = Number(valor);
+      if (Number.isNaN(numero) || numero < 0) {
+        throw new Error("El monto de envío gratis debe ser un número mayor o igual a 0.");
+      }
+      camposAActualizar.envio_gratis_desde = numero;
+    }
+  }
+
   const [configuracion] = await ConfiguracionSitio.findOrCreate({
     where: { id: 1 },
   });

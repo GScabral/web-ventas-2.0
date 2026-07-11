@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const notificarNuevoPedido = require("../correo/notificarNuevoPedido");
 const validarCupon = require("../cupon/validarCupon");
 const calcularCostoEnvio = require("../costoEnvio/calcularCostoEnvio");
+const calcularCostoMoto = require("../costoEnvio/calcularCostoMoto");
 
 // Error "esperado": stock insuficiente, producto inexistente, etc.
 // Se distingue de errores técnicos para devolver 400 con un mensaje
@@ -57,6 +58,8 @@ const nuevoPedido = async (req, res) => {
       ciudad,
       direccion,
 
+      medio_envio,
+
       cupon_codigo,
     } = req.body;
 
@@ -95,6 +98,19 @@ const nuevoPedido = async (req, res) => {
       direccion ||
       envioObj.direccion ||
       null;
+
+    // Medio de envío elegido por el cliente cuando tipoEntrega es
+    // "ENVIO": "correo" (transportista, costo por provincia) o "moto"
+    // (cadete, costo por ciudad, solo si esa ciudad tiene zona
+    // cargada). Si no viene nada, se asume "correo" por ser el modo
+    // tradicional. Se vuelve a verificar del lado del servidor si la
+    // ciudad realmente tiene zona de moto — nunca se confía en lo que
+    // mande el navegador.
+    const medioEnvioElegido =
+      medio_envio ||
+      envioObj.medio_envio ||
+      envioObj.medioEnvio ||
+      "correo";
 
     if (!emailCliente) {
       return res.status(400).json({
@@ -223,16 +239,54 @@ const nuevoPedido = async (req, res) => {
         }
       }
 
-      // Costo de envío: se recalcula acá según la provincia, del
+      // Costo de envío: se recalcula acá según el medio elegido, del
       // mismo modo que el cupón — nunca se confía en un monto de
-      // envío que mande el navegador. Si es retiro en local, o no hay
-      // un costo cargado para esa provincia, queda en 0 (se coordina
-      // a mano en ese caso).
+      // envío que mande el navegador. "moto" matchea por ciudad,
+      // "correo" matchea por provincia. Si es retiro en local, o no
+      // hay un costo cargado para esa zona, queda en 0 (se coordina a
+      // mano en ese caso).
       let costoEnvio = 0;
+      let medioEnvioFinal = null;
 
-      if (tipoEntrega === "ENVIO" && provinciaCliente) {
-        const resultadoEnvio = await calcularCostoEnvio(provinciaCliente);
-        costoEnvio = resultadoEnvio.costo;
+      if (tipoEntrega === "ENVIO") {
+
+        if (medioEnvioElegido === "moto" && ciudadCliente) {
+          const resultadoMoto = await calcularCostoMoto(ciudadCliente);
+
+          if (resultadoMoto.encontrado) {
+            costoEnvio = resultadoMoto.costo;
+            medioEnvioFinal = "moto";
+          } else {
+            // La ciudad no tiene zona de moto cargada (pudo haber
+            // cambiado entre que el cliente eligió y confirmó): se cae
+            // a correo en vez de fallar el pedido entero.
+            const resultadoEnvio = provinciaCliente
+              ? await calcularCostoEnvio(provinciaCliente)
+              : { costo: 0 };
+            costoEnvio = resultadoEnvio.costo;
+            medioEnvioFinal = "correo";
+          }
+        } else if (provinciaCliente) {
+          const resultadoEnvio = await calcularCostoEnvio(provinciaCliente);
+          costoEnvio = resultadoEnvio.costo;
+          medioEnvioFinal = "correo";
+        }
+      }
+
+      // Envío gratis a partir de un monto configurado por el admin
+      // (Personalización). Se compara contra el subtotal ya con el
+      // descuento del cupón aplicado, y si lo supera, el costo de
+      // envío calculado arriba se anula.
+      const configuracion = await ConfiguracionSitio.findOne({
+        where: { id: 1 },
+        transaction: t,
+      });
+
+      const umbralEnvioGratis = Number(configuracion?.envio_gratis_desde) || 0;
+      const subtotalConDescuento = Math.max(0, subtotal - descuentoCupon);
+
+      if (umbralEnvioGratis > 0 && subtotalConDescuento >= umbralEnvioGratis) {
+        costoEnvio = 0;
       }
 
       const totalPedido = Math.max(0, subtotal - descuentoCupon + costoEnvio);
@@ -246,6 +300,7 @@ const nuevoPedido = async (req, res) => {
           ciudad: ciudadCliente,
           direccion: direccionCliente,
           tipo_entrega: tipoEntrega,
+          medio_envio: medioEnvioFinal,
           total_pedido: totalPedido,
           costo_envio: costoEnvio,
           cupon_codigo: cuponAplicado?.codigo || null,

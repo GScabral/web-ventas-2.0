@@ -88,6 +88,21 @@ const MiCuenta = () => {
                 .join(" · ")}
             </div>
 
+            {(pedido.estado === "enviado" || pedido.estado === "entregado") &&
+              pedido.tipo_entrega === "ENVIO" && (
+                <div className="pedido-card-envio">
+                  {pedido.medio_envio === "moto" ? (
+                    <span>🏍️ Envío por moto/cadete{pedido.datos_cadete ? ` — ${pedido.datos_cadete}` : ""}</span>
+                  ) : (
+                    <span>
+                      📦 Envío por correo
+                      {pedido.transportista ? ` — ${pedido.transportista}` : ""}
+                      {pedido.numero_seguimiento ? ` — Seguimiento: ${pedido.numero_seguimiento}` : ""}
+                    </span>
+                  )}
+                </div>
+              )}
+
             <div className="pedido-card-total">
               {formatearMoneda(pedido.total_pedido)}
             </div>

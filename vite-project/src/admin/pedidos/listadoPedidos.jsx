@@ -171,11 +171,13 @@ const PedidoList = () => {
 
   const handleEstadoChange =
     useCallback(
-      async (pedidoId, estado) => {
+      async (pedidoId, estado, datosEnvio) => {
         await dispatch(
           actualizarEstadoPedidoGeneral(
             pedidoId,
-            estado
+            estado,
+            undefined,
+            datosEnvio
           )
         );
 

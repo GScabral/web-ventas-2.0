@@ -282,3 +282,9 @@
   font-weight: 800;
   font-size: var(--fs-md);
 }
+
+.pedido-card-envio {
+  margin-top: var(--sp-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}

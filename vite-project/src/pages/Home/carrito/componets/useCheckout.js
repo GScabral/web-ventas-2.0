@@ -7,6 +7,7 @@ import {
   vaciarCarrito,
   validarCuponCheckout,
   calcularCostoEnvioCheckout,
+  calcularCostoMotoCheckout,
   getMisPedidos,
 } from "../../../../redux/action";
 
@@ -94,6 +95,13 @@ const useCheckout = () => {
       tipoEntrega: tipo,
     }));
   };
+
+  // Medio de envío cuando tipoEntrega es "ENVIO": "correo" (por
+  // provincia, el de siempre) o "moto" (cadete, solo si la ciudad
+  // tipeada tiene zona cargada — ver el efecto de zonaMotoDisponible
+  // más abajo). Arranca en "correo" porque es la opción que siempre
+  // existe.
+  const [medioEnvio, setMedioEnvio] = useState("correo");
 
   // Se ejecuta una sola vez que llegan los datos (pedidos o cuenta), y
   // solo completa los campos que todavía están vacíos — así, si el
@@ -188,7 +196,7 @@ const useCheckout = () => {
 
   const descuentoCupon = cuponAplicado?.descuento || 0;
 
-  // ---- Costo de envío ----
+  // ---- Costo de envío por correo (provincia) ----
   // Se recalcula solo, con un pequeño debounce mientras el cliente
   // todavía está escribiendo la provincia, para no pegarle al
   // backend en cada letra.
@@ -217,7 +225,64 @@ const useCheckout = () => {
     return () => clearTimeout(timeout);
   }, [shippingData.tipoEntrega, shippingData.provincia]);
 
-  const total = Math.max(0, subtotal - descuentoCupon + costoEnvio);
+  // ---- Envío por moto (ciudad) ----
+  // Mismo criterio de debounce. Si la ciudad tipeada tiene una zona de
+  // moto cargada, se ofrece la opción en el checkout; si no, solo
+  // queda disponible el envío por correo (y si el cliente tenía "moto"
+  // elegido de una ciudad anterior, se lo vuelve a pasar a "correo").
+  const [costoMoto, setCostoMoto] = useState(0);
+  const [zonaMotoDisponible, setZonaMotoDisponible] = useState(false);
+
+  useEffect(() => {
+
+    if (shippingData.tipoEntrega !== "ENVIO" || !shippingData.ciudad.trim()) {
+      setCostoMoto(0);
+      setZonaMotoDisponible(false);
+      return;
+    }
+
+    const timeout = setTimeout(async () => {
+      try {
+        const resultado = await calcularCostoMotoCheckout(shippingData.ciudad.trim());
+        setCostoMoto(resultado.costo);
+        setZonaMotoDisponible(resultado.encontrado);
+        if (!resultado.encontrado) {
+          setMedioEnvio("correo");
+        }
+      } catch (error) {
+        setCostoMoto(0);
+        setZonaMotoDisponible(false);
+        setMedioEnvio("correo");
+      }
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [shippingData.tipoEntrega, shippingData.ciudad]);
+
+  // Costo de envío efectivo según el medio elegido.
+  const costoEnvioElegido =
+    shippingData.tipoEntrega === "ENVIO" && medioEnvio === "moto" && zonaMotoDisponible
+      ? costoMoto
+      : costoEnvio;
+
+  // ---- Envío gratis a partir de un monto (Personalización) ----
+  const envioGratisDesde = Number(configuracion?.envio_gratis_desde) || 0;
+  const subtotalConDescuento = Math.max(0, subtotal - descuentoCupon);
+  const envioGratisAplicado =
+    shippingData.tipoEntrega === "ENVIO" &&
+    envioGratisDesde > 0 &&
+    subtotalConDescuento >= envioGratisDesde;
+
+  const costoEnvioFinal = envioGratisAplicado ? 0 : costoEnvioElegido;
+
+  // Cuánto falta para llegar al envío gratis (0 si ya lo alcanzó, o si
+  // no hay envío gratis configurado / no es tipo ENVIO).
+  const faltanteEnvioGratis =
+    shippingData.tipoEntrega === "ENVIO" && envioGratisDesde > 0 && !envioGratisAplicado
+      ? Math.max(0, envioGratisDesde - subtotalConDescuento)
+      : 0;
+
+  const total = Math.max(0, subtotal - descuentoCupon + costoEnvioFinal);
 
   const confirmarPedido = async () => {
 
@@ -235,6 +300,7 @@ const useCheckout = () => {
         provincia: shippingData.provincia,
         ciudad: shippingData.ciudad,
         direccion: shippingData.direccion,
+        medio_envio: shippingData.tipoEntrega === "ENVIO" ? medioEnvio : null,
         cupon_codigo: cuponAplicado?.codigo || null,
         productos: carrito.map((item) => ({
           id: item.id,
@@ -307,6 +373,7 @@ ${shippingData.tipoEntrega}
 
 ${shippingData.tipoEntrega === "ENVIO"
             ? `
+Medio de envío: ${medioEnvio === "moto" && zonaMotoDisponible ? "Moto/cadete" : "Correo"}
 Provincia: ${shippingData.provincia}
 Ciudad: ${shippingData.ciudad}
 Dirección: ${shippingData.direccion}
@@ -317,7 +384,8 @@ Dirección: ${shippingData.direccion}
 Productos:
 ${productos}
 ${cuponAplicado ? `\nCupón aplicado: ${cuponAplicado.codigo} (-$${descuentoCupon.toLocaleString("es-AR")})` : ""}
-${shippingData.tipoEntrega === "ENVIO" && costoEnvio > 0 ? `\nCosto de envío: $${costoEnvio.toLocaleString("es-AR")}` : ""}
+${shippingData.tipoEntrega === "ENVIO" && costoEnvioFinal > 0 ? `\nCosto de envío: $${costoEnvioFinal.toLocaleString("es-AR")}` : ""}
+${envioGratisAplicado ? `\n¡Envío gratis!` : ""}
 
 Total: $${totalReal.toLocaleString("es-AR")}
       `;
@@ -364,6 +432,16 @@ Total: $${totalReal.toLocaleString("es-AR")}
     handleShippingChange,
     setTipoEntrega,
 
+    medioEnvio,
+    setMedioEnvio,
+    zonaMotoDisponible,
+    costoMoto,
+    costoEnvioCorreo: costoEnvio,
+
+    envioGratisDesde,
+    envioGratisAplicado,
+    faltanteEnvioGratis,
+
     cuponInput,
     setCuponInput,
     cuponAplicado,
@@ -373,7 +451,7 @@ Total: $${totalReal.toLocaleString("es-AR")}
     quitarCupon,
     descuentoCupon,
 
-    costoEnvio,
+    costoEnvio: costoEnvioFinal,
     envioEncontrado,
 
     confirmarPedido,

@@ -33,6 +33,16 @@ const PedidoCard = ({
     // (o el admin puede cancelar y no pasa nada).
     const [pidiendoMetodoPago, setPidiendoMetodoPago] = useState(false);
 
+    // Mismo criterio para "Enviado": si el pedido es por envío, antes
+    // de confirmar el cambio de estado se pide el dato correspondiente
+    // según el medio — número de seguimiento/transportista para
+    // correo, o los datos del cadete para moto. El cliente recibe un
+    // mail avisando el envío apenas se confirma (ver actualizarEstado.js).
+    const [pidiendoDatosEnvio, setPidiendoDatosEnvio] = useState(false);
+    const [numeroSeguimiento, setNumeroSeguimiento] = useState(pedido.numero_seguimiento || "");
+    const [transportista, setTransportista] = useState(pedido.transportista || "");
+    const [datosCadete, setDatosCadete] = useState(pedido.datos_cadete || "");
+
     const fechaBonita = useMemo(() => {
 
         if (!pedido?.fecha_pedido) return "";
@@ -74,6 +84,20 @@ const PedidoCard = ({
                             : "💬 WhatsApp"}
                     </span>
 
+                    {pedido.tipo_entrega === "ENVIO" && pedido.medio_envio && (
+                        <span
+                            className={
+                                pedido.medio_envio === "moto"
+                                    ? "badge-metodo-pago badge-moto"
+                                    : "badge-metodo-pago badge-correo"
+                            }
+                        >
+                            {pedido.medio_envio === "moto"
+                                ? "🏍️ Envío por moto"
+                                : "📦 Envío por correo"}
+                        </span>
+                    )}
+
                     <p className="pedido-email">
                         {pedido.email_cliente}
                     </p>
@@ -102,6 +126,12 @@ const PedidoCard = ({
                     onChange={(e) => {
                         if (e.target.value === "entregado" && !pedido.registrado_en_caja) {
                             setPidiendoMetodoPago(true);
+                        } else if (
+                            e.target.value === "enviado" &&
+                            pedido.estado !== "enviado" &&
+                            pedido.tipo_entrega === "ENVIO"
+                        ) {
+                            setPidiendoDatosEnvio(true);
                         } else {
                             onEstadoChange(
                                 pedido.id_pedido,
@@ -163,6 +193,71 @@ const PedidoCard = ({
                             type="button"
                             className="metodo-pago-picker-cancelar"
                             onClick={() => setPidiendoMetodoPago(false)}
+                        >
+                            Cancelar
+                        </button>
+
+                    </div>
+                )}
+
+                {pidiendoDatosEnvio && (
+                    <div className="metodo-pago-picker">
+
+                        <span className="metodo-pago-picker-label">
+                            {pedido.medio_envio === "moto"
+                                ? "Datos del cadete (nombre/teléfono)"
+                                : "Transportista y número de seguimiento (opcional)"}
+                        </span>
+
+                        {pedido.medio_envio === "moto" ? (
+                            <input
+                                type="text"
+                                className="datos-envio-input"
+                                placeholder="Ej: Juan - 3794 123456"
+                                value={datosCadete}
+                                onChange={(e) => setDatosCadete(e.target.value)}
+                            />
+                        ) : (
+                            <>
+                                <input
+                                    type="text"
+                                    className="datos-envio-input"
+                                    placeholder="Transportista (Ej: Correo Argentino)"
+                                    value={transportista}
+                                    onChange={(e) => setTransportista(e.target.value)}
+                                />
+                                <input
+                                    type="text"
+                                    className="datos-envio-input"
+                                    placeholder="Número de seguimiento"
+                                    value={numeroSeguimiento}
+                                    onChange={(e) => setNumeroSeguimiento(e.target.value)}
+                                />
+                            </>
+                        )}
+
+                        <div className="metodo-pago-picker-opciones">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    onEstadoChange(
+                                        pedido.id_pedido,
+                                        "enviado",
+                                        pedido.medio_envio === "moto"
+                                            ? { datos_cadete: datosCadete }
+                                            : { transportista, numero_seguimiento: numeroSeguimiento }
+                                    );
+                                    setPidiendoDatosEnvio(false);
+                                }}
+                            >
+                                Confirmar envío
+                            </button>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="metodo-pago-picker-cancelar"
+                            onClick={() => setPidiendoDatosEnvio(false)}
                         >
                             Cancelar
                         </button>
@@ -270,6 +365,20 @@ const PedidoCard = ({
                     {pedido.metodo_pago === "mercadopago" && pedido.mp_payment_id && (
                         <p className="pedido-mp-id">
                             ID de pago en Mercado Pago: {pedido.mp_payment_id}
+                        </p>
+                    )}
+
+                    {pedido.tipo_entrega === "ENVIO" && pedido.medio_envio === "moto" && pedido.datos_cadete && (
+                        <p className="pedido-mp-id">
+                            Cadete: {pedido.datos_cadete}
+                        </p>
+                    )}
+
+                    {pedido.tipo_entrega === "ENVIO" && pedido.medio_envio === "correo" && (pedido.transportista || pedido.numero_seguimiento) && (
+                        <p className="pedido-mp-id">
+                            {pedido.transportista && `Transportista: ${pedido.transportista}`}
+                            {pedido.transportista && pedido.numero_seguimiento && " — "}
+                            {pedido.numero_seguimiento && `Seguimiento: ${pedido.numero_seguimiento}`}
                         </p>
                     )}
 

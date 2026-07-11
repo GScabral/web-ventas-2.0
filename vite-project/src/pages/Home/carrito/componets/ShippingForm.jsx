@@ -1,7 +1,17 @@
 import React from "react";
 import styles from "../styles/ShippingForm.module.css";
 
-const ShippingForm = ({ data, onChange, onTipoEntregaChange, fieldErrors = {} }) => {
+const ShippingForm = ({
+  data,
+  onChange,
+  onTipoEntregaChange,
+  fieldErrors = {},
+  medioEnvio,
+  onMedioEnvioChange,
+  zonaMotoDisponible,
+  costoMoto,
+  costoEnvioCorreo,
+}) => {
   return (
     <div className={styles.fieldsWrapper}>
 
@@ -110,6 +120,38 @@ const ShippingForm = ({ data, onChange, onTipoEntregaChange, fieldErrors = {} })
               </span>
             )}
           </div>
+
+          {zonaMotoDisponible && (
+            <div className={styles.formGroup}>
+              <label>Medio de envío</label>
+
+              <div className={styles.entregaToggle}>
+                <button
+                  type="button"
+                  className={
+                    medioEnvio === "correo"
+                      ? `${styles.entregaBtn} ${styles.entregaBtnActiva}`
+                      : styles.entregaBtn
+                  }
+                  onClick={() => onMedioEnvioChange("correo")}
+                >
+                  📦 Correo{costoEnvioCorreo > 0 ? ` · $${costoEnvioCorreo.toLocaleString("es-AR")}` : ""}
+                </button>
+
+                <button
+                  type="button"
+                  className={
+                    medioEnvio === "moto"
+                      ? `${styles.entregaBtn} ${styles.entregaBtnActiva}`
+                      : styles.entregaBtn
+                  }
+                  onClick={() => onMedioEnvioChange("moto")}
+                >
+                  🏍️ Moto/cadete · ${costoMoto.toLocaleString("es-AR")}
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className={`${styles.formGroup} ${fieldErrors.direccion ? styles.hasError : ""}`}>
             <label>Dirección</label>

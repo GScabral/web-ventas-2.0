@@ -1,5 +1,6 @@
 const { Pedido } = require("../../db");
 const registrarIngresoPedido = require("../caja/registrarIngresoPedido");
+const avisoEnvio = require("../correo/avisoEnvio");
 
 const actualizarEstado = async (
     req,
@@ -9,7 +10,13 @@ const actualizarEstado = async (
 
         const { id } = req.params;
 
-        const { estado, metodo_pago } = req.body;
+        const {
+            estado,
+            metodo_pago,
+            numero_seguimiento,
+            transportista,
+            datos_cadete,
+        } = req.body;
 
         const pedido =
             await Pedido.findByPk(id);
@@ -20,7 +27,24 @@ const actualizarEstado = async (
             });
         }
 
+        // Se guarda si el pedido recién ahora está pasando a "enviado"
+        // (y no ya lo estaba), para no reenviar el mail de aviso cada
+        // vez que el admin edita el número de seguimiento después.
+        const yaEstabaEnviado = pedido.estado === "enviado";
+
         pedido.estado = estado;
+
+        if (numero_seguimiento !== undefined) {
+            pedido.numero_seguimiento = numero_seguimiento || null;
+        }
+
+        if (transportista !== undefined) {
+            pedido.transportista = transportista || null;
+        }
+
+        if (datos_cadete !== undefined) {
+            pedido.datos_cadete = datos_cadete || null;
+        }
 
         // Integración con Caja: si el pedido pasa a "entregado" y el
         // admin eligió un método de pago, se registra el ingreso solo
@@ -44,6 +68,18 @@ const actualizarEstado = async (
         }
 
         await pedido.save();
+
+        // Aviso al cliente de que su pedido salió, solo la primera vez
+        // que pasa a "enviado" (no en cada edición posterior del
+        // tracking). Igual que el resto de los mails, un fallo acá no
+        // debe romper la respuesta: el estado ya quedó bien guardado.
+        if (estado === "enviado" && !yaEstabaEnviado) {
+            try {
+                await avisoEnvio(pedido);
+            } catch (errorCorreo) {
+                console.error("No se pudo enviar el aviso de envío:", errorCorreo);
+            }
+        }
 
         res.json({
             success: true,

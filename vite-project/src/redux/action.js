@@ -585,6 +585,42 @@ export const calcularCostoEnvioCheckout = async (provincia) => {
   return response.data;
 };
 
+// ---- Zonas de envío por moto ----
+// Mismo criterio que Costos de envío: sin estado global de redux.
+
+export const getZonasMotoTodas = async () => {
+  const response = await axios.get(`${API_URL}/zona-moto/todos`);
+  return response.data;
+};
+
+export const crearZonaMoto = (datos) => {
+  return async function () {
+    const response = await axios.post(`${API_URL}/zona-moto`, datos);
+    return response.data;
+  };
+};
+
+export const actualizarZonaMoto = (id, datos) => {
+  return async function () {
+    const response = await axios.put(`${API_URL}/zona-moto/${id}`, datos);
+    return response.data;
+  };
+};
+
+export const eliminarZonaMoto = (id) => {
+  return async function () {
+    const response = await axios.delete(`${API_URL}/zona-moto/${id}`);
+    return response.data;
+  };
+};
+
+// Pública: usada desde el checkout para saber si la ciudad tipeada
+// tiene envío por moto disponible y cuánto cuesta.
+export const calcularCostoMotoCheckout = async (ciudad) => {
+  const response = await axios.get(`${API_URL}/zona-moto/calcular/${encodeURIComponent(ciudad)}`);
+  return response.data;
+};
+
 
 
 export const actualizarVariante = (id, cantidad_disponible) => {
@@ -608,7 +644,7 @@ export const actualizarVariante = (id, cantidad_disponible) => {
 }
 
 export const actualizarEstadoPedidoGeneral =
-  (id, estado, metodo_pago) =>
+  (id, estado, metodo_pago, datosEnvio = {}) =>
     async (dispatch) => {
 
       try {
@@ -616,7 +652,7 @@ export const actualizarEstadoPedidoGeneral =
         const response =
           await axios.put(
             `${API_URL}/pedido/${id}/estado`,
-            { estado, metodo_pago }
+            { estado, metodo_pago, ...datosEnvio }
           );
 
         dispatch({

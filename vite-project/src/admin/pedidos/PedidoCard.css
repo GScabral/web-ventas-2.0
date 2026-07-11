@@ -65,6 +65,16 @@
   color: var(--text-secondary);
 }
 
+.badge-moto {
+  background: var(--accent-rosa-soft, #fbe4ea);
+  color: var(--accent-rosa, #d6708a);
+}
+
+.badge-correo {
+  background: var(--bg-elevated-2);
+  color: var(--text-secondary);
+}
+
 .pedido-mp-id {
   margin-top: var(--sp-3);
   font-size: var(--fs-xs);
@@ -262,4 +272,23 @@
   text-decoration: underline;
   cursor: pointer;
   padding: 0;
+}
+
+.datos-envio-input {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin-bottom: 8px;
+  padding: 0 10px;
+  border: 1px solid var(--border-medium, #ddd);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  color: var(--text-primary, #1a1a1a);
+  background: var(--bg-elevated, #fff);
+}
+
+.datos-envio-input:focus {
+  outline: none;
+  border-color: var(--accent-terracota, #ff6b35);
 }
