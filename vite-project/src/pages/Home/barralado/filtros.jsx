@@ -1,8 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useMemo
-} from "react";
+import React, { useEffect } from "react";
 
 import {
   useDispatch,
@@ -10,90 +6,52 @@ import {
 } from "react-redux";
 
 import {
-  filterProduc,
-  orderProducto,
-  getCategorias
+  getCategorias,
+  getFacetas
 } from "../../../redux/action";
 
 import "./filtros.css";
 
-const FiltrosSidebar = ({ selectedSubcategory, setSelectedSubcategory, selectedPriceOrder, setSelectedPriceOrder, }) => {
+// Antes este componente manejaba talla/color/precio como estado propio
+// y disparaba las acciones FILTER/ORDER de Redux (que filtraban el
+// catálogo completo ya descargado en memoria). Ahora que el catálogo se
+// filtra en el servidor (useCatalogo.js), el filtro pasó a ser un
+// componente "controlado": el padre (Catalogo.jsx / CatalogoSection.jsx)
+// es quien tiene el estado real y decide qué pedir al backend; acá sólo
+// se muestran los controles y se avisa de los cambios via props.
+const FiltrosSidebar = ({
+  selectedSubcategory,
+  setSelectedSubcategory,
+  selectedPriceOrder,
+  setSelectedPriceOrder,
+  tallas,
+  setTallas,
+  colores,
+  setColores,
+  precioMax,
+  setPrecioMax,
+}) => {
 
   const dispatch = useDispatch();
 
   const categorias = useSelector(state => state.categorias || []);
 
-  const categoriasFiltradas = categorias;
+  // Tallas/colores/precio máximo disponibles: antes se calculaban
+  // recorriendo el catálogo completo ya descargado (allProductosforFiltro).
+  // Ahora los provee el backend (GET /producto/facetas) sin tener que
+  // bajar todos los productos sólo para leer estos tres datos.
+  const facetas = useSelector(
+    state => state.facetas || { tallas: [], colores: [], precioMaximo: 0 }
+  );
 
-  // Catálogo completo (sin paginar/filtrar) — se usa solo para saber
-  // qué talles/colores existen y cuál es el precio más alto, no para
-  // mostrar productos. allProductosforFiltro se llena una sola vez al
-  // traer los productos y no se vuelve a tocar, así que sirve como
-  // fuente estable para esto aunque haya un filtro activo.
-  const catalogoCompleto = useSelector(state => state.allProductosforFiltro || []);
-
-  // null = sin límite de precio. Importante que el default no sea un
-  // número fijo (antes era 50000): eso ocultaba productos más caros
-  // desde el primer render, sin que el usuario haya tocado nada.
-  const [precioMax, setPrecioMax] =
-    useState(null);
-
-  const [tallas, setTallas] =
-    useState([]);
-
-  const [colores, setColores] =
-    useState([]);
-
-  const tallasDisponibles = useMemo(() => {
-    const set = new Set();
-    catalogoCompleto.forEach((producto) => {
-      (producto.variantes || []).forEach((variante) => {
-        if (variante.talla) set.add(variante.talla);
-      });
-    });
-    return Array.from(set);
-  }, [catalogoCompleto]);
-
-  const coloresDisponibles = useMemo(() => {
-    const set = new Set();
-    catalogoCompleto.forEach((producto) => {
-      (producto.variantes || []).forEach((variante) => {
-        if (variante.color) set.add(variante.color);
-      });
-    });
-    return Array.from(set);
-  }, [catalogoCompleto]);
-
-  const precioMaximoCatalogo = useMemo(() => {
-    const precios = catalogoCompleto.map((producto) => Number(producto.precio) || 0);
-    return precios.length ? Math.max(...precios) : 0;
-  }, [catalogoCompleto]);
+  const tallasDisponibles = facetas.tallas;
+  const coloresDisponibles = facetas.colores;
+  const precioMaximoCatalogo = facetas.precioMaximo;
 
   useEffect(() => {
     dispatch(getCategorias());
+    dispatch(getFacetas());
   }, [dispatch]);
-
-
-
-  useEffect(() => {
-
-    dispatch(
-      filterProduc({
-        categoria: selectedSubcategory || "",
-        subcategoria: "",
-        tallas,
-        colores,
-        precioMax
-      })
-    );
-
-  }, [
-    tallas,
-    colores,
-    precioMax,
-    selectedSubcategory,
-    dispatch
-  ]);
 
   const handleFilter = (subcategory) => {
 
@@ -129,13 +87,9 @@ const FiltrosSidebar = ({ selectedSubcategory, setSelectedSubcategory, selectedP
 
       setSelectedPriceOrder("");
 
-      dispatch(orderProducto(""));
-
     } else {
 
       setSelectedPriceOrder(orderType);
-
-      dispatch(orderProducto(orderType));
     }
   };
 
@@ -159,7 +113,7 @@ const FiltrosSidebar = ({ selectedSubcategory, setSelectedSubcategory, selectedP
 
         <div className="chips-row">
 
-          {categoriasFiltradas.map(categoria => (
+          {categorias.map(categoria => (
 
             <button
               key={categoria.id_categoria}

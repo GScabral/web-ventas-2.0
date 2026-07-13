@@ -37,6 +37,7 @@ const TestimoniosSection = ({ contenido = {} }) => {
                                 src={testimonio.imagen}
                                 alt={testimonio.nombre}
                                 className="testimonio-card-imagen"
+                                loading="lazy"
                             />
                         )}
 

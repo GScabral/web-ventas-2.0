@@ -3,7 +3,19 @@ const { variantesproductos, } = require('../../db');
 
 const productoId = async (id) => {
   try {
-    const infoProducto = await Productos.findByPk(id, { include: [{ model: variantesproductos }] });
+    // "order" acá es lo que faltaba para que la variante/imagen que se ve
+    // como principal en el detalle sea SIEMPRE la misma que en la grilla
+    // (getProducto.js, el otro lugar que arma esta misma lista, hace el
+    // include sin "order" también — Postgres no garantiza ningún orden
+    // para las filas de un include sin ORDER BY explícito, así que las
+    // dos consultas podían devolver la primera variante en un orden
+    // distinto). Ordenar por id_variante ascendente en los dos lugares
+    // dejan siempre la misma variante (y por lo tanto la misma imagen)
+    // como "la primera".
+    const infoProducto = await Productos.findByPk(id, {
+      include: [{ model: variantesproductos }],
+      order: [[variantesproductos, "id_variante", "ASC"]],
+    });
 
 
 

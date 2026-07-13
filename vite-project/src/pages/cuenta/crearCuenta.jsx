@@ -176,9 +176,11 @@ const CrearCuenta = () => {
               </svg>
               <input
                 type={mostrarPassword ? "text" : "password"}
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Mínimo 8 caracteres, con letras y números"
                 required
-                minLength={6}
+                minLength={8}
+                pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
+                title="Mínimo 8 caracteres, con al menos una letra y un número"
                 value={form.contraseña}
                 onChange={handleChange("contraseña")}
                 autoComplete="new-password"

@@ -7,6 +7,8 @@ import { useProductDetail } from "./hooks/useProductDetail";
 import { useProductOffer } from "./hooks/useProductOffer";
 import { useProductVariants } from "./hooks/useProductVariants";
 import { calcularPrecioFinal } from "./utils/price";
+import { validarStock } from "./utils/stock";
+import useMetaTags from "../../../componentes/hooks/useMetaTags";
 
 import ProductGallery from "./components/DetailGallery";
 import ProductInfo from "./components/ProductInfo";
@@ -22,6 +24,18 @@ const Detail = () => {
   const { info, allProductos, ofertas } = useProductDetail(id);
   const oferta = useProductOffer(ofertas, info?.id);
   const { variantes, imagenesUnicas } = useProductVariants(info);
+
+  // Antes toda ficha de producto compartía el mismo <title>/og:image del
+  // resto del sitio — un link a "Campera Denim Oversize" y uno a "Home"
+  // se veían idénticos al compartirlos. Se actualiza recién cuando
+  // `info` termina de cargar (useMetaTags cae al nombre de la tienda
+  // mientras tanto).
+  useMetaTags({
+    title: info?.nombre,
+    description: info?.descripcion,
+    image: imagenesUnicas?.[0],
+    type: "product",
+  });
 
   const [talle, setTalle] = useState("");
   const [color, setColor] = useState("");
@@ -48,31 +62,17 @@ const Detail = () => {
 
   const handleAdd = () => {
 
-    if (!talle) {
-      setStockError("Seleccioná un talle.");
+    // Misma lógica de antes, ahora extraída a utils/stock.js (ver
+    // comentario ahí) para poder testearla sin montar todo el
+    // componente.
+    const resultado = validarStock({ talle, color, cantidad, variantes });
+
+    if (!resultado.ok) {
+      setStockError(resultado.error);
       return;
     }
 
-    if (!color) {
-      setStockError("Seleccioná un color.");
-      return;
-    }
-
-    const variante = variantes.find(
-      v => v.talla === talle && v.color === color
-    );
-
-    if (!variante) {
-      setStockError("Esa combinación de talle y color no está disponible.");
-      return;
-    }
-
-    if (cantidad > variante.cantidad_disponible) {
-      setStockError(
-        `Solo quedan ${variante.cantidad_disponible} unidades disponibles.`
-      );
-      return;
-    }
+    const { variante } = resultado;
 
     setStockError("");
 

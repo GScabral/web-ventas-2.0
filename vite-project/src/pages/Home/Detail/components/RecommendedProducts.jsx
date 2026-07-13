@@ -16,7 +16,7 @@ const RecommendedCarousel = ({ productos }) => {
         {productos.map(p => (
           <Link key={p.id} to={`/detail/${p.id}`} className="card">
 
-            <img src={p.variantes?.[0]?.imagenes?.[0]} alt={p.nombre} />
+            <img src={p.variantes?.[0]?.imagenes?.[0]} alt={p.nombre} loading="lazy" />
 
             <p>{p.nombre}</p>
 

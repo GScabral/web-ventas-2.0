@@ -19,6 +19,9 @@ const buscar = async (nombre,limit=10) => {
         attributes: ['id_variante', 'talla', 'color', 'cantidad_disponible', 'imagenes'] // Solo atributos necesarios
       },
       attributes: ['id_producto', 'nombre_producto', 'descripcion', 'precio'], // Reducir carga
+      // Mismo criterio que getProducto.js/getById.js: fija cuál es "la
+      // primera" variante (y su primera imagen) de forma consistente.
+      order: [[variantesproductos, "id_variante", "ASC"]],
       limit, // Limitar resultados
     });
 

@@ -23,7 +23,13 @@ const getProductos = async () => {
         {
           model: Categorias
         }
-      ]
+      ],
+      // Mismo criterio que getById.js: sin esto, Postgres no garantiza
+      // en qué orden vienen las variantes de cada producto, así que la
+      // "primera" variante (y su primera imagen, la que se usa como
+      // imagen principal en la grilla) podía no coincidir con la que
+      // mostraba el detalle del producto.
+      order: [[variantesproductos, "id_variante", "ASC"]],
     });
 
     const productos = productosConVariantes.map((producto) => {

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getProductos, getOfertas } from "../../../redux/action";
 import ProductGrid from "../Cards/productGrid";
+import useMetaTags from "../../../componentes/hooks/useMetaTags";
 
 import "./ofertas.css";
 
@@ -14,6 +15,11 @@ import "./ofertas.css";
 // el badge de descuento solo).
 const Ofertas = () => {
   const dispatch = useDispatch();
+
+  useMetaTags({
+    title: "Ofertas",
+    description: "Productos con descuento por tiempo limitado.",
+  });
 
   const productos = useSelector(state => state.allProductosforFiltro) || [];
   const ofertas = useSelector(state => state.ofertasActivas) || [];

@@ -59,6 +59,32 @@
   transform: scale(.98);
 }
 
+.buybox-confianza {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.buybox-confianza-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.buybox-confianza-icono {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.buybox-confianza-item a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .buybox {
     padding: 20px;

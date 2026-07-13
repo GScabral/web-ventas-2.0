@@ -14,6 +14,20 @@
          valores junto con config/storeConfig.js. -->
     <title>Tienda Demo | Ropa y accesorios online</title>
     <meta name="description" content="Tienda Demo — moda accesible para todos los días. Comprá ropa y accesorios online con envíos y pago por Mercado Pago." />
+
+    <!-- Open Graph/Twitter de respaldo, iguales por ahora en TODAS las
+         páginas: los bots que arman la vista previa de un link (WhatsApp,
+         Facebook, Twitter) no ejecutan JavaScript, así que sólo van a ver
+         estas etiquetas estáticas sin importar qué página se comparta.
+         useMetaTags.js (ver src/componentes/hooks) sí pisa el <title> y
+         estas mismas etiquetas por página, pero eso corre en el
+         navegador — sirve para la pestaña y para crawlers que sí
+         ejecutan JS (como Googlebot), no para esos bots de preview. -->
+    <meta property="og:site_name" content="Tienda Demo" />
+    <meta property="og:title" content="Tienda Demo | Ropa y accesorios online" />
+    <meta property="og:description" content="Tienda Demo — moda accesible para todos los días. Comprá ropa y accesorios online con envíos y pago por Mercado Pago." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
   </head>
   <body>
     <div id="root"></div>

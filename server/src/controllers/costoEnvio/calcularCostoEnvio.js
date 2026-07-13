@@ -1,14 +1,5 @@
 const { CostoEnvio } = require("../../db");
-
-// Normaliza para comparar sin problemas de mayúsculas/acentos:
-// "Buenos Aires", "buenos aires", "BUENOS AIRES" tienen que matchear
-// igual.
-const normalizar = (texto) =>
-    (texto || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim();
+const normalizar = require("../../utils/normalizarTexto");
 
 // Se usa en dos lugares: el checkout público (para mostrar el costo
 // antes de confirmar) y la creación real del pedido (que vuelve a

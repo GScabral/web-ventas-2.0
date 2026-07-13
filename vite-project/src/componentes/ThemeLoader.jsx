@@ -83,9 +83,13 @@ const ThemeLoader = () => {
             raiz.style.setProperty("--bg-elevated", configuracion.color_fondo_tarjetas);
         }
 
-        if (configuracion.nombre_tienda) {
-            document.title = configuracion.nombre_tienda;
-        }
+        // El <title> por página ahora lo maneja useMetaTags.js (Home,
+        // Detail, Catálogo, Ofertas). Antes esta línea competía con esos
+        // hooks: si getConfiguracion() resolvía DESPUÉS de que la página
+        // ya hubiera puesto su propio título ("Campera X | Tienda"), acá
+        // se lo pisaba de vuelta a solo "Tienda". useMetaTags ya lee
+        // nombre_tienda de este mismo store, así que sigue quedando
+        // correcto sin esta línea.
 
     }, [configuracion]);
 

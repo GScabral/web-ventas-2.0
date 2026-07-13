@@ -15,6 +15,8 @@ const duplicarProducto = require("../controllers/producto/duplicarProducto")
 const getProductosPapelera = require("../controllers/producto/getProductosPapelera")
 const restaurarProducto = require("../controllers/producto/restaurarProducto")
 const eliminarDefinitivo = require("../controllers/producto/eliminarDefinitivo")
+const getCatalogo = require("../controllers/producto/getCatalogo")
+const getFacetas = require("../controllers/producto/getFacetas")
 const { verificarTokenAdmin } = require("../middleware/auth");
 
 const router = Router();
@@ -27,6 +29,31 @@ router.get("/producto", async (req, res) => {
         res.status(500).json({ error: "erro al obtener el producto" })
     }
 })
+
+// Catálogo público paginado y filtrado en el servidor (reemplaza, para
+// la pantalla de Catálogo, el viejo patrón de "/producto" + filtrar todo
+// en el cliente). "/producto" se deja intacto porque otras pantallas
+// (Home, admin, recomendados de detalle) siguen necesitando la lista
+// completa.
+router.get("/catalogo", async (req, res) => {
+    try {
+        const resultado = await getCatalogo(req.query);
+        res.status(200).json(resultado);
+    } catch (error) {
+        console.error("Error al obtener el catálogo:", error);
+        res.status(500).json({ error: "Error al obtener el catálogo" });
+    }
+});
+
+router.get("/facetas", async (req, res) => {
+    try {
+        const facetas = await getFacetas();
+        res.status(200).json(facetas);
+    } catch (error) {
+        console.error("Error al obtener facetas del catálogo:", error);
+        res.status(500).json({ error: "Error al obtener facetas del catálogo" });
+    }
+});
 
 // El error de Cloudinary (credenciales inválidas, corte de red, cuota
 // superada, etc.) ocurre DENTRO del middleware de subida, antes de que

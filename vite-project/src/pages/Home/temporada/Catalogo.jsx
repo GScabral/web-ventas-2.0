@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
-import { getProductos } from "../../../redux/action";
+import useCatalogo from "../../../componentes/hooks/useCatalogo";
+import useMetaTags from "../../../componentes/hooks/useMetaTags";
 
 import FiltrosSidebar from "../barralado/filtros";
 import ProductGrid from "../Cards/productGrid";
@@ -11,21 +11,29 @@ import "./catalogo.css";
 
 const Catalogo = () => {
 
-    const dispatch = useDispatch();
+    useMetaTags({
+        title: "Catálogo completo",
+        description: "Descubrí todos los productos disponibles: filtrá por categoría, talle, color y precio.",
+    });
 
-    const productos = useSelector(
-        state => state.allProductos
-    );
-
-    const [loading, setLoading] = useState(true);
-
-    const [selectedSubcategory, setSelectedSubcategory] = useState("");
-    const [selectedPriceOrder, setSelectedPriceOrder] = useState("");
-
-    useEffect(() => {
-        setLoading(true);
-        dispatch(getProductos()).finally(() => setLoading(false));
-    }, [dispatch]);
+    const {
+        productos,
+        total,
+        totalPages,
+        currentPage,
+        loading,
+        categoria,
+        setCategoria,
+        tallas,
+        setTallas,
+        colores,
+        setColores,
+        precioMax,
+        setPrecioMax,
+        orden,
+        setOrden,
+        setPage,
+    } = useCatalogo();
 
     return (
 
@@ -35,7 +43,7 @@ const Catalogo = () => {
 
                 <div className="catalogo-header">
                     <h1>Catálogo completo</h1>
-                    <p>{productos?.length || 0} productos</p>
+                    <p>{total} productos</p>
                 </div>
 
                 <div className="catalogo-layout">
@@ -43,10 +51,16 @@ const Catalogo = () => {
                     <aside className="catalogo-sidebar">
 
                         <FiltrosSidebar
-                            selectedSubcategory={selectedSubcategory}
-                            setSelectedSubcategory={setSelectedSubcategory}
-                            selectedPriceOrder={selectedPriceOrder}
-                            setSelectedPriceOrder={setSelectedPriceOrder}
+                            selectedSubcategory={categoria}
+                            setSelectedSubcategory={setCategoria}
+                            selectedPriceOrder={orden}
+                            setSelectedPriceOrder={setOrden}
+                            tallas={tallas}
+                            setTallas={setTallas}
+                            colores={colores}
+                            setColores={setColores}
+                            precioMax={precioMax}
+                            setPrecioMax={setPrecioMax}
                         />
 
                     </aside>
@@ -58,7 +72,11 @@ const Catalogo = () => {
                         ) : (
                             <>
                                 <ProductGrid productos={productos} />
-                                <Paginado />
+                                <Paginado
+                                    currentPage={currentPage}
+                                    totalPages={totalPages}
+                                    onChange={setPage}
+                                />
                             </>
                         )}
 

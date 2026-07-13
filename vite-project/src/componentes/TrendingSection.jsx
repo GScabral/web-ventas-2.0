@@ -44,6 +44,7 @@ const TrendingSection = ({
                                     ?.imagenes?.[0]
                             }
                             alt={productos[0].nombre}
+                            loading="lazy"
                         />
 
                         <div className="featured-overlay">
@@ -84,6 +85,7 @@ const TrendingSection = ({
                                         ?.imagenes?.[0]
                                 }
                                 alt={producto.nombre}
+                                loading="lazy"
                             />
 
                             <div className="side-info">

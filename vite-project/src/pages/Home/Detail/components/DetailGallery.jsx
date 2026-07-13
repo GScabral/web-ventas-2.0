@@ -63,7 +63,7 @@ const ProductGallery = ({ images, imgIndex, setImgIndex }) => {
             className={`thumb ${i === imgIndex ? "active" : ""}`}
             onClick={() => setImgIndex(i)}
           >
-            <img src={img} alt="thumb" />
+            <img src={img} alt="thumb" loading="lazy" />
           </button>
         ))}
       </div>

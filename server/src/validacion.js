@@ -17,7 +17,9 @@ const validarRegistroCliente = [
     .isEmail().withMessage('Correo inválido'),
   body('contraseña')
     .notEmpty().withMessage('La contraseña es obligatoria')
-    .isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    .isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 8 caracteres')
+    .matches(/[a-zA-Z]/).withMessage('La contraseña debe tener al menos una letra')
+    .matches(/[0-9]/).withMessage('La contraseña debe tener al menos un número'),
   // info_contacto se pedía acá antes, pero el modelo Cliente nunca tuvo
   // esa columna (ver models/clientes.js) — se validaba un campo que
   // después no se guardaba en ningún lado. Se saca del requisito.

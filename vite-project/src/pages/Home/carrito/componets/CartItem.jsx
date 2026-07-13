@@ -76,6 +76,7 @@ const CartItem = ({
       <img
         src={ producto.imagen}
         alt={producto.nombre}
+        loading="lazy"
       />
 
       <div className={styles.info}>

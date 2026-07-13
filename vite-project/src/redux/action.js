@@ -17,6 +17,14 @@ export const SEARCH_ID = "SEARCH_ID";
 export const PAGINADO = "PAGINADO";
 export const FILTER = "FILTER";
 export const ORDER = "ORDER";
+// Slice aparte para el catálogo paginado/filtrado en el servidor
+// (Catalogo.jsx / CatalogoSection.jsx). No reutiliza allProductos/
+// currentPage/totalPages/FILTER/ORDER/PAGINADO a propósito: esas cuatro
+// siguen usándose para el patrón viejo (catálogo completo en memoria) en
+// otras pantallas, y mezclarlas hubiera significado que dos pantallas
+// que comparten esas claves de estado se pisen entre sí.
+export const GET_CATALOGO = "GET_CATALOGO";
+export const GET_FACETAS = "GET_FACETAS";
 export const AGREGAR_AL_CARRITO = 'AGREGAR_AL_CARRITO';
 export const ELIMINAR_PRODUCTO_CARRITO = "ELIMINAR_PRODUCTO_CARRITO";
 export const VACIAR_CARRITO = "VACIAR_CARRITO";
@@ -52,10 +60,6 @@ export const ADD_USUARIO = "ADD_USUARIO";
 export const INI_USUARIO = "INI_USUARIO";
 export const CARGAR_CLIENTE = "CARGAR_CLIENTE";
 export const CERRAR_SESION = "CERRAR_SESION";
-export const CHECK_EMAIL_EXISTENCE_REQUEST = 'CHECK_EMAIL_EXISTENCE_REQUEST';
-export const CHECK_EMAIL_EXISTENCE_SUCCESS = 'CHECK_EMAIL_EXISTENCE_SUCCESS';
-export const CHECK_EMAIL_EXISTENCE_FAILURE = 'CHECK_EMAIL_EXISTENCE_FAILURE';
-export const OBTENER_INFO_USUARIO = " OBTENER_INFO_USUARIO";
 export const GET_CLIENTES = 'GET_CLIENTES';
 export const ADMIN_LOGIN_SUCCESS = "ADMIN_LOGIN_SUCCESS";
 export const ADMIN_LOGOUT = "ADMIN_LOGOUT";
@@ -255,6 +259,59 @@ export function orderProducto(orderAux) {
   }
 }
 
+// Trae UNA página del catálogo ya filtrada/ordenada por el servidor.
+// `filtros` puede traer: page, limit, categoria, subcategoria, tallas
+// (array), colores (array), precioMax, orden. Se arma un query string
+// simple (arrays -> "a,b,c") en vez de mandar cada uno como parámetro
+// repetido, para que coincida con lo que espera getCatalogo.js del lado
+// del servidor.
+export const getCatalogo = (filtros = {}) => {
+  return async function (dispatch) {
+    try {
+      const params = {
+        page: filtros.page || 1,
+        limit: filtros.limit || 12,
+      };
+
+      if (filtros.categoria) params.categoria = filtros.categoria;
+      if (filtros.subcategoria) params.subcategoria = filtros.subcategoria;
+      if (filtros.tallas && filtros.tallas.length > 0) params.tallas = filtros.tallas.join(",");
+      if (filtros.colores && filtros.colores.length > 0) params.colores = filtros.colores.join(",");
+      if (filtros.precioMax !== null && filtros.precioMax !== undefined) params.precioMax = filtros.precioMax;
+      if (filtros.orden) params.orden = filtros.orden;
+
+      const response = await axios.get(`${API_URL}/producto/catalogo`, { params });
+
+      dispatch({
+        type: GET_CATALOGO,
+        payload: response.data,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+// Tallas/colores/precio máximo disponibles en el catálogo activo, para
+// el sidebar de filtros. Se pide una sola vez (no en cada cambio de
+// filtro/página).
+export const getFacetas = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${API_URL}/producto/facetas`);
+
+      dispatch({
+        type: GET_FACETAS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const createUsuario = (userData) => {
 
   return async function (dispatch) {
@@ -316,38 +373,6 @@ export const ingresarUsuario = (userData) => {
     }
   };
 };
-
-export const obtenerInformacionUsuario = (correo, contraseña) => {
-  return async function (dispatch) {
-    try {
-      const response = await axios.post(`${API_URL}/cliente/InfoUsuario`, { correo, contraseña });
-
-      if (response.status === 200) {
-        if (response.data && response.data.user) {
-          // Si hay datos de usuario en la respuesta, actualiza el estado con la información del usuario
-          dispatch({
-            type: OBTENER_INFO_USUARIO,
-            payload: response.data.user,
-          });
-        } else {
-          console.error('No se recibieron datos de usuario en la respuesta del servidor');
-          // Podrías establecer un mensaje de error en el estado de tu aplicación si lo deseas
-        }
-      } else {
-        console.error('El servidor respondió con un código de estado diferente a 200:', response.status);
-        // Manejo de errores para códigos de estado no exitosos
-        // Por ejemplo, puedes lanzar una excepción para que se maneje en el bloque catch
-        throw new Error('Error en la solicitud: Código de estado ' + response.status);
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-      // Aquí puedes manejar el error de manera adecuada, como establecer un mensaje de error en el estado
-      // También podrías lanzar una nueva excepción si necesitas manejarla más arriba en la pila de llamadas
-      throw error;
-    }
-  };
-};
-
 
 export const obtenerClientePorId = (id) => {
   return async function (dispatch) {
@@ -880,30 +905,6 @@ export const buscar = (name) => {
     }
   }
 }
-
-export const checkEmailExistence = (correo) => {
-  return async (dispatch) => {
-    dispatch({ type: CHECK_EMAIL_EXISTENCE_REQUEST });
-
-    try {
-      const response = await axios.get('/check', { params: { correo } });
-
-      // Si la solicitud fue exitosa, envía el resultado al reducer
-      dispatch({
-        type: CHECK_EMAIL_EXISTENCE_SUCCESS,
-        payload: response.data // Esto debería ser el mensaje del servidor
-      });
-    } catch (error) {
-      // Si hubo un error en la solicitud, envía el error al reducer
-      console.error("Error al verificar el correo electrónico:", error.message);
-      dispatch({
-        type: CHECK_EMAIL_EXISTENCE_FAILURE,
-        error: error.message // Esto debería ser el mensaje de error del servidor
-      });
-    }
-  };
-};
-
 
 export const enviarEstado = (nuevoEstado) => ({
   type: ENVIAR_ESTADO,

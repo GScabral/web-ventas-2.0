@@ -18,11 +18,7 @@ import {
   ACTUALIZAR_VARIANTES,
   ACTUALIZAR_CARRITO,
   BUSCAR_NOMBRE,
-  CHECK_EMAIL_EXISTENCE_REQUEST,
-  CHECK_EMAIL_EXISTENCE_SUCCESS,
-  CHECK_EMAIL_EXISTENCE_FAILURE,
   ADD_USUARIO,
-  OBTENER_INFO_USUARIO,
   GET_PEDIDOS,
   GET_CLIENTES,
   OFERTA,
@@ -46,7 +42,9 @@ import {
   GET_LAYOUT_HOME,
   GET_LAYOUT_HOME_BORRADOR,
   GET_TESTIMONIOS,
-  GET_TESTIMONIOS_ADMIN
+  GET_TESTIMONIOS_ADMIN,
+  GET_CATALOGO,
+  GET_FACETAS
 } from "./action"
 
 const initialState = {
@@ -85,6 +83,21 @@ const initialState = {
   layoutHomeBorrador: null,
   testimonios: [],
   testimoniosAdmin: [],
+  // Catálogo paginado/filtrado en el servidor (Catalogo.jsx /
+  // CatalogoSection.jsx). Deliberadamente separado de allProductos/
+  // currentPage/totalPages, que siguen usando el patrón viejo en otras
+  // pantallas (ver comentario en action.js sobre GET_CATALOGO).
+  catalogo: {
+    productos: [],
+    total: 0,
+    totalPages: 1,
+    currentPage: 1,
+  },
+  facetas: {
+    tallas: [],
+    colores: [],
+    precioMaximo: 0,
+  },
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -103,7 +116,28 @@ const reducer = (state = initialState, action) => {
         allProductosBackUp: allProductos,
         totalPages: Math.ceil(allProductos.length / ITEMS_PER_PAGE), // Actualizar el total de páginas
       };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case GET_CATALOGO:
+      return {
+        ...state,
+        catalogo: {
+          productos: action.payload.productos || [],
+          total: action.payload.total || 0,
+          totalPages: action.payload.totalPages || 1,
+          currentPage: action.payload.currentPage || 1,
+        },
+      };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case GET_FACETAS:
+      return {
+        ...state,
+        facetas: {
+          tallas: action.payload.tallas || [],
+          colores: action.payload.colores || [],
+          precioMaximo: action.payload.precioMaximo || 0,
+        },
+      };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case ADD_PRODUCT:
 
       const newProducto = action.payload;
@@ -519,31 +553,6 @@ const reducer = (state = initialState, action) => {
           )
       };
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    case CHECK_EMAIL_EXISTENCE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        errorMessage: '', // Limpiar el mensaje de error
-        emailExists: false
-      };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
-    case CHECK_EMAIL_EXISTENCE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        errorMessage: '',
-        emailExists: action.payload.emailExists // Usar el resultado recibido del servidor
-      };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-    case CHECK_EMAIL_EXISTENCE_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        errorMessage: action.error,
-        emailExists: false
-      };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case ADD_USUARIO:
       const nuevoUsuario = action.payload; // Obtener los datos del nuevo usuario agregado desde la respuesta del servidor

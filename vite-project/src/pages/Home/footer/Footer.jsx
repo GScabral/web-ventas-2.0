@@ -49,19 +49,19 @@ const Footer = () => {
               href={facebook || "#"}
               title={facebook ? "Facebook" : "Próximamente"}
             >
-              <img src="/icons8-facebook-nuevo-48.png" alt="Facebook" />
+              <img src="/icons8-facebook-nuevo-48.png" alt="Facebook" loading="lazy" />
             </a>
             <a
               href={instagram || "#"}
               title={instagram ? "Instagram" : "Próximamente"}
             >
-              <img src="/instagram.png" alt="Instagram" />
+              <img src="/instagram.png" alt="Instagram" loading="lazy" />
             </a>
             <a
               href={whatsapp ? `https://wa.me/${whatsapp}` : "#"}
               title={whatsapp ? "WhatsApp" : "Próximamente"}
             >
-              <img src="/whatssap.png" alt="Whatsapp" />
+              <img src="/whatssap.png" alt="Whatsapp" loading="lazy" />
             </a>
           </div>
         </div>
@@ -75,16 +75,16 @@ const Footer = () => {
             className="location-row"
           >
             <p>{direccion}</p>
-            <img src="/icons8-location-48.png" alt="Ubicación" />
+            <img src="/icons8-location-48.png" alt="Ubicación" loading="lazy" />
           </a>
         </div>
 
         <div>
           <h3>Formas de pago</h3>
           <div className="payment-row">
-            <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" />
-            <img src="/icons8-visa-48.png" alt="Visa" />
-            <img src="/icons8-mastercard-48.png" alt="Mastercard" />
+            <img src="/icons8-mercado-pago-48.png" alt="Mercado Pago" loading="lazy" />
+            <img src="/icons8-visa-48.png" alt="Visa" loading="lazy" />
+            <img src="/icons8-mastercard-48.png" alt="Mastercard" loading="lazy" />
           </div>
         </div>
 

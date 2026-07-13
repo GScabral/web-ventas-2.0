@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-import { getProductos, getOfertas, filterProduc } from "../../redux/action";
+import { getOfertas } from "../../redux/action";
+import useCatalogo from "../hooks/useCatalogo";
 
 import Paginado from "../paginacion";
 import FiltrosSidebar from "../../pages/Home/barralado/filtros";
@@ -19,49 +20,38 @@ import "../../pages/Home/home.css";
 // propio estado (antes vivía como useState directo en home.jsx) para
 // poder ser una pieza más del registro de secciones sin que el resto
 // del Home tenga que saber nada de talles, categorías ni paginación.
+//
+// Desde que el catálogo se pagina/filtra en el servidor, toda esa
+// lógica vive en useCatalogo.js (compartido con Catalogo.jsx) — acá
+// sólo queda conectar la categoría inicial que llega por URL.
 const CatalogoSection = () => {
 
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
 
-    const allProductos = useSelector(state => state.allProductos);
-
-    const [loading, setLoading] = useState(true);
-
     const categoriaDesdeUrl = searchParams.get("categoria") || "";
 
-    const [selectedSubcategory, setSelectedSubcategory] =
-        useState(categoriaDesdeUrl);
-
-    const [selectedPriceOrder, setSelectedPriceOrder] =
-        useState("");
+    const {
+        productos,
+        totalPages,
+        currentPage,
+        loading,
+        categoria,
+        setCategoria,
+        tallas,
+        setTallas,
+        colores,
+        setColores,
+        precioMax,
+        setPrecioMax,
+        orden,
+        setOrden,
+        setPage,
+    } = useCatalogo(categoriaDesdeUrl);
 
     useEffect(() => {
-
-        setLoading(true);
         dispatch(getOfertas());
-        dispatch(getProductos())
-            .finally(() => setLoading(false));
-
     }, [dispatch]);
-
-    // Si se llega desde un link con ?categoria=X (por ejemplo, un chip
-    // de categoría en la sección "categorias" o el Nav), se aplica ese
-    // filtro automáticamente.
-    useEffect(() => {
-
-        if (!categoriaDesdeUrl) return;
-
-        setSelectedSubcategory(categoriaDesdeUrl);
-
-        dispatch(
-            filterProduc({
-                categoria: categoriaDesdeUrl,
-                subcategoria: ""
-            })
-        );
-
-    }, [categoriaDesdeUrl, dispatch]);
 
     const Spinner = () => (
         <div className="spinner-home">
@@ -78,10 +68,16 @@ const CatalogoSection = () => {
             <aside className="catalog-sidebar">
 
                 <FiltrosSidebar
-                    selectedSubcategory={selectedSubcategory}
-                    setSelectedSubcategory={setSelectedSubcategory}
-                    selectedPriceOrder={selectedPriceOrder}
-                    setSelectedPriceOrder={setSelectedPriceOrder}
+                    selectedSubcategory={categoria}
+                    setSelectedSubcategory={setCategoria}
+                    selectedPriceOrder={orden}
+                    setSelectedPriceOrder={setOrden}
+                    tallas={tallas}
+                    setTallas={setTallas}
+                    colores={colores}
+                    setColores={setColores}
+                    precioMax={precioMax}
+                    setPrecioMax={setPrecioMax}
                 />
 
             </aside>
@@ -97,8 +93,12 @@ const CatalogoSection = () => {
                 ) : (
 
                     <>
-                        <ProductGrid productos={allProductos} />
-                        <Paginado />
+                        <ProductGrid productos={productos} />
+                        <Paginado
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onChange={setPage}
+                        />
                     </>
 
                 )}

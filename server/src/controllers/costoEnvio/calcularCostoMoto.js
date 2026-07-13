@@ -1,18 +1,5 @@
 const { ZonaEnvioMoto } = require("../../db");
-
-// \p{Mn} = categoría Unicode "Mark, nonspacing" (acentos/tildes
-// combinantes que quedan sueltos después de normalize("NFD")).
-const REGEX_ACENTOS = /\p{Mn}/gu;
-
-// Mismo criterio de normalización que calcularCostoEnvio.js: sin
-// mayúsculas ni acentos, para que "Córdoba", "cordoba" y "CORDOBA"
-// matcheen igual.
-const normalizar = (texto) =>
-    (texto || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(REGEX_ACENTOS, "")
-        .trim();
+const normalizar = require("../../utils/normalizarTexto");
 
 // Se usa en el checkout público (para ofrecer la opción "moto" solo
 // si la ciudad tipeada tiene zona cargada) y de nuevo del lado del

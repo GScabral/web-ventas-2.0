@@ -1,16 +1,28 @@
 const {Router}=require("express")
+const rateLimit = require("express-rate-limit");
 const getClientes = require("../controllers/cliente/getClientes")
 const createNewCliente = require("../controllers/cliente/newCliente")
 const { validarRegistroCliente } = require("../validacion");
 const { validationResult } = require('express-validator');
 const inicioSesion = require("../controllers/cliente/INS")
-const verificarCorreo=require("../controllers/cliente/checkEmail")
-const obtenerInfUsuario=require("../controllers/cliente/getInfoUsuario")
 const allClientes=require("../controllers/cliente/getAllClientes")
 const { verificarTokenAdmin } = require("../middleware/auth");
 
 
 const router = Router();
+
+// Mismo criterio que el rate-limiter del login de admin (ver
+// routeAdmin.js): sin esto, nada frena a alguien probando contraseñas
+// en bucle contra la cuenta de un cliente, o creando cuentas en masa.
+const clienteLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: "Demasiados intentos. Probá de nuevo en 15 minutos."
+  },
+});
 
 // Protegida: solo el admin puede consultar los datos de un cliente por id.
 // No hay sesión de cliente real (basada en JWT propio) todavía, así que no
@@ -32,22 +44,6 @@ router.get("/cliente/:id", verificarTokenAdmin, async (req, res) => {
   }
 });
 
-router.get("/check",async(req,res)=>{
-  const {correo} = req.query;
-
-  try{
-    const correoExistente=await verificarCorreo(correo);
-    if(correoExistente){
-      return res.status(200).send('El correo electrónico está en uso');
-    }
-    return res.status(404).send('El correo electrónico no está en uso');
-  } catch (error) {
-    // Manejar cualquier error que ocurra durante la consulta a la base de datos
-    console.error('Error al verificar el correo electrónico:', error);
-    return res.status(500).send('Error interno del servidor');
-  }
-})
-
 // Protegida: lista completa de clientes, solo para el panel de admin.
 router.get("/allClientes", verificarTokenAdmin, async(req,res)=>{
   try{
@@ -58,27 +54,7 @@ router.get("/allClientes", verificarTokenAdmin, async(req,res)=>{
   }
 })
 
-router.get("/InfoUsuario", async (req, res) => {
-  const { correo, contraseña } = req.body; // Obtener correo y contraseña del cuerpo de la solicitud
-
-  try {
-    const { error, user } = await obtenerInfUsuario(correo, contraseña);
-
-    if (error) {
-      return res.status(404).json({ error });
-    }
-
-    return res.status(200).json({ user });
-  } catch (error) {
-    console.error("Error al verificar credenciales del usuario:", error);
-    return res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
-
-
-
-
-router.post("/nuevoCliente", validarRegistroCliente, async (req, res) => {
+router.post("/nuevoCliente", clienteLimiter, validarRegistroCliente, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -99,7 +75,7 @@ router.post("/nuevoCliente", validarRegistroCliente, async (req, res) => {
 });
 
 
-router.post("/login", async (req, res) => {
+router.post("/login", clienteLimiter, async (req, res) => {
     try {
       const { correo, contraseña } = req.body;
       const inisesion = await inicioSesion(correo, contraseña);
