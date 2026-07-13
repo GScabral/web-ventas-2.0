@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { aplicarPlantillaDiseno } from "../../redux/action";
 
-// Mismos 3 combos de color + fuente definidos en el backend
-// (server/src/controllers/layoutHome/aplicarPlantilla.js, PLANTILLAS).
-// Se repiten acá solo para pintar las tarjetas de vista previa — quien
+// Mismos 3 combos definidos en el backend
+// (server/src/controllers/layoutHome/aplicarPlantilla.js, PLANTILLAS):
+// color + fuente, MÁS una distribución (qué secciones van visibles y
+// en qué orden). Se repiten acá solo para pintar las tarjetas — quien
 // aplica la plantilla de verdad es el backend, esto es puramente visual.
 const PLANTILLAS = [
     {
@@ -14,6 +15,7 @@ const PLANTILLAS = [
         descripcion: "Blanco y negro, tipografía limpia. Foco total en el producto.",
         colores: ["#111111", "#7a7a7a", "#4b5563"],
         fuente: "Minimal",
+        distribucion: "Banner → Catálogo → Newsletter",
     },
     {
         clave: "urbano",
@@ -21,21 +23,25 @@ const PLANTILLAS = [
         descripcion: "Negro con acentos de color fuerte. Para marcas con actitud.",
         colores: ["#0a0a0a", "#eab308", "#ff3b30"],
         fuente: "Moderna",
+        distribucion: "Banner → Destacados → Categorías → Catálogo → Newsletter",
     },
     {
         clave: "elegante",
         nombre: "Elegante / Boutique",
-        descripcion: "Cálido y prolijo, terracota y mostaza. El look actual de la tienda.",
+        descripcion: "Cálido y prolijo, terracota y mostaza. Recorrido completo con prueba social.",
         colores: ["#ff6b35", "#e8a33d", "#d6708a"],
         fuente: "Elegante",
+        distribucion: "Banner → Destacados → Categorías → Catálogo → Testimonios → Newsletter",
     },
 ];
 
-// Elegir una plantilla solo toca los mismos campos de color/fuente que
-// ya se pueden editar a mano en Personalización — nunca toca el orden
-// ni el contenido de las secciones (ver SeccionesEditor.jsx), así que
-// es reversible por diseño: volver a una plantilla anterior es solo
-// aplicarla de nuevo, sin perder productos, imágenes ni textos.
+// Elegir una plantilla aplica colores + fuente (igual que Personalización)
+// Y ADEMÁS reacomoda qué secciones de la Home van visibles y en qué
+// orden (ver "distribucion" en cada tarjeta). Nunca toca el contenido
+// de cada sección — textos, fuente de productos elegida, testimonios
+// cargados — así que es reversible y no se pierde nada cargado. Lo que
+// sí se pisa es un reordenamiento manual que el admin haya hecho en la
+// pestaña "Secciones" sin pasar por una plantilla.
 const PlantillasEditor = () => {
 
     const dispatch = useDispatch();
@@ -71,10 +77,14 @@ const PlantillasEditor = () => {
         <div className="plantillas-editor">
 
             <p className="campo-hint">
-                Elegir una plantilla cambia colores y tipografía en toda la
-                tienda al toque. No toca el orden ni el contenido de las
-                secciones de la Home, ni borra productos, imágenes o textos
-                ya cargados — podés cambiar de plantilla las veces que quieras.
+                Elegir una plantilla cambia colores, tipografía y también
+                qué secciones de la Home se ven y en qué orden — todo al
+                toque, en toda la tienda. No borra productos, imágenes ni
+                textos ya cargados (si una sección queda oculta, su
+                contenido sigue guardado por si la volvés a activar), pero
+                si habías reordenado secciones a mano en la pestaña
+                "Secciones", ese orden se reemplaza por el de la plantilla.
+                Podés cambiar de plantilla las veces que quieras.
             </p>
 
             {mensaje && <p className="personalizacion-success">{mensaje}</p>}
@@ -99,6 +109,9 @@ const PlantillasEditor = () => {
                         <p>{plantilla.descripcion}</p>
                         <span className="plantilla-card-fuente">
                             Fuente: {plantilla.fuente}
+                        </span>
+                        <span className="plantilla-card-distribucion">
+                            {plantilla.distribucion}
                         </span>
 
                         {plantillaActiva === plantilla.clave ? (
