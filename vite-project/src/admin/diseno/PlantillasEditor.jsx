@@ -122,6 +122,15 @@ const PlantillasEditor = () => {
     const [errorMsg, setErrorMsg] = useState("");
 
     const aplicar = async (clave) => {
+        if (!window.confirm(
+            "Aplicar esta plantilla va a reemplazar los colores, la " +
+            "tipografía y el orden de secciones actuales (no borra " +
+            "productos, imágenes ni textos ya cargados). Si habías " +
+            "personalizado algo a mano en Personalización o reordenado " +
+            "secciones sin usar una plantilla, se pierde ese ajuste. " +
+            "¿Continuar?"
+        )) return;
+
         setAplicando(clave);
         setMensaje("");
         setErrorMsg("");

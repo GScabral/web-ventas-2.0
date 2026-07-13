@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import SeccionesEditor from "./SeccionesEditor";
 import PlantillasEditor from "./PlantillasEditor";
@@ -30,6 +31,41 @@ const Diseno = () => {
                     tocar código.
                 </p>
             </div>
+
+            <div className="diseno-flujo">
+                <div className="diseno-flujo-paso">
+                    <span className="diseno-flujo-numero">1</span>
+                    <div>
+                        <strong>Editá</strong>
+                        <p>Cambiá secciones o aplicá una plantilla. Nada de esto se ve todavía en la tienda.</p>
+                    </div>
+                </div>
+                <span className="diseno-flujo-flecha">→</span>
+                <div className="diseno-flujo-paso">
+                    <span className="diseno-flujo-numero">2</span>
+                    <div>
+                        <strong>Revisá en Vista previa</strong>
+                        <p>Mirá cómo queda, con el mismo diseño que ve un visitante real.</p>
+                    </div>
+                </div>
+                <span className="diseno-flujo-flecha">→</span>
+                <div className="diseno-flujo-paso">
+                    <span className="diseno-flujo-numero">3</span>
+                    <div>
+                        <strong>Publicá</strong>
+                        <p>Recién ahí el cambio se ve para cualquiera que entre a la tienda.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p className="diseno-cross-link">
+                ¿Buscás cambiar colores sueltos, tipografía, logo o datos de
+                contacto? Eso se edita en{" "}
+                <Link to="/admin/personalizacion">Personalización</Link>.
+                Acá en Diseño se arma el orden y contenido de la portada, y
+                se eligen combos de estilo ya armados (plantillas) que
+                incluyen esos mismos colores y tipografía.
+            </p>
 
             <div className="diseno-tabs">
                 <button

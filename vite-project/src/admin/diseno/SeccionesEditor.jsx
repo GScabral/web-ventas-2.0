@@ -66,6 +66,18 @@ const SeccionesEditor = () => {
     const [cargado, setCargado] = useState(false);
     const [tipoAAgregar, setTipoAAgregar] = useState("destacados");
 
+    // Qué tarjetas tienen el contenido desplegado. Arrancan todas
+    // cerradas (solo se ve el encabezado: ícono, nombre, orden,
+    // visible/oculta) para que la lista no se sienta como una pared de
+    // campos — un vistazo rápido alcanza para reordenar o prender/apagar
+    // secciones sin tener que leer todos los formularios. Se guarda por
+    // índice, igual que el resto del editor (ver "mover"/"eliminarSeccion").
+    const [abiertas, setAbiertas] = useState({});
+
+    const toggleAbierta = (index) => {
+        setAbiertas(prev => ({ ...prev, [index]: !prev[index] }));
+    };
+
     const [guardando, setGuardando] = useState(false);
     const [publicando, setPublicando] = useState(false);
     const [mensaje, setMensaje] = useState("");
@@ -113,15 +125,22 @@ const SeccionesEditor = () => {
     };
 
     const agregarSeccion = () => {
-        setSecciones(prev => ([
-            ...prev,
-            {
-                tipo: tipoAAgregar,
-                visible: true,
-                orden: prev.length,
-                contenido: contenidoPorDefecto(tipoAAgregar),
-            },
-        ]));
+        setSecciones(prev => {
+            const nuevoIndex = prev.length;
+            // La sección recién agregada arranca desplegada: es la que
+            // el admin va a querer completar al toque, a diferencia de
+            // las que ya existían y estaban colapsadas.
+            setAbiertas(a => ({ ...a, [nuevoIndex]: true }));
+            return [
+                ...prev,
+                {
+                    tipo: tipoAAgregar,
+                    visible: true,
+                    orden: nuevoIndex,
+                    contenido: contenidoPorDefecto(tipoAAgregar),
+                },
+            ];
+        });
     };
 
     const eliminarSeccion = (index) => {
@@ -476,8 +495,20 @@ const SeccionesEditor = () => {
                                     </button>
                                 </div>
 
-                                <span className="diseno-seccion-icono">{etiqueta.icono}</span>
-                                <span className="diseno-seccion-nombre">{etiqueta.nombre}</span>
+                                <button
+                                    type="button"
+                                    className={
+                                        "diseno-seccion-expandir" +
+                                        (abiertas[index] ? " abierta" : "")
+                                    }
+                                    onClick={() => toggleAbierta(index)}
+                                    aria-expanded={!!abiertas[index]}
+                                    aria-label={abiertas[index] ? "Ocultar contenido" : "Editar contenido"}
+                                >
+                                    <span className="diseno-seccion-icono">{etiqueta.icono}</span>
+                                    <span className="diseno-seccion-nombre">{etiqueta.nombre}</span>
+                                    <span className="diseno-seccion-chevron">▾</span>
+                                </button>
 
                                 <label className="diseno-seccion-toggle">
                                     <input
@@ -500,7 +531,17 @@ const SeccionesEditor = () => {
 
                             </div>
 
-                            {renderContenido(seccion, index)}
+                            {abiertas[index] && renderContenido(seccion, index)}
+
+                            {!abiertas[index] && (
+                                <button
+                                    type="button"
+                                    className="diseno-seccion-editar-link"
+                                    onClick={() => toggleAbierta(index)}
+                                >
+                                    Editar contenido de esta sección →
+                                </button>
+                            )}
 
                         </div>
                     );

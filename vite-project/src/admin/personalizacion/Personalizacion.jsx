@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import {
     getConfiguracion,
@@ -151,6 +152,12 @@ const Personalizacion = () => {
                     incluido este panel.
                 </p>
             </div>
+
+            <p className="personalizacion-cross-link">
+                ¿Buscás reordenar o prender/apagar secciones de la portada, o
+                elegir un combo de estilo ya armado? Eso está en{" "}
+                <Link to="/admin/diseno">Diseño</Link>.
+            </p>
 
             <div className="personalizacion-layout">
 
