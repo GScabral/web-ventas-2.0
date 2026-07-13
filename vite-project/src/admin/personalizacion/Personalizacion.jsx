@@ -18,6 +18,10 @@ const FORM_VACIO = {
     color_secundario: "#e8a33d",
     color_acento: "#d6708a",
     fuente: "clasica",
+    radio_bordes: "redondeado",
+    densidad: "amplia",
+    color_fondo: "#f5f6f8",
+    color_fondo_tarjetas: "#ffffff",
     whatsapp: "",
     instagram: "",
     facebook: "",
@@ -54,6 +58,10 @@ const Personalizacion = () => {
             color_secundario: configuracion.color_secundario || "#e8a33d",
             color_acento: configuracion.color_acento || "#d6708a",
             fuente: configuracion.fuente || "clasica",
+            radio_bordes: configuracion.radio_bordes || "redondeado",
+            densidad: configuracion.densidad || "amplia",
+            color_fondo: configuracion.color_fondo || "#f5f6f8",
+            color_fondo_tarjetas: configuracion.color_fondo_tarjetas || "#ffffff",
             whatsapp: configuracion.whatsapp || "",
             instagram: configuracion.instagram || "",
             facebook: configuracion.facebook || "",
@@ -78,7 +86,35 @@ const Personalizacion = () => {
         const fuenteElegida = FUENTES[form.fuente] || FUENTES.clasica;
         raiz.style.setProperty("--font-display", fuenteElegida.display);
         raiz.style.setProperty("--font-body", fuenteElegida.body);
-    }, [form.color_primario, form.color_secundario, form.color_acento, form.fuente]);
+
+        if (form.radio_bordes === "cuadrado") {
+            raiz.style.setProperty("--radius-sm", "2px");
+            raiz.style.setProperty("--radius-md", "4px");
+            raiz.style.setProperty("--radius-lg", "6px");
+        } else {
+            raiz.style.setProperty("--radius-sm", "8px");
+            raiz.style.setProperty("--radius-md", "12px");
+            raiz.style.setProperty("--radius-lg", "16px");
+        }
+
+        if (form.densidad === "compacta") {
+            raiz.style.setProperty("--sp-4", "12px");
+            raiz.style.setProperty("--sp-5", "16px");
+            raiz.style.setProperty("--sp-6", "20px");
+            raiz.style.setProperty("--sp-7", "28px");
+        } else {
+            raiz.style.setProperty("--sp-4", "16px");
+            raiz.style.setProperty("--sp-5", "24px");
+            raiz.style.setProperty("--sp-6", "32px");
+            raiz.style.setProperty("--sp-7", "48px");
+        }
+
+        raiz.style.setProperty("--bg-base", form.color_fondo);
+        raiz.style.setProperty("--bg-elevated", form.color_fondo_tarjetas);
+    }, [
+        form.color_primario, form.color_secundario, form.color_acento, form.fuente,
+        form.radio_bordes, form.densidad, form.color_fondo, form.color_fondo_tarjetas,
+    ]);
 
     const handleChange = (campo, valor) => {
         setForm(prev => ({ ...prev, [campo]: valor }));
@@ -239,6 +275,96 @@ const Personalizacion = () => {
                         </div>
                     </section>
 
+                    {/* ---- Bordes y densidad ---- */}
+                    <section className="personalizacion-section">
+                        <h2>Bordes y densidad</h2>
+                        <p className="campo-hint">
+                            Controlan la sensación general del sitio: más
+                            filoso y compacto, o más suave y espacioso.
+                        </p>
+
+                        <div className="toggle-grid">
+                            <div className="toggle-field">
+                                <label>Bordes</label>
+                                <div className="toggle-buttons">
+                                    <button
+                                        type="button"
+                                        className={form.radio_bordes === "redondeado" ? "activo" : ""}
+                                        onClick={() => handleChange("radio_bordes", "redondeado")}
+                                    >
+                                        Redondeado
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={form.radio_bordes === "cuadrado" ? "activo" : ""}
+                                        onClick={() => handleChange("radio_bordes", "cuadrado")}
+                                    >
+                                        Cuadrado
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="toggle-field">
+                                <label>Densidad</label>
+                                <div className="toggle-buttons">
+                                    <button
+                                        type="button"
+                                        className={form.densidad === "amplia" ? "activo" : ""}
+                                        onClick={() => handleChange("densidad", "amplia")}
+                                    >
+                                        Amplia
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={form.densidad === "compacta" ? "activo" : ""}
+                                        onClick={() => handleChange("densidad", "compacta")}
+                                    >
+                                        Compacta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ---- Fondos ---- */}
+                    <section className="personalizacion-section">
+                        <h2>Fondos</h2>
+                        <p className="campo-hint">
+                            Se mantienen claros a propósito: los colores de
+                            texto todavía no se adaptan a fondos oscuros.
+                        </p>
+
+                        <div className="color-grid">
+
+                            <div className="color-field">
+                                <label>Fondo de página</label>
+                                <p className="color-hint">Detrás de todo el contenido</p>
+                                <div className="color-input-row">
+                                    <input
+                                        type="color"
+                                        value={form.color_fondo}
+                                        onChange={(e) => handleChange("color_fondo", e.target.value)}
+                                    />
+                                    <span>{form.color_fondo}</span>
+                                </div>
+                            </div>
+
+                            <div className="color-field">
+                                <label>Fondo de tarjetas</label>
+                                <p className="color-hint">Productos, secciones, paneles</p>
+                                <div className="color-input-row">
+                                    <input
+                                        type="color"
+                                        value={form.color_fondo_tarjetas}
+                                        onChange={(e) => handleChange("color_fondo_tarjetas", e.target.value)}
+                                    />
+                                    <span>{form.color_fondo_tarjetas}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
                     {/* ---- Contacto y redes ---- */}
                     <section className="personalizacion-section">
                         <h2>Contacto y redes</h2>
@@ -357,7 +483,13 @@ const Personalizacion = () => {
 
                     <span className="preview-panel-label">Vista previa</span>
 
-                    <div className="preview-mockup">
+                    <div
+                        className="preview-mockup"
+                        style={{
+                            background: form.color_fondo,
+                            borderRadius: form.radio_bordes === "cuadrado" ? "4px" : "16px",
+                        }}
+                    >
 
                         <div className="preview-mockup-nav">
                             {form.logo_url && (
@@ -381,7 +513,13 @@ const Personalizacion = () => {
                             </button>
                         </div>
 
-                        <div className="preview-mockup-card">
+                        <div
+                            className="preview-mockup-card"
+                            style={{
+                                background: form.color_fondo_tarjetas,
+                                borderRadius: form.radio_bordes === "cuadrado" ? "4px" : "14px",
+                            }}
+                        >
                             <div className="preview-mockup-card-img" />
                             <div className="preview-mockup-card-info">
                                 <span className="preview-mockup-card-title">

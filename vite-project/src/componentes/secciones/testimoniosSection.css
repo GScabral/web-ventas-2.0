@@ -29,6 +29,33 @@
     background: var(--bg-elevated, #fff);
 }
 
+/* ---- Variante "carrusel": mismo markup, scroll horizontal con
+   snap en vez de grilla. CSS puro, sin librería nueva. ---- */
+
+.testimonios-section-grid.carrusel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 4px;
+
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.testimonios-section-grid.carrusel .testimonio-card {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+}
+
+.testimonios-section-grid.carrusel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.testimonios-section-grid.carrusel::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 999px;
+}
+
 .testimonio-card-imagen {
     width: 48px;
     height: 48px;

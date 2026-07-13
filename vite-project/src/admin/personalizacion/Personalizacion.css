@@ -65,6 +65,51 @@
   margin: -4px 0 var(--sp-4);
 }
 
+/* ---- Bordes y densidad (toggles de 2 opciones) ---- */
+
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-5);
+}
+
+.toggle-field label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-2);
+}
+
+.toggle-buttons {
+  display: flex;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.toggle-buttons button {
+  flex: 1;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  background: var(--bg-elevated-2);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+
+.toggle-buttons button + button {
+  border-left: 1px solid var(--border-medium);
+}
+
+.toggle-buttons button.activo {
+  background: var(--gradient-brand);
+  color: var(--text-on-accent);
+}
+
 /* ---- Colores ---- */
 
 .color-grid {

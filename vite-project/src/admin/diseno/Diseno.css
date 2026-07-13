@@ -160,6 +160,57 @@
     cursor: pointer;
 }
 
+.diseno-seccion-eliminar {
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated-2);
+    color: var(--text-muted);
+    cursor: pointer;
+
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    line-height: 1;
+
+    transition: border-color var(--t-fast, 0.15s) ease, color var(--t-fast, 0.15s) ease;
+}
+
+.diseno-seccion-eliminar:hover {
+    border-color: var(--color-error);
+    color: var(--color-error);
+}
+
+.form-group-fondo .color-input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3, 12px);
+    flex-wrap: wrap;
+}
+
+.form-group-fondo .color-input-row span {
+    font-size: var(--fs-xs, 12px);
+    color: var(--text-muted);
+}
+
+.diseno-agregar-seccion {
+    display: flex;
+    gap: var(--sp-3, 12px);
+    margin-top: var(--sp-5, 20px);
+    padding-top: var(--sp-5, 20px);
+    border-top: 1px dashed var(--border-subtle);
+}
+
+.diseno-agregar-seccion select {
+    flex: 1;
+    max-width: 280px;
+    padding: var(--sp-3, 12px) var(--sp-4, 16px);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated-2);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+}
+
 .diseno-seccion-contenido {
     margin-top: var(--sp-4, 16px);
     padding-top: var(--sp-4, 16px);
@@ -293,6 +344,42 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* ---- Mini mockup (nav + tarjeta + botón) ---- */
+
+.plantilla-mockup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding: 12px;
+    margin-bottom: 6px;
+
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.plantilla-mockup-nav {
+    width: 40%;
+    height: 8px;
+}
+
+.plantilla-mockup-card {
+    height: 46px;
+    padding: 6px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.plantilla-mockup-card > div {
+    width: 60%;
+    height: 8px;
+    border-radius: 2px;
+}
+
+.plantilla-mockup-btn {
+    width: 34%;
+    height: 10px;
+}
+
 .plantilla-card h3 {
     margin: 0;
     font-family: var(--font-display);
@@ -334,4 +421,37 @@
 .plantilla-card button {
     margin-top: 8px;
     align-self: flex-start;
+}
+
+/* ---- Plantillas propias ---- */
+
+.plantillas-personalizadas {
+    margin-top: var(--sp-7, 32px);
+    padding-top: var(--sp-6, 24px);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.plantillas-personalizadas h2 {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-size: var(--fs-lg, 18px);
+    color: var(--text-primary);
+}
+
+.plantilla-guardar-form {
+    display: flex;
+    gap: var(--sp-3, 12px);
+    flex-wrap: wrap;
+    margin-top: var(--sp-4, 16px);
+}
+
+.plantilla-guardar-form input {
+    flex: 1;
+    min-width: 220px;
+    padding: var(--sp-3, 12px) var(--sp-4, 16px);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated-2);
+    color: var(--text-primary);
+    font-family: var(--font-body);
 }

@@ -20,16 +20,33 @@ const HomeSectionsRenderer = ({ secciones = [] }) => {
 
                 if (!Componente) return null;
 
-                // Cada componente de sección ya renderiza su propio
-                // <section>/wrapper semántico con su propia clase CSS
-                // (PromoStrip, CatalogoSection, Newsletter, etc.) — acá
-                // no se envuelve de nuevo para no duplicar contenedores.
-                return (
+                const elemento = (
                     <Componente
-                        key={`${seccion.tipo}-${index}`}
+                        key={seccion.contenido?.fondo ? undefined : `${seccion.tipo}-${index}`}
                         contenido={seccion.contenido || {}}
                     />
                 );
+
+                // "fondo" es un campo universal (no específico de ningún
+                // tipo de sección): si el admin le puso un color desde el
+                // editor, se envuelve en una franja de ese color. Sin
+                // "fondo", no se agrega ningún wrapper — cada componente
+                // de sección ya renderiza su propio <section> semántico
+                // (PromoStrip, CatalogoSection, Newsletter, etc.) y no
+                // hace falta duplicar contenedores.
+                if (seccion.contenido?.fondo) {
+                    return (
+                        <div
+                            key={`${seccion.tipo}-${index}`}
+                            className="home-seccion-fondo"
+                            style={{ background: seccion.contenido.fondo }}
+                        >
+                            {elemento}
+                        </div>
+                    );
+                }
+
+                return elemento;
 
             })}
         </>

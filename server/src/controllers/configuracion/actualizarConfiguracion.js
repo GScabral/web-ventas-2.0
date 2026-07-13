@@ -10,6 +10,9 @@ const esColorHexValido = (valor) =>
 // para el detalle de qué fuente real carga cada clave).
 const FUENTES_VALIDAS = ["clasica", "moderna", "elegante", "minimal"];
 
+const RADIOS_VALIDOS = ["redondeado", "cuadrado"];
+const DENSIDADES_VALIDAS = ["amplia", "compacta"];
+
 // Campos de texto libre: si vienen, deben ser string (pueden venir
 // vacíos para "borrar" el dato, ej. sacar el Facebook si no tiene).
 const CAMPOS_TEXTO_LIBRE = [
@@ -31,6 +34,10 @@ const actualizarConfiguracion = async (datos) => {
     color_secundario,
     color_acento,
     fuente,
+    radio_bordes,
+    densidad,
+    color_fondo,
+    color_fondo_tarjetas,
   } = datos;
 
   const camposAActualizar = {};
@@ -61,6 +68,33 @@ const actualizarConfiguracion = async (datos) => {
       throw new Error(`La tipografía "${fuente}" no es una opción válida.`);
     }
     camposAActualizar.fuente = fuente;
+  }
+
+  if (radio_bordes !== undefined) {
+    if (!RADIOS_VALIDOS.includes(radio_bordes)) {
+      throw new Error(`"${radio_bordes}" no es un estilo de bordes válido.`);
+    }
+    camposAActualizar.radio_bordes = radio_bordes;
+  }
+
+  if (densidad !== undefined) {
+    if (!DENSIDADES_VALIDAS.includes(densidad)) {
+      throw new Error(`"${densidad}" no es una densidad válida.`);
+    }
+    camposAActualizar.densidad = densidad;
+  }
+
+  for (const [campo, valor] of Object.entries({
+    color_fondo,
+    color_fondo_tarjetas,
+  })) {
+    if (valor === undefined) continue;
+
+    if (!esColorHexValido(valor)) {
+      throw new Error(`El color "${campo}" debe ser un hexadecimal válido, ej: #ffffff.`);
+    }
+
+    camposAActualizar[campo] = valor;
   }
 
   for (const campo of CAMPOS_TEXTO_LIBRE) {

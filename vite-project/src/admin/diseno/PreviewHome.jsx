@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Link } from "react-router-dom";
 
@@ -19,6 +19,11 @@ const PreviewHome = () => {
 
     const isLoggedIn = useSelector(state => state.isLoggedInAd);
 
+    // "desktop" = ancho completo (como se ve normalmente). "mobile" =
+    // recorta el ancho a 390px y centra, para simular una pantalla de
+    // celular sin necesitar herramientas del navegador.
+    const [vista, setVista] = useState("desktop");
+
     if (!isLoggedIn) {
         return <Navigate to="/admin/login" />;
     }
@@ -27,10 +32,34 @@ const PreviewHome = () => {
         <div>
             <div className="preview-home-aviso">
                 <span>👁️ Vista previa del borrador — todavía no está publicado en la tienda.</span>
+
+                <div className="preview-home-toggle">
+                    <button
+                        type="button"
+                        className={vista === "desktop" ? "activo" : ""}
+                        onClick={() => setVista("desktop")}
+                    >
+                        💻 Escritorio
+                    </button>
+                    <button
+                        type="button"
+                        className={vista === "mobile" ? "activo" : ""}
+                        onClick={() => setVista("mobile")}
+                    >
+                        📱 Mobile
+                    </button>
+                </div>
+
                 <Link to="/admin/diseno">Volver a Diseño</Link>
             </div>
 
-            <Home modo="borrador" />
+            {vista === "mobile" ? (
+                <div className="preview-home-mobile-frame">
+                    <Home modo="borrador" />
+                </div>
+            ) : (
+                <Home modo="borrador" />
+            )}
         </div>
     );
 };

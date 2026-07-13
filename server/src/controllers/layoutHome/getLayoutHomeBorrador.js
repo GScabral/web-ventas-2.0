@@ -18,6 +18,7 @@ const getLayoutHomeBorrador = async () => {
     return {
         secciones: layout.secciones_borrador || layout.secciones_publicado || seccionesPorDefecto(),
         plantilla_activa: layout.plantilla_activa,
+        plantillas_personalizadas: layout.plantillas_personalizadas || [],
     };
 };
 

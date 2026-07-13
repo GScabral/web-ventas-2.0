@@ -6,6 +6,8 @@ const getLayoutHomeBorrador = require("../controllers/layoutHome/getLayoutHomeBo
 const actualizarLayoutHomeBorrador = require("../controllers/layoutHome/actualizarLayoutHomeBorrador");
 const publicarLayoutHome = require("../controllers/layoutHome/publicarLayoutHome");
 const aplicarPlantilla = require("../controllers/layoutHome/aplicarPlantilla");
+const guardarPlantillaPersonalizada = require("../controllers/layoutHome/guardarPlantillaPersonalizada");
+const eliminarPlantillaPersonalizada = require("../controllers/layoutHome/eliminarPlantillaPersonalizada");
 
 const router = Router();
 
@@ -55,6 +57,24 @@ router.post("/plantilla", verificarTokenAdmin, async (req, res) => {
         res.status(200).json(resultado);
     } catch (error) {
         res.status(400).json({ error: error.message || "No pudimos aplicar la plantilla." });
+    }
+});
+
+router.post("/plantilla-personalizada", verificarTokenAdmin, async (req, res) => {
+    try {
+        const plantillas = await guardarPlantillaPersonalizada(req.body.nombre);
+        res.status(201).json(plantillas);
+    } catch (error) {
+        res.status(400).json({ error: error.message || "No pudimos guardar la plantilla." });
+    }
+});
+
+router.delete("/plantilla-personalizada/:id", verificarTokenAdmin, async (req, res) => {
+    try {
+        const plantillas = await eliminarPlantillaPersonalizada(req.params.id);
+        res.status(200).json(plantillas);
+    } catch (error) {
+        res.status(400).json({ error: error.message || "No pudimos eliminar la plantilla." });
     }
 });
 

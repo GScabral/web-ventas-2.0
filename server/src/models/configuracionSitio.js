@@ -104,6 +104,34 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
 
+    // ---- Control visual extendido (más allá de color/fuente) ----
+    // "cuadrado" achica --radius-sm/md/lg en Design-system.css (mismo
+    // mecanismo que los colores: ThemeLoader las pisa sobre <html>).
+    radio_bordes: {
+      type: DataTypes.STRING(20),
+      defaultValue: "redondeado", // "redondeado" | "cuadrado"
+    },
+
+    // "compacta" achica la escala de espaciado --sp-4 a --sp-9.
+    densidad: {
+      type: DataTypes.STRING(20),
+      defaultValue: "amplia", // "amplia" | "compacta"
+    },
+
+    // Fondo de página (pisa --bg-base) y fondo de tarjetas/superficies
+    // (pisa --bg-elevated). Se mantienen claros por defecto: los
+    // colores de texto (--text-primary, etc.) no son "theme-aware"
+    // todavía, así que un fondo oscuro dejaría el texto ilegible.
+    color_fondo: {
+      type: DataTypes.STRING(7),
+      defaultValue: "#f5f6f8",
+    },
+
+    color_fondo_tarjetas: {
+      type: DataTypes.STRING(7),
+      defaultValue: "#ffffff",
+    },
+
   });
 
   return ConfiguracionSitio;

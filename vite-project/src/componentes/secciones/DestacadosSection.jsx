@@ -23,6 +23,7 @@ const DestacadosSection = ({ contenido = {} }) => {
             productos={productosDestacados}
             eyebrow={contenido.eyebrow}
             titulo={contenido.titulo}
+            cantidad={contenido.cantidad || 5}
         />
     );
 };

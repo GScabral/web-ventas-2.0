@@ -678,6 +678,22 @@ export const aplicarPlantillaDiseno = (plantilla) => {
   };
 };
 
+export const guardarPlantillaPersonalizada = (nombre) => {
+  return async function (dispatch) {
+    const response = await axios.post(`${API_URL}/layout-home/plantilla-personalizada`, { nombre });
+    await dispatch(getLayoutHomeBorrador());
+    return response.data;
+  };
+};
+
+export const eliminarPlantillaPersonalizada = (id) => {
+  return async function (dispatch) {
+    const response = await axios.delete(`${API_URL}/layout-home/plantilla-personalizada/${id}`);
+    await dispatch(getLayoutHomeBorrador());
+    return response.data;
+  };
+};
+
 // ---- Testimonios ----
 
 export const getTestimonios = () => {

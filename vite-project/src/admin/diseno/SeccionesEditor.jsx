@@ -18,6 +18,7 @@ const OPCIONES_FUENTE_PRODUCTOS = ["hero", "banner", "destacados", "nuevos", "of
 
 const ETIQUETAS_SECCION = {
     banner: { nombre: "Banner promocional", icono: "🖼️" },
+    hero: { nombre: "Portada grande (hero)", icono: "🏔️" },
     destacados: { nombre: "Productos destacados", icono: "⭐" },
     categorias: { nombre: "Categorías", icono: "🗂️" },
     catalogo: { nombre: "Catálogo completo", icono: "🛍️" },
@@ -25,11 +26,35 @@ const ETIQUETAS_SECCION = {
     newsletter: { nombre: "Newsletter", icono: "✉️" },
 };
 
+// Con qué contenido arranca cada sección nueva agregada desde "Agregar
+// sección". Mismos valores por defecto que seccionesPorDefecto.js en
+// el backend, para que una sección recién agregada se vea igual acá
+// que si hubiera venido seedeada de fábrica.
+const contenidoPorDefecto = (tipo) => {
+    switch (tipo) {
+        case "hero":
+            return { titulo: "", subtitulo: "", imagen: "", textoBoton: "Ver catálogo", linkBoton: "/" };
+        case "destacados":
+            return { seccionSlug: "destacados", titulo: "Las prendas que marcan tendencia", cantidad: 5 };
+        case "categorias":
+            return { titulo: "Comprá por categoría" };
+        case "testimonios":
+            return { titulo: "Lo que dicen nuestros clientes", estilo: "grilla" };
+        default:
+            return {};
+    }
+};
+
 // Editor de orden/visibilidad/contenido de las secciones de la Home.
 // Trabaja sobre una copia local (secciones) que solo se sincroniza con
 // el borrador del servidor la primera vez que llega — así, aplicar una
 // plantilla de colores en la otra pestaña (que también refresca el
 // borrador) no pisa cambios de orden que el admin todavía no guardó acá.
+//
+// Permite tener más de una sección del mismo tipo (por ejemplo, dos
+// bloques de "destacados" con distinta fuente de productos): el backend
+// no lo prohíbe (ver TIPOS_VALIDOS en actualizarLayoutHomeBorrador.js),
+// solo valida que cada "tipo" sea uno conocido.
 const SeccionesEditor = () => {
 
     const dispatch = useDispatch();
@@ -39,6 +64,7 @@ const SeccionesEditor = () => {
 
     const [secciones, setSecciones] = useState([]);
     const [cargado, setCargado] = useState(false);
+    const [tipoAAgregar, setTipoAAgregar] = useState("destacados");
 
     const [guardando, setGuardando] = useState(false);
     const [publicando, setPublicando] = useState(false);
@@ -83,6 +109,27 @@ const SeccionesEditor = () => {
                     ? { ...s, contenido: { ...s.contenido, [campo]: valor } }
                     : s
             )
+        );
+    };
+
+    const agregarSeccion = () => {
+        setSecciones(prev => ([
+            ...prev,
+            {
+                tipo: tipoAAgregar,
+                visible: true,
+                orden: prev.length,
+                contenido: contenidoPorDefecto(tipoAAgregar),
+            },
+        ]));
+    };
+
+    const eliminarSeccion = (index) => {
+        const etiqueta = ETIQUETAS_SECCION[secciones[index].tipo]?.nombre || secciones[index].tipo;
+        if (!window.confirm(`¿Sacar "${etiqueta}" de la Home?`)) return;
+
+        setSecciones(prev =>
+            prev.filter((_, i) => i !== index).map((s, i) => ({ ...s, orden: i }))
         );
     };
 
@@ -131,13 +178,72 @@ const SeccionesEditor = () => {
         }
     };
 
-    const renderContenido = (seccion, index) => {
+    const renderCamposEspecificos = (seccion, index) => {
         switch (seccion.tipo) {
+
+            case "hero":
+                return (
+                    <>
+                        <div className="form-group">
+                            <label>Título</label>
+                            <input
+                                type="text"
+                                value={seccion.contenido?.titulo || ""}
+                                onChange={(e) => actualizarContenido(index, "titulo", e.target.value)}
+                                placeholder="Ej: Nueva colección de invierno"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Subtítulo</label>
+                            <input
+                                type="text"
+                                value={seccion.contenido?.subtitulo || ""}
+                                onChange={(e) => actualizarContenido(index, "subtitulo", e.target.value)}
+                                placeholder="Ej: Prendas abrigadas, hasta 30% off"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Imagen de fondo (URL)</label>
+                            <input
+                                type="text"
+                                value={seccion.contenido?.imagen || ""}
+                                onChange={(e) => actualizarContenido(index, "imagen", e.target.value)}
+                                placeholder="https://..."
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Texto del botón</label>
+                            <input
+                                type="text"
+                                value={seccion.contenido?.textoBoton || ""}
+                                onChange={(e) => actualizarContenido(index, "textoBoton", e.target.value)}
+                                placeholder="Ej: Ver catálogo"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Link del botón</label>
+                            <input
+                                type="text"
+                                value={seccion.contenido?.linkBoton || ""}
+                                onChange={(e) => actualizarContenido(index, "linkBoton", e.target.value)}
+                                placeholder="Ej: /?categoria=Invierno"
+                            />
+                        </div>
+
+                        <p className="campo-hint">
+                            Sin título ni imagen, esta sección no se muestra
+                            aunque esté marcada como visible.
+                        </p>
+                    </>
+                );
 
             case "destacados":
                 return (
-                    <div className="diseno-seccion-contenido">
-
+                    <>
                         <div className="form-group">
                             <label>Fuente de productos</label>
                             <select
@@ -174,28 +280,38 @@ const SeccionesEditor = () => {
                             />
                         </div>
 
-                    </div>
+                        <div className="form-group">
+                            <label>Cantidad de productos</label>
+                            <input
+                                type="number"
+                                min="2"
+                                max="9"
+                                value={seccion.contenido?.cantidad || 5}
+                                onChange={(e) => actualizarContenido(index, "cantidad", Number(e.target.value))}
+                            />
+                            <p className="campo-hint">
+                                Uno se muestra grande y el resto en tarjetas chicas al lado.
+                            </p>
+                        </div>
+                    </>
                 );
 
             case "categorias":
                 return (
-                    <div className="diseno-seccion-contenido">
-                        <div className="form-group">
-                            <label>Título</label>
-                            <input
-                                type="text"
-                                value={seccion.contenido?.titulo || ""}
-                                onChange={(e) => actualizarContenido(index, "titulo", e.target.value)}
-                                placeholder="Ej: Comprá por categoría"
-                            />
-                        </div>
+                    <div className="form-group">
+                        <label>Título</label>
+                        <input
+                            type="text"
+                            value={seccion.contenido?.titulo || ""}
+                            onChange={(e) => actualizarContenido(index, "titulo", e.target.value)}
+                            placeholder="Ej: Comprá por categoría"
+                        />
                     </div>
                 );
 
             case "testimonios":
                 return (
-                    <div className="diseno-seccion-contenido">
-
+                    <>
                         <div className="form-group">
                             <label>Título</label>
                             <input
@@ -206,9 +322,19 @@ const SeccionesEditor = () => {
                             />
                         </div>
 
-                        <TestimoniosEditor />
+                        <div className="form-group">
+                            <label>Estilo</label>
+                            <select
+                                value={seccion.contenido?.estilo || "grilla"}
+                                onChange={(e) => actualizarContenido(index, "estilo", e.target.value)}
+                            >
+                                <option value="grilla">Grilla</option>
+                                <option value="carrusel">Carrusel (desliza al costado)</option>
+                            </select>
+                        </div>
 
-                    </div>
+                        <TestimoniosEditor />
+                    </>
                 );
 
             case "banner":
@@ -239,6 +365,38 @@ const SeccionesEditor = () => {
                 return null;
         }
     };
+
+    const renderContenido = (seccion, index) => (
+        <div className="diseno-seccion-contenido">
+
+            {renderCamposEspecificos(seccion, index)}
+
+            {/* Campo universal: cualquier sección puede tener un color de
+                fondo propio, para lograr franjas alternadas (zebra) sin
+                tocar CSS. Vacío = sin franja, se ve igual que antes. */}
+            <div className="form-group form-group-fondo">
+                <label>Color de fondo de esta sección (opcional)</label>
+                <div className="color-input-row">
+                    <input
+                        type="color"
+                        value={seccion.contenido?.fondo || "#ffffff"}
+                        onChange={(e) => actualizarContenido(index, "fondo", e.target.value)}
+                    />
+                    <span>{seccion.contenido?.fondo || "Sin color (usa el fondo general)"}</span>
+                    {seccion.contenido?.fondo && (
+                        <button
+                            type="button"
+                            className="btn-details"
+                            onClick={() => actualizarContenido(index, "fondo", "")}
+                        >
+                            Quitar
+                        </button>
+                    )}
+                </div>
+            </div>
+
+        </div>
+    );
 
     if (!cargado) {
         return <p className="diseno-cargando">Cargando borrador...</p>;
@@ -330,6 +488,16 @@ const SeccionesEditor = () => {
                                     <span>{seccion.visible ? "Visible" : "Oculta"}</span>
                                 </label>
 
+                                <button
+                                    type="button"
+                                    className="diseno-seccion-eliminar"
+                                    onClick={() => eliminarSeccion(index)}
+                                    aria-label="Sacar sección"
+                                    title="Sacar esta sección"
+                                >
+                                    🗑
+                                </button>
+
                             </div>
 
                             {renderContenido(seccion, index)}
@@ -337,6 +505,17 @@ const SeccionesEditor = () => {
                         </div>
                     );
                 })}
+            </div>
+
+            <div className="diseno-agregar-seccion">
+                <select value={tipoAAgregar} onChange={(e) => setTipoAAgregar(e.target.value)}>
+                    {Object.entries(ETIQUETAS_SECCION).map(([tipo, { nombre }]) => (
+                        <option key={tipo} value={tipo}>{nombre}</option>
+                    ))}
+                </select>
+                <button type="button" className="btn-add-variant" onClick={agregarSeccion}>
+                    + Agregar sección
+                </button>
             </div>
 
         </div>

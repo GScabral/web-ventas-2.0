@@ -6,6 +6,9 @@ const TrendingSection = ({
     productos,
     eyebrow = "Destacados",
     titulo = "Las prendas que marcan tendencia",
+    // Total de productos a mostrar (1 principal + el resto en la
+    // grilla chica). Configurable desde Diseño → Secciones → Destacados.
+    cantidad = 5,
 }) => {
 
     if (!productos?.length) return null;
@@ -67,7 +70,7 @@ const TrendingSection = ({
 
                 <div className="featured-side">
 
-                    {productos.slice(1, 5).map(producto => (
+                    {productos.slice(1, Math.max(1, cantidad)).map(producto => (
 
                         <Link
                             key={producto.id}

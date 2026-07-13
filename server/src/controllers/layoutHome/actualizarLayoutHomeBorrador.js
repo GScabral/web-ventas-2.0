@@ -2,6 +2,7 @@ const { LayoutHome } = require("../../db");
 
 const TIPOS_VALIDOS = [
     "banner",
+    "hero",
     "destacados",
     "categorias",
     "catalogo",

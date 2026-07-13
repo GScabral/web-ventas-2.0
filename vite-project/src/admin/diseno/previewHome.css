@@ -25,3 +25,39 @@
     font-weight: 700;
     text-decoration: underline;
 }
+
+.preview-home-toggle {
+    display: flex;
+    gap: 4px;
+}
+
+.preview-home-toggle button {
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.preview-home-toggle button.activo {
+    background: var(--accent-terracota, #ff6b35);
+    border-color: var(--accent-terracota, #ff6b35);
+}
+
+/* Simula una pantalla de celular: recorta el ancho y centra, con un
+   "marco" liviano alrededor para que se note que es una simulación. */
+.preview-home-mobile-frame {
+    width: 390px;
+    max-width: 100%;
+    margin: 24px auto;
+
+    border: 10px solid #1c1c1c;
+    border-radius: 32px;
+    overflow: hidden;
+
+    box-shadow: var(--shadow-lg, 0 16px 40px rgba(0, 0, 0, 0.2));
+}

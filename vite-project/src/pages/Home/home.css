@@ -1,7 +1,11 @@
 .home-fondo {
     width: 100%;
     min-height: 100vh;
-    background: #fff;
+    /* Antes era "#fff" fijo, tapando el --bg-base que configura
+       Personalización → Fondos (y ThemeLoader aplica sobre <html>).
+       Con var(...) el fondo de página elegido por el admin se ve
+       de verdad en la Home. */
+    background: var(--bg-base);
     font-family: var(--font-body);
 }
 
@@ -16,6 +20,15 @@
 
 .home-section {
     width: 100%;
+}
+
+/* Franja de color de fondo opcional por sección (contenido.fondo,
+   ver HomeSectionsRenderer.jsx). Full-bleed: el color ocupa todo el
+   ancho, el contenido de la sección se sigue centrando por su propio
+   wrapper interno. */
+.home-seccion-fondo {
+    width: 100%;
+    padding: 32px 0;
 }
 
 .catalog-layout {

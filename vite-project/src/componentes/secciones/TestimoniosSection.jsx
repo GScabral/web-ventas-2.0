@@ -16,13 +16,18 @@ const TestimoniosSection = ({ contenido = {} }) => {
     if (!testimonios.length) return null;
 
     const titulo = contenido.titulo || "Lo que dicen nuestros clientes";
+    // "grilla" (por defecto) o "carrusel" — carrusel es CSS puro (scroll
+    // horizontal con snap), sin sumar ninguna librería nueva.
+    const esCarrusel = contenido.estilo === "carrusel";
 
     return (
         <section className="testimonios-section">
 
             <h2 className="testimonios-section-titulo">{titulo}</h2>
 
-            <div className="testimonios-section-grid">
+            <div className={
+                "testimonios-section-grid" + (esCarrusel ? " carrusel" : "")
+            }>
 
                 {testimonios.map(testimonio => (
                     <div key={testimonio.id_testimonio} className="testimonio-card">

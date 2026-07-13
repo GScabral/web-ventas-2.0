@@ -4,6 +4,7 @@ import DestacadosSection from "./secciones/DestacadosSection";
 import CategoriasSection from "./secciones/CategoriasSection";
 import TestimoniosSection from "./secciones/TestimoniosSection";
 import CatalogoSection from "./secciones/CatalogoSection";
+import HeroSection from "./secciones/HeroSection";
 
 // Registro central: cada "tipo" de sección que puede aparecer en el
 // layout de la Home (guardado en LayoutHome, editable desde el panel
@@ -13,6 +14,7 @@ import CatalogoSection from "./secciones/CatalogoSection";
 // componente y sumar una entrada acá, nada más.
 const sectionRegistry = {
     banner: PromoStrip,
+    hero: HeroSection,
     destacados: DestacadosSection,
     categorias: CategoriasSection,
     catalogo: CatalogoSection,
