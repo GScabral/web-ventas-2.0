@@ -11,6 +11,7 @@ import {
 
 import VentasChart from "./VentasChart";
 import VentasPorCategoria from "./VentasPorCategoria";
+import InfoTooltip from "../components/InfoTooltip";
 
 import "./principal.css";
 
@@ -91,7 +92,10 @@ const Principal = () => {
     <div className="dashboard">
 
       <div className="welcome-card">
-        <h2>Bienvenido al panel de administración</h2>
+        <h2>
+          Bienvenido al panel de administración
+          <InfoTooltip texto="Acá ves un resumen del día: ventas, pedidos pendientes y stock bajo. Para cargar o editar algo puntual, usá el menú de la izquierda." />
+        </h2>
         <p>
           Gestiona productos, pedidos y ofertas desde
           un único lugar.

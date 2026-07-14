@@ -10,6 +10,8 @@ import {
     mostrarToast,
 } from "../../redux/action";
 
+import InfoTooltip from "../components/InfoTooltip";
+
 import "./Caja.css";
 
 const formatearMoneda = (valor) =>
@@ -186,7 +188,10 @@ const Caja = () => {
 
             <div className="caja-header">
                 <div>
-                    <h1>Caja</h1>
+                    <h1>
+                        Caja
+                        <InfoTooltip texto="Abrí la caja con el efectivo inicial del día, registrá cada entrada/salida de plata, y cerrala al final para que quede el arqueo. Las ventas pagadas con Mercado Pago se registran solas." />
+                    </h1>
                     <p>
                         Abrí la caja al empezar el día, registrá los
                         movimientos de efectivo, y cerrala al final

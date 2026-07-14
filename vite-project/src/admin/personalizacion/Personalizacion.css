@@ -8,23 +8,6 @@
   max-width: 1200px;
 }
 
-.personalizacion-header {
-  margin-bottom: var(--sp-6);
-}
-
-.personalizacion-header h1 {
-  font-family: var(--font-display);
-  font-size: var(--fs-2xl);
-  color: var(--text-primary);
-}
-
-.personalizacion-header p {
-  margin-top: var(--sp-2);
-  color: var(--text-secondary);
-  font-size: var(--fs-sm);
-  max-width: 560px;
-}
-
 .personalizacion-layout {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -65,21 +48,8 @@
   margin: -4px 0 var(--sp-4);
 }
 
-.personalizacion-cross-link {
+.personalizacion-intro {
   margin: 0 0 var(--sp-5, 20px);
-  padding: var(--sp-3, 12px) var(--sp-4, 16px);
-
-  border-left: 3px solid var(--accent-terracota);
-  background: rgba(255, 107, 53, 0.06);
-
-  font-size: var(--fs-xs);
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.personalizacion-cross-link a {
-  color: var(--accent-terracota);
-  font-weight: 700;
 }
 
 /* ---- Bordes y densidad (toggles de 2 opciones) ---- */

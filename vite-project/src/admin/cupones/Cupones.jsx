@@ -8,6 +8,8 @@ import {
     eliminarCupon,
 } from "../../redux/action";
 
+import InfoTooltip from "../components/InfoTooltip";
+
 import "./Cupones.css";
 
 const FORM_VACIO = {
@@ -91,7 +93,10 @@ const Cupones = () => {
         <div className="cupones-page">
 
             <div className="cupones-header">
-                <h1>Cupones de descuento</h1>
+                <h1>
+                    Cupones de descuento
+                    <InfoTooltip texto="Creá un código (ej: VERANO20), definí el descuento, fecha de vigencia y usos máximos. El cliente lo escribe en el checkout para aplicarlo." />
+                </h1>
                 <p>
                     Creá códigos que tus clientes puedan escribir en el
                     checkout para obtener un descuento.

@@ -82,6 +82,86 @@
 .entregado { color: var(--accent-terracota); }
 .cancelado { color: var(--color-error); }
 
+/* ---- InfoTooltip (círculo con "!") ----
+   Ver admin/components/InfoTooltip.jsx. Se pone al lado de un
+   h1/h2 de sección para explicar en una frase qué es esa pantalla. */
+
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: var(--sp-2, 8px);
+}
+
+.info-tooltip-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+
+  border: 1px solid var(--border-medium);
+  border-radius: 50%;
+  background: var(--bg-elevated-2);
+  color: var(--text-muted);
+
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+
+  transition: border-color var(--t-fast, 0.15s) ease,
+              color var(--t-fast, 0.15s) ease,
+              background var(--t-fast, 0.15s) ease;
+}
+
+.info-tooltip-boton:hover,
+.info-tooltip-boton[aria-expanded="true"] {
+  border-color: var(--accent-terracota);
+  color: var(--accent-terracota);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.info-tooltip-globo {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+
+  width: max-content;
+  max-width: 260px;
+  padding: var(--sp-3, 12px) var(--sp-4, 16px);
+
+  background: var(--text-primary);
+  color: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
+
+  font-family: var(--font-body);
+  font-size: var(--fs-xs, 12px);
+  font-weight: 400;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.info-tooltip-globo::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 10px;
+  border: 5px solid transparent;
+  border-bottom-color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+  .info-tooltip-globo {
+    max-width: 220px;
+  }
+}
+
 /* ---- Estado vacío genérico ---- */
 
 .admin-empty-state,

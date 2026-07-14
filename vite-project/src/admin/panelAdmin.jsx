@@ -4,6 +4,7 @@ import {
   Routes,
   Navigate,
   NavLink,
+  useLocation,
 } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +21,6 @@ const PedidoList = lazy(() => import("./pedidos/listadoPedidos"));
 const ClienteList = lazy(() => import("./clientes/listadoClientes"));
 const OfertasLista = lazy(() => import("./ofertas/listadoOFertas"));
 const BannersLista = lazy(() => import("./banners/listadoBanners"));
-const Personalizacion = lazy(() => import("./personalizacion/Personalizacion"));
 const Caja = lazy(() => import("./caja/Caja"));
 const Cupones = lazy(() => import("./cupones/Cupones"));
 const Papelera = lazy(() => import("./papelera/Papelera"));
@@ -36,73 +36,49 @@ import BusquedaGlobal from "./BusquedaGlobal";
 import LoginScreen from "./login/LoginScreen";
 import dashboardStyles from "./panelAdminDashboard.module.css";
 
-const menuItems = [
+// Antes era una lista plana de 12 items — costaba encontrar algo a
+// simple vista. Agrupado por lo que el admin realmente viene a hacer:
+// cargar/gestionar productos, atender ventas, o tocar cómo se ve la
+// tienda. "Inicio" queda suelto arriba de todo, es el punto de partida,
+// no pertenece a ningún grupo temático.
+const menuGroups = [
   {
-    title: "Inicio",
-    path: "/admin/principal",
-    icon: "📊",
+    titulo: null,
+    items: [
+      { title: "Inicio", path: "/admin/principal", icon: "📊", subtitulo: "Un vistazo rápido a cómo viene el día" },
+    ],
   },
   {
-    title: "Caja",
-    path: "/admin/caja",
-    icon: "💰",
+    titulo: "Catálogo",
+    items: [
+      { title: "Añadir Producto", path: "/admin/new", icon: "➕", subtitulo: "Cargá un producto nuevo" },
+      { title: "Inventario", path: "/admin/lista", icon: "📦", subtitulo: "Todos tus productos, stock y precios" },
+      { title: "Papelera", path: "/admin/papelera", icon: "🗑️", subtitulo: "Productos eliminados, por si hay que recuperarlos" },
+      { title: "Ofertas", path: "/admin/ofertas", icon: "🏷️", subtitulo: "Productos con descuento activo" },
+    ],
   },
   {
-    title: "Añadir Producto",
-    path: "/admin/new",
-    icon: "➕",
+    titulo: "Ventas",
+    items: [
+      { title: "Caja", path: "/admin/caja", icon: "💰", subtitulo: "Registrá entradas y salidas de efectivo" },
+      { title: "Pedidos", path: "/admin/PedidosLista", icon: "🛒", subtitulo: "Seguimiento de compras, de nuevo a entregado" },
+      { title: "Clientes", path: "/admin/clientes", icon: "👥", subtitulo: "Quiénes te compraron y sus datos" },
+      { title: "Cupones", path: "/admin/cupones", icon: "🎟️", subtitulo: "Códigos de descuento para el checkout" },
+    ],
   },
   {
-    title: "Inventario",
-    path: "/admin/lista",
-    icon: "📦",
-  },
-  {
-    title: "Papelera",
-    path: "/admin/papelera",
-    icon: "🗑️",
-  },
-  {
-    title: "Pedidos",
-    path: "/admin/PedidosLista",
-    icon: "🛒",
-  },
-  {
-    title: "Clientes",
-    path: "/admin/clientes",
-    icon: "👥",
-  },
-  {
-    title: "Ofertas",
-    path: "/admin/ofertas",
-    icon: "🏷️",
-  },
-  {
-    title: "Cupones",
-    path: "/admin/cupones",
-    icon: "🎟️",
-  },
-  {
-    title: "Banners",
-    path: "/admin/banners",
-    icon: "🖼️",
-  },
-  {
-    title: "Envíos",
-    path: "/admin/envios",
-    icon: "🚚",
-  },
-  {
-    title: "Personalización",
-    path: "/admin/personalizacion",
-    icon: "🎨",
-  },
-  {
-    title: "Diseño",
-    path: "/admin/diseno",
-    icon: "🧩",
+    titulo: "Tienda",
+    items: [
+      { title: "Banners", path: "/admin/banners", icon: "🖼️", subtitulo: "La tira de imágenes arriba del catálogo" },
+      { title: "Envíos", path: "/admin/envios", icon: "🚚", subtitulo: "Costos y zonas de entrega" },
+      { title: "Diseño", path: "/admin/diseno", icon: "🎨", subtitulo: "Identidad, secciones de la portada y plantillas" },
+    ],
   },
 ];
+
+// Versión plana, derivada de los grupos, para buscar rápido el
+// título/subtítulo del header a partir de la ruta actual.
+const menuItems = menuGroups.flatMap(g => g.items);
 
 const PanelAdmin = () => {
   // null = todavía no sabemos (estamos verificando contra el backend)
@@ -151,6 +127,13 @@ const PanelAdmin = () => {
   const handleLogout = () => {
     dispatch(logoutAdmin());
   };
+
+  // Título/subtítulo del header según la ruta activa, en vez del
+  // genérico fijo de siempre — así el header confirma en qué sección
+  // estás parado, no solo el sidebar (útil sobre todo en mobile,
+  // donde el sidebar queda escondido la mayor parte del tiempo).
+  const location = useLocation();
+  const seccionActual = menuItems.find(item => item.path === location.pathname);
 
   // Mientras confirmamos contra el backend si el token guardado es válido,
   // no mostramos ni el panel ni el modal de login para evitar parpadeos
@@ -205,22 +188,29 @@ const PanelAdmin = () => {
         </div>
 
         <nav className={dashboardStyles.menu}>
-          {menuItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              onClick={() => setIsSidebarOpen(false)}
-              className={({ isActive }) =>
-                `${dashboardStyles.menuButton}
-                ${isActive
-                  ? dashboardStyles.active
-                  : ""
-                }`
-              }
-            >
-              <span>{item.icon}</span>
-              <span>{item.title}</span>
-            </NavLink>
+          {menuGroups.map((grupo, i) => (
+            <div className={dashboardStyles.menuGroup} key={grupo.titulo || `grupo-${i}`}>
+              {grupo.titulo && (
+                <span className={dashboardStyles.menuGroupLabel}>{grupo.titulo}</span>
+              )}
+              {grupo.items.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsSidebarOpen(false)}
+                  className={({ isActive }) =>
+                    `${dashboardStyles.menuButton}
+                    ${isActive
+                      ? dashboardStyles.active
+                      : ""
+                    }`
+                  }
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.title}</span>
+                </NavLink>
+              ))}
+            </div>
           ))}
         </nav>
       </aside>
@@ -229,11 +219,11 @@ const PanelAdmin = () => {
         <header className={dashboardStyles.header}>
           <div>
             <h1 className={dashboardStyles.headerTitle}>
-              Panel de Administración
+              {seccionActual?.title || "Panel de Administración"}
             </h1>
 
             <p className={dashboardStyles.headerSubtitle}>
-              Gestión de productos, pedidos y clientes
+              {seccionActual?.subtitulo || "Gestión de productos, pedidos y clientes"}
             </p>
           </div>
 
@@ -382,15 +372,12 @@ const PanelAdmin = () => {
               }
             />
 
+            {/* Ruta vieja: "Personalización" se unificó dentro de
+                "Diseño" (pestaña "Identidad y colores"). Se deja el
+                redirect por si alguien tiene el link guardado. */}
             <Route
               path="/personalizacion"
-              element={
-                isLoggedIn ? (
-                  <Personalizacion />
-                ) : (
-                  <Navigate to="/admin/login" />
-                )
-              }
+              element={<Navigate to="/admin/diseno" />}
             />
 
             <Route

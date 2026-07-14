@@ -8,6 +8,8 @@ import {
     mostrarToast,
 } from "../../redux/action";
 
+import InfoTooltip from "../components/InfoTooltip";
+
 import "./Papelera.css";
 
 const formatearFecha = (fecha) =>
@@ -70,7 +72,10 @@ const Papelera = () => {
         <div className="papelera-page">
 
             <div className="papelera-header">
-                <h1>Papelera</h1>
+                <h1>
+                    Papelera
+                    <InfoTooltip texto="Los productos eliminados quedan acá, no se borran para siempre. Podés restaurarlos, o eliminarlos definitivamente cuando estés seguro." />
+                </h1>
                 <p>
                     Los productos eliminados quedan acá antes de
                     borrarse para siempre — podés restaurarlos si fue

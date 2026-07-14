@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClientes } from "../../redux/action";
+import InfoTooltip from "../components/InfoTooltip";
 import styles from "./listadoCliente.module.css";
 
 // Sección reactivada: antes vivía comentada por completo (sin ruta,
@@ -41,7 +42,10 @@ const ListadoClientes = () => {
     return (
         <div>
             <div className="card-header">
-                <h2>Clientes</h2>
+                <h2>
+                    Clientes
+                    <InfoTooltip texto="Se registran solos cuando alguien crea una cuenta en la tienda o hace una compra. Buscá por nombre, apellido o correo para ver sus datos de contacto." />
+                </h2>
                 <p>{allClientes.length} cliente{allClientes.length === 1 ? "" : "s"} registrado{allClientes.length === 1 ? "" : "s"}</p>
             </div>
 

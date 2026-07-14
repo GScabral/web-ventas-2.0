@@ -18,6 +18,7 @@ import {
 } from "../../redux/action";
 
 import PedidoCard from "./pedidoCardList";
+import InfoTooltip from "../components/InfoTooltip";
 
 import "./PedidoList.css";
 
@@ -315,7 +316,10 @@ const PedidoList = () => {
     <div className="pedidos-page">
       <div className="pedidos-header">
         <div>
-          <h1>Pedidos</h1>
+          <h1>
+            Pedidos
+            <InfoTooltip texto="Cada pedido pasa por estados: nuevo, pagado, preparando, enviado, entregado (o cancelado). Cambiá el estado a mano, o se actualiza solo cuando el cliente paga con Mercado Pago." />
+          </h1>
 
           <p>
             Gestiona todos los pedidos

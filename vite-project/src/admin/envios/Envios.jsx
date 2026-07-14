@@ -13,6 +13,8 @@ import {
     mostrarToast,
 } from "../../redux/action";
 
+import InfoTooltip from "../components/InfoTooltip";
+
 import "./Envios.css";
 
 const Envios = () => {
@@ -137,7 +139,10 @@ const Envios = () => {
         <div className="envios-page">
 
             <div className="envios-header">
-                <h1>Costos de envío</h1>
+                <h1>
+                    Costos de envío
+                    <InfoTooltip texto="Un costo fijo por provincia para envío por correo. Se calcula solo en el checkout según la dirección del cliente." />
+                </h1>
                 <p>
                     Definí cuánto cobrar de envío según la provincia
                     del cliente. Se calcula solo en el checkout —
@@ -231,7 +236,10 @@ const Envios = () => {
             </div>
 
             <div className="envios-header" style={{ marginTop: "48px" }}>
-                <h1>Zonas de envío por moto</h1>
+                <h1>
+                    Zonas de envío por moto
+                    <InfoTooltip texto="Ciudades donde ofrecés entrega rápida en moto/cadete, más barata que el correo. Si la ciudad del cliente no está acá, no aparece esta opción en el checkout." />
+                </h1>
                 <p>
                     Ciudades donde ofrecés entrega rápida en moto/cadete
                     (más barata y más rápida que el correo dentro de la

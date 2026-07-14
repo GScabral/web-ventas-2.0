@@ -7,6 +7,7 @@ import ProductInfoCard from "./productInfoCard.jsx/ProductInfoCard";
 import CategoryCard from "./categoryCard.jsx/CategoryCard";
 import VariantCard from "./VariantCard/VariantCard";
 import PublishCard from "./PublishCard/PublishCard";
+import InfoTooltip from "../components/InfoTooltip";
 
 import "./NewProduct.css";
 
@@ -408,7 +409,10 @@ const NewProduct = ({ addProduct, createCategoria }) => {
   return (
     <div className="new-product-page">
       <div className="new-product-header">
-        <h1>Nuevo Producto</h1>
+        <h1>
+          Nuevo Producto
+          <InfoTooltip texto="Completá info, categoría, variantes (talle/color/stock) y fotos, y elegí en qué secciones de la Home querés que aparezca. Podés guardarlo como borrador o publicarlo directo." />
+        </h1>
 
         <p>
           Crea y configura productos para tu

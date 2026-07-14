@@ -8,6 +8,8 @@ import {
     eliminarBanner
 } from "../../redux/action";
 
+import InfoTooltip from "../components/InfoTooltip";
+
 import "./listadoBanners.css";
 
 const FORM_VACIO = {
@@ -109,7 +111,10 @@ const BannersLista = () => {
         <div className="banners-page">
 
             <div className="banners-header">
-                <h1>Banners promocionales</h1>
+                <h1>
+                    Banners promocionales
+                    <InfoTooltip texto="La sección 'banner' de la portada tiene que estar visible desde Diseño para que esto se vea en la tienda. Acá cargás la imagen, el texto y el link de cada uno." />
+                </h1>
                 <p>Gestioná la tira de banners que aparece arriba del catálogo en la home.</p>
             </div>
 

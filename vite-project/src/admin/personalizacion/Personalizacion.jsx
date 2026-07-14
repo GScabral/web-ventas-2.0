@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import {
     getConfiguracion,
@@ -144,19 +143,10 @@ const Personalizacion = () => {
     return (
         <div className="personalizacion-page">
 
-            <div className="personalizacion-header">
-                <h1>Personalización</h1>
-                <p>
-                    Elegí cómo se ve tu tienda: nombre, logo, colores, tipografía
-                    y datos de contacto. Los cambios se aplican en todo el sitio,
-                    incluido este panel.
-                </p>
-            </div>
-
-            <p className="personalizacion-cross-link">
-                ¿Buscás reordenar o prender/apagar secciones de la portada, o
-                elegir un combo de estilo ya armado? Eso está en{" "}
-                <Link to="/admin/diseno">Diseño</Link>.
+            <p className="campo-hint personalizacion-intro">
+                Nombre, logo, colores, tipografía y datos de contacto. Los
+                cambios se guardan y se ven en toda la tienda apenas tocás
+                "Guardar cambios" — no hace falta publicar por separado.
             </p>
 
             <div className="personalizacion-layout">

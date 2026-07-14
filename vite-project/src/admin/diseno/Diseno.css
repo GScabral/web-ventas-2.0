@@ -84,21 +84,16 @@
     flex-shrink: 0;
 }
 
-.diseno-cross-link {
+.diseno-nota-instantaneo {
     margin: 0 0 var(--sp-5, 20px);
-    padding: var(--sp-3, 12px) var(--sp-4, 16px);
+    padding: var(--sp-2, 8px) var(--sp-4, 16px);
 
-    border-left: 3px solid var(--accent-terracota);
-    background: rgba(255, 107, 53, 0.06);
+    border-left: 3px solid var(--color-success, #1e7d34);
+    background: rgba(30, 125, 52, 0.06);
 
     font-size: var(--fs-xs, 12px);
     color: var(--text-secondary);
     line-height: 1.5;
-}
-
-.diseno-cross-link a {
-    color: var(--accent-terracota);
-    font-weight: 700;
 }
 
 @media (max-width: 700px) {

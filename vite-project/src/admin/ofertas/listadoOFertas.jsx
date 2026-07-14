@@ -6,6 +6,8 @@ import {
     borrarOferta
 } from "../../redux/action";
 
+import InfoTooltip from "../components/InfoTooltip";
+
 import "./listadoOferta.css";
 
 const OfertasLista = () => {
@@ -53,6 +55,7 @@ const OfertasLista = () => {
 
                     <h1>
                         Ofertas Activas
+                        <InfoTooltip texto="Productos con precio de descuento y fecha de vencimiento. Se marcan desde 'Editar producto', acá solo ves y gestionás las que están corriendo." />
                     </h1>
 
                     <p>

@@ -15,6 +15,7 @@ import EditProductModal from "./editar";
 import OfertasModal from "../ofertas/ofertas";
 import ProductCard from "./components/ProductCard";
 import ProductPagination from "./components/ProductPagination";
+import InfoTooltip from "../components/InfoTooltip";
 
 import "./listadoProductos.css";
 
@@ -184,6 +185,7 @@ const ProductList = () => {
 
           <h1>
             Gestión de Productos
+            <InfoTooltip texto="Todo tu catálogo: editá precio y stock, duplicá un producto para hacer una variante nueva rápido, marcá ofertas, o mandalo a la papelera." />
           </h1>
 
           <p>
