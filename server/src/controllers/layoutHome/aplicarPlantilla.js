@@ -11,7 +11,7 @@ const seccionesPorDefecto = require("./seccionesPorDefecto");
 // eso aplicar o cambiar de plantilla es reversible y no hace perder
 // nada cargado, aunque sí cambia qué se ve y en qué orden.
 //
-// Los fondos se mantienen claros en las 3 (blanco/gris muy claro): los
+// Los fondos se mantienen claros en las 6 (blanco/gris muy claro): los
 // colores de texto (--text-primary, etc.) no son "theme-aware" todavía,
 // así que un fondo oscuro dejaría el texto ilegible. Lo que sí cambia
 // fuerte entre plantillas son los colores de acento, los bordes y la
@@ -79,11 +79,77 @@ const PLANTILLAS = {
             newsletter: { visible: true, orden: 6 },
         },
     },
+    impacto: {
+        color_primario: "#10233f",
+        color_secundario: "#0ea5e9",
+        color_acento: "#fb7185",
+        fuente: "moderna",
+        radio_bordes: "redondeado",
+        densidad: "compacta",
+        color_fondo: "#ffffff",
+        color_fondo_tarjetas: "#f0f9ff",
+        // Landing directa: hero grande con CTA de entrada (no banner
+        // chico), directo a destacados y catálogo. Sin categorías ni
+        // testimonios — pensada para entrar rápido a comprar.
+        distribucion: {
+            hero: { visible: true, orden: 0 },
+            destacados: { visible: true, orden: 1 },
+            catalogo: { visible: true, orden: 2 },
+            newsletter: { visible: true, orden: 3 },
+            banner: { visible: false, orden: 4 },
+            categorias: { visible: false, orden: 5 },
+            testimonios: { visible: false, orden: 6 },
+        },
+    },
+    editorial: {
+        color_primario: "#3a3a35",
+        color_secundario: "#8a8b5e",
+        color_acento: "#c2703d",
+        fuente: "clasica",
+        radio_bordes: "redondeado",
+        densidad: "amplia",
+        color_fondo: "#f7f4ee",
+        color_fondo_tarjetas: "#ffffff",
+        // Sin banner ni hero promocional: arranca directo por
+        // categorías (navegar antes que "vender"), suma destacados y
+        // testimonios como curaduría/confianza antes del catálogo.
+        distribucion: {
+            categorias: { visible: true, orden: 0 },
+            destacados: { visible: true, orden: 1 },
+            testimonios: { visible: true, orden: 2 },
+            catalogo: { visible: true, orden: 3 },
+            newsletter: { visible: true, orden: 4 },
+            banner: { visible: false, orden: 5 },
+            hero: { visible: false, orden: 6 },
+        },
+    },
+    outlet: {
+        color_primario: "#6d28d9",
+        color_secundario: "#ec4899",
+        color_acento: "#a3e635",
+        fuente: "minimal",
+        radio_bordes: "cuadrado",
+        densidad: "compacta",
+        color_fondo: "#ffffff",
+        color_fondo_tarjetas: "#faf5ff",
+        // La más corta de todas a propósito: banner de oferta y directo
+        // al catálogo, sin destacados/categorías/testimonios/newsletter
+        // — cero fricción entre entrar y comprar.
+        distribucion: {
+            banner: { visible: true, orden: 0 },
+            catalogo: { visible: true, orden: 1 },
+            hero: { visible: false, orden: 2 },
+            destacados: { visible: false, orden: 3 },
+            categorias: { visible: false, orden: 4 },
+            testimonios: { visible: false, orden: 5 },
+            newsletter: { visible: false, orden: 6 },
+        },
+    },
 };
 
 // Toma las secciones actuales (con su contenido tal cual está cargado)
 // y les pisa solo "visible"/"orden" según un mapa {tipo: {visible, orden}}.
-// Compartido entre las 3 plantillas built-in — cada una define su propio
+// Compartido entre las 6 plantillas built-in — cada una define su propio
 // mapa de distribución, pero el merge es el mismo.
 const fusionarDistribucion = (seccionesBase, distribucion) =>
     seccionesBase.map(seccion => {

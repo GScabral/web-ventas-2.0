@@ -7,12 +7,17 @@ import {
     eliminarPlantillaPersonalizada,
 } from "../../redux/action";
 
-// Mismos 3 combos definidos en el backend
+// Mismos 6 combos definidos en el backend
 // (server/src/controllers/layoutHome/aplicarPlantilla.js, PLANTILLAS):
 // color + fuente + bordes/densidad/fondos, MÁS una distribución (qué
-// secciones van visibles y en qué orden). Se repiten acá solo para
-// pintar las tarjetas — quien aplica la plantilla de verdad es el
-// backend, esto es puramente visual.
+// secciones van visibles y en qué orden, acá como array "orden" — el
+// mismo array arma tanto el texto "X → Y → Z" como el mockup de abajo,
+// para que nunca queden desincronizados entre sí). Se repiten acá solo
+// para pintar las tarjetas — quien aplica la plantilla de verdad es el
+// backend, esto es puramente visual. Las 6 son a propósito muy
+// distintas entre sí en QUÉ secciones muestran y en qué orden, no solo
+// en color/tipografía — es lo que hace que cada una se sienta como una
+// página distinta, no una recoloreada de la anterior.
 const PLANTILLAS = [
     {
         clave: "minimalista",
@@ -25,7 +30,7 @@ const PLANTILLAS = [
         radio_bordes: "cuadrado",
         color_fondo: "#ffffff",
         color_fondo_tarjetas: "#ffffff",
-        distribucion: "Banner → Catálogo → Newsletter",
+        orden: ["banner", "catalogo", "newsletter"],
     },
     {
         clave: "urbano",
@@ -38,7 +43,7 @@ const PLANTILLAS = [
         radio_bordes: "cuadrado",
         color_fondo: "#f5f5f5",
         color_fondo_tarjetas: "#ffffff",
-        distribucion: "Banner → Destacados → Categorías → Catálogo → Newsletter",
+        orden: ["banner", "destacados", "categorias", "catalogo", "newsletter"],
     },
     {
         clave: "elegante",
@@ -51,14 +56,112 @@ const PLANTILLAS = [
         radio_bordes: "redondeado",
         color_fondo: "#f5f6f8",
         color_fondo_tarjetas: "#ffffff",
-        distribucion: "Banner → Destacados → Categorías → Catálogo → Testimonios → Newsletter",
+        orden: ["banner", "destacados", "categorias", "catalogo", "testimonios", "newsletter"],
+    },
+    {
+        clave: "impacto",
+        nombre: "Impacto / Landing",
+        descripcion: "Hero grande de entrada, azul noche y celeste. Directo a comprar, sin vueltas.",
+        color_primario: "#10233f",
+        color_secundario: "#0ea5e9",
+        color_acento: "#fb7185",
+        fuente: "Moderna",
+        radio_bordes: "redondeado",
+        color_fondo: "#ffffff",
+        color_fondo_tarjetas: "#f0f9ff",
+        orden: ["hero", "destacados", "catalogo", "newsletter"],
+    },
+    {
+        clave: "editorial",
+        nombre: "Editorial / Curada",
+        descripcion: "Sin banner ni hero — arranca por categorías, tonos tierra tipo revista.",
+        color_primario: "#3a3a35",
+        color_secundario: "#8a8b5e",
+        color_acento: "#c2703d",
+        fuente: "Clásica",
+        radio_bordes: "redondeado",
+        color_fondo: "#f7f4ee",
+        color_fondo_tarjetas: "#ffffff",
+        orden: ["categorias", "destacados", "testimonios", "catalogo", "newsletter"],
+    },
+    {
+        clave: "outlet",
+        nombre: "Outlet / Directo",
+        descripcion: "La más corta de todas: banner de oferta y directo al catálogo. Violeta y flúo.",
+        color_primario: "#6d28d9",
+        color_secundario: "#ec4899",
+        color_acento: "#a3e635",
+        fuente: "Minimal",
+        radio_bordes: "cuadrado",
+        color_fondo: "#ffffff",
+        color_fondo_tarjetas: "#faf5ff",
+        orden: ["banner", "catalogo"],
     },
 ];
 
-// Mini mockup visual (nav + tarjeta + botón) para dar una idea real de
-// cómo se ve cada plantilla, en vez de solo círculos de color.
+// Nombre corto + ícono por tipo de sección, solo para el mockup y el
+// texto "X → Y → Z" de cada tarjeta (nada que ver con el editor de
+// Secciones, que tiene su propio ETIQUETAS_SECCION más completo).
+const INFO_SECCION = {
+    banner: { nombre: "Banner", icono: "🖼️" },
+    hero: { nombre: "Hero", icono: "🏔️" },
+    destacados: { nombre: "Destacados", icono: "⭐" },
+    categorias: { nombre: "Categorías", icono: "🗂️" },
+    catalogo: { nombre: "Catálogo", icono: "🛍️" },
+    testimonios: { nombre: "Testimonios", icono: "💬" },
+    newsletter: { nombre: "Newsletter", icono: "✉️" },
+};
+
+// Alto relativo de cada bloque en el mockup — así el wireframe también
+// comunica que un "hero"/"catálogo" ocupan mucho más lugar real en la
+// página que un "banner" o el "newsletter" del final.
+const TAMANO_BLOQUE = {
+    hero: "grande",
+    catalogo: "grande",
+    destacados: "mediano",
+    testimonios: "mediano",
+    categorias: "chico",
+    banner: "chico",
+    newsletter: "chico",
+};
+
+// Una plantilla built-in trae "orden" (array de tipos, ya en el orden
+// en que se van a mostrar). Una plantilla personalizada no tiene ese
+// array — tiene "secciones" (la foto completa del borrador) — así que
+// derivamos el mismo tipo de lista filtrando por visible y ordenando
+// por "orden" numérico. El mockup no necesita saber cuál de los dos
+// casos es: siempre termina con una lista simple de tipos.
+const obtenerOrdenVisible = (plantilla) => {
+    if (Array.isArray(plantilla.orden)) return plantilla.orden;
+
+    if (Array.isArray(plantilla.secciones)) {
+        return [...plantilla.secciones]
+            .filter(seccion => seccion.visible)
+            .sort((a, b) => a.orden - b.orden)
+            .map(seccion => seccion.tipo);
+    }
+
+    return [];
+};
+
+// Texto "Banner → Catálogo → Newsletter" derivado del mismo array que
+// pinta el mockup, para que la descripción y el dibujo nunca digan
+// cosas distintas.
+const textoDistribucion = (plantilla) =>
+    obtenerOrdenVisible(plantilla)
+        .map(tipo => INFO_SECCION[tipo]?.nombre || tipo)
+        .join(" → ");
+
+// Mockup visual: una mini "barra de navegación" arriba y, debajo, un
+// wireframe apilado con un bloque por cada sección visible, en su
+// orden real y con un alto relativo según su tipo. A diferencia de la
+// versión anterior (que solo mostraba un color de fondo + una tarjeta
+// + un botón, igual en las 3 plantillas), esto deja ver de un vistazo
+// que las plantillas no solo cambian de color: arman la portada con
+// piezas distintas y en orden distinto.
 const MockupPlantilla = ({ plantilla }) => {
     const cuadrado = plantilla.radio_bordes === "cuadrado";
+    const ordenVisible = obtenerOrdenVisible(plantilla);
 
     return (
         <div
@@ -75,22 +178,33 @@ const MockupPlantilla = ({ plantilla }) => {
                     borderRadius: cuadrado ? "0" : "999px",
                 }}
             />
-            <div
-                className="plantilla-mockup-card"
-                style={{
-                    background: plantilla.color_fondo_tarjetas,
-                    borderRadius: cuadrado ? "2px" : "8px",
-                }}
-            >
-                <div style={{ background: plantilla.color_secundario }} />
+
+            <div className="plantilla-mockup-stack">
+                {ordenVisible.map((tipo, i) => {
+                    const info = INFO_SECCION[tipo] || { nombre: tipo, icono: "▫️" };
+                    const tamano = TAMANO_BLOQUE[tipo] || "chico";
+
+                    return (
+                        <div
+                            key={`${tipo}-${i}`}
+                            className={`plantilla-mockup-bloque tam-${tamano}`}
+                            style={{
+                                background: plantilla.color_fondo_tarjetas,
+                                borderRadius: cuadrado ? "2px" : "6px",
+                                borderLeft: `3px solid ${plantilla.color_primario}`,
+                            }}
+                        >
+                            <span className="plantilla-mockup-bloque-icono">{info.icono}</span>
+                            <span
+                                className="plantilla-mockup-bloque-nombre"
+                                style={{ color: plantilla.color_primario }}
+                            >
+                                {info.nombre}
+                            </span>
+                        </div>
+                    );
+                })}
             </div>
-            <div
-                className="plantilla-mockup-btn"
-                style={{
-                    background: plantilla.color_primario,
-                    borderRadius: cuadrado ? "2px" : "999px",
-                }}
-            />
         </div>
     );
 };
@@ -220,7 +334,7 @@ const PlantillasEditor = () => {
                             Fuente: {plantilla.fuente}
                         </span>
                         <span className="plantilla-card-distribucion">
-                            {plantilla.distribucion}
+                            {textoDistribucion(plantilla)}
                         </span>
 
                         {plantillaActiva === plantilla.clave ? (
@@ -267,6 +381,9 @@ const PlantillasEditor = () => {
                                 <h3>{plantilla.nombre}</h3>
                                 <span className="plantilla-card-fuente">
                                     Guardada el {new Date(plantilla.creado_en).toLocaleDateString("es-AR")}
+                                </span>
+                                <span className="plantilla-card-distribucion">
+                                    {textoDistribucion(plantilla)}
                                 </span>
 
                                 {plantillaActiva === plantilla.id ? (

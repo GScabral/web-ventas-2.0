@@ -470,14 +470,19 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* ---- Mini mockup (nav + tarjeta + botón) ---- */
+/* ---- Mini mockup: wireframe apilado ----
+   Barra de "nav" arriba + una pila de bloques, uno por sección
+   visible de la plantilla, en su orden real y con alto relativo
+   según el tipo (ver TAMANO_BLOQUE en PlantillasEditor.jsx). Es lo
+   que deja ver que cada plantilla arma la portada distinto, no solo
+   con otro color. */
 
 .plantilla-mockup {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 
-    padding: 12px;
+    padding: 10px;
     margin-bottom: 6px;
 
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -486,24 +491,41 @@
 .plantilla-mockup-nav {
     width: 40%;
     height: 8px;
+    flex-shrink: 0;
 }
 
-.plantilla-mockup-card {
-    height: 46px;
-    padding: 6px;
+.plantilla-mockup-stack {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.plantilla-mockup-card > div {
-    width: 60%;
-    height: 8px;
-    border-radius: 2px;
+.plantilla-mockup-bloque {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 6px;
+    overflow: hidden;
 }
 
-.plantilla-mockup-btn {
-    width: 34%;
-    height: 10px;
+.plantilla-mockup-bloque.tam-chico { height: 14px; }
+.plantilla-mockup-bloque.tam-mediano { height: 22px; }
+.plantilla-mockup-bloque.tam-grande { height: 32px; }
+
+.plantilla-mockup-bloque-icono {
+    font-size: 9px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.plantilla-mockup-bloque-nombre {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .plantilla-card h3 {
