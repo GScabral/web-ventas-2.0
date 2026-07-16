@@ -131,6 +131,10 @@ const IniciarSesion = () => {
         </form>
 
         <p className="cuenta-alt">
+          <Link to="/olvide-contrasena">¿Olvidaste tu contraseña?</Link>
+        </p>
+
+        <p className="cuenta-alt">
           ¿No tenés cuenta? <Link to="/crear-cuenta">Creá una acá</Link>
         </p>
       </div>

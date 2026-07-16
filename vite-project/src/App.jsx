@@ -11,11 +11,15 @@ import DevolucionCambio from './pages/Home/devolucion/devolucion'
 import Catalogo from './pages/Home/temporada/Catalogo'
 import CrearCuenta from './pages/cuenta/crearCuenta'
 import IniciarSesion from './pages/cuenta/iniciarSesion'
+import OlvideContrasena from './pages/cuenta/OlvideContrasena'
+import RestablecerContrasena from './pages/cuenta/RestablecerContrasena'
 import MiCuenta from './pages/cuenta/miCuenta'
 import Ofertas from './pages/Home/ofertas/ofertas'
 import PagoResultado from './pages/Home/pago/PagoResultado'
 import Terminos from './pages/Home/legales/Terminos'
 import Privacidad from './pages/Home/legales/Privacidad'
+import Arrepentimiento from './pages/Home/legales/Arrepentimiento'
+import Seguimiento from './pages/Home/seguimiento/Seguimiento'
 // VentaPorMayor.jsx hoy es solo un título de prueba sin contenido real
 // (sin formulario, sin info de contacto). Cuando tenga contenido de
 // verdad, descomentar este import y la ruta de abajo.
@@ -41,6 +45,8 @@ function App() {
   const location = useLocation();
   const hideNav = location.pathname === '/crear-cuenta' ||
     location.pathname === '/iniciar-sesion' ||
+    location.pathname === '/olvide-contrasena' ||
+    location.pathname === '/restablecer-contrasena' ||
     location.pathname === '/carrito' ||
     /^\/detail\/\d+$/.test(location.pathname) ||
     (location.pathname.startsWith('/admin') && location.pathname !== '/admin/preview-home');
@@ -62,6 +68,8 @@ function App() {
           <Route path='/catalogo' element={<Catalogo />} />
           <Route path='/crear-cuenta' element={<CrearCuenta />} />
           <Route path='/iniciar-sesion' element={<IniciarSesion />} />
+          <Route path='/olvide-contrasena' element={<OlvideContrasena />} />
+          <Route path='/restablecer-contrasena' element={<RestablecerContrasena />} />
           <Route path='/mi-cuenta' element={<MiCuenta />} />
           <Route path='/ofertas' element={<Ofertas />} />
           <Route path='/pago-exitoso' element={<PagoResultado />} />
@@ -69,6 +77,8 @@ function App() {
           <Route path='/pago-pendiente' element={<PagoResultado />} />
           <Route path='/terminos-y-condiciones' element={<Terminos />} />
           <Route path='/politica-de-privacidad' element={<Privacidad />} />
+          <Route path='/boton-de-arrepentimiento' element={<Arrepentimiento />} />
+          <Route path='/seguimiento' element={<Seguimiento />} />
           {/* <Route path='/VentaPorMayor' element={<VentaPorMayor />} /> */}
         </Routes>
       </Suspense>

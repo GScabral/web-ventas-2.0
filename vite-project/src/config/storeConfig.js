@@ -1,16 +1,22 @@
-// Configuración central de la marca/tienda.
-// Pensado para que, al reutilizar este sitio para un negocio distinto,
-// alcance con editar este único archivo en vez de buscar el nombre de
-// la tienda repetido en el Nav, el Footer, el Hero, etc.
+// Valores de respaldo de la marca/tienda: SOLO se usan cuando todavía
+// no hay una configuración cargada en la base (primer arranque). En
+// cuanto el admin completa Diseño → Identidad y colores, esos datos
+// pisan a estos en todos lados (ver el patrón `configuracion?.x ||
+// STORE_CONFIG.x` en Footer, Nav, Terminos, etc.).
+//
+// Se dejan neutros a propósito: al instalar el sitio a un cliente
+// nuevo, no queremos que aparezca el teléfono/dirección reales de otro
+// negocio si alguien todavía no cargó los suyos. Todo esto es editable
+// desde el panel, sin tocar código.
 
 export const STORE_CONFIG = {
-  name: "Tienda Demo",
-  tagline: "Moda accesible para todos los días",
-  whatsapp: "5493794562823",
+  name: "Mi Tienda",
+  tagline: "",
+  whatsapp: "",
   instagram: "",
   facebook: "",
-  address: "Catamarca 1330, Corrientes Capital",
-  mapsUrl: "https://maps.app.goo.gl/qD8RgwyPKD6n3Ph86",
+  address: "",
+  mapsUrl: "",
 };
 
 export default STORE_CONFIG;

@@ -26,7 +26,7 @@ const Footer = () => {
         <div>
           <h3>Sobre nosotros</h3>
           <p>
-            {tagline}. Ropa cómoda y de calidad para el día a día.
+            {tagline ? `${tagline}. ` : ""}Ropa cómoda y de calidad para el día a día.
           </p>
         </div>
 
@@ -35,10 +35,11 @@ const Footer = () => {
           <ul>
             <li><Link to="/">Inicio</Link></li>
             <li><Link to="/catalogo">Tienda</Link></li>
-            <li><Link to="/carrito">Carrito</Link></li>
+            <li><Link to="/seguimiento">Seguí tu pedido</Link></li>
             <li><Link to="/DevolucionCambio">Cambios y devoluciones</Link></li>
             <li><Link to="/terminos-y-condiciones">Términos y Condiciones</Link></li>
             <li><Link to="/politica-de-privacidad">Política de Privacidad</Link></li>
+            <li><Link to="/boton-de-arrepentimiento">Botón de arrepentimiento</Link></li>
           </ul>
         </div>
 
@@ -66,18 +67,27 @@ const Footer = () => {
           </div>
         </div>
 
-        <div>
-          <h3>Ubicación</h3>
-          <a
-            href={mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="location-row"
-          >
-            <p>{direccion}</p>
-            <img src="/icons8-location-48.png" alt="Ubicación" loading="lazy" />
-          </a>
-        </div>
+        {direccion && (
+          <div>
+            <h3>Ubicación</h3>
+            {mapsUrl ? (
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="location-row"
+              >
+                <p>{direccion}</p>
+                <img src="/icons8-location-48.png" alt="Ubicación" loading="lazy" />
+              </a>
+            ) : (
+              <div className="location-row">
+                <p>{direccion}</p>
+                <img src="/icons8-location-48.png" alt="Ubicación" loading="lazy" />
+              </div>
+            )}
+          </div>
+        )}
 
         <div>
           <h3>Formas de pago</h3>

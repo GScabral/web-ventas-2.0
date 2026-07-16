@@ -6,6 +6,7 @@ const getEstadisticas = require("../controllers/pedido/getEstadisticas");
 const getPedidoById = require("../controllers/pedido/getPedidoById");
 const getMisPedidos = require("../controllers/pedido/getMisPedidos");
 const getEstadoPublico = require("../controllers/pedido/getEstadoPublico");
+const getSeguimiento = require("../controllers/pedido/getSeguimiento");
 const actualizarEstado = require("../controllers/pedido/actualizarEstado");
 const cancelarPedido = require("../controllers/pedido/cancelarPedido");
 const eliminarPedido = require("../controllers/pedido/eliminarPedido");
@@ -21,6 +22,11 @@ router.post("/nuevoPedido", nuevoPedido);
 // Tiene que ir antes de "/:id" (esa es la versión completa, con auth de
 // admin) para que Express no la interprete como si "estado" fuera un id.
 router.get("/estado/:id", getEstadoPublico);
+
+// Pública: seguimiento de pedido para invitados. Pide número + email
+// (el email se valida contra el del pedido, ver getSeguimiento). Es
+// POST para no mandar el email en la URL.
+router.post("/seguimiento", getSeguimiento);
 
 // Cliente logueado: su propio historial de pedidos. Tiene que ir ANTES
 // de "/:id" (mismo motivo que "/estadisticas" más abajo) para que

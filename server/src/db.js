@@ -56,7 +56,7 @@ const models = sequelize.models;
 
 // Definir las relaciones
 if (models) {
-    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta, sections, Categorias, CajaSesion, CajaMovimiento } = models;
+    const { Productos, Pedido, Cliente, DetallesPedido, variantesproductos, oferta, sections, Categorias, CajaSesion, CajaMovimiento, Resena } = models;
 
     Pedido.belongsToMany(Productos, { through: 'pedidoproductos' });
     Productos.belongsToMany(Pedido, { through: 'pedidoproductos' });
@@ -106,6 +106,12 @@ if (models) {
     CajaSesion.hasMany(CajaMovimiento, { foreignKey: "CajaSesionId" });
 
     CajaMovimiento.belongsTo(CajaSesion, { foreignKey: "CajaSesionId" });
+
+    // Reseñas de productos: si se borra el producto, se borran sus reseñas.
+    if (Resena) {
+        Productos.hasMany(Resena, { foreignKey: "producto_id", onDelete: "CASCADE" });
+        Resena.belongsTo(Productos, { foreignKey: "producto_id" });
+    }
 
 }
 

@@ -14,6 +14,7 @@ import ProductGallery from "./components/DetailGallery";
 import ProductInfo from "./components/ProductInfo";
 import BuyBox from "./components/BuyBox";
 import RecommendedCarousel from "./components/RecommendedProducts";
+import ProductReviews from "./components/ProductReviews";
 
 import "./detail.css";
 
@@ -133,6 +134,8 @@ const Detail = () => {
 
         </div>
       </div>
+
+      {info?.id && <ProductReviews productoId={info.id} />}
 
       <RecommendedCarousel productos={recomendados} ofertas={ofertas} />
 

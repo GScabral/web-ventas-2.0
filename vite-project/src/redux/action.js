@@ -1,9 +1,14 @@
 import axios from "axios";
 
-// URL base del backend. En desarrollo cae a localhost:3004 (como hasta ahora).
-// En producción, definí VITE_API_URL en un archivo .env (o en las variables
-// de entorno del hosting del front) con la URL real del backend desplegado.
-export const API_URL = "https://web-ventas-2-0-2.onrender.com" ;
+// URL base del backend. Se toma de VITE_API_URL (definida en un archivo
+// .env del front, o en las variables de entorno del hosting). Si no está
+// seteada, cae al backend de producción conocido — así el sitio nunca
+// queda apuntando a un localhost inaccesible si alguien se olvida de
+// configurar la variable. Para instalar este sitio a otro cliente,
+// alcanza con setear VITE_API_URL apuntando a SU backend; no hay que
+// tocar este archivo.
+export const API_URL =
+  import.meta.env.VITE_API_URL || "https://web-ventas-2-0-2.onrender.com";
 
 const storedAdminToken = localStorage.getItem("adminToken");
 if (storedAdminToken) {
@@ -372,6 +377,63 @@ export const ingresarUsuario = (userData) => {
       throw error;
     }
   };
+};
+
+// Recuperación de contraseña (dos pasos). No tocan el store: son
+// llamadas puntuales que devuelven { mensaje } o lanzan el error para
+// que el componente lo muestre. Mismo criterio que validarCuponCheckout.
+export const solicitarResetPassword = async (correo) => {
+  const response = await axios.post(`${API_URL}/cliente/solicitar-reset`, { correo });
+  return response.data;
+};
+
+export const resetearPassword = async (token, contrasena) => {
+  const response = await axios.post(`${API_URL}/cliente/resetear-contrasena`, {
+    token,
+    contrasena,
+  });
+  return response.data;
+};
+
+// Seguimiento de pedido para invitados: número + email. Devuelve los
+// datos del pedido o lanza el error para mostrarlo. No toca el store.
+export const consultarSeguimiento = async (id, email) => {
+  const response = await axios.post(`${API_URL}/pedido/seguimiento`, { id, email });
+  return response.data;
+};
+
+// Botón de arrepentimiento (legal AR): manda la solicitud al comercio.
+export const enviarArrepentimiento = async (datos) => {
+  const response = await axios.post(`${API_URL}/legal/arrepentimiento`, datos);
+  return response.data;
+};
+
+// ---- Reseñas de productos ----
+// Públicas (no tocan el store, se usan directo en la ficha del producto):
+export const getResenasProducto = async (idProducto) => {
+  const response = await axios.get(`${API_URL}/resena/producto/${idProducto}`);
+  return response.data; // { cantidad, promedio, resenas }
+};
+
+export const crearResena = async (datos) => {
+  const response = await axios.post(`${API_URL}/resena`, datos);
+  return response.data;
+};
+
+// Moderación (admin):
+export const getResenasAdmin = async () => {
+  const response = await axios.get(`${API_URL}/resena/admin`);
+  return response.data;
+};
+
+export const toggleResenaAdmin = async (id) => {
+  const response = await axios.put(`${API_URL}/resena/${id}/toggle`);
+  return response.data;
+};
+
+export const eliminarResenaAdmin = async (id) => {
+  const response = await axios.delete(`${API_URL}/resena/${id}`);
+  return response.data;
 };
 
 export const obtenerClientePorId = (id) => {

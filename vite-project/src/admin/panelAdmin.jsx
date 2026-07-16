@@ -27,6 +27,7 @@ const Papelera = lazy(() => import("./papelera/Papelera"));
 const Envios = lazy(() => import("./envios/Envios"));
 const TicketPage = lazy(() => import("./pedidos/TicketPage"));
 const Diseno = lazy(() => import("./diseno/Diseno"));
+const Resenas = lazy(() => import("./resenas/Resenas"));
 
 // Estas dos SÍ se cargan siempre de una: BusquedaGlobal está montada
 // en todo momento (escucha Ctrl/Cmd+K en cualquier pantalla) y
@@ -64,6 +65,7 @@ const menuGroups = [
       { title: "Pedidos", path: "/admin/PedidosLista", icon: "🛒", subtitulo: "Seguimiento de compras, de nuevo a entregado" },
       { title: "Clientes", path: "/admin/clientes", icon: "👥", subtitulo: "Quiénes te compraron y sus datos" },
       { title: "Cupones", path: "/admin/cupones", icon: "🎟️", subtitulo: "Códigos de descuento para el checkout" },
+      { title: "Reseñas", path: "/admin/resenas", icon: "⭐", subtitulo: "Opiniones de clientes sobre los productos" },
     ],
   },
   {
@@ -396,6 +398,17 @@ const PanelAdmin = () => {
               element={
                 isLoggedIn ? (
                   <Diseno />
+                ) : (
+                  <Navigate to="/admin/login" />
+                )
+              }
+            />
+
+            <Route
+              path="/resenas"
+              element={
+                isLoggedIn ? (
+                  <Resenas />
                 ) : (
                   <Navigate to="/admin/login" />
                 )

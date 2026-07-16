@@ -14,6 +14,8 @@ const routeCostoEnvio = require("../routes/routeCostoEnvio");
 const routeZonaMoto = require("../routes/routeZonaMoto");
 const routeLayoutHome = require("../routes/routeLayoutHome");
 const routeTestimonio = require("../routes/routeTestimonio");
+const routeLegal = require("../routes/routeLegal");
+const routeResena = require("../routes/routeResena");
 
 const router = Router();
 
@@ -38,5 +40,7 @@ router.use("/costo-envio", routeCostoEnvio);
 router.use("/zona-moto", routeZonaMoto);
 router.use("/layout-home", routeLayoutHome);
 router.use("/testimonio", routeTestimonio);
+router.use("/legal", routeLegal);
+router.use("/resena", routeResena);
 
 module.exports = router;

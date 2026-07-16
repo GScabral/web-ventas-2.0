@@ -6,6 +6,8 @@ const { validarRegistroCliente } = require("../validacion");
 const { validationResult } = require('express-validator');
 const inicioSesion = require("../controllers/cliente/INS")
 const allClientes=require("../controllers/cliente/getAllClientes")
+const solicitarReset = require("../controllers/cliente/solicitarReset")
+const resetearContrasena = require("../controllers/cliente/resetearContrasena")
 const { verificarTokenAdmin } = require("../middleware/auth");
 
 
@@ -74,6 +76,12 @@ router.post("/nuevoCliente", clienteLimiter, validarRegistroCliente, async (req,
   }
 });
 
+
+// Recuperación de contraseña (dos pasos). Ambas con el mismo rate
+// limiter que login/registro, para que nadie las use en bucle (spam de
+// mails de reset, o prueba de tokens por fuerza bruta).
+router.post("/solicitar-reset", clienteLimiter, solicitarReset);
+router.post("/resetear-contrasena", clienteLimiter, resetearContrasena);
 
 router.post("/login", clienteLimiter, async (req, res) => {
     try {

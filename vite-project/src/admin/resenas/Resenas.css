@@ -1,0 +1,108 @@
+@import "../adminCommon.css";
+
+.resenas-page {
+  max-width: 860px;
+}
+
+.resenas-header {
+  margin-bottom: var(--sp-5, 20px);
+}
+
+.resenas-header h1 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl, 28px);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.resenas-header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm, 14px);
+}
+
+.resenas-cargando {
+  padding: var(--sp-6, 24px) 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm, 14px);
+}
+
+.resenas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4, 16px);
+}
+
+.resena-card {
+  border: 1px solid var(--border-medium, #e1e3e8);
+  border-radius: var(--radius-md, 12px);
+  background: var(--bg-elevated, #fff);
+  padding: var(--sp-4, 16px) var(--sp-5, 20px);
+  transition: opacity 0.15s ease;
+}
+
+.resena-card.oculta {
+  opacity: 0.55;
+}
+
+.resena-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3, 12px);
+  margin-bottom: 8px;
+}
+
+.resena-producto {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: var(--fs-sm, 14px);
+  margin-right: 10px;
+}
+
+.resena-stars {
+  color: var(--border-medium, #e1e3e8);
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.resena-stars .on { color: #f5a623; }
+
+.resena-estado {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.resena-estado.visible { background: rgba(22,163,74,0.12); color: #16a34a; }
+.resena-estado.oculto { background: rgba(154,161,172,0.18); color: var(--text-muted); }
+
+.resena-comentario {
+  margin: 0 0 10px;
+  color: var(--text-secondary);
+  font-size: var(--fs-sm, 14px);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.resena-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3, 12px);
+  flex-wrap: wrap;
+}
+
+.resena-meta {
+  font-size: var(--fs-xs, 12px);
+  color: var(--text-muted);
+}
+
+.resena-acciones {
+  display: flex;
+  gap: var(--sp-2, 8px);
+}
