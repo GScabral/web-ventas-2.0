@@ -38,13 +38,17 @@ const PLANTILLAS = {
         },
     },
     urbano: {
-        color_primario: "#0a0a0a",
+        // Gris cemento claro con negro y amarillo fuerte: industrial,
+        // con actitud, pero sobre fondo claro (el texto de los
+        // componentes públicos todavía es oscuro fijo, así que un fondo
+        // negro los dejaría ilegibles).
+        color_primario: "#111111",
         color_secundario: "#eab308",
         color_acento: "#ff3b30",
         fuente: "moderna",
         radio_bordes: "cuadrado",
         densidad: "compacta",
-        color_fondo: "#f5f5f5",
+        color_fondo: "#e9e9e6",
         color_fondo_tarjetas: "#ffffff",
         // Directo a los productos que marcan tendencia, después a
         // explorar por categoría. Sin testimonios (no es el tono).
@@ -65,7 +69,7 @@ const PLANTILLAS = {
         fuente: "elegante",
         radio_bordes: "redondeado",
         densidad: "amplia",
-        color_fondo: "#f5f6f8",
+        color_fondo: "#faf3ee",
         color_fondo_tarjetas: "#ffffff",
         // Recorrido completo tipo boutique: vidriera, destacados,
         // categorías, catálogo y cierre con testimonios (confianza).
@@ -80,14 +84,17 @@ const PLANTILLAS = {
         },
     },
     impacto: {
-        color_primario: "#10233f",
+        // Celeste hielo con azul eléctrico y rosa: fresco, moderno,
+        // tipo landing. Fondo claro para no romper el texto oscuro fijo
+        // de los componentes públicos.
+        color_primario: "#1d4ed8",
         color_secundario: "#0ea5e9",
-        color_acento: "#fb7185",
+        color_acento: "#f43f7e",
         fuente: "moderna",
         radio_bordes: "redondeado",
         densidad: "compacta",
-        color_fondo: "#ffffff",
-        color_fondo_tarjetas: "#f0f9ff",
+        color_fondo: "#eaf2fb",
+        color_fondo_tarjetas: "#ffffff",
         // Landing directa: hero grande con CTA de entrada (no banner
         // chico), directo a destacados y catálogo. Sin categorías ni
         // testimonios — pensada para entrar rápido a comprar.
@@ -102,13 +109,14 @@ const PLANTILLAS = {
         },
     },
     editorial: {
-        color_primario: "#3a3a35",
+        // Beige tipo revista, cálido y claro, tipografía serif.
+        color_primario: "#7a5b3a",
         color_secundario: "#8a8b5e",
         color_acento: "#c2703d",
         fuente: "clasica",
         radio_bordes: "redondeado",
         densidad: "amplia",
-        color_fondo: "#f7f4ee",
+        color_fondo: "#efe7d9",
         color_fondo_tarjetas: "#ffffff",
         // Sin banner ni hero promocional: arranca directo por
         // categorías (navegar antes que "vender"), suma destacados y
@@ -124,14 +132,15 @@ const PLANTILLAS = {
         },
     },
     outlet: {
+        // Claro pero enérgico: violeta fuerte + lila en las tarjetas.
         color_primario: "#6d28d9",
         color_secundario: "#ec4899",
-        color_acento: "#a3e635",
+        color_acento: "#7c3aed",
         fuente: "minimal",
         radio_bordes: "cuadrado",
         densidad: "compacta",
-        color_fondo: "#ffffff",
-        color_fondo_tarjetas: "#faf5ff",
+        color_fondo: "#f5f0ff",
+        color_fondo_tarjetas: "#ffffff",
         // La más corta de todas a propósito: banner de oferta y directo
         // al catálogo, sin destacados/categorías/testimonios/newsletter
         // — cero fricción entre entrar y comprar.

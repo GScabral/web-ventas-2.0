@@ -1,0 +1,112 @@
+/* ============================================================
+   TEMAS — presentación por plantilla
+   ------------------------------------------------------------
+   Estas reglas cambian la FORMA en que se presentan los
+   productos (grilla, tarjetas, proporción de imagen, títulos),
+   no solo los colores/fuente (eso lo hace ThemeLoader vía CSS
+   vars). Se activan según <html data-tema="..."> que setea
+   ThemeLoader a partir de la plantilla activa.
+
+   Todas son overrides scoped por [data-tema="..."], así que si
+   no hay plantilla (o es una personalizada), la presentación
+   base de Card.css / productGrid.css queda intacta.
+
+   Clases base afectadas:
+     .products-grid          -> grilla de productos
+     .product-card           -> tarjeta
+     .product-image-wrapper  -> contenedor de imagen (aspect-ratio)
+     .product-info           -> bloque de texto
+     .product-title / -price -> tipografía de nombre/precio
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   MINIMALISTA — galería limpia, sin bordes ni fondo de tarjeta,
+   imagen cuadrada, título en mayúsculas finas. Mucho aire.
+   ------------------------------------------------------------ */
+[data-tema="minimalista"] .products-grid { grid-template-columns: repeat(4, 1fr); gap: 30px 22px; }
+[data-tema="minimalista"] .product-card { background: transparent; border-radius: 0; padding-bottom: 0; }
+[data-tema="minimalista"] .product-card:hover { box-shadow: none; transform: none; }
+[data-tema="minimalista"] .product-image-wrapper { border-radius: 0; aspect-ratio: 1 / 1; margin: 0; width: 100%; background: transparent; }
+[data-tema="minimalista"] .product-info { padding: 10px 0 0; }
+[data-tema="minimalista"] .product-title { text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; font-weight: 600; }
+
+/* ------------------------------------------------------------
+   URBANO — tarjetas con borde grueso y sombra dura desplazada
+   (poster streetwear), esquinas rectas, título en negrita
+   mayúscula, grilla de 3 (tarjetas más grandes).
+   ------------------------------------------------------------ */
+[data-tema="urbano"] .products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+[data-tema="urbano"] .product-card { background: var(--bg-elevated); border: 2px solid var(--text-primary); border-radius: 0; padding-bottom: 14px; }
+[data-tema="urbano"] .product-card:hover { transform: translateY(-3px); box-shadow: 6px 6px 0 var(--text-primary); }
+[data-tema="urbano"] .product-image-wrapper { border-radius: 0; aspect-ratio: 3 / 4; margin: 0; width: 100%; }
+[data-tema="urbano"] .product-info { padding: 12px 12px 0; }
+[data-tema="urbano"] .product-title { text-transform: uppercase; font-weight: 800; font-size: 13px; letter-spacing: 0.02em; }
+[data-tema="urbano"] .product-price-final { font-size: 16px; }
+
+/* ------------------------------------------------------------
+   ELEGANTE — tarjetas redondeadas, sombra suave siempre,
+   contenido centrado, título con la fuente display (serif).
+   ------------------------------------------------------------ */
+[data-tema="elegante"] .products-grid { grid-template-columns: repeat(4, 1fr); gap: 24px 18px; }
+[data-tema="elegante"] .product-card { background: var(--bg-elevated); border-radius: 20px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05); padding-bottom: 16px; }
+[data-tema="elegante"] .product-image-wrapper { border-radius: 16px; }
+[data-tema="elegante"] .product-info { padding: 12px 16px 0; text-align: center; }
+[data-tema="elegante"] .product-price-row { justify-content: center; }
+[data-tema="elegante"] .product-title { font-family: var(--font-display); font-size: 14px; }
+
+/* ------------------------------------------------------------
+   IMPACTO — tarjetas grandes (grilla de 3), imagen cuadrada,
+   sombra marcada, precio prominente. Sensación de landing.
+   ------------------------------------------------------------ */
+[data-tema="impacto"] .products-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+[data-tema="impacto"] .product-card { background: var(--bg-elevated); border-radius: 16px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08); padding-bottom: 14px; }
+[data-tema="impacto"] .product-image-wrapper { aspect-ratio: 1 / 1; border-radius: 12px; }
+[data-tema="impacto"] .product-title { font-size: 14px; font-weight: 700; }
+[data-tema="impacto"] .product-price-final { font-size: 18px; }
+
+/* ------------------------------------------------------------
+   EDITORIAL — lookbook de revista: sin fondo de tarjeta, imagen
+   alta (4/5), mucho espacio entre productos, título serif de una
+   línea. Grilla de 3.
+   ------------------------------------------------------------ */
+[data-tema="editorial"] .products-grid { grid-template-columns: repeat(3, 1fr); gap: 40px 28px; }
+[data-tema="editorial"] .product-card { background: transparent; border-radius: 0; padding-bottom: 0; }
+[data-tema="editorial"] .product-card:hover { box-shadow: none; transform: none; }
+[data-tema="editorial"] .product-image-wrapper { border-radius: 0; aspect-ratio: 4 / 5; margin: 0; width: 100%; }
+[data-tema="editorial"] .product-info { padding: 14px 0 0; }
+[data-tema="editorial"] .product-title { font-family: var(--font-display); font-size: 15px; -webkit-line-clamp: 1; }
+
+/* ------------------------------------------------------------
+   OUTLET — grilla densa de ofertas (5 columnas), tarjetas
+   chicas y cuadradas, todo compacto. "Todo en liquidación".
+   ------------------------------------------------------------ */
+[data-tema="outlet"] .products-grid { grid-template-columns: repeat(5, 1fr); gap: 12px 10px; }
+[data-tema="outlet"] .product-card { border-radius: 6px; padding-bottom: 8px; }
+[data-tema="outlet"] .product-image-wrapper { border-radius: 4px; aspect-ratio: 1 / 1; }
+[data-tema="outlet"] .product-info { padding: 8px 8px 0; }
+[data-tema="outlet"] .product-title { font-size: 11px; }
+[data-tema="outlet"] .product-price-final { font-size: 14px; }
+
+/* ------------------------------------------------------------
+   RESPONSIVE — evitar que las grillas de más columnas queden
+   demasiado densas en pantallas chicas. La grilla base ya baja
+   a 3 y 2 columnas, pero nuestros overrides (más específicos)
+   la pisan, así que hay que repetir los cortes por tema.
+   ------------------------------------------------------------ */
+@media (max-width: 1100px) {
+  [data-tema="urbano"] .products-grid,
+  [data-tema="impacto"] .products-grid,
+  [data-tema="editorial"] .products-grid { grid-template-columns: repeat(2, 1fr); }
+  [data-tema="outlet"] .products-grid { grid-template-columns: repeat(4, 1fr); }
+  [data-tema="minimalista"] .products-grid,
+  [data-tema="elegante"] .products-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 700px) {
+  [data-tema="minimalista"] .products-grid,
+  [data-tema="urbano"] .products-grid,
+  [data-tema="elegante"] .products-grid,
+  [data-tema="impacto"] .products-grid,
+  [data-tema="editorial"] .products-grid { grid-template-columns: repeat(2, 1fr); }
+  [data-tema="outlet"] .products-grid { grid-template-columns: repeat(3, 1fr); }
+}

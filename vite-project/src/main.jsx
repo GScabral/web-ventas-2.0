@@ -6,6 +6,9 @@ import { Provider } from 'react-redux';
 import store from './redux/store.js';
 import ErrorBoundary from './componentes/ErrorBoundary.jsx';
 import './Design-system.css';
+// Presentación por plantilla (grilla/tarjetas/imagen por tema). Va
+// DESPUÉS de Design-system para poder pisar la presentación base.
+import './temas.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>

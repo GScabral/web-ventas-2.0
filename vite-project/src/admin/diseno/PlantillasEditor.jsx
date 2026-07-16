@@ -35,66 +35,66 @@ const PLANTILLAS = [
     {
         clave: "urbano",
         nombre: "Urbano / Streetwear",
-        descripcion: "Negro con acentos de color fuerte. Para marcas con actitud.",
-        color_primario: "#0a0a0a",
+        descripcion: "Gris cemento con negro y amarillo fuerte. Industrial, con actitud.",
+        color_primario: "#111111",
         color_secundario: "#eab308",
         color_acento: "#ff3b30",
         fuente: "Moderna",
         radio_bordes: "cuadrado",
-        color_fondo: "#f5f5f5",
+        color_fondo: "#e9e9e6",
         color_fondo_tarjetas: "#ffffff",
         orden: ["banner", "destacados", "categorias", "catalogo", "newsletter"],
     },
     {
         clave: "elegante",
         nombre: "Elegante / Boutique",
-        descripcion: "Cálido y prolijo, terracota y mostaza. Recorrido completo con prueba social.",
+        descripcion: "Crema cálido, terracota y mostaza. Recorrido completo con prueba social.",
         color_primario: "#ff6b35",
         color_secundario: "#e8a33d",
         color_acento: "#d6708a",
         fuente: "Elegante",
         radio_bordes: "redondeado",
-        color_fondo: "#f5f6f8",
+        color_fondo: "#faf3ee",
         color_fondo_tarjetas: "#ffffff",
         orden: ["banner", "destacados", "categorias", "catalogo", "testimonios", "newsletter"],
     },
     {
         clave: "impacto",
         nombre: "Impacto / Landing",
-        descripcion: "Hero grande de entrada, azul noche y celeste. Directo a comprar, sin vueltas.",
-        color_primario: "#10233f",
+        descripcion: "Celeste hielo con azul eléctrico y rosa. Hero grande, directo a comprar.",
+        color_primario: "#1d4ed8",
         color_secundario: "#0ea5e9",
-        color_acento: "#fb7185",
+        color_acento: "#f43f7e",
         fuente: "Moderna",
         radio_bordes: "redondeado",
-        color_fondo: "#ffffff",
-        color_fondo_tarjetas: "#f0f9ff",
+        color_fondo: "#eaf2fb",
+        color_fondo_tarjetas: "#ffffff",
         orden: ["hero", "destacados", "catalogo", "newsletter"],
     },
     {
         clave: "editorial",
         nombre: "Editorial / Curada",
-        descripcion: "Sin banner ni hero — arranca por categorías, tonos tierra tipo revista.",
-        color_primario: "#3a3a35",
+        descripcion: "Beige tipo revista, serif y tonos tierra. Arranca por categorías, sin banner.",
+        color_primario: "#7a5b3a",
         color_secundario: "#8a8b5e",
         color_acento: "#c2703d",
         fuente: "Clásica",
         radio_bordes: "redondeado",
-        color_fondo: "#f7f4ee",
+        color_fondo: "#efe7d9",
         color_fondo_tarjetas: "#ffffff",
         orden: ["categorias", "destacados", "testimonios", "catalogo", "newsletter"],
     },
     {
         clave: "outlet",
         nombre: "Outlet / Directo",
-        descripcion: "La más corta de todas: banner de oferta y directo al catálogo. Violeta y flúo.",
+        descripcion: "Lila enérgico con violeta y rosa fuerte. Banner de oferta y directo al catálogo.",
         color_primario: "#6d28d9",
         color_secundario: "#ec4899",
-        color_acento: "#a3e635",
+        color_acento: "#7c3aed",
         fuente: "Minimal",
         radio_bordes: "cuadrado",
-        color_fondo: "#ffffff",
-        color_fondo_tarjetas: "#faf5ff",
+        color_fondo: "#f5f0ff",
+        color_fondo_tarjetas: "#ffffff",
         orden: ["banner", "catalogo"],
     },
 ];
@@ -305,8 +305,10 @@ const PlantillasEditor = () => {
 
             <p className="campo-hint">
                 Elegir una plantilla cambia colores, tipografía, bordes,
-                densidad y fondos, y también qué secciones de la Home se ven
-                y en qué orden — todo al toque, en toda la tienda. No borra
+                densidad y fondos, qué secciones de la Home se ven y en qué
+                orden, y también <strong>la forma en que se presentan los
+                productos</strong> (grilla, tarjetas y proporción de las
+                fotos) — todo al toque, en toda la tienda. No borra
                 productos, imágenes ni textos ya cargados (si una sección
                 queda oculta, su contenido sigue guardado por si la volvés a
                 activar), pero si habías reordenado secciones a mano en la

@@ -759,7 +759,12 @@ export const publicarLayoutHome = () => {
 export const aplicarPlantillaDiseno = (plantilla) => {
   return async function (dispatch) {
     const response = await axios.post(`${API_URL}/layout-home/plantilla`, { plantilla });
+    // Refrescamos las tres fuentes que cambian: el borrador (editor), el
+    // publicado (lo que ve la tienda real) y la configuración (colores/
+    // fuente/fondos que aplica ThemeLoader). Antes faltaba getLayoutHome,
+    // así que el estado "publicado" en memoria quedaba viejo hasta recargar.
     await dispatch(getLayoutHomeBorrador());
+    await dispatch(getLayoutHome());
     await dispatch(getConfiguracion());
     return response.data;
   };
