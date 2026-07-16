@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   useDispatch,
@@ -33,6 +33,11 @@ const FiltrosSidebar = ({
 }) => {
 
   const dispatch = useDispatch();
+
+  // En mobile los filtros arrancan colapsados detrás de un botón
+  // "Filtros" para no empujar los productos hacia abajo. En desktop el
+  // CSS los muestra siempre (el botón queda oculto).
+  const [abierto, setAbierto] = useState(false);
 
   const categorias = useSelector(state => state.categorias || []);
 
@@ -96,6 +101,19 @@ const FiltrosSidebar = ({
   return (
 
     <div className="modern-filters">
+
+      {/* Solo visible en mobile (CSS): abre/cierra el panel de filtros. */}
+      <button
+        type="button"
+        className={"filters-mobile-toggle" + (abierto ? " abierto" : "")}
+        onClick={() => setAbierto((o) => !o)}
+        aria-expanded={abierto}
+      >
+        <span>Filtros</span>
+        <span className="filters-mobile-chevron">▾</span>
+      </button>
+
+      <div className={"filters-body" + (abierto ? " abierto" : "")}>
 
       <div className="filters-top">
 
@@ -258,6 +276,8 @@ const FiltrosSidebar = ({
         </div>
 
       </div>
+
+      </div>{/* /filters-body */}
 
     </div>
   );

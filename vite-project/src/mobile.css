@@ -1,0 +1,150 @@
+/* ============================================================
+   MOBILE — mejoras globales de experiencia en celulares
+   ------------------------------------------------------------
+   Se carga DESPUÉS del resto (ver main.jsx) para poder pisar
+   detalles puntuales. Solo afecta al sitio público (el panel
+   admin tiene su propio responsive en panelAdminDashboard).
+   Todo scoped por media queries: en desktop no cambia nada.
+   ============================================================ */
+
+/* Nunca queremos scroll horizontal accidental en el teléfono. */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   ≤ 600px (teléfonos)
+   ============================================================ */
+@media (max-width: 600px) {
+
+  /* --- Anti-zoom de iOS ---
+     Safari en iPhone hace zoom automático al tocar un input con
+     letra < 16px. Forzamos 16px en todos los campos para que el
+     foco no descuadre la pantalla. Es el arreglo mobile de mayor
+     impacto y no se nota en desktop. */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* --- Nav: el buscador pasa a su propia fila ---
+     Con logo + buscador + 2 íconos en una sola fila, en pantallas
+     angostas el buscador quedaba espachurrado. Lo mandamos a una
+     segunda línea a todo lo ancho. */
+  .nav-top {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .nav-top .nav-search {
+    order: 5;
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .nav-search input {
+    height: 40px;
+  }
+
+  /* Con el buscador en la fila de abajo, empujamos los íconos de
+     cuenta/carrito hacia la derecha para que no queden pegados al
+     logo con un hueco raro. */
+  .nav-top .nav-cart:first-of-type {
+    margin-left: auto;
+  }
+
+  /* --- Tap targets más cómodos --- */
+  .nav-category-chip {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .nav-mobile-link {
+    padding: 14px 0;
+    font-size: 15px;
+  }
+
+  /* --- Botones principales: alto mínimo cómodo para el dedo --- */
+  .btn,
+  .cuenta-submit,
+  .seguimiento-btn,
+  .legal-btn,
+  .review-submit,
+  .confirm-cart-btn,
+  .see-detail-btn {
+    min-height: 46px;
+  }
+
+  /* --- Padding general de los contenedores un poco más ajustado --- */
+  .home-wrapper,
+  .catalogo-wrapper {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* --- Tarjetas de producto: precio y título legibles en 2 columnas --- */
+  .product-title {
+    font-size: 12px;
+  }
+
+  .product-price-final {
+    font-size: 14px;
+  }
+
+  /* --- Modal de selección rápida: ocupa mejor la pantalla --- */
+  .product-modal {
+    max-height: 92vh;
+  }
+
+  .product-modal-overlay {
+    padding: 10px;
+  }
+
+  /* --- Detalle de producto: la galería y la info se apilan cómodas --- */
+  .detail-page {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* --- Reseñas: form y estrellas cómodas --- */
+  .reviews {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .star-btn {
+    font-size: 32px;
+    padding: 0 4px;
+  }
+
+  /* --- Tablas/resúmenes de carrito no se desbordan --- */
+  .seguimiento-card,
+  .cuenta-card,
+  .legal-tarjeta {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+/* ============================================================
+   ≤ 400px (teléfonos chicos)
+   ============================================================ */
+@media (max-width: 400px) {
+
+  /* El logo no debe empujar los íconos fuera de la pantalla. */
+  .nav-logo {
+    font-size: 14px;
+    max-width: 46vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Grillas de producto: 2 columnas siguen entrando, pero con
+     menos gap para que las tarjetas respiren. */
+  .products-grid {
+    gap: 10px 8px;
+  }
+}
