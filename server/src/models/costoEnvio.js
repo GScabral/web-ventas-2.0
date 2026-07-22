@@ -25,6 +25,21 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
 
+        // Tiempo estimado de entrega para esta provincia (días hábiles).
+        // Opcional: si están cargados, el checkout muestra "llega en X-Y
+        // días". Como el arranque usa sync({ force:false }) (no altera
+        // tablas existentes), estas dos columnas hay que agregarlas a
+        // mano en la base con el SQL de migración incluido en el repo.
+        dias_min: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+
+        dias_max: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+
         activo: {
             type: DataTypes.BOOLEAN,
             defaultValue: true,

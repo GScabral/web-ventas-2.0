@@ -6,6 +6,7 @@ import {
     crearCostoEnvio,
     actualizarCostoEnvio,
     eliminarCostoEnvio,
+    crearCostosEnvioBulk,
     getZonasMotoTodas,
     crearZonaMoto,
     actualizarZonaMoto,
@@ -13,9 +14,18 @@ import {
     mostrarToast,
 } from "../../redux/action";
 
+import { PROVINCIAS_AR } from "../../config/provinciasAR";
 import InfoTooltip from "../components/InfoTooltip";
 
 import "./Envios.css";
+
+// Texto corto del tiempo de entrega para las listas del admin.
+const textoDiasAdmin = (min, max) => {
+    if (!min && !max) return "";
+    if (min && max && min !== max) return `${min}-${max} días`;
+    const n = max || min;
+    return n ? `${n} día${n > 1 ? "s" : ""}` : "";
+};
 
 const Envios = () => {
 
@@ -26,7 +36,10 @@ const Envios = () => {
 
     const [provincia, setProvincia] = useState("");
     const [costo, setCosto] = useState("");
+    const [diasMin, setDiasMin] = useState("");
+    const [diasMax, setDiasMax] = useState("");
     const [guardando, setGuardando] = useState(false);
+    const [cargandoBulk, setCargandoBulk] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
     // Zonas de envío por moto (entrega rápida dentro de la misma
@@ -37,6 +50,8 @@ const Envios = () => {
 
     const [ciudadMoto, setCiudadMoto] = useState("");
     const [costoMoto, setCostoMoto] = useState("");
+    const [diasMinMoto, setDiasMinMoto] = useState("");
+    const [diasMaxMoto, setDiasMaxMoto] = useState("");
     const [guardandoMoto, setGuardandoMoto] = useState(false);
     const [errorMotoMsg, setErrorMotoMsg] = useState("");
 
@@ -76,9 +91,16 @@ const Envios = () => {
         setGuardando(true);
 
         try {
-            await dispatch(crearCostoEnvio({ provincia, costo: Number(costo) }));
+            await dispatch(crearCostoEnvio({
+                provincia,
+                costo: Number(costo),
+                dias_min: diasMin,
+                dias_max: diasMax,
+            }));
             setProvincia("");
             setCosto("");
+            setDiasMin("");
+            setDiasMax("");
             dispatch(mostrarToast("Costo de envío agregado."));
             cargar();
         } catch (error) {
@@ -87,6 +109,28 @@ const Envios = () => {
             );
         } finally {
             setGuardando(false);
+        }
+    };
+
+    // Carga masiva: agrega todas las provincias argentinas que falten,
+    // con costo 0. El admin después les pone precio y días.
+    const handleBulk = async () => {
+        setErrorMsg("");
+        setCargandoBulk(true);
+        try {
+            const data = await crearCostosEnvioBulk();
+            setCostos(data.costos);
+            dispatch(mostrarToast(
+                data.agregadas > 0
+                    ? `Se agregaron ${data.agregadas} provincia(s). Ponéles el costo.`
+                    : "Ya estaban cargadas todas las provincias."
+            ));
+        } catch (error) {
+            setErrorMsg(
+                error?.response?.data?.error || "No pudimos cargar las provincias."
+            );
+        } finally {
+            setCargandoBulk(false);
         }
     };
 
@@ -109,9 +153,16 @@ const Envios = () => {
         setGuardandoMoto(true);
 
         try {
-            await dispatch(crearZonaMoto({ ciudad: ciudadMoto, costo: Number(costoMoto) }));
+            await dispatch(crearZonaMoto({
+                ciudad: ciudadMoto,
+                costo: Number(costoMoto),
+                dias_min: diasMinMoto,
+                dias_max: diasMaxMoto,
+            }));
             setCiudadMoto("");
             setCostoMoto("");
+            setDiasMinMoto("");
+            setDiasMaxMoto("");
             dispatch(mostrarToast("Zona de envío por moto agregada."));
             cargarMoto();
         } catch (error) {
@@ -159,13 +210,16 @@ const Envios = () => {
 
                     <div className="form-group">
                         <label>Provincia</label>
-                        <input
-                            type="text"
+                        <select
                             value={provincia}
                             onChange={(e) => setProvincia(e.target.value)}
-                            placeholder="Ej: Corrientes"
                             required
-                        />
+                        >
+                            <option value="">Elegí una provincia</option>
+                            {PROVINCIAS_AR.map((prov) => (
+                                <option key={prov} value={prov}>{prov}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="form-group">
@@ -180,11 +234,46 @@ const Envios = () => {
                         />
                     </div>
 
+                    <div className="form-group">
+                        <label>Tiempo de entrega estimado (opcional)</label>
+                        <div className="envio-dias-row">
+                            <input
+                                type="number"
+                                min="0"
+                                value={diasMin}
+                                onChange={(e) => setDiasMin(e.target.value)}
+                                placeholder="Mín."
+                            />
+                            <span>a</span>
+                            <input
+                                type="number"
+                                min="0"
+                                value={diasMax}
+                                onChange={(e) => setDiasMax(e.target.value)}
+                                placeholder="Máx."
+                            />
+                            <span>días hábiles</span>
+                        </div>
+                    </div>
+
                     {errorMsg && <p className="envio-error">{errorMsg}</p>}
 
                     <button type="submit" className="btn-agregar-envio" disabled={guardando}>
                         {guardando ? "Guardando..." : "Agregar"}
                     </button>
+
+                    <button
+                        type="button"
+                        className="btn-bulk-provincias"
+                        onClick={handleBulk}
+                        disabled={cargandoBulk}
+                    >
+                        {cargandoBulk ? "Cargando..." : "+ Cargar todas las provincias"}
+                    </button>
+                    <p className="envio-bulk-hint">
+                        Agrega de una las 24 provincias con costo 0. Después les
+                        ponés el precio y el tiempo de entrega a cada una.
+                    </p>
 
                 </form>
 
@@ -209,6 +298,11 @@ const Envios = () => {
                                     <span className="envio-item-costo">
                                         ${Number(item.costo).toLocaleString("es-AR")}
                                     </span>
+                                    {textoDiasAdmin(item.dias_min, item.dias_max) && (
+                                        <span className="envio-item-dias">
+                                            🚚 {textoDiasAdmin(item.dias_min, item.dias_max)}
+                                        </span>
+                                    )}
                                 </div>
 
                                 <div className="envio-item-actions">
@@ -278,6 +372,28 @@ const Envios = () => {
                         />
                     </div>
 
+                    <div className="form-group">
+                        <label>Tiempo de entrega estimado (opcional)</label>
+                        <div className="envio-dias-row">
+                            <input
+                                type="number"
+                                min="0"
+                                value={diasMinMoto}
+                                onChange={(e) => setDiasMinMoto(e.target.value)}
+                                placeholder="Mín."
+                            />
+                            <span>a</span>
+                            <input
+                                type="number"
+                                min="0"
+                                value={diasMaxMoto}
+                                onChange={(e) => setDiasMaxMoto(e.target.value)}
+                                placeholder="Máx."
+                            />
+                            <span>días hábiles</span>
+                        </div>
+                    </div>
+
                     {errorMotoMsg && <p className="envio-error">{errorMotoMsg}</p>}
 
                     <button type="submit" className="btn-agregar-envio" disabled={guardandoMoto}>
@@ -307,6 +423,11 @@ const Envios = () => {
                                     <span className="envio-item-costo">
                                         ${Number(item.costo).toLocaleString("es-AR")}
                                     </span>
+                                    {textoDiasAdmin(item.dias_min, item.dias_max) && (
+                                        <span className="envio-item-dias">
+                                            🚚 {textoDiasAdmin(item.dias_min, item.dias_max)}
+                                        </span>
+                                    )}
                                 </div>
 
                                 <div className="envio-item-actions">

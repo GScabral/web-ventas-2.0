@@ -25,7 +25,12 @@ const calcularCostoEnvio = async (provincia) => {
         return { costo: 0, encontrado: false };
     }
 
-    return { costo: Number(match.costo), encontrado: true };
+    return {
+        costo: Number(match.costo),
+        encontrado: true,
+        dias_min: match.dias_min ?? null,
+        dias_max: match.dias_max ?? null,
+    };
 };
 
 module.exports = calcularCostoEnvio;

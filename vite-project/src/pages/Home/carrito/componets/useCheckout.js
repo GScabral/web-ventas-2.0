@@ -9,6 +9,7 @@ import {
   calcularCostoEnvioCheckout,
   calcularCostoMotoCheckout,
   getMisPedidos,
+  getZonasMotoPublico,
 } from "../../../../redux/action";
 
 import { STORE_CONFIG } from "../../../../config/storeConfig";
@@ -202,12 +203,16 @@ const useCheckout = () => {
   // backend en cada letra.
   const [costoEnvio, setCostoEnvio] = useState(0);
   const [envioEncontrado, setEnvioEncontrado] = useState(true);
+  // Tiempo estimado de entrega { min, max } de la provincia elegida
+  // (correo). null si no hay dato cargado.
+  const [diasCorreo, setDiasCorreo] = useState(null);
 
   useEffect(() => {
 
     if (shippingData.tipoEntrega !== "ENVIO" || !shippingData.provincia.trim()) {
       setCostoEnvio(0);
       setEnvioEncontrado(true);
+      setDiasCorreo(null);
       return;
     }
 
@@ -216,14 +221,32 @@ const useCheckout = () => {
         const resultado = await calcularCostoEnvioCheckout(shippingData.provincia.trim());
         setCostoEnvio(resultado.costo);
         setEnvioEncontrado(resultado.encontrado);
+        setDiasCorreo(
+          resultado.encontrado && (resultado.dias_min || resultado.dias_max)
+            ? { min: resultado.dias_min, max: resultado.dias_max }
+            : null
+        );
       } catch (error) {
         setCostoEnvio(0);
         setEnvioEncontrado(false);
+        setDiasCorreo(null);
       }
     }, 500);
 
     return () => clearTimeout(timeout);
   }, [shippingData.tipoEntrega, shippingData.provincia]);
+
+  // Ciudades con envío por moto activo, para el desplegable del checkout.
+  const [ciudadesMoto, setCiudadesMoto] = useState([]);
+  useEffect(() => {
+    let vigente = true;
+    getZonasMotoPublico()
+      .then((zonas) => {
+        if (vigente) setCiudadesMoto((zonas || []).map((z) => z.ciudad));
+      })
+      .catch(() => {});
+    return () => { vigente = false; };
+  }, []);
 
   // ---- Envío por moto (ciudad) ----
   // Mismo criterio de debounce. Si la ciudad tipeada tiene una zona de
@@ -232,12 +255,14 @@ const useCheckout = () => {
   // elegido de una ciudad anterior, se lo vuelve a pasar a "correo").
   const [costoMoto, setCostoMoto] = useState(0);
   const [zonaMotoDisponible, setZonaMotoDisponible] = useState(false);
+  const [diasMoto, setDiasMoto] = useState(null);
 
   useEffect(() => {
 
     if (shippingData.tipoEntrega !== "ENVIO" || !shippingData.ciudad.trim()) {
       setCostoMoto(0);
       setZonaMotoDisponible(false);
+      setDiasMoto(null);
       return;
     }
 
@@ -246,12 +271,18 @@ const useCheckout = () => {
         const resultado = await calcularCostoMotoCheckout(shippingData.ciudad.trim());
         setCostoMoto(resultado.costo);
         setZonaMotoDisponible(resultado.encontrado);
+        setDiasMoto(
+          resultado.encontrado && (resultado.dias_min || resultado.dias_max)
+            ? { min: resultado.dias_min, max: resultado.dias_max }
+            : null
+        );
         if (!resultado.encontrado) {
           setMedioEnvio("correo");
         }
       } catch (error) {
         setCostoMoto(0);
         setZonaMotoDisponible(false);
+        setDiasMoto(null);
         setMedioEnvio("correo");
       }
     }, 500);
@@ -437,6 +468,9 @@ Total: $${totalReal.toLocaleString("es-AR")}
     zonaMotoDisponible,
     costoMoto,
     costoEnvioCorreo: costoEnvio,
+    diasCorreo,
+    diasMoto,
+    ciudadesMoto,
 
     envioGratisDesde,
     envioGratisAplicado,

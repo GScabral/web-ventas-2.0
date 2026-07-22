@@ -5,6 +5,18 @@ const { verificarTokenAdmin } = require("../middleware/auth");
 
 const router = Router();
 
+// Igual que en routeCostoEnvio: normaliza min/max de días de entrega.
+const parsearDias = (dmin, dmax) => {
+    let min = dmin === "" || dmin === undefined || dmin === null ? null : Number(dmin);
+    let max = dmax === "" || dmax === undefined || dmax === null ? null : Number(dmax);
+    if (min !== null && (isNaN(min) || min < 0)) min = null;
+    if (max !== null && (isNaN(max) || max < 0)) max = null;
+    if (min !== null && max !== null && min > max) {
+        [min, max] = [max, min];
+    }
+    return { dias_min: min, dias_max: max };
+};
+
 // Pública: el checkout la usa para saber qué ciudades tienen envío
 // por moto disponible (así puede mostrar/ocultar la opción sin pegarle
 // al backend en cada tecla).
@@ -44,7 +56,7 @@ router.get("/todos", verificarTokenAdmin, async (req, res) => {
 
 router.post("/", verificarTokenAdmin, async (req, res) => {
     try {
-        const { ciudad, costo } = req.body;
+        const { ciudad, costo, dias_min, dias_max } = req.body;
 
         if (!ciudad || !ciudad.trim()) {
             return res.status(400).json({ error: "Ingresá el nombre de la ciudad." });
@@ -56,9 +68,12 @@ router.post("/", verificarTokenAdmin, async (req, res) => {
             return res.status(400).json({ error: "El costo tiene que ser un número mayor o igual a 0." });
         }
 
+        const dias = parsearDias(dias_min, dias_max);
+
         const nueva = await ZonaEnvioMoto.create({
             ciudad: ciudad.trim(),
             costo: costoNumerico,
+            ...dias,
         });
 
         res.status(201).json(nueva);
@@ -80,7 +95,7 @@ router.put("/:id", verificarTokenAdmin, async (req, res) => {
             return res.status(404).json({ error: "No encontramos esa zona de envío por moto." });
         }
 
-        const { costo, activo } = req.body;
+        const { costo, activo, dias_min, dias_max } = req.body;
 
         if (costo !== undefined) {
             const costoNumerico = Number(costo);
@@ -92,6 +107,15 @@ router.put("/:id", verificarTokenAdmin, async (req, res) => {
 
         if (activo !== undefined) {
             zona.activo = Boolean(activo);
+        }
+
+        if (dias_min !== undefined || dias_max !== undefined) {
+            const dias = parsearDias(
+                dias_min !== undefined ? dias_min : zona.dias_min,
+                dias_max !== undefined ? dias_max : zona.dias_max
+            );
+            zona.dias_min = dias.dias_min;
+            zona.dias_max = dias.dias_max;
         }
 
         await zona.save();

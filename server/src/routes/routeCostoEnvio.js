@@ -1,9 +1,26 @@
 const { Router } = require("express");
 const { CostoEnvio } = require("../db");
 const calcularCostoEnvio = require("../controllers/costoEnvio/calcularCostoEnvio");
+const PROVINCIAS_AR = require("../utils/provinciasAR");
+const normalizar = require("../utils/normalizarTexto");
 const { verificarTokenAdmin } = require("../middleware/auth");
 
 const router = Router();
+
+// Normaliza y valida un par de días (min/max). Devuelve { dias_min,
+// dias_max } listos para guardar (números o null). Si vienen dados
+// vuelta (min > max), los ordena, para que el admin no tenga que
+// preocuparse por el orden.
+const parsearDias = (dmin, dmax) => {
+    let min = dmin === "" || dmin === undefined || dmin === null ? null : Number(dmin);
+    let max = dmax === "" || dmax === undefined || dmax === null ? null : Number(dmax);
+    if (min !== null && (isNaN(min) || min < 0)) min = null;
+    if (max !== null && (isNaN(max) || max < 0)) max = null;
+    if (min !== null && max !== null && min > max) {
+        [min, max] = [max, min];
+    }
+    return { dias_min: min, dias_max: max };
+};
 
 // Pública: el checkout la usa para mostrar el costo antes de
 // confirmar. Devuelve todos los activos, el frontend hace el match
@@ -44,7 +61,7 @@ router.get("/todos", verificarTokenAdmin, async (req, res) => {
 
 router.post("/", verificarTokenAdmin, async (req, res) => {
     try {
-        const { provincia, costo } = req.body;
+        const { provincia, costo, dias_min, dias_max } = req.body;
 
         if (!provincia || !provincia.trim()) {
             return res.status(400).json({ error: "Ingresá el nombre de la provincia." });
@@ -56,9 +73,12 @@ router.post("/", verificarTokenAdmin, async (req, res) => {
             return res.status(400).json({ error: "El costo tiene que ser un número mayor o igual a 0." });
         }
 
+        const dias = parsearDias(dias_min, dias_max);
+
         const nuevo = await CostoEnvio.create({
             provincia: provincia.trim(),
             costo: costoNumerico,
+            ...dias,
         });
 
         res.status(201).json(nuevo);
@@ -72,6 +92,34 @@ router.post("/", verificarTokenAdmin, async (req, res) => {
     }
 });
 
+// Carga masiva: agrega todas las provincias argentinas que todavía no
+// estén cargadas, con costo 0 (el admin después les pone el precio y los
+// días). Evita tener que crearlas una por una. No pisa las que ya
+// existen (compara por nombre normalizado).
+router.post("/bulk", verificarTokenAdmin, async (req, res) => {
+    try {
+        const existentes = await CostoEnvio.findAll();
+        const yaCargadas = new Set(existentes.map((c) => normalizar(c.provincia)));
+
+        const faltantes = PROVINCIAS_AR.filter(
+            (prov) => !yaCargadas.has(normalizar(prov))
+        );
+
+        if (faltantes.length > 0) {
+            await CostoEnvio.bulkCreate(
+                faltantes.map((provincia) => ({ provincia, costo: 0 }))
+            );
+        }
+
+        const todas = await CostoEnvio.findAll({ order: [["provincia", "ASC"]] });
+        res.status(201).json({ agregadas: faltantes.length, costos: todas });
+
+    } catch (error) {
+        console.error("Error en carga masiva de provincias:", error);
+        res.status(500).json({ error: "No pudimos cargar las provincias." });
+    }
+});
+
 router.put("/:id", verificarTokenAdmin, async (req, res) => {
     try {
         const costoEnvio = await CostoEnvio.findByPk(req.params.id);
@@ -80,7 +128,7 @@ router.put("/:id", verificarTokenAdmin, async (req, res) => {
             return res.status(404).json({ error: "No encontramos ese costo de envío." });
         }
 
-        const { costo, activo } = req.body;
+        const { costo, activo, dias_min, dias_max } = req.body;
 
         if (costo !== undefined) {
             const costoNumerico = Number(costo);
@@ -92,6 +140,15 @@ router.put("/:id", verificarTokenAdmin, async (req, res) => {
 
         if (activo !== undefined) {
             costoEnvio.activo = Boolean(activo);
+        }
+
+        if (dias_min !== undefined || dias_max !== undefined) {
+            const dias = parsearDias(
+                dias_min !== undefined ? dias_min : costoEnvio.dias_min,
+                dias_max !== undefined ? dias_max : costoEnvio.dias_max
+            );
+            costoEnvio.dias_min = dias.dias_min;
+            costoEnvio.dias_max = dias.dias_max;
         }
 
         await costoEnvio.save();

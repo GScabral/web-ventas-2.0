@@ -21,6 +21,9 @@ const CheckoutModal = ({ show, onClose }) => {
     zonaMotoDisponible,
     costoMoto,
     costoEnvioCorreo,
+    diasCorreo,
+    diasMoto,
+    ciudadesMoto,
     envioGratisDesde,
     envioGratisAplicado,
     faltanteEnvioGratis,
@@ -309,6 +312,9 @@ const CheckoutModal = ({ show, onClose }) => {
             zonaMotoDisponible={zonaMotoDisponible}
             costoMoto={costoMoto}
             costoEnvioCorreo={costoEnvioCorreo}
+            diasCorreo={diasCorreo}
+            diasMoto={diasMoto}
+            ciudadesMoto={ciudadesMoto}
           />
 
           <div className={styles.formGroup}>

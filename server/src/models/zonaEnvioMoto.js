@@ -28,6 +28,20 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
 
+        // Tiempo estimado de entrega en moto/cadete (días hábiles).
+        // Suele ser el mismo día o 1 día; opcional. Igual que en
+        // CostoEnvio, requiere el SQL de migración porque sync no altera
+        // tablas ya existentes.
+        dias_min: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+
+        dias_max: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+
         activo: {
             type: DataTypes.BOOLEAN,
             defaultValue: true,

@@ -648,6 +648,20 @@ export const getCostosEnvioTodos = async () => {
   return response.data;
 };
 
+// Carga masiva: agrega todas las provincias argentinas que falten (con
+// costo 0). Devuelve { agregadas, costos } para refrescar la lista.
+export const crearCostosEnvioBulk = async () => {
+  const response = await axios.post(`${API_URL}/costo-envio/bulk`);
+  return response.data;
+};
+
+// Pública: lista de ciudades con envío por moto activo, para el
+// desplegable (datalist) del checkout.
+export const getZonasMotoPublico = async () => {
+  const response = await axios.get(`${API_URL}/zona-moto`);
+  return response.data;
+};
+
 export const crearCostoEnvio = (datos) => {
   return async function () {
     const response = await axios.post(`${API_URL}/costo-envio`, datos);

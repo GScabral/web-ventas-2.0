@@ -1,5 +1,16 @@
 import React from "react";
 import styles from "../styles/ShippingForm.module.css";
+import { PROVINCIAS_AR } from "../../../../config/provinciasAR";
+
+// Texto amable del tiempo de entrega a partir de { min, max } días.
+const textoDias = (d) => {
+  if (!d) return "";
+  const { min, max } = d;
+  if (min && max && min !== max) return `Llega en ${min} a ${max} días hábiles`;
+  const n = max || min;
+  if (!n) return "";
+  return n === 1 ? "Llega en 1 día hábil" : `Llega en ${n} días hábiles`;
+};
 
 const ShippingForm = ({
   data,
@@ -11,7 +22,15 @@ const ShippingForm = ({
   zonaMotoDisponible,
   costoMoto,
   costoEnvioCorreo,
+  diasCorreo,
+  diasMoto,
+  ciudadesMoto = [],
 }) => {
+
+  // Tiempo de entrega a mostrar según el medio elegido.
+  const diasActuales =
+    medioEnvio === "moto" && zonaMotoDisponible ? diasMoto : diasCorreo;
+  const textoEntrega = textoDias(diasActuales);
   return (
     <div className={styles.fieldsWrapper}>
 
@@ -90,12 +109,16 @@ const ShippingForm = ({
           <div className={`${styles.formGroup} ${fieldErrors.provincia ? styles.hasError : ""}`}>
             <label>Provincia</label>
 
-            <input
+            <select
               name="provincia"
-              placeholder="Provincia"
               value={data.provincia}
               onChange={onChange}
-            />
+            >
+              <option value="">Elegí tu provincia</option>
+              {PROVINCIAS_AR.map((prov) => (
+                <option key={prov} value={prov}>{prov}</option>
+              ))}
+            </select>
 
             {fieldErrors.provincia && (
               <span className={styles.fieldError}>
@@ -112,7 +135,18 @@ const ShippingForm = ({
               placeholder="Ciudad"
               value={data.ciudad}
               onChange={onChange}
+              list="ciudades-con-moto"
+              autoComplete="off"
             />
+
+            {/* Ciudades con envío por moto disponible, como sugerencias. */}
+            {ciudadesMoto.length > 0 && (
+              <datalist id="ciudades-con-moto">
+                {ciudadesMoto.map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
+            )}
 
             {fieldErrors.ciudad && (
               <span className={styles.fieldError}>
@@ -169,6 +203,12 @@ const ShippingForm = ({
               </span>
             )}
           </div>
+
+          {textoEntrega && (
+            <p className={styles.entregaEstimada}>
+              🚚 {textoEntrega}
+            </p>
+          )}
         </div>
       )}
     </div>
