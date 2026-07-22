@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { getConfiguracion, getLayoutHome } from "../redux/action";
 import { FUENTES, FUENTE_POR_DEFECTO } from "../config/fuentes";
 
@@ -89,9 +90,21 @@ const esFondoOscuro = (hex) => {
 const ThemeLoader = () => {
 
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const configuracion = useSelector(state => state.configuracion);
     const layoutHome = useSelector(state => state.layoutHome);
+
+    // El panel admin comparte algunos nombres de clase con la tienda
+    // pública (.product-card, .products-grid, .product-title). Si
+    // dejáramos data-tema puesto dentro del panel, temas.css
+    // restilizaría también las tarjetas de "Inventario". Por eso el
+    // atributo solo se aplica en rutas públicas. La vista previa del
+    // diseño (/admin/preview-home) SÍ debe tener tema, porque muestra la
+    // tienda real.
+    const esPanelAdmin =
+        location.pathname.startsWith("/admin") &&
+        location.pathname !== "/admin/preview-home";
 
     useEffect(() => {
         dispatch(getConfiguracion());
@@ -107,12 +120,12 @@ const ThemeLoader = () => {
     useEffect(() => {
         const activa = layoutHome?.plantilla_activa;
         const raiz = document.documentElement;
-        if (activa && TEMAS_CON_PRESENTACION.includes(activa)) {
+        if (!esPanelAdmin && activa && TEMAS_CON_PRESENTACION.includes(activa)) {
             raiz.setAttribute("data-tema", activa);
         } else {
             raiz.removeAttribute("data-tema");
         }
-    }, [layoutHome]);
+    }, [layoutHome, esPanelAdmin]);
 
     useEffect(() => {
 
